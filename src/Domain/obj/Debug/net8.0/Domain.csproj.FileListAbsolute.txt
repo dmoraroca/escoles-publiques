@@ -1,0 +1,11 @@
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/bin/Debug/net8.0/Domain.deps.json
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/bin/Debug/net8.0/Domain.dll
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/bin/Debug/net8.0/Domain.pdb
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/obj/Debug/net8.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/obj/Debug/net8.0/Domain.AssemblyInfoInputs.cache
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/obj/Debug/net8.0/Domain.AssemblyInfo.cs
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/obj/Debug/net8.0/Domain.csproj.CoreCompileInputs.cache
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/obj/Debug/net8.0/Domain.dll
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/obj/Debug/net8.0/refint/Domain.dll
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/obj/Debug/net8.0/Domain.pdb
+/home/dmoraroca/Documents/_DATA/repos/escoles-publiques/src/Domain/obj/Debug/net8.0/ref/Domain.dll

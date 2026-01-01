@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: escoles-db
+    environment:
+      POSTGRES_DB: escoles
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - escoles_pg:/var/lib/postgresql/data
+
+volumes:
+  escoles_pg:
+
