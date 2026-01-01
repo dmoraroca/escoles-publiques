@@ -1,0 +1,54 @@
+# =========================
+# .NET
+# =========================
+bin/
+obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# .NET Core / EF
+*.user
+*.suo
+*.cache
+*.log
+*.pdb
+*.deps.json
+*.runtimeconfig.json
+project.assets.json
+project.nuget.cache
+
+# =========================
+# Visual Studio Code
+# =========================
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# =========================
+# Docker
+# =========================
+docker/**/data/
+*.env
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Test / Coverage
+# =========================
+TestResults/
+coverage/
+*.trx
+
+# =========================
+# Secrets
+# =========================
+appsettings.*.json
+!appsettings.json
