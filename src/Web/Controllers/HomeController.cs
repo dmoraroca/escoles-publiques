@@ -15,7 +15,19 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        var scopes = new List<ScopeViewModel>
+        {
+            new ScopeViewModel { Name = "Centres i serveis educatius", Url = "#" },
+            new ScopeViewModel { Name = "Professorat", Url = "#" },
+            new ScopeViewModel { Name = "Famílies", Url = "#" },
+            new ScopeViewModel { Name = "Tria educativa", Url = "#" },
+            new ScopeViewModel { Name = "Catalunya 2030", Url = "#" },
+            new ScopeViewModel { Name = "Mapa escolar", Url = "#" },
+            new ScopeViewModel { Name = "Homologació d'estudis estrangers", Url = "#" },
+            new ScopeViewModel { Name = "Portal de centre", Url = "#" }
+        };
+        
+        return View(scopes);
     }
 
     public IActionResult Privacy()

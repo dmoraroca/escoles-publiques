@@ -1,49 +1,80 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!--  version: 002  -->
+<!DOCTYPE html>
+<html lang="ca">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Web</title>
+    <title>@ViewData["Title"] - Departament d'Educació</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Web.styles.css" asp-append-version="true" />
+    
+    <link rel="stylesheet" href="~/css/gencat-theme.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column h-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+        <div class="header-top-black py-2">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div>
+                    <img src="https://educacio.gencat.cat/web/resources/fwkResponsive/fpca_capcalera/img/gencat-nuevo-completo-w.svg" alt="gencat" height="25">
+                </div>
+                <div class="small text-white d-none d-md-block">
+                    <span>Contacte</span> | <span>CA</span> | <span class="ml-2">🔍</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-dept-bar py-3">
+            <div class="container">
+                <h1 class="h4 mb-0 font-weight-bold text-white">Departament d'Educació i Formació Professional</h1>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom p-0">
+            <div class="container">
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link nav-link-gencat active" asp-controller="Home" asp-action="Index">Inici</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link nav-link-gencat" href="#">Departament</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-gencat" href="#">Àmbits d'actuació</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-gencat" href="#">Tràmits</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+
+    <div class="container-fluid p-0">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer mt-auto py-4 bg-light border-top">
         <div class="container">
-            &copy; 2025 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-md-6 text-muted small">
+                    &copy; 2026 - <strong>Generalitat de Catalunya</strong>
+                </div>
+                <div class="col-md-6 text-md-end small">
+                    <a href="#" class="text-muted text-decoration-none">Accessibilitat</a> | 
+                    <a href="#" class="text-muted text-decoration-none">Mapa web</a>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

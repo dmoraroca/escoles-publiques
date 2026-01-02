@@ -1,0 +1,190 @@
+:root {
+    --gencat-red: #C20000;
+    --gencat-dark: #333333;
+    --gencat-light: #f6f6f6;
+}
+
+body { font-family: 'Open Sans', sans-serif; color: #333; }
+
+/* Capçalera i Navegació */
+.header-top-black { background-color: var(--gencat-dark); color: white; }
+.header-dept-bar { background-color: #444; color: white; border-bottom: 4px solid var(--gencat-red); }
+.nav-link-gencat { 
+    font-weight: 600; 
+    padding: 15px 25px !important; 
+    border-bottom: 3px solid transparent;
+    border-right: 1px solid #999;
+    color: #495057;
+    margin-right: 0;
+}
+.nav-link-gencat:last-child {
+    border-right: none;
+}
+.nav-link-gencat:hover { 
+    border-bottom: 3px solid var(--gencat-red);
+    color: var(--gencat-red);
+}
+.nav-link-gencat.active { 
+    border-bottom: 3px solid var(--gencat-red);
+    color: var(--gencat-red);
+}
+.navbar-light {
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* Secció Hero (Cercador) */
+.hero-section {
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+
+.banner-spacing {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.scopes-section {
+    padding-top: 5px;
+}
+.hero-title { 
+    color: var(--gencat-red); 
+    font-weight: 700; 
+    font-size: 2rem;
+    text-align: left;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+}
+.search-btn { background-color: var(--gencat-red); border: none; color: white; }
+
+/* Banner Vermell */
+.info-banner { 
+    background-color: var(--gencat-red); 
+    color: white; 
+    padding: 15px; 
+    font-weight: 600; 
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.info-banner:hover {
+    background-color: #A00000;
+    color: white;
+}
+
+/* Targetes d'Àmbits (les graelles grises) */
+
+.border-left-danger {
+    border-left: 4px solid #C20000 !important;
+}
+
+.hero-title {
+    color: #C20000;
+    font-weight: 700;
+    font-size: 3rem;
+}
+
+.mt-n3 {
+    margin-top: -20px !important;
+    z-index: 10;
+    position: relative;
+}
+
+
+/* The Grid */
+.scope-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Card Style */
+.scope-item {
+    background-color: var(--gencat-light);
+    background-image: radial-gradient(circle, rgba(200, 200, 200, 0.15) 1px, transparent 1px);
+    background-size: 12px 12px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15), 
+                0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+.scope-text {
+    color: var(--gencat-dark);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* HOVER: 100% SOLID RED */
+.scope-item:hover {
+    background-color: var(--gencat-red);
+    background-image: none;
+    transform: translateY(-4px);
+    z-index: 5;
+    box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.25),
+                0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.scope-item:hover .scope-text {
+    color: #ffffff;
+}
+
+/* External Link Arrow */
+.scope-text::after {
+    content: ' ↗';
+    font-size: 0.8rem;
+    vertical-align: super;
+}
+
+/* El més consultat Section */
+.most-consulted-section {
+    background-color: #fff;
+    padding: 3rem 0;
+}
+
+.most-consulted-box {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.most-consulted-title {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.most-consulted-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.most-consulted-list li {
+    margin-bottom: 1rem;
+}
+
+.most-consulted-list li a {
+    color: var(--gencat-red);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.most-consulted-list li a:before {
+    content: '➜';
+    margin-right: 0.5rem;
+    color: var(--gencat-red);
+}
+
+.most-consulted-list li a:hover {
+    text-decoration: underline;
+}

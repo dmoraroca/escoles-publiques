@@ -1,8 +1,55 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Web.Models.ScopeViewModel>
+
+@{
+    ViewData["Title"] = "Inici";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section with Search -->
+<section class="hero-section bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="hero-title mb-4">educacio.gencat<span class="text-dark">.cat</span></h1>
+                <div class="input-group input-group-lg mb-3">
+                    <input type="text" class="form-control" placeholder="Cercar alumnes, escoles...">
+                    <button class="btn search-btn" type="button">🔍</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="most-consulted-box">
+                    <h3 class="most-consulted-title">El més consultat</h3>
+                    <ul class="most-consulted-list">
+                        <li><a href="#">Borsa de treball de personal docent</a></li>
+                        <li><a href="#">Ofertes de treball</a></li>
+                        <li><a href="#">Oposicions a cossos docents</a></li>
+                        <li><a href="#">Proves d'obtenció de títols</a></li>
+                        <li><a href="#">Serveis territorials</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Info Banner -->
+<div class="container banner-spacing">
+    <a href="https://web.gencat.cat/ca/generalitat/com-ens-organitzem/departaments/educacio" class="info-banner text-center text-decoration-none d-block">
+        Consulta la informació institucional al nou web ↗
+    </a>
+</div>
+
+<div class="container">
+    <section class="scopes-section">
+        <h2 class="scopes-title">Àmbits</h2>
+        <div class="red-divider"></div>
+
+        <div class="scope-grid">
+            @foreach (var item in Model)
+            {
+                <a href="@item.Url" class="scope-item">
+                    <span class="scope-text">@item.Name</span>
+                </a>
+            }
+        </div>
+    </section>
 </div>
