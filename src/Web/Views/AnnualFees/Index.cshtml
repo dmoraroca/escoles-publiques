@@ -12,42 +12,43 @@
 
     <div class="card">
         <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Inscripció</th>
-                        <th>Import</th>
-                        <th>Data venciment</th>
-                        <th>Data pagament</th>
-                        <th>Referència</th>
-                        <th>Accions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var fee in Model)
-                    {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>@fee.EnrollmentInfo</td>
-                            <td>@fee.Amount.ToString("N2") @fee.Currency</td>
-                            <td>@fee.DueDate.ToString("dd/MM/yyyy")</td>
-                            <td>
-                                @if (fee.PaidAt.HasValue)
-                                {
-                                    <span class="badge bg-success">@fee.PaidAt.Value.ToString("dd/MM/yyyy")</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning">Pendent</span>
-                                }
-                            </td>
-                            <td>@(fee.PaymentRef ?? "-")</td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@fee.Id" class="btn btn-sm btn-info">Veure</a>
-                            </td>
+                            <th>Inscripció</th>
+                            <th>Import</th>
+                            <th>Data venciment</th>
+                            <th>Data pagament</th>
+                            <th>Referència</th>
+                            <th>Accions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var fee in Model)
+                        {
+                            <tr>
+                                <td data-label="Inscripció">@fee.EnrollmentInfo</td>
+                                <td data-label="Import">@fee.Amount.ToString("N2") @fee.Currency</td>
+                                <td data-label="Data venciment">@fee.DueDate.ToString("dd/MM/yyyy")</td>
+                                <td data-label="Data pagament">
+                                    @if (fee.PaidAt.HasValue)
+                                    {
+                                        <span class="badge bg-success">@fee.PaidAt.Value.ToString("dd/MM/yyyy")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">Pendent</span>
+                                    }
+                                </td>
+                                <td data-label="Referència">@(fee.PaymentRef ?? "-")</td>
+                                <td data-label="Accions">
+                                    <a asp-action="Details" asp-route-id="@fee.Id" class="btn btn-sm btn-info">Veure</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
         </div>
     </div>
 </div>

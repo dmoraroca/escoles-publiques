@@ -12,31 +12,33 @@
 
     <div class="card">
         <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Codi</th>
-                        <th>Nom</th>
-                        <th>Ciutat</th>
-                        <th>Data creació</th>
-                        <th>Accions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var school in Model)
-                    {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>@school.Code</td>
-                            <td>@school.Name</td>
-                            <td>@school.City</td>
-                            <td>@school.CreatedAt.ToString("dd/MM/yyyy")</td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@school.Id" class="btn btn-sm btn-info">Veure</a>
-                            </td>
+                            <th>Codi</th>
+                            <th>Nom</th>
+                            <th>Ciutat</th>
+                            <th>Data creació</th>
+                            <th>Accions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var school in Model)
+                        {
+                            <tr>
+                                <td data-label="Codi">@school.Code</td>
+                                <td data-label="Nom">@school.Name</td>
+                                <td data-label="Ciutat">@school.City</td>
+                                <td data-label="Data creació">@school.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                <td data-label="Accions">
+                                    <a asp-action="Details" asp-route-id="@school.Id" class="btn btn-sm btn-info">Veure</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

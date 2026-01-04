@@ -12,35 +12,37 @@
 
     <div class="card">
         <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Alumne</th>
-                        <th>Curs acadèmic</th>
-                        <th>Estat</th>
-                        <th>Data inscripció</th>
-                        <th>Accions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var enrollment in Model)
-                    {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>@enrollment.StudentName</td>
-                            <td>@enrollment.AcademicYear</td>
-                            <td>
-                                <span class="badge bg-@(enrollment.Status == "Active" ? "success" : enrollment.Status == "Cancelled" ? "danger" : "secondary")">
-                                    @enrollment.Status
-                                </span>
-                            </td>
-                            <td>@enrollment.EnrolledAt.ToString("dd/MM/yyyy")</td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@enrollment.Id" class="btn btn-sm btn-info">Veure</a>
-                            </td>
+                            <th>Alumne</th>
+                            <th>Curs acadèmic</th>
+                            <th>Estat</th>
+                            <th>Data inscripció</th>
+                            <th>Accions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var enrollment in Model)
+                        {
+                            <tr>
+                                <td data-label="Alumne">@enrollment.StudentName</td>
+                                <td data-label="Curs acadèmic">@enrollment.AcademicYear</td>
+                                <td data-label="Estat">
+                                    <span class="badge bg-@(enrollment.Status == "Active" ? "success" : enrollment.Status == "Cancelled" ? "danger" : "secondary")">
+                                        @enrollment.Status
+                                    </span>
+                                </td>
+                                <td data-label="Data inscripció">@enrollment.EnrolledAt.ToString("dd/MM/yyyy")</td>
+                                <td data-label="Accions">
+                                    <a asp-action="Details" asp-route-id="@enrollment.Id" class="btn btn-sm btn-info">Veure</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

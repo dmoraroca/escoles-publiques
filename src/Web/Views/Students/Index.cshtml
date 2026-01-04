@@ -12,33 +12,35 @@
 
     <div class="card">
         <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Cognoms</th>
-                        <th>Email</th>
-                        <th>Data naixement</th>
-                        <th>Escola</th>
-                        <th>Accions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var student in Model)
-                    {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>@student.FirstName</td>
-                            <td>@student.LastName</td>
-                            <td>@student.Email</td>
-                            <td>@(student.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</td>
-                            <td>@student.SchoolName</td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-info">Veure</a>
-                            </td>
+                            <th>Nom</th>
+                            <th>Cognoms</th>
+                            <th>Email</th>
+                            <th>Data naixement</th>
+                            <th>Escola</th>
+                            <th>Accions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model)
+                        {
+                            <tr>
+                                <td data-label="Nom">@student.FirstName</td>
+                                <td data-label="Cognoms">@student.LastName</td>
+                                <td data-label="Email">@student.Email</td>
+                                <td data-label="Data naixement">@(student.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</td>
+                                <td data-label="Escola">@student.SchoolName</td>
+                                <td data-label="Accions">
+                                    <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-info">Veure</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
