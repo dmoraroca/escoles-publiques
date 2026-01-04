@@ -25,12 +25,14 @@ create table if not exists enrollments (
   id              bigserial primary key,
   student_id      bigint not null references students(id) on delete cascade,
   academic_year   text not null,                 -- ex: '2025-2026'
+  course_name     varchar(50) null,              -- ex: '1r ESO', '2n Batxillerat'
   status          text not null default 'Active', -- Active / Cancelled / Finished
   enrolled_at     timestamptz not null default now(),
   unique (student_id, academic_year)
 );
 
 create index if not exists ix_enrollments_student_id on enrollments(student_id);
+create index if not exists idx_enrollments_course_name on enrollments(course_name);
 als (mon
 -- 4) Quotes anuetari) 
 create table if not exists annual_fees (

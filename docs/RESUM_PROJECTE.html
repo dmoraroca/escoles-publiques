@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projecte Escoles Públiques - Documentació Completa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 4px solid #C20000;
+        }
+        
+        .header h1 {
+            color: #C20000;
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            font-weight: 300;
+        }
+        
+        .header .meta {
+            margin-top: 20px;
+            font-size: 0.95em;
+            color: #999;
+        }
+        
+        h2 {
+            color: #C20000;
+            font-size: 2em;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .tech-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tech-card h4 {
+            color: white;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        
+        .tech-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tech-card li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .tech-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .feature-box {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #C20000;
+        }
+        
+        .feature-box h4 {
+            color: #C20000;
+            margin-top: 0;
+        }
+        
+        .feature-box ul {
+            margin-left: 20px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            margin: 30px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background: #C20000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .timeline-content h4 {
+            margin-top: 0;
+            color: #C20000;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 20px 0;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #C20000;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .badge.success {
+            background: #28a745;
+        }
+        
+        .badge.info {
+            background: #17a2b8;
+        }
+        
+        .badge.warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        table th {
+            background: #C20000;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .alert {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #C20000 0%, #8B0000 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(194, 0, 0, 0.3);
+        }
+        
+        .stat-card .number {
+            font-size: 3em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+            text-align: center;
+            color: #999;
+        }
+        
+        .responsive-table {
+            overflow-x: auto;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            h2 {
+                page-break-before: always;
+            }
+            
+            h2:first-of-type {
+                page-break-before: avoid;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            .tech-stack,
+            .features-grid,
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📚 Projecte Escoles Públiques</h1>
+            <div class="subtitle">Sistema de Gestió d'Escoles, Alumnes, Matrícules i Quotes Anuals</div>
+            <div class="meta">
+                <strong>Generalitat de Catalunya - Departament d'Educació</strong><br>
+                Documentació Completa del Projecte | Gener 2026
+            </div>
+        </div>
+
+        <!-- ESTADÍSTIQUES GENERALS -->
+        <div class="section">
+            <h2>📊 Visió General del Projecte</h2>
+            <div class="stats">
+                <div class="stat-card">
+                    <span class="number">4</span>
+                    <span class="label">Entitats de Domini</span>
+                </div>
+                <div class="stat-card">
+                    <span class="number">8</span>
+                    <span class="label">Controllers</span>
+                </div>
+                <div class="stat-card">
+                    <span class="number">100%</span>
+                    <span class="label">Responsive</span>
+                </div>
+                <div class="stat-card">
+                    <span class="number">SOLID</span>
+                    <span class="label">Clean Architecture</span>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>✅ Estat del Projecte:</strong> El projecte està completament funcional amb totes les funcionalitats CRUD implementades, disseny responsive 100% operatiu, validacions FluentValidation implementades, i SignalR per actualitzacions en temps real.
+            </div>
+        </div>
+
+        <!-- DESCRIPCIÓ DEL PROJECTE -->
+        <div class="section">
+            <h2>🎯 Descripció del Projecte</h2>
+            <p>
+                Aplicació web desenvolupada amb <strong>ASP.NET Core 8.0 MVC</strong> per a la gestió integral d'escoles públiques de Catalunya. 
+                El sistema permet gestionar escoles, alumnes, matrícules i quotes anuals seguint els principis de <span class="highlight">Clean Architecture</span> 
+                i patrons de disseny SOLID.
+            </p>
+            
+            <h3>Objectius Principals</h3>
+            <ul>
+                <li>Gestió completa de centres educatius amb informació detallada</li>
+                <li>Administració d'alumnes amb dades personals i vinculació a escoles</li>
+                <li>Control de matrícules per any acadèmic</li>
+                <li>Gestió de quotes anuals amb dates de venciment i imports</li>
+                <li>Interfície responsive adaptada al disseny Gencat</li>
+                <li>Actualitzacions en temps real mitjançant SignalR</li>
+            </ul>
+        </div>
+
+        <!-- ARQUITECTURA -->
+        <div class="section">
+            <h2>🏗️ Arquitectura del Sistema</h2>
+            <p>
+                El projecte segueix el patró <strong>Clean Architecture</strong> amb separació clara de responsabilitats en capes:
+            </p>
+
+            <div class="tech-stack">
+                <div class="tech-card">
+                    <h4>🎯 Domain Layer</h4>
+                    <ul>
+                        <li>Entities (School, Student, Enrollment, AnnualFee)</li>
+                        <li>Value Objects</li>
+                        <li>Interfaces de repositoris</li>
+                        <li>Excepcions de domini</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h4>💼 Application Layer</h4>
+                    <ul>
+                        <li>Casos d'ús (Services)</li>
+                        <li>DTOs</li>
+                        <li>Interfícies de serveis</li>
+                        <li>Lògica de negoci</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h4>🗄️ Infrastructure Layer</h4>
+                    <ul>
+                        <li>Entity Framework Core</li>
+                        <li>PostgreSQL</li>
+                        <li>Repositoris</li>
+                        <li>DbContext i Migrations</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h4>🌐 Presentation Layer (Web)</h4>
+                    <ul>
+                        <li>ASP.NET Core MVC</li>
+                        <li>Razor Views</li>
+                        <li>Controllers</li>
+                        <li>ViewModels i Validators</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Principis SOLID Aplicats</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>S - Single Responsibility</h4>
+                    <p>Cada classe té una única responsabilitat ben definida</p>
+                </div>
+                <div class="feature-box">
+                    <h4>O - Open/Closed</h4>
+                    <p>Obert per extensió, tancat per modificació</p>
+                </div>
+                <div class="feature-box">
+                    <h4>L - Liskov Substitution</h4>
+                    <p>Les implementacions són substituïbles per les seves interfícies</p>
+                </div>
+                <div class="feature-box">
+                    <h4>I - Interface Segregation</h4>
+                    <p>Interfícies específiques i petites per cada funcionalitat</p>
+                </div>
+                <div class="feature-box">
+                    <h4>D - Dependency Inversion</h4>
+                    <p>Dependència d'abstraccions, no d'implementacions concretes</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STACK TECNOLÒGIC -->
+        <div class="section">
+            <h2>💻 Stack Tecnològic</h2>
+            
+            <h3>Backend</h3>
+            <span class="badge">.NET 8.0</span>
+            <span class="badge">ASP.NET Core MVC</span>
+            <span class="badge">Entity Framework Core</span>
+            <span class="badge">PostgreSQL</span>
+            <span class="badge">FluentValidation</span>
+            <span class="badge">SignalR</span>
+
+            <h3>Frontend</h3>
+            <span class="badge info">Razor Pages</span>
+            <span class="badge info">Bootstrap 5</span>
+            <span class="badge info">CSS3 Custom</span>
+            <span class="badge info">JavaScript ES6+</span>
+            <span class="badge info">SignalR Client</span>
+
+            <h3>Eines i DevOps</h3>
+            <span class="badge warning">Docker & Docker Compose</span>
+            <span class="badge warning">Git & GitHub</span>
+            <span class="badge warning">VS Code</span>
+            <span class="badge warning">DotNet CLI</span>
+        </div>
+
+        <!-- FUNCIONALITATS IMPLEMENTADES -->
+        <div class="section">
+            <h2>✨ Funcionalitats Implementades</h2>
+
+            <h3>1. Gestió d'Escoles (Schools)</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>CRUD Complet</h4>
+                    <ul>
+                        <li>Crear nova escola</li>
+                        <li>Llistar totes les escoles</li>
+                        <li>Veure detalls d'escola</li>
+                        <li>Editar informació</li>
+                        <li>Esborrar escola</li>
+                    </ul>
+                </div>
+                <div class="feature-box">
+                    <h4>Funcionalitats Especials</h4>
+                    <ul>
+                        <li>Marcar com a favorita (estrella blau cel)</li>
+                        <li>Cerca per nom/codi/ciutat</li>
+                        <li>Actualització en temps real (SignalR)</li>
+                        <li>Validació amb FluentValidation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>2. Gestió d'Alumnes (Students)</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>CRUD Complet</h4>
+                    <ul>
+                        <li>Crear nou alumne</li>
+                        <li>Llistar tots els alumnes</li>
+                        <li>Veure detalls d'alumne</li>
+                        <li>Editar informació</li>
+                        <li>Esborrar alumne</li>
+                    </ul>
+                </div>
+                <div class="feature-box">
+                    <h4>Informació Gestionada</h4>
+                    <ul>
+                        <li>Nom i cognoms</li>
+                        <li>Email (opcional)</li>
+                        <li>Data de naixement (opcional)</li>
+                        <li>Escola assignada</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>3. Gestió de Matrícules (Enrollments)</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>Funcionalitats</h4>
+                    <ul>
+                        <li>Llistar matrícules</li>
+                        <li>Veure detalls complets</li>
+                        <li>Vinculació alumne-escola</li>
+                        <li>Any acadèmic</li>
+                        <li>Tipus de matrícula</li>
+                    </ul>
+                </div>
+                <div class="feature-box">
+                    <h4>Relacions</h4>
+                    <ul>
+                        <li>Enllaç a alumne</li>
+                        <li>Enllaç a escola</li>
+                        <li>Quotes anuals associades</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>4. Gestió de Quotes Anuals (Annual Fees)</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>Funcionalitats</h4>
+                    <ul>
+                        <li>Llistar totes les quotes</li>
+                        <li>Veure detalls de quota</li>
+                        <li>Import de la quota</li>
+                        <li>Data de venciment</li>
+                        <li>Matrícula associada</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- DISSENY RESPONSIVE -->
+        <div class="section">
+            <h2>📱 Disseny Responsive - 100%</h2>
+            
+            <div class="alert alert-info">
+                <strong>ℹ️ Nota Important:</strong> L'aplicació està completament optimitzada per a tots els dispositius i mides de pantalla, des de mòbils petits (320px) fins a pantalles 4K.
+            </div>
+
+            <h3>Breakpoints Implementats</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dispositiu</th>
+                        <th>Mida de Pantalla</th>
+                        <th>Layout</th>
+                        <th>Característiques</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mòbil Petit</td>
+                        <td>&lt; 576px</td>
+                        <td>1 columna</td>
+                        <td>Font reduïda, padding ajustat</td>
+                    </tr>
+                    <tr>
+                        <td>Mòbil</td>
+                        <td>&lt; 768px</td>
+                        <td>1 columna</td>
+                        <td>Menu hamburguesa, taules com a cards</td>
+                    </tr>
+                    <tr>
+                        <td>Tablet</td>
+                        <td>768px - 992px</td>
+                        <td>2 columnes</td>
+                        <td>Grid adaptat, navegació horizontal</td>
+                    </tr>
+                    <tr>
+                        <td>Desktop</td>
+                        <td>&gt; 992px</td>
+                        <td>4 columnes</td>
+                        <td>Layout complet, totes les funcions</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Components Responsive</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>🍔 Navegació</h4>
+                    <ul>
+                        <li>Menu hamburguesa automàtic</li>
+                        <li>Navbar Bootstrap 5</li>
+                        <li>Touch targets 44px mínim</li>
+                        <li>Indicador d'actiu</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h4>📊 Taules</h4>
+                    <ul>
+                        <li>Scroll horizontal amb wrapper</li>
+                        <li>Transformació a cards en mòbil</li>
+                        <li>Data-labels per accessibilitat</li>
+                        <li>Headers ocults en mòbil</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h4>🎨 Grid d'Escoles</h4>
+                    <ul>
+                        <li>4 columnes en desktop</li>
+                        <li>2 columnes en tablet</li>
+                        <li>1 columna en mòbil</li>
+                        <li>Aspect-ratio mantingut</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h4>♿ Accessibilitat</h4>
+                    <ul>
+                        <li>High contrast mode</li>
+                        <li>Reduced motion support</li>
+                        <li>Print styles</li>
+                        <li>Touch-friendly</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Suport de Navegadors</h3>
+            <div class="responsive-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Navegador</th>
+                            <th>Versió Mínima</th>
+                            <th>Suport</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Chrome</td>
+                            <td>90+</td>
+                            <td><span class="badge success">✅ Complet</span></td>
+                        </tr>
+                        <tr>
+                            <td>Firefox</td>
+                            <td>88+</td>
+                            <td><span class="badge success">✅ Complet</span></td>
+                        </tr>
+                        <tr>
+                            <td>Safari</td>
+                            <td>14+</td>
+                            <td><span class="badge success">✅ Complet</span></td>
+                        </tr>
+                        <tr>
+                            <td>Edge</td>
+                            <td>90+</td>
+                            <td><span class="badge success">✅ Complet</span></td>
+                        </tr>
+                        <tr>
+                            <td>Samsung Internet</td>
+                            <td>14+</td>
+                            <td><span class="badge success">✅ Complet</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PATRÓ VALIDATOR -->
+        <div class="section">
+            <h2>✔️ Patró Validator amb FluentValidation</h2>
+            
+            <p>
+                S'ha implementat el <strong>Patró Validator</strong> utilitzant <span class="highlight">FluentValidation</span> 
+                per garantir la validació de dades seguint els principis SOLID.
+            </p>
+
+            <h3>Validators Implementats</h3>
+
+            <div class="feature-box">
+                <h4>1️⃣ SchoolViewModelValidator</h4>
+                <div class="code-block">
+- Code: NotEmpty, MaxLength(10)
+- Name: NotEmpty, MaxLength(200)
+- City: NotEmpty, MaxLength(100)
+- Scope: MaxLength(50) (opcional)
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <h4>2️⃣ StudentViewModelValidator</h4>
+                <div class="code-block">
+- FirstName: NotEmpty, MaxLength(100)
+- LastName: NotEmpty, MaxLength(100)
+- Email: EmailAddress, MaxLength(150) (opcional)
+- BirthDate: LessThan(Now) (opcional)
+- SchoolId: GreaterThan(0)
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <h4>3️⃣ EnrollmentViewModelValidator</h4>
+                <div class="code-block">
+- StudentId: GreaterThan(0)
+- Year: NotEmpty, InclusiveBetween(2000, 2100)
+- EnrollmentType: MaxLength(50) (opcional)
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <h4>4️⃣ AnnualFeeViewModelValidator</h4>
+                <div class="code-block">
+- EnrollmentId: GreaterThan(0)
+- Amount: NotEmpty, GreaterThan(0), LessThanOrEqualTo(100000)
+- DueDate: NotEmpty, GreaterThanOrEqualTo(Now - 365 dies)
+                </div>
+            </div>
+
+            <h3>Beneficis del Patró Validator</h3>
+            <ul>
+                <li><strong>Single Responsibility:</strong> Cada validator té una única responsabilitat</li>
+                <li><strong>Open/Closed:</strong> Extensible sense modificar codi existent</li>
+                <li><strong>Dependency Inversion:</strong> Depèn d'abstraccions (IValidator)</li>
+                <li><strong>Separació de Concerns:</strong> Lògica de validació separada dels models i controllers</li>
+                <li><strong>Reutilització:</strong> Regles reutilitzables i aplicació automàtica</li>
+            </ul>
+        </div>
+
+        <!-- SIGNALR -->
+        <div class="section">
+            <h2>🔄 SignalR - Actualitzacions en Temps Real</h2>
+            
+            <p>
+                S'ha implementat <strong>SignalR</strong> per a actualitzacions en temps real de les escoles. 
+                Quan un usuari crea, edita o esborra una escola, tots els altres usuaris connectats reben 
+                l'actualització automàticament sense necessitat de refrescar la pàgina.
+            </p>
+
+            <h3>Events Implementats</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>SchoolCreated</h4>
+                    <p>Broadcast quan es crea una nova escola</p>
+                </div>
+                <div class="feature-box">
+                    <h4>SchoolUpdated</h4>
+                    <p>Broadcast quan s'edita una escola</p>
+                </div>
+                <div class="feature-box">
+                    <h4>SchoolDeleted</h4>
+                    <p>Broadcast quan s'esborra una escola</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+// Exemple d'ús al Controller
+await _hubContext.Clients.All.SendAsync("SchoolCreated", new 
+{ 
+    id = school.Id,
+    code = school.Code, 
+    name = school.Name, 
+    city = school.City
+});
+            </div>
+        </div>
+
+        <!-- BASE DE DADES -->
+        <div class="section">
+            <h2>🗄️ Base de Dades PostgreSQL</h2>
+            
+            <h3>Model de Dades</h3>
+            <p>El sistema utilitza <strong>PostgreSQL</strong> com a base de dades relacional amb el següent esquema:</p>
+
+            <h4>Taules Principals</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Taula</th>
+                        <th>Descripció</th>
+                        <th>Camps Principals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>schools</strong></td>
+                        <td>Escoles públiques</td>
+                        <td>code, name, city, scope, is_favorite, created_at</td>
+                    </tr>
+                    <tr>
+                        <td><strong>students</strong></td>
+                        <td>Alumnes</td>
+                        <td>first_name, last_name, email, birth_date, school_id</td>
+                    </tr>
+                    <tr>
+                        <td><strong>enrollments</strong></td>
+                        <td>Matrícules</td>
+                        <td>student_id, year, enrollment_type, created_at</td>
+                    </tr>
+                    <tr>
+                        <td><strong>annual_fees</strong></td>
+                        <td>Quotes anuals</td>
+                        <td>enrollment_id, amount, due_date, created_at</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Docker Configuration</h3>
+            <div class="code-block">
+# Aixecar PostgreSQL
+docker compose up -d
+
+# Veure logs
+docker logs escoles-db
+
+# Aturar PostgreSQL
+docker compose down
+            </div>
+
+            <h3>Entity Framework Core</h3>
+            <ul>
+                <li><strong>Code First:</strong> Migrations gestionades amb EF Core</li>
+                <li><strong>Repository Pattern:</strong> Abstracció de l'accés a dades</li>
+                <li><strong>DbContext:</strong> Configuració centralitzada</li>
+                <li><strong>Scaffold:</strong> Generació automàtica d'entitats des de BD</li>
+            </ul>
+        </div>
+
+        <!-- TIMELINE DEL PROJECTE -->
+        <div class="section">
+            <h2>📅 Timeline del Projecte</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <h4>First Commit - Inicialització</h4>
+                        <p>Configuració inicial del projecte, estructura de directoris, i configuració de Git.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <h4>Clean Repo & GitIgnore</h4>
+                        <p>Neteja del repositori i aplicació de .gitignore per excloure fitxers innecessaris.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <h4>Layout Finalitzat i Correcte</h4>
+                        <p>Implementació del layout amb disseny Gencat: header, navegació, footer i estructura base de les vistes.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">4</div>
+                    <div class="timeline-content">
+                        <h4>Estructura Montada</h4>
+                        <p>Implementació completa de Clean Architecture amb les 4 capes (Domain, Application, Infrastructure, Web). 
+                           CRUD funcional per a totes les entitats amb validacions FluentValidation i SignalR.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">5</div>
+                    <div class="timeline-content">
+                        <h4>100% Responsiu</h4>
+                        <p>Optimització completa del disseny responsive amb media queries, taules responsive, 
+                           menu hamburguesa, accessibilitat i suport multi-dispositiu.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GESTIÓ D'ERRORS -->
+        <div class="section">
+            <h2>⚠️ Gestió d'Errors i Excepcions</h2>
+            
+            <h3>Excepcions de Domini</h3>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>DomainException</h4>
+                    <p>Excepció base per errors de domini</p>
+                </div>
+                <div class="feature-box">
+                    <h4>NotFoundException</h4>
+                    <p>Quan no es troba una entitat</p>
+                </div>
+                <div class="feature-box">
+                    <h4>DuplicateEntityException</h4>
+                    <p>Intent de crear duplicats</p>
+                </div>
+                <div class="feature-box">
+                    <h4>ValidationException</h4>
+                    <p>Errors de validació de dades</p>
+                </div>
+            </div>
+
+            <h3>Gestió als Controllers</h3>
+            <p>Tots els controllers hereten de <code>BaseController</code> que proporciona:</p>
+            <ul>
+                <li><strong>Logger integrat:</strong> Registre d'errors i esdeveniments</li>
+                <li><strong>TempData messages:</strong> Missatges d'èxit i error per a l'usuari</li>
+                <li><strong>Try-Catch blocks:</strong> Captura i gestió d'excepcions</li>
+                <li><strong>Missatges en català:</strong> Tots els missatges traduïts</li>
+            </ul>
+        </div>
+
+        <!-- INTERFÍCIE D'USUARI -->
+        <div class="section">
+            <h2>🎨 Interfície d'Usuari - Disseny Gencat</h2>
+            
+            <h3>Paleta de Colors</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0;">
+                <div style="background: #C20000; color: white; padding: 20px; text-align: center; border-radius: 8px;">
+                    <strong>Vermell Gencat</strong><br>#C20000
+                </div>
+                <div style="background: #333333; color: white; padding: 20px; text-align: center; border-radius: 8px;">
+                    <strong>Gris Fosc</strong><br>#333333
+                </div>
+                <div style="background: #f6f6f6; color: #333; padding: 20px; text-align: center; border-radius: 8px; border: 1px solid #ddd;">
+                    <strong>Gris Clar</strong><br>#f6f6f6
+                </div>
+            </div>
+
+            <h3>Components d'Interfície</h3>
+            <ul>
+                <li><strong>Header:</strong> Barra superior negra + barra departament vermella</li>
+                <li><strong>Navegació:</strong> Links amb hover efecte i indicador d'actiu</li>
+                <li><strong>Hero Section:</strong> Títol gran amb informació destacada</li>
+                <li><strong>Grid d'Àmbits:</strong> Graella gris amb patró de punts i hover vermell</li>
+                <li><strong>Taules:</strong> Estil bootstrap amb header vermell Gencat</li>
+                <li><strong>Botons:</strong> Vermell Gencat amb hover més fosc</li>
+                <li><strong>Formularis:</strong> Inputs amb validació visual</li>
+            </ul>
+
+            <h3>Tipografia</h3>
+            <p>Font principal: <strong>Open Sans</strong> (Google Fonts)</p>
+            <ul>
+                <li>Regular (400) per text normal</li>
+                <li>Semi-Bold (600) per títols i destacats</li>
+                <li>Bold (700) per títols principals</li>
+            </ul>
+        </div>
+
+        <!-- BONES PRÀCTIQUES -->
+        <div class="section">
+            <h2>✅ Bones Pràctiques Implementades</h2>
+            
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h4>🏗️ Arquitectura</h4>
+                    <ul>
+                        <li>Clean Architecture</li>
+                        <li>Separació de responsabilitats</li>
+                        <li>Dependency Injection</li>
+                        <li>Repository Pattern</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h4>💻 Codi</h4>
+                    <ul>
+                        <li>Principis SOLID</li>
+                        <li>Comentaris en català</li>
+                        <li>Nomenclatura clara</li>
+                        <li>Error handling complet</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h4>🎨 Frontend</h4>
+                    <ul>
+                        <li>Mobile First approach</li>
+                        <li>Accessibilitat (A11y)</li>
+                        <li>Performance optimitzat</li>
+                        <li>Cross-browser compatible</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h4>🔒 Seguretat</h4>
+                    <ul>
+                        <li>ValidateAntiForgeryToken</li>
+                        <li>Input validation (FluentValidation)</li>
+                        <li>SQL Injection protection (EF Core)</li>
+                        <li>HTTPS enforced</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- FUTURS DESENVOLUPAMENTS -->
+        <div class="section">
+            <h2>🚀 Futurs Desenvolupaments</h2>
+            
+            <div class="alert alert-warning">
+                <strong>📝 Nota:</strong> Aquestes són possibles millores futures que podrien implementar-se:
+            </div>
+
+            <h3>Funcionalitats Pendents</h3>
+            <ul>
+                <li>🔐 Sistema d'autenticació i autorització (Identity)</li>
+                <li>👥 Gestió de rols (Admin, Professor, Alumne, Família)</li>
+                <li>📊 Dashboard amb estadístiques i gràfics</li>
+                <li>📄 Generació de reports en PDF</li>
+                <li>📧 Sistema de notificacions per email</li>
+                <li>🔍 Cerca avançada amb filtres múltiples</li>
+                <li>📱 Progressive Web App (PWA)</li>
+                <li>🌙 Mode fosc (Dark mode)</li>
+                <li>🌍 Multi-idioma (i18n)</li>
+                <li>📦 Export/Import de dades (Excel, CSV)</li>
+                <li>🔄 Historial de canvis (Audit trail)</li>
+                <li>💳 Passarel·la de pagament per quotes</li>
+            </ul>
+
+            <h3>Millores Tècniques</h3>
+            <ul>
+                <li>Unit Testing amb xUnit</li>
+                <li>Integration Testing</li>
+                <li>CI/CD amb GitHub Actions</li>
+                <li>Containerització completa (Docker)</li>
+                <li>Kubernetes deployment</li>
+                <li>Redis per caching</li>
+                <li>Azure deployment</li>
+                <li>Monitoring amb Application Insights</li>
+            </ul>
+        </div>
+
+        <!-- INSTRUCCIONS D'INSTAL·LACIÓ -->
+        <div class="section">
+            <h2>⚙️ Instal·lació i Configuració</h2>
+            
+            <h3>Prerequisits</h3>
+            <ul>
+                <li>.NET 8.0 SDK</li>
+                <li>Docker i Docker Compose</li>
+                <li>Visual Studio Code o Visual Studio 2022</li>
+                <li>PostgreSQL (via Docker)</li>
+            </ul>
+
+            <h3>Passos d'Instal·lació</h3>
+            <div class="code-block">
+# 1. Clonar el repositori
+git clone https://github.com/dmoraroca/escoles-publiques.git
+cd escoles-publiques
+
+# 2. Aixecar PostgreSQL amb Docker
+docker compose up -d
+
+# 3. Restaurar paquets NuGet
+dotnet restore
+
+# 4. Aplicar migracions (si cal)
+dotnet ef database update --project src/Infrastructure
+
+# 5. Compilar el projecte
+dotnet build src/Web/Web.csproj
+
+# 6. Executar l'aplicació
+dotnet run --project src/Web/Web.csproj
+            </div>
+
+            <h3>Accedir a l'Aplicació</h3>
+            <p>Després d'executar l'aplicació, obre el navegador i accedeix a:</p>
+            <div class="code-block">
+https://localhost:5001
+            </div>
+        </div>
+
+        <!-- CONCLUSIÓ -->
+        <div class="section">
+            <h2>🎓 Conclusions</h2>
+            
+            <p>
+                El projecte <strong>Escoles Públiques</strong> és una aplicació web completa i funcional 
+                desenvolupada amb les millors pràctiques de l'enginyeria de software moderna. Implementa 
+                una arquitectura neta i escalable, amb una interfície d'usuari responsive i accessible 
+                que segueix les directrius de disseny de la Generalitat de Catalunya.
+            </p>
+
+            <div class="alert alert-success">
+                <strong>✅ Objectius Aconseguits:</strong>
+                <ul style="margin-top: 10px; margin-bottom: 0;">
+                    <li>Clean Architecture amb separació de capes ben definida</li>
+                    <li>CRUD complet per a totes les entitats</li>
+                    <li>Validacions robustes amb FluentValidation</li>
+                    <li>Disseny 100% responsive amb suport multi-dispositiu</li>
+                    <li>Actualitzacions en temps real amb SignalR</li>
+                    <li>Base de dades PostgreSQL amb Entity Framework Core</li>
+                    <li>Interfície adaptada al disseny Gencat</li>
+                    <li>Gestió d'errors completa i missatges en català</li>
+                </ul>
+            </div>
+
+            <p style="margin-top: 30px;">
+                El sistema està preparat per ser utilitzat en producció amb petites adaptacions de configuració 
+                i pot ser fàcilment estès amb noves funcionalitats gràcies a la seva arquitectura modular.
+            </p>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>
+                <strong>Projecte Escoles Públiques</strong><br>
+                Generalitat de Catalunya - Departament d'Educació<br>
+                Documentació generada el 4 de gener de 2026
+            </p>
+            <p style="margin-top: 20px; color: #C20000; font-weight: 600;">
+                Desenvolupat amb Clean Architecture i principis SOLID
+            </p>
+        </div>
+    </div>
+</body>
+</html>

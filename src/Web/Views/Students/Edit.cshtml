@@ -1,0 +1,76 @@
+@model Web.Models.StudentViewModel
+
+@{
+    ViewData["Title"] = "Editar Alumne";
+    var schools = ViewBag.Schools as IEnumerable<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-pencil"></i> Editar Alumne</h2>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Tornar
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FirstName" class="form-label">Nom <span class="text-danger">*</span></label>
+                        <input asp-for="FirstName" class="form-control" placeholder="Nom de l'alumne" maxlength="100" required />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="LastName" class="form-label">Cognoms <span class="text-danger">*</span></label>
+                        <input asp-for="LastName" class="form-control" placeholder="Cognoms de l'alumne" maxlength="100" required />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" type="email" class="form-control" placeholder="email@exemple.cat" maxlength="150" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="BirthDate" class="form-label">Data de Naixement</label>
+                        <input asp-for="BirthDate" type="date" class="form-control" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="SchoolId" class="form-label">Escola <span class="text-danger">*</span></label>
+                    <select asp-for="SchoolId" class="form-select" required>
+                        <option value="">-- Selecciona una escola --</option>
+                        @foreach (var school in schools)
+                        {
+                            <option value="@school.Id">@school.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="SchoolId" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                        <i class="bi bi-x-lg"></i> Cancel·lar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i> Guardar Canvis
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

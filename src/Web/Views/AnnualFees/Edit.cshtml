@@ -1,0 +1,88 @@
+@model Web.Models.AnnualFeeViewModel
+
+@{
+    ViewData["Title"] = "Editar Quota Anual";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="bi bi-pencil"></i> Editar Quota Anual</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="mb-3">
+                            <label asp-for="EnrollmentId" class="form-label">Inscripció <span class="text-danger">*</span></label>
+                            <select asp-for="EnrollmentId" class="form-select" asp-items="@(new SelectList(ViewBag.Enrollments, "Id", "Description"))">
+                                <option value="">-- Selecciona una inscripció --</option>
+                            </select>
+                            <span asp-validation-for="EnrollmentId" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label asp-for="Amount" class="form-label">Import <span class="text-danger">*</span></label>
+                                <input asp-for="Amount" type="number" step="0.01" class="form-control" />
+                                <span asp-validation-for="Amount" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Currency" class="form-label">Moneda</label>
+                                <input asp-for="Currency" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DueDate" class="form-label">Data de venciment <span class="text-danger">*</span></label>
+                            <input asp-for="DueDate" type="date" class="form-control" />
+                            <span asp-validation-for="DueDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input asp-for="IsPaid" type="checkbox" class="form-check-input" id="isPaidCheck" />
+                            <label class="form-check-label" for="isPaidCheck">
+                                Marcar com a pagada
+                            </label>
+                        </div>
+
+                        <div class="mb-3" id="paymentRefGroup" style="display: @(Model.IsPaid ? "block" : "none");">
+                            <label asp-for="PaymentRef" class="form-label">Referència de pagament</label>
+                            <input asp-for="PaymentRef" class="form-control" />
+                            <span asp-validation-for="PaymentRef" class="text-danger"></span>
+                        </div>
+
+                        @if (Model.PaidAt.HasValue)
+                        {
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i> Pagada el @Model.PaidAt.Value.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        }
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Tornar
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle"></i> Guardar Canvis
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('isPaidCheck').addEventListener('change', function() {
+            var paymentRefGroup = document.getElementById('paymentRefGroup');
+            paymentRefGroup.style.display = this.checked ? 'block' : 'none';
+        });
+    </script>
+}

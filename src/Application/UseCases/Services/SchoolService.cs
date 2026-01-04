@@ -1,6 +1,7 @@
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.DomainExceptions;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
@@ -18,47 +19,81 @@ public class SchoolService : ISchoolService
 
     public async Task<IEnumerable<School>> GetAllSchoolsAsync()
     {
-        try
-        {
-            return await _schoolRepository.GetAllAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error al obtenir totes les escoles");
-            throw;
-        }
+        _logger.LogInformation("Obtenint totes les escoles");
+        return await _schoolRepository.GetAllAsync();
     }
 
     public async Task<School?> GetSchoolByIdAsync(long id)
     {
-        return await _schoolRepository.GetByIdAsync(id);
+        _logger.LogInformation("Obtenint escola amb Id: {Id}", id);
+        var school = await _schoolRepository.GetByIdAsync(id);
+        
+        if (school == null)
+        {
+            _logger.LogWarning("Escola amb Id {Id} no trobada", id);
+            throw new NotFoundException("School", id);
+        }
+        
+        return school;
     }
 
     public async Task<School?> GetSchoolByCodeAsync(string code)
     {
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            throw new ValidationException("Code", "El codi de l'escola no pot estar buit");
+        }
+        
+        _logger.LogInformation("Obtenint escola amb codi: {Code}", code);
         return await _schoolRepository.GetByCodeAsync(code);
     }
 
     public async Task<School> CreateSchoolAsync(School school)
     {
         // Validacions de negoci
+        if (string.IsNullOrWhiteSpace(school.Code))
+        {
+            throw new ValidationException("Code", "El codi de l'escola és obligatori");
+        }
+        
+        if (string.IsNullOrWhiteSpace(school.Name))
+        {
+            throw new ValidationException("Name", "El nom de l'escola és obligatori");
+        }
+        
         var existingSchool = await _schoolRepository.GetByCodeAsync(school.Code);
         if (existingSchool != null)
         {
-            throw new InvalidOperationException($"Ja existeix una escola amb el codi {school.Code}");
+            _logger.LogWarning("Intent de crear escola amb codi duplicat: {Code}", school.Code);
+            throw new DuplicateEntityException("School", "Code", school.Code);
         }
 
         school.CreatedAt = DateTime.UtcNow;
+        _logger.LogInformation("Creant nova escola: {Name} ({Code})", school.Name, school.Code);
         return await _schoolRepository.AddAsync(school);
     }
 
     public async Task UpdateSchoolAsync(School school)
     {
+        var existingSchool = await _schoolRepository.GetByIdAsync(school.Id);
+        if (existingSchool == null)
+        {
+            throw new NotFoundException("School", school.Id);
+        }
+        
+        _logger.LogInformation("Actualitzant escola amb Id: {Id}", school.Id);
         await _schoolRepository.UpdateAsync(school);
     }
 
     public async Task DeleteSchoolAsync(long id)
     {
+        var school = await _schoolRepository.GetByIdAsync(id);
+        if (school == null)
+        {
+            throw new NotFoundException("School", id);
+        }
+        
+        _logger.LogInformation("Eliminant escola amb Id: {Id}", id);
         await _schoolRepository.DeleteAsync(id);
     }
 }

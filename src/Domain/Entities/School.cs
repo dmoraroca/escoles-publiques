@@ -6,6 +6,8 @@ public class School
     public string Name { get; set; } = null!;
     public string Code { get; set; } = null!;
     public string? City { get; set; }
+    public bool IsFavorite { get; set; }
+    public string? Scope { get; set; }
     public DateTime CreatedAt { get; set; }
     
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();

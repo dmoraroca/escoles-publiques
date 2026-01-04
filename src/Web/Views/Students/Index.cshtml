@@ -1,13 +1,26 @@
+@using Web.Helpers
 @model IEnumerable<Web.Models.StudentViewModel>
 
 @{
     ViewData["Title"] = "Alumnes";
+    
+    // Obtenir llista d'escoles per al dropdown
+    var schools = ViewBag.Schools as IEnumerable<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
+    var schoolOptions = schools.Select(s => new Web.Models.SelectOption 
+    { 
+        Value = s.Id.ToString(), 
+        Text = s.Name 
+    }).ToList();
+    
+    var modalConfig = ModalConfigFactory.GetStudentModalConfig(schoolOptions);
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Alumnes</h2>
-        <a asp-action="Create" class="btn btn-primary">Nou Alumne</a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createStudentModal">
+            <i class="bi bi-plus-lg"></i> Nou Alumne
+        </button>
     </div>
 
     <div class="card">
@@ -34,7 +47,12 @@
                                 <td data-label="Data naixement">@(student.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</td>
                                 <td data-label="Escola">@student.SchoolName</td>
                                 <td data-label="Accions">
-                                    <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-info">Veure</a>
+                                    <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i> Veure
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(@student.Id, '@student.FirstName @student.LastName')">
+                                        <i class="bi bi-trash"></i> Esborrar
+                                    </button>
                                 </td>
                             </tr>
                         }
@@ -44,3 +62,22 @@
         </div>
     </div>
 </div>
+
+<form id="deleteForm" method="post" style="display:none;">
+    <input type="hidden" name="id" id="deleteId" />
+</form>
+
+@await Html.PartialAsync("_EntityModal", modalConfig)
+
+@section Scripts {
+<script>
+function confirmDelete(id, name) {
+    if (confirm('Estàs segur que vols esborrar l\'alumne "' + name + '"?\n\nAquesta acció no es pot desfer.')) {
+        var form = document.getElementById('deleteForm');
+        document.getElementById('deleteId').value = id;
+        form.action = '/Students/Delete/' + id;
+        form.submit();
+    }
+}
+</script>
+}

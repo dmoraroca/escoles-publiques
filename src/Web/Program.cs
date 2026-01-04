@@ -1,9 +1,13 @@
 using Application.Interfaces;
 using Application.UseCases.Services;
 using Domain.Interfaces;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Web.Hubs;
+using Web.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +27,16 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<IAnnualFeeService, AnnualFeeService>();
 
+// Registre FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<SchoolViewModelValidator>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Registre SignalR
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -54,8 +66,14 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+// Configuració d'endpoints
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    
+    endpoints.MapHub<SchoolHub>("/schoolHub");
+});
 
 app.Run();

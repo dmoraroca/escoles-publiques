@@ -1,3 +1,5 @@
+using Application.Interfaces;
+using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
@@ -5,28 +7,67 @@ namespace Web.Controllers;
 
 public class EnrollmentsController : BaseController
 {
-    public EnrollmentsController(ILogger<EnrollmentsController> logger) : base(logger)
+    private readonly IEnrollmentService _enrollmentService;
+
+    public EnrollmentsController(IEnrollmentService enrollmentService, ILogger<EnrollmentsController> logger) : base(logger)
     {
+        _enrollmentService = enrollmentService;
     }
     
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var enrollments = new List<EnrollmentViewModel>
+        try
         {
-            new EnrollmentViewModel { Id = 1, StudentName = "Marc García López", AcademicYear = "2025-2026", Status = "Active", EnrolledAt = new DateTime(2025, 9, 1) },
-            new EnrollmentViewModel { Id = 2, StudentName = "Laura Martínez Rodríguez", AcademicYear = "2025-2026", Status = "Active", EnrolledAt = new DateTime(2025, 9, 1) },
-            new EnrollmentViewModel { Id = 3, StudentName = "Pau Sánchez Pujol", AcademicYear = "2024-2025", Status = "Finished", EnrolledAt = new DateTime(2024, 9, 1) },
-            new EnrollmentViewModel { Id = 4, StudentName = "Anna Ferrer Vidal", AcademicYear = "2025-2026", Status = "Active", EnrolledAt = new DateTime(2025, 9, 5) },
-            new EnrollmentViewModel { Id = 5, StudentName = "Joan Roca Casals", AcademicYear = "2025-2026", Status = "Cancelled", EnrolledAt = new DateTime(2025, 9, 1) }
-        };
-        
-        return View(enrollments);
+            var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
+            var viewModels = enrollments.Select(e => new EnrollmentViewModel
+            {
+                Id = (int)e.Id,
+                StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "Alumne desconegut",
+                AcademicYear = e.AcademicYear,
+                Status = e.Status,
+                EnrolledAt = e.EnrolledAt
+            });
+            
+            return View(viewModels);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error obtenint llista d'inscripcions");
+            SetErrorMessage("Error carregant les inscripcions. Si us plau, intenta-ho de nou.");
+            return View(new List<EnrollmentViewModel>());
+        }
     }
     
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
-        // TODO: Carregar detalls d'una inscripció
-        return View();
+        try
+        {
+            var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
+            
+            var viewModel = new EnrollmentViewModel
+            {
+                Id = (int)enrollment.Id,
+                StudentName = enrollment.Student != null ? $"{enrollment.Student.FirstName} {enrollment.Student.LastName}" : "Alumne desconegut",
+                AcademicYear = enrollment.AcademicYear,
+                CourseName = enrollment.CourseName,
+                Status = enrollment.Status,
+                EnrolledAt = enrollment.EnrolledAt
+            };
+            
+            return View(viewModel);
+        }
+        catch (NotFoundException ex)
+        {
+            Logger.LogWarning(ex, "Inscripció amb Id {Id} no trobada", id);
+            SetErrorMessage($"Inscripció amb ID {id} no trobada.");
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error obtenint detalls de la inscripció {Id}", id);
+            SetErrorMessage("Error carregant els detalls de la inscripció.");
+            return RedirectToAction(nameof(Index));
+        }
     }
     
     public IActionResult Create()

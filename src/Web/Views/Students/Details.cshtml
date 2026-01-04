@@ -1,0 +1,58 @@
+@model Web.Models.StudentViewModel
+
+@{
+    ViewData["Title"] = "Detalls de l'Alumne";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-person"></i> Detalls de l'Alumne</h2>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Tornar
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom</label>
+                        <input type="text" class="form-control bg-light" value="@Model.FirstName" readonly />
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Cognoms</label>
+                        <input type="text" class="form-control bg-light" value="@Model.LastName" readonly />
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control bg-light" value="@(Model.Email ?? "-")" readonly />
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Data de Naixement</label>
+                        <input type="text" class="form-control bg-light" value="@(Model.BirthDate?.ToString("dd/MM/yyyy") ?? "-")" readonly />
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Escola</label>
+                    <input type="text" class="form-control bg-light" value="@Model.SchoolName" readonly />
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-x-lg"></i> Tancar
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

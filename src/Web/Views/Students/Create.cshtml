@@ -1,0 +1,65 @@
+@model Web.Models.StudentViewModel
+
+@{
+    ViewData["Title"] = "Nou Alumne";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-person-plus"></i> Nou Alumne</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label">Nom <span class="text-danger">*</span></label>
+                            <input asp-for="FirstName" class="form-control" placeholder="Introdueix el nom" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label">Cognoms <span class="text-danger">*</span></label>
+                            <input asp-for="LastName" class="form-control" placeholder="Introdueix els cognoms" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Correu electrònic <span class="text-danger">*</span></label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="exemple@correu.com" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="BirthDate" class="form-label">Data de naixement</label>
+                            <input asp-for="BirthDate" type="date" class="form-control" />
+                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SchoolId" class="form-label">Escola <span class="text-danger">*</span></label>
+                            <select asp-for="SchoolId" class="form-select" asp-items="@(new SelectList(ViewBag.Schools, "Id", "Name"))">
+                                <option value="">-- Selecciona una escola --</option>
+                            </select>
+                            <span asp-validation-for="SchoolId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Tornar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Crear Alumne
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

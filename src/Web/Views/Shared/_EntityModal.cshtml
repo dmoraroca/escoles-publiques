@@ -1,0 +1,123 @@
+@model Web.Models.EntityModalConfig
+
+<div class="modal fade" id="@Model.ModalId" tabindex="-1" aria-labelledby="@(Model.ModalId)Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-controller="@Model.Controller" asp-action="Create" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="@(Model.ModalId)Label">
+                        <i class="bi @Model.IconClass"></i> Crear @Model.EntityName
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        @foreach (var field in Model.Fields)
+                        {
+                            <div class="col-md-@field.ColumnSize mb-3">
+                                @if (field.Type == "checkbox")
+                                {
+                                    <label class="form-label d-block">@field.Label</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               id="@field.Name" 
+                                               name="@field.Name" 
+                                               value="true" />
+                                        <label class="form-check-label" for="@field.Name">
+                                            @field.Label
+                                            @if (field.Name == "IsFavorite")
+                                            {
+                                                <span class="star-icon star-filled">★</span>
+                                            }
+                                        </label>
+                                    </div>
+                                }
+                                else if (field.Type == "select")
+                                {
+                                    <label for="@field.Name" class="form-label">
+                                        @field.Label @if (field.Required) { <span class="text-danger">*</span> }
+                                    </label>
+                                    <select class="form-select" 
+                                            id="@field.Name" 
+                                            name="@field.Name"
+                                            @(field.Required ? "required" : "")>
+                                        <option value="">-- Selecciona @field.Label.ToLower() --</option>
+                                        @if (field.Options != null)
+                                        {
+                                            @foreach (var option in field.Options)
+                                            {
+                                                <option value="@option.Value">@option.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                    @if (field.Required)
+                                    {
+                                        <div class="invalid-feedback">@field.Label és obligatori</div>
+                                    }
+                                }
+                                else if (field.Type == "date")
+                                {
+                                    <label for="@field.Name" class="form-label">
+                                        @field.Label @if (field.Required) { <span class="text-danger">*</span> }
+                                    </label>
+                                    <input type="date" 
+                                           class="form-control" 
+                                           id="@field.Name" 
+                                           name="@field.Name"
+                                           @(field.Required ? "required" : "")
+                                           placeholder="@field.Placeholder" />
+                                    @if (field.Required)
+                                    {
+                                        <div class="invalid-feedback">@field.Label és obligatori</div>
+                                    }
+                                }
+                                else if (field.Type == "number")
+                                {
+                                    <label for="@field.Name" class="form-label">
+                                        @field.Label @if (field.Required) { <span class="text-danger">*</span> }
+                                    </label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="@field.Name" 
+                                           name="@field.Name"
+                                           @(field.Required ? "required" : "")
+                                           placeholder="@field.Placeholder" />
+                                    @if (field.Required)
+                                    {
+                                        <div class="invalid-feedback">@field.Label és obligatori</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <label for="@field.Name" class="form-label">
+                                        @field.Label @if (field.Required) { <span class="text-danger">*</span> }
+                                    </label>
+                                    <input type="@field.Type" 
+                                           class="form-control" 
+                                           id="@field.Name" 
+                                           name="@field.Name"
+                                           @(field.Required ? "required" : "")
+                                           @(field.MaxLength > 0 ? $"maxlength=\"{field.MaxLength}\"" : "")
+                                           placeholder="@field.Placeholder" />
+                                    @if (field.Required)
+                                    {
+                                        <div class="invalid-feedback">@field.Label és obligatori</div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Cancel·lar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i> Crear @Model.EntityName
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

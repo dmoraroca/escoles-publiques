@@ -1,0 +1,75 @@
+@model Web.Models.AnnualFeeViewModel
+
+@{
+    ViewData["Title"] = "Detalls de la Quota";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-currency-euro"></i> Detalls de la Quota Anual</h2>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Tornar
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form>
+                <div class="mb-3">
+                    <label class="form-label">Matrícula</label>
+                    <input type="text" class="form-control bg-light" value="@Model.EnrollmentInfo" readonly />
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Import</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light" value="@Model.Amount.ToString("N2")" readonly />
+                            <span class="input-group-text bg-light">@Model.Currency</span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Data de Venciment</label>
+                        <input type="text" class="form-control bg-light" value="@Model.DueDate.ToString("dd/MM/yyyy")" readonly />
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Data de Pagament</label>
+                        <input type="text" class="form-control bg-light" value="@(Model.PaidAt?.ToString("dd/MM/yyyy HH:mm") ?? "Pendent")" readonly />
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Referència de Pagament</label>
+                        <input type="text" class="form-control bg-light" value="@(Model.PaymentRef ?? "-")" readonly />
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Estat</label>
+                    <div class="form-control bg-light d-flex align-items-center" style="height: 38px;">
+                        @if (Model.PaidAt.HasValue)
+                        {
+                            <span class="badge bg-success">Pagada</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Pendent</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-x-lg"></i> Tancar
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

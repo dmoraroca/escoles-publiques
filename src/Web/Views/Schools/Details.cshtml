@@ -1,0 +1,74 @@
+@model Web.Models.SchoolViewModel
+
+@{
+    ViewData["Title"] = "Detalls de l'Escola";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-building"></i> Detalls de l'Escola</h2>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Tornar
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Codi</label>
+                        <input type="text" class="form-control bg-light" value="@Model.Code" readonly />
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Ciutat</label>
+                        <input type="text" class="form-control bg-light" value="@Model.City" readonly />
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Nom</label>
+                    <input type="text" class="form-control bg-light" value="@Model.Name" readonly />
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label class="form-label">Àmbit</label>
+                        <input type="text" class="form-control bg-light" value="@(Model.Scope ?? "-")" readonly />
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Favorita</label>
+                        <div class="form-control bg-light d-flex align-items-center" style="height: 38px;">
+                            @if (Model.IsFavorite)
+                            {
+                                <span class="star-icon star-filled">★</span>
+                                <span class="ms-2">Sí</span>
+                            }
+                            else
+                            {
+                                <span class="star-icon star-outline">★</span>
+                                <span class="ms-2">No</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Data de creació</label>
+                    <input type="text" class="form-control bg-light" value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" readonly />
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-x-lg"></i> Tancar
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

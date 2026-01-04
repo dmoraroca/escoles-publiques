@@ -1,3 +1,5 @@
+using Application.Interfaces;
+using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
@@ -5,28 +7,74 @@ namespace Web.Controllers;
 
 public class AnnualFeesController : BaseController
 {
-    public AnnualFeesController(ILogger<AnnualFeesController> logger) : base(logger)
+    private readonly IAnnualFeeService _annualFeeService;
+
+    public AnnualFeesController(IAnnualFeeService annualFeeService, ILogger<AnnualFeesController> logger) : base(logger)
     {
+        _annualFeeService = annualFeeService;
     }
     
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var fees = new List<AnnualFeeViewModel>
+        try
         {
-            new AnnualFeeViewModel { Id = 1, EnrollmentInfo = "Marc García - 2025-2026", Amount = 1500.00m, Currency = "EUR", DueDate = new DateTime(2025, 10, 31), PaidAt = new DateTime(2025, 10, 15), PaymentRef = "PAY-001-2025" },
-            new AnnualFeeViewModel { Id = 2, EnrollmentInfo = "Laura Martínez - 2025-2026", Amount = 1500.00m, Currency = "EUR", DueDate = new DateTime(2025, 10, 31), PaidAt = null, PaymentRef = null },
-            new AnnualFeeViewModel { Id = 3, EnrollmentInfo = "Pau Sánchez - 2024-2025", Amount = 1450.00m, Currency = "EUR", DueDate = new DateTime(2024, 10, 31), PaidAt = new DateTime(2024, 10, 20), PaymentRef = "PAY-045-2024" },
-            new AnnualFeeViewModel { Id = 4, EnrollmentInfo = "Anna Ferrer - 2025-2026", Amount = 1500.00m, Currency = "EUR", DueDate = new DateTime(2025, 11, 15), PaidAt = null, PaymentRef = null },
-            new AnnualFeeViewModel { Id = 5, EnrollmentInfo = "Joan Roca - 2025-2026", Amount = 1500.00m, Currency = "EUR", DueDate = new DateTime(2025, 10, 31), PaidAt = new DateTime(2025, 11, 5), PaymentRef = "PAY-012-2025" }
-        };
-        
-        return View(fees);
+            var fees = await _annualFeeService.GetAllAnnualFeesAsync();
+            var viewModels = fees.Select(f => new AnnualFeeViewModel
+            {
+                Id = (int)f.Id,
+                EnrollmentInfo = f.Enrollment?.Student != null 
+                    ? $"{f.Enrollment.Student.FirstName} {f.Enrollment.Student.LastName} - {f.Enrollment.AcademicYear}"
+                    : "Inscripció desconeguda",
+                Amount = f.Amount,
+                Currency = f.Currency,
+                DueDate = f.DueDate.ToDateTime(TimeOnly.MinValue),
+                PaidAt = f.PaidAt,
+                PaymentRef = f.PaymentRef
+            });
+            
+            return View(viewModels);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error obtenint llista de quotes");
+            SetErrorMessage("Error carregant les quotes. Si us plau, intenta-ho de nou.");
+            return View(new List<AnnualFeeViewModel>());
+        }
     }
     
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
-        // TODO: Carregar detalls d'una quota
-        return View();
+        try
+        {
+            var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
+            
+            var viewModel = new AnnualFeeViewModel
+            {
+                Id = (int)fee.Id,
+                EnrollmentInfo = fee.Enrollment?.Student != null 
+                    ? $"{fee.Enrollment.Student.FirstName} {fee.Enrollment.Student.LastName} - {fee.Enrollment.AcademicYear}"
+                    : "Inscripció desconeguda",
+                Amount = fee.Amount,
+                Currency = fee.Currency,
+                DueDate = fee.DueDate.ToDateTime(TimeOnly.MinValue),
+                PaidAt = fee.PaidAt,
+                PaymentRef = fee.PaymentRef
+            };
+            
+            return View(viewModel);
+        }
+        catch (NotFoundException ex)
+        {
+            Logger.LogWarning(ex, "Quota amb Id {Id} no trobada", id);
+            SetErrorMessage($"Quota amb ID {id} no trobada.");
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error obtenint detalls de la quota {Id}", id);
+            SetErrorMessage("Error carregant els detalls de la quota.");
+            return RedirectToAction(nameof(Index));
+        }
     }
     
     public IActionResult Create()
