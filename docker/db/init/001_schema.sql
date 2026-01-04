@@ -31,8 +31,8 @@ create table if not exists enrollments (
 );
 
 create index if not exists ix_enrollments_student_id on enrollments(student_id);
-
--- 4) Quotes anuals (monetari)
+als (mon
+-- 4) Quotes anuetari) 
 create table if not exists annual_fees (
   id              bigserial primary key,
   enrollment_id   bigint not null references enrollments(id) on delete cascade,

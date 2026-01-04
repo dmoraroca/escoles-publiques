@@ -1,0 +1,44 @@
+@model IEnumerable<Web.Models.StudentViewModel>
+
+@{
+    ViewData["Title"] = "Alumnes";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Alumnes</h2>
+        <a asp-action="Create" class="btn btn-primary">Nou Alumne</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Cognoms</th>
+                        <th>Email</th>
+                        <th>Data naixement</th>
+                        <th>Escola</th>
+                        <th>Accions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>@student.FirstName</td>
+                            <td>@student.LastName</td>
+                            <td>@student.Email</td>
+                            <td>@(student.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</td>
+                            <td>@student.SchoolName</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-info">Veure</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

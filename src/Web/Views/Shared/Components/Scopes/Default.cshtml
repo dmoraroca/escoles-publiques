@@ -1,0 +1,18 @@
+@model IEnumerable<Web.Models.ScopeViewModel>
+
+<!-- Component d'àmbits -->
+<div class="container">
+    <section class="scopes-section">
+        <h2 class="scopes-title">Àmbits</h2>
+        <div class="red-divider"></div>
+
+        <div class="scope-grid">
+            @foreach (var item in Model)
+            {
+                <a href="@item.Url" class="scope-item">
+                    <span class="scope-text">@item.Name</span>
+                </a>
+            }
+        </div>
+    </section>
+</div>

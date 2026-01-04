@@ -1,4 +1,8 @@
+using Application.Interfaces;
+using Application.UseCases.Services;
+using Domain.Interfaces;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SchoolDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
+// Registre Repositories (Infrastructure)
+builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+builder.Services.AddScoped<IAnnualFeeRepository, AnnualFeeRepository>();
+
+// Registre Services (Application)
+builder.Services.AddScoped<ISchoolService, SchoolService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+builder.Services.AddScoped<IAnnualFeeService, AnnualFeeService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

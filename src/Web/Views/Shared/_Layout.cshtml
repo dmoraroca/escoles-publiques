@@ -34,18 +34,24 @@
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom p-0">
             <div class="container">
                 <div class="navbar-collapse collapse">
+                    @{
+                        var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+                    }
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link nav-link-gencat active" asp-controller="Home" asp-action="Index">Inici</a>
+                            <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Home" asp-action="Index">Inici</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-gencat" href="#">Departament</a>
+                            <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Schools", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Schools" asp-action="Index">Escoles</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-gencat" href="#">Àmbits d'actuació</a>
+                            <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Students", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Students" asp-action="Index">Alumnes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-gencat" href="#">Tràmits</a>
+                            <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Enrollments", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Enrollments" asp-action="Index">Inscripcions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-gencat @(string.Equals(currentController, "AnnualFees", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="AnnualFees" asp-action="Index">Quotes</a>
                         </li>
                     </ul>
                 </div>

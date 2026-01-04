@@ -1,0 +1,42 @@
+@model IEnumerable<Web.Models.SchoolViewModel>
+
+@{
+    ViewData["Title"] = "Escoles";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Escoles</h2>
+        <a asp-action="Create" class="btn btn-primary">Nova Escola</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Codi</th>
+                        <th>Nom</th>
+                        <th>Ciutat</th>
+                        <th>Data creació</th>
+                        <th>Accions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var school in Model)
+                    {
+                        <tr>
+                            <td>@school.Code</td>
+                            <td>@school.Name</td>
+                            <td>@school.City</td>
+                            <td>@school.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@school.Id" class="btn btn-sm btn-info">Veure</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
