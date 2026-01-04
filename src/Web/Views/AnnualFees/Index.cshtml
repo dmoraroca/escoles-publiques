@@ -1,54 +1,93 @@
+@using Web.Models
 @model IEnumerable<Web.Models.AnnualFeeViewModel>
 
 @{
     ViewData["Title"] = "Quotes anuals";
+    
+    // Configuració de la taula genèrica per quotes anuals
+    var tableConfig = new TableViewModel<AnnualFeeViewModel>
+    {
+        Data = Model,
+        EntityName = "Quotes Anuals",
+        ControllerName = "AnnualFees",
+        EmptyMessage = "No hi ha quotes anuals registrades.",
+        Columns = new List<ColumnConfig>
+        {
+            new ColumnConfig 
+            { 
+                PropertyName = "EnrollmentInfo", 
+                DisplayName = "Inscripció",
+                IsSortable = true 
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "Amount", 
+                DisplayName = "Import",
+                IsSortable = true,
+                CustomRender = (item) => 
+                {
+                    var fee = item as AnnualFeeViewModel;
+                    return $"{fee?.Amount:N2} {fee?.Currency}";
+                }
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "DueDate", 
+                DisplayName = "Data venciment",
+                Format = "dd/MM/yyyy",
+                IsSortable = true 
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "PaidAt", 
+                DisplayName = "Data pagament",
+                IsSortable = true,
+                CustomRender = (item) => 
+                {
+                    var fee = item as AnnualFeeViewModel;
+                    if (fee?.PaidAt.HasValue == true)
+                        return $"<span class=\"badge bg-success\">{fee.PaidAt.Value:dd/MM/yyyy}</span>";
+                    return "<span class=\"badge bg-warning\">Pendent</span>";
+                }
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "PaymentRef", 
+                DisplayName = "Referència",
+                IsSortable = true,
+                CustomRender = (item) => 
+                {
+                    var fee = item as AnnualFeeViewModel;
+                    return string.IsNullOrEmpty(fee?.PaymentRef) 
+                        ? "<span class=\"text-muted\">-</span>" 
+                        : fee.PaymentRef;
+                }
+            }
+        },
+        Actions = new List<TableAction>
+        {
+            new TableAction 
+            { 
+                ActionName = "Details", 
+                DisplayText = "Detalls",
+                CssClass = "btn-info",
+                Icon = "👁️"
+            }
+        }
+    };
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Quotes anuals</h2>
-        <a asp-action="Create" class="btn btn-primary">Nova Quota</a>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Nova Quota
+        </a>
     </div>
 
     <div class="card">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Inscripció</th>
-                            <th>Import</th>
-                            <th>Data venciment</th>
-                            <th>Data pagament</th>
-                            <th>Referència</th>
-                            <th>Accions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var fee in Model)
-                        {
-                            <tr>
-                                <td data-label="Inscripció">@fee.EnrollmentInfo</td>
-                                <td data-label="Import">@fee.Amount.ToString("N2") @fee.Currency</td>
-                                <td data-label="Data venciment">@fee.DueDate.ToString("dd/MM/yyyy")</td>
-                                <td data-label="Data pagament">
-                                    @if (fee.PaidAt.HasValue)
-                                    {
-                                        <span class="badge bg-success">@fee.PaidAt.Value.ToString("dd/MM/yyyy")</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-warning">Pendent</span>
-                                    }
-                                </td>
-                                <td data-label="Referència">@(fee.PaymentRef ?? "-")</td>
-                                <td data-label="Accions">
-                                    <a asp-action="Details" asp-route-id="@fee.Id" class="btn btn-sm btn-info">Veure</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+            @await Component.InvokeAsync("GenericTable", tableConfig)
         </div>
     </div>
 </div>

@@ -1,9 +1,92 @@
 @using Web.Helpers
+@using Web.Models
 @model IEnumerable<Web.Models.SchoolViewModel>
 
 @{
     ViewData["Title"] = "Escoles";
     var modalConfig = ModalConfigFactory.GetSchoolModalConfig();
+    
+    // Configuració de la taula genèrica
+    var tableConfig = new TableViewModel<SchoolViewModel>
+    {
+        Data = Model,
+        EntityName = "Escoles",
+        ControllerName = "Schools",
+        EmptyMessage = "No hi ha escoles registrades. Crea la primera!",
+        Columns = new List<ColumnConfig>
+        {
+            new ColumnConfig 
+            { 
+                PropertyName = "Code", 
+                DisplayName = "Codi",
+                IsSortable = true 
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "Name", 
+                DisplayName = "Nom",
+                IsSortable = true 
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "City", 
+                DisplayName = "Ciutat",
+                IsSortable = true 
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "Scope", 
+                DisplayName = "Àmbit",
+                IsSortable = true,
+                CustomRender = (item) => 
+                {
+                    var school = item as SchoolViewModel;
+                    if (!string.IsNullOrEmpty(school?.Scope))
+                        return $"<span class=\"badge bg-info\">{school.Scope}</span>";
+                    return "<span class=\"text-muted\">-</span>";
+                }
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "IsFavorite", 
+                DisplayName = "Favorit",
+                IsSortable = true,
+                CustomRender = (item) => 
+                {
+                    var school = item as SchoolViewModel;
+                    if (school?.IsFavorite == true)
+                        return "<span class=\"star-icon star-filled\" title=\"Escola favorita\">★</span>";
+                    return "<span class=\"star-icon star-outline\" title=\"No és favorita\">☆</span>";
+                }
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "CreatedAt", 
+                DisplayName = "Data creació",
+                Format = "dd/MM/yyyy",
+                IsSortable = true 
+            }
+        },
+        Actions = new List<TableAction>
+        {
+            new TableAction 
+            { 
+                ActionName = "Details", 
+                DisplayText = "Detalls",
+                CssClass = "btn-info",
+                Icon = "👁️"
+            },
+            new TableAction 
+            { 
+                ActionName = "Delete", 
+                DisplayText = "Esborrar",
+                CssClass = "btn-danger",
+                Icon = "🗑️",
+                RequiresConfirmation = true,
+                ConfirmationMessage = "Estàs segur que vols esborrar aquesta escola?"
+            }
+        }
+    };
 }
 
 <div class="container mt-4">
@@ -15,169 +98,10 @@
     </div>
 
     <div class="card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Codi</th>
-                            <th>Nom</th>
-                            <th>Ciutat</th>
-                            <th>Àmbit</th>
-                            <th>Favorit</th>
-                            <th>Data creació</th>
-                            <th>Accions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="schoolsTableBody">
-                        @foreach (var school in Model)
-                        {
-                            <tr data-school-id="@school.Id">
-                                <td data-label="Codi">@school.Code</td>
-                                <td data-label="Nom">@school.Name</td>
-                                <td data-label="Ciutat">@school.City</td>
-                                <td data-label="Àmbit">
-                                    @if (!string.IsNullOrEmpty(school.Scope))
-                                    {
-                                        <span class="badge bg-info">@school.Scope</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">-</span>
-                                    }
-                                </td>
-                                <td data-label="Favorit">
-                                    @if (school.IsFavorite)
-                                    {
-                                        <span class="star-icon star-filled" title="Escola favorita">★</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="star-icon star-outline" title="Marcar com a favorita">★</span>
-                                    }
-                                </td>
-                                <td data-label="Data creació">@school.CreatedAt.ToString("dd/MM/yyyy")</td>
-                                <td data-label="Accions">
-                                    <a asp-action="Details" asp-route-id="@school.Id" class="btn btn-sm btn-info">
-                                        <i class="bi bi-eye"></i> Veure
-                                    </a>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(@school.Id, '@school.Name')">
-                                        <i class="bi bi-trash"></i> Esborrar
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+        <div class="card-body" id="schoolsTableContainer">
+            @await Component.InvokeAsync("GenericTable", tableConfig)
         </div>
     </div>
 </div>
 
-<form id="deleteForm" method="post" style="display:none;">
-    <input type="hidden" name="id" id="deleteId" />
-</form>
-
 @await Html.PartialAsync("_EntityModal", modalConfig)
-
-@section Scripts {
-<script>
-// Connexió SignalR
-const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/schoolHub")
-    .withAutomaticReconnect()
-    .build();
-
-// Esdeveniment: nova escola creada
-connection.on("SchoolCreated", function (school) {
-    const tbody = document.getElementById('schoolsTableBody');
-    const newRow = `
-        <tr data-school-id="${school.id}" class="table-success">
-            <td data-label="Codi">${school.code}</td>
-            <td data-label="Nom">${school.name}</td>
-            <td data-label="Ciutat">${school.city || ''}</td>
-            <td data-label="Àmbit">
-                ${school.scope ? `<span class="badge bg-info">${school.scope}</span>` : '<span class="text-muted">-</span>'}
-            </td>
-            <td data-label="Favorit">
-                ${school.isFavorite ? '<span class="star-icon star-filled" title="Escola favorita">★</span>' : '<span class="star-icon star-outline">★</span>'}
-            </td>
-            <td data-label="Data creació">${school.createdAt}</td>
-            <td data-label="Accions">
-                <a href="/Schools/Details/${school.id}" class="btn btn-sm btn-info">
-                    <i class="bi bi-eye"></i> Veure
-                </a>
-                <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(${school.id}, '${school.name}')">
-                    <i class="bi bi-trash"></i> Esborrar
-                </button>
-            </td>
-        </tr>
-    `;
-    tbody.insertAdjacentHTML('afterbegin', newRow);
-    
-    // Eliminar highlight després de 3 segons
-    setTimeout(() => {
-        const row = tbody.querySelector(`[data-school-id="${school.id}"]`);
-        if (row) row.classList.remove('table-success');
-    }, 3000);
-});
-
-// Esdeveniment: escola actualitzada
-connection.on("SchoolUpdated", function (school) {
-    const row = document.querySelector(`[data-school-id="${school.id}"]`);
-    if (row) {
-        row.classList.add('table-warning');
-        row.innerHTML = `
-            <td data-label="Codi">${school.code}</td>
-            <td data-label="Nom">${school.name}</td>
-            <td data-label="Ciutat">${school.city || ''}</td>
-            <td data-label="Àmbit">
-                ${school.scope ? `<span class="badge bg-info">${school.scope}</span>` : '<span class="text-muted">-</span>'}
-            </td>
-            <td data-label="Favorit">
-                ${school.isFavorite ? '<span class="star-icon star-filled" title="Escola favorita">★</span>' : '<span class="star-icon star-outline">★</span>'}
-            </td>
-            <td data-label="Data creació">${school.createdAt}</td>
-            <td data-label="Accions">
-                <a href="/Schools/Details/${school.id}" class="btn btn-sm btn-info">
-                    <i class="bi bi-eye"></i> Veure
-                </a>
-                <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(${school.id}, '${school.name}')">
-                    <i class="bi bi-trash"></i> Esborrar
-                </button>
-            </td>
-        `;
-        
-        // Eliminar highlight després de 3 segons
-        setTimeout(() => {
-            row.classList.remove('table-warning');
-        }, 3000);
-    }
-});
-
-// Esdeveniment: escola esborrada
-connection.on("SchoolDeleted", function (data) {
-    const row = document.querySelector(`[data-school-id="${data.id}"]`);
-    if (row) {
-        row.classList.add('table-danger');
-        setTimeout(() => {
-            row.remove();
-        }, 1000);
-    }
-});
-
-// Iniciar connexió
-connection.start()
-    .then(() => console.log('SignalR connectat'))
-    .catch(err => console.error('Error connectant SignalR:', err));
-
-function confirmDelete(id, name) {
-    if (confirm('Estàs segur que vols esborrar l\'escola "' + name + '"?\n\nAquesta acció no es pot desfer.')) {
-        var form = document.getElementById('deleteForm');
-        document.getElementById('deleteId').value = id;
-        form.action = '/Schools/Delete/' + id;
-        form.submit();
-    }
-}
-</script>
-}

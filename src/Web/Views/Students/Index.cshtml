@@ -1,4 +1,5 @@
 @using Web.Helpers
+@using Web.Models
 @model IEnumerable<Web.Models.StudentViewModel>
 
 @{
@@ -13,6 +14,80 @@
     }).ToList();
     
     var modalConfig = ModalConfigFactory.GetStudentModalConfig(schoolOptions);
+    
+    // Configuració de la taula genèrica per alumnes
+    var tableConfig = new TableViewModel<StudentViewModel>
+    {
+        Data = Model,
+        EntityName = "Alumnes",
+        ControllerName = "Students",
+        EmptyMessage = "No hi ha alumnes registrats. Crea el primer!",
+        Columns = new List<ColumnConfig>
+        {
+            new ColumnConfig 
+            { 
+                PropertyName = "FirstName", 
+                DisplayName = "Nom",
+                IsSortable = true 
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "LastName", 
+                DisplayName = "Cognoms",
+                IsSortable = true 
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "Email", 
+                DisplayName = "Email",
+                IsSortable = true,
+                CustomRender = (item) => 
+                {
+                    var student = item as StudentViewModel;
+                    return string.IsNullOrEmpty(student?.Email) 
+                        ? "<span class=\"text-muted\">-</span>" 
+                        : $"<a href=\"mailto:{student.Email}\">{student.Email}</a>";
+                }
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "BirthDate", 
+                DisplayName = "Data naixement",
+                Format = "dd/MM/yyyy",
+                IsSortable = true,
+                CustomRender = (item) => 
+                {
+                    var student = item as StudentViewModel;
+                    return student?.BirthDate?.ToString("dd/MM/yyyy") ?? "<span class=\"text-muted\">-</span>";
+                }
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "SchoolName", 
+                DisplayName = "Escola",
+                IsSortable = true 
+            }
+        },
+        Actions = new List<TableAction>
+        {
+            new TableAction 
+            { 
+                ActionName = "Details", 
+                DisplayText = "Detalls",
+                CssClass = "btn-info",
+                Icon = "👁️"
+            },
+            new TableAction 
+            { 
+                ActionName = "Delete", 
+                DisplayText = "Esborrar",
+                CssClass = "btn-danger",
+                Icon = "🗑️",
+                RequiresConfirmation = true,
+                ConfirmationMessage = "Estàs segur que vols esborrar aquest alumne?"
+            }
+        }
+    };
 }
 
 <div class="container mt-4">
@@ -25,59 +100,12 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Cognoms</th>
-                            <th>Email</th>
-                            <th>Data naixement</th>
-                            <th>Escola</th>
-                            <th>Accions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var student in Model)
-                        {
-                            <tr>
-                                <td data-label="Nom">@student.FirstName</td>
-                                <td data-label="Cognoms">@student.LastName</td>
-                                <td data-label="Email">@student.Email</td>
-                                <td data-label="Data naixement">@(student.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</td>
-                                <td data-label="Escola">@student.SchoolName</td>
-                                <td data-label="Accions">
-                                    <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-info">
-                                        <i class="bi bi-eye"></i> Veure
-                                    </a>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(@student.Id, '@student.FirstName @student.LastName')">
-                                        <i class="bi bi-trash"></i> Esborrar
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+            @await Component.InvokeAsync("GenericTable", tableConfig)
         </div>
     </div>
 </div>
 
-<form id="deleteForm" method="post" style="display:none;">
-    <input type="hidden" name="id" id="deleteId" />
-</form>
-
 @await Html.PartialAsync("_EntityModal", modalConfig)
-
-@section Scripts {
-<script>
-function confirmDelete(id, name) {
-    if (confirm('Estàs segur que vols esborrar l\'alumne "' + name + '"?\n\nAquesta acció no es pot desfer.')) {
-        var form = document.getElementById('deleteForm');
-        document.getElementById('deleteId').value = id;
-        form.action = '/Students/Delete/' + id;
-        form.submit();
-    }
 }
 </script>
 }
