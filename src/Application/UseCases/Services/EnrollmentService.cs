@@ -50,7 +50,6 @@ public class EnrollmentService : IEnrollmentService
 
     public async Task<Enrollment> CreateEnrollmentAsync(Enrollment enrollment)
     {
-        // Validacions de negoci
         if (string.IsNullOrWhiteSpace(enrollment.AcademicYear))
         {
             throw new ValidationException("AcademicYear", "El curs acadèmic és obligatori");

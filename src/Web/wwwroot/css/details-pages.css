@@ -1,0 +1,45 @@
+/* Details Pages Styles */
+
+.edit-only {
+    display: none;
+}
+
+#editButtons {
+    display: none;
+}
+
+#errorAlert {
+    display: none;
+}
+
+#favoriteEdit {
+    display: none;
+}
+
+#statusEdit {
+    display: none;
+}
+
+#paymentRefGroup {
+    display: none;
+}
+
+#paymentRefGroup.visible {
+    display: block;
+}
+
+.form-control-display {
+    height: 38px;
+}
+
+.actions-column {
+    min-width: 150px;
+}
+
+.actions-buttons {
+    gap: 2px;
+}
+
+.delete-form {
+    display: inline;
+}

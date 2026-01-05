@@ -15,8 +15,12 @@
                     <form asp-action="Create" method="post">
                         <div class="mb-3">
                             <label asp-for="StudentId" class="form-label">Alumne <span class="text-danger">*</span></label>
-                            <select asp-for="StudentId" class="form-select" asp-items="@(new SelectList(ViewBag.Students, "Id", "Name"))">
+                            <select asp-for="StudentId" class="form-select">
                                 <option value="">-- Selecciona un alumne --</option>
+                                @foreach(var student in ViewBag.Students)
+                                {
+                                    <option value="@student.Id">@student.FirstName @student.LastName</option>
+                                }
                             </select>
                             <span asp-validation-for="StudentId" class="text-danger"></span>
                         </div>
@@ -46,7 +50,7 @@
 
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Tornar
+                                <i class="bi bi-x-lg"></i> Cancel·lar
                             </a>
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle"></i> Crear Inscripció

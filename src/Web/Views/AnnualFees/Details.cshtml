@@ -2,54 +2,88 @@
 
 @{
     ViewData["Title"] = "Detalls de la Quota";
+    var enrollments = ViewBag.Enrollments as IEnumerable<Web.Models.EnrollmentViewModel> ?? new List<Web.Models.EnrollmentViewModel>();
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><i class="bi bi-currency-euro"></i> Detalls de la Quota Anual</h2>
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Tornar
-        </a>
+        <div id="viewButtons">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Tornar
+            </a>
+            <button type="button" class="btn btn-warning" data-action="edit">
+                <i class="bi bi-pencil"></i> Editar
+            </button>
+        </div>
+        <div id="editButtons" class="edit-buttons-hidden">
+            <button type="button" class="btn btn-secondary" data-action="cancel">
+                <i class="bi bi-x-lg"></i> Cancel·lar
+            </button>
+            <button type="button" class="btn btn-success" data-action="submit">
+                <i class="bi bi-check-lg"></i> Guardar
+            </button>
+        </div>
     </div>
 
     <div class="card">
         <div class="card-body">
-            <form>
+            <form id="editForm" asp-action="Edit" method="post" class="needs-validation" novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                
+                <div id="errorAlert" class="alert alert-danger alert-dismissible fade show alert-hidden" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage">Si us plau, omple tots els camps obligatoris correctament.</span>
+                    <button type="button" class="btn-close" data-action="close-alert"></button>
+                </div>
+                
                 <div class="mb-3">
-                    <label class="form-label">Matrícula</label>
-                    <input type="text" class="form-control bg-light" value="@Model.EnrollmentInfo" readonly />
+                    <label class="form-label">Inscripció <span class="text-danger edit-only">*</span></label>
+                    <select id="EnrollmentId" name="EnrollmentId" class="form-select" disabled required>
+                        <option value="">-- Selecciona una inscripció --</option>
+                        @foreach (var enrollment in enrollments)
+                        {
+                            <!option value="@enrollment.Id" @(enrollment.Id == Model.EnrollmentId ? "selected" : "")>@enrollment.StudentName - @enrollment.AcademicYear</!option>
+                        }
+                    </select>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Import</label>
+                        <label class="form-label">Import <span class="text-danger edit-only">*</span></label>
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light" value="@Model.Amount.ToString("N2")" readonly />
-                            <span class="input-group-text bg-light">@Model.Currency</span>
+                            <input type="text" 
+                                   id="Amount" 
+                                   name="Amount" 
+                                   class="form-control" 
+                                   value="@Model.Amount.ToString("F2", System.Globalization.CultureInfo.InvariantCulture).Replace(".", ",")" 
+                                   readonly 
+                                   required />
+                            <span class="input-group-text bg-light" id="currencyDisplay">@Model.Currency</span>
                         </div>
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Data de Venciment</label>
-                        <input type="text" class="form-control bg-light" value="@Model.DueDate.ToString("dd/MM/yyyy")" readonly />
+                        <label class="form-label">Data de Venciment <span class="text-danger edit-only">*</span></label>
+                        <input type="date" id="DueDate" name="DueDate" class="form-control" value="@Model.DueDate.ToString("yyyy-MM-dd")" readonly required />
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Data de Pagament</label>
-                        <input type="text" class="form-control bg-light" value="@(Model.PaidAt?.ToString("dd/MM/yyyy HH:mm") ?? "Pendent")" readonly />
+                        <input type="text" class="form-control bg-secondary bg-opacity-10" value="@(Model.PaidAt?.ToString("dd/MM/yyyy HH:mm") ?? "Pendent")" readonly disabled />
                     </div>
                     
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Referència de Pagament</label>
-                        <input type="text" class="form-control bg-light" value="@(Model.PaymentRef ?? "-")" readonly />
+                        <input type="text" id="PaymentRef" name="PaymentRef" class="form-control" value="@(Model.PaymentRef ?? "")" readonly />
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label class="form-label">Estat</label>
-                    <div class="form-control bg-light d-flex align-items-center" style="height: 38px;">
+                    <div class="form-control bg-light d-flex align-items-center form-control-display" id="statusDisplay">
                         @if (Model.PaidAt.HasValue)
                         {
                             <span class="badge bg-success">Pagada</span>
@@ -59,17 +93,20 @@
                             <span class="badge bg-warning">Pendent</span>
                         }
                     </div>
+                    <div class="form-check mt-2" id="statusEdit">
+                        <input type="checkbox" id="IsPaid" name="IsPaid" value="true" class="form-check-input" @(Model.PaidAt.HasValue ? "checked" : "") />
+                        <label class="form-check-label" for="IsPaid">
+                            Marcar com a pagada
+                        </label>
+                    </div>
                 </div>
-
-                <div class="d-flex justify-content-end gap-2">
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="bi bi-x-lg"></i> Tancar
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
-                        <i class="bi bi-pencil"></i> Editar
-                    </a>
-                </div>
+                
+                <input type="hidden" id="Currency" name="Currency" value="@Model.Currency" />
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/annualfees-details.js"></script>
+}

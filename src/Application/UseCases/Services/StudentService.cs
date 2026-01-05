@@ -50,7 +50,6 @@ public class StudentService : IStudentService
 
     public async Task<Student> CreateStudentAsync(Student student)
     {
-        // Validacions de negoci
         if (string.IsNullOrWhiteSpace(student.FirstName))
         {
             throw new ValidationException("FirstName", "El nom de l'alumne és obligatori");

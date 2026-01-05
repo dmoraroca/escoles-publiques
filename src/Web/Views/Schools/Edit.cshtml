@@ -14,13 +14,14 @@
 
     <div class="card">
         <div class="card-body">
-            <form asp-action="Edit" method="post">
+            <form asp-action="Edit" method="post" class="needs-validation" novalidate>
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Code" />
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Code" class="form-label">Codi</label>
-                        <input asp-for="Code" class="form-control bg-light" readonly />
+                        <label class="form-label">Codi</label>
+                        <input type="text" class="form-control bg-light" value="@Model.Code" readonly disabled />
                         <small class="form-text text-muted">El codi no es pot modificar</small>
                     </div>
                     
@@ -42,9 +43,12 @@
                         <label asp-for="Scope" class="form-label">Àmbit</label>
                         <select asp-for="Scope" class="form-select">
                             <option value="">-- Selecciona un àmbit --</option>
-                            <option value="Urbà">Urbà</option>
-                            <option value="Rural">Rural</option>
-                            <option value="Semiurbà">Semiurbà</option>
+                            <option value="Infantil">Infantil</option>
+                            <option value="Primària">Primària</option>
+                            <option value="Infantil i Primària">Infantil i Primària</option>
+                            <option value="Secundària">Secundària</option>
+                            <option value="Batxillerat">Batxillerat</option>
+                            <option value="FP">FP</option>
                         </select>
                         <span asp-validation-for="Scope" class="text-danger"></span>
                     </div>
@@ -60,12 +64,12 @@
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end gap-2 mt-4">
-                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
-                        <i class="bi bi-x-lg"></i> Cancel·lar
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Tornar
                     </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-lg"></i> Guardar Canvis
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-check-circle"></i> Guardar Canvis
                     </button>
                 </div>
             </form>

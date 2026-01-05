@@ -1,56 +1,83 @@
 @model Web.Models.EnrollmentViewModel
 
 @{
-    ViewData["Title"] = "Detalls de la Matrícula";
+    ViewData["Title"] = "Detalls de la Inscripció";
+    var students = ViewBag.Students as IEnumerable<Web.Models.StudentViewModel> ?? new List<Web.Models.StudentViewModel>();
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-journal-text"></i> Detalls de la Matrícula</h2>
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Tornar
-        </a>
+        <h2><i class="bi bi-journal-text"></i> Detalls de la Inscripció</h2>
+        <div id="viewButtons">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Tornar
+            </a>
+            <button type="button" class="btn btn-warning" onclick="enableEditMode()">
+                <i class="bi bi-pencil"></i> Editar
+            </button>
+        </div>
+        <div id="editButtons">
+            <button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+                <i class="bi bi-x-lg"></i> Cancel·lar
+            </button>
+            <button type="button" class="btn btn-success" onclick="submitForm()">
+                <i class="bi bi-check-lg"></i> Guardar
+            </button>
+        </div>
     </div>
 
     <div class="card">
         <div class="card-body">
-            <form>
+            <form id="editForm" asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="Id" />
+                
+                <div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage">Si us plau, omple tots els camps obligatoris correctament.</span>
+                    <button type="button" class="btn-close" onclick="document.getElementById('errorAlert').style.display='none'"></button>
+                </div>
+                
                 <div class="mb-3">
-                    <label class="form-label">Alumne</label>
-                    <input type="text" class="form-control bg-light" value="@Model.StudentName" readonly />
+                    <label class="form-label">Alumne <span class="text-danger edit-only">*</span></label>
+                    <select id="StudentId" name="StudentId" class="form-select" disabled required>
+                        <option value="">-- Selecciona un alumne --</option>
+                        @foreach (var student in students)
+                        {
+                            <!option value="@student.Id" @(student.Id == Model.StudentId ? "selected" : "")>@student.FirstName @student.LastName</!option>
+                        }
+                    </select>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Any Acadèmic</label>
-                        <input type="text" class="form-control bg-light" value="@Model.AcademicYear" readonly />
+                        <label class="form-label">Curs Acadèmic <span class="text-danger edit-only">*</span></label>
+                        <input type="text" id="AcademicYear" name="AcademicYear" class="form-control" value="@Model.AcademicYear" readonly required />
                     </div>
                     
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Curs</label>
-                        <input type="text" class="form-control bg-light" value="@(Model.CourseName ?? "-")" readonly />
+                        <label class="form-label">Nom del Curs</label>
+                        <input type="text" id="CourseName" name="CourseName" class="form-control" value="@(Model.CourseName ?? "")" readonly />
                     </div>
                     
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Estat</label>
-                        <input type="text" class="form-control bg-light" value="@Model.Status" readonly />
+                        <label class="form-label">Estat <span class="text-danger edit-only">*</span></label>
+                        <select id="Status" name="Status" class="form-select" disabled required>
+                            <option value="">-- Selecciona estat --</option>
+                            <!option value="Active" @(Model.Status == "Active" ? "selected" : "")>Active</!option>
+                            <!option value="Cancelled" @(Model.Status == "Cancelled" ? "selected" : "")>Cancelled</!option>
+                            <!option value="Completed" @(Model.Status == "Completed" ? "selected" : "")>Completed</!option>
+                        </select>
                     </div>
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label">Data de Matrícula</label>
-                    <input type="text" class="form-control bg-light" value="@Model.EnrolledAt.ToString("dd/MM/yyyy HH:mm")" readonly />
-                </div>
-
-                <div class="d-flex justify-content-end gap-2">
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="bi bi-x-lg"></i> Tancar
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
-                        <i class="bi bi-pencil"></i> Editar
-                    </a>
+                    <label class="form-label">Data d'Inscripció</label>
+                    <input type="text" class="form-control bg-secondary bg-opacity-10" value="@Model.EnrolledAt.ToString("dd/MM/yyyy HH:mm")" readonly disabled />
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/enrollments-details.js"></script>
+}

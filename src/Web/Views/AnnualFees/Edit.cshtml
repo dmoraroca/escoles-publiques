@@ -17,8 +17,12 @@
                         
                         <div class="mb-3">
                             <label asp-for="EnrollmentId" class="form-label">Inscripció <span class="text-danger">*</span></label>
-                            <select asp-for="EnrollmentId" class="form-select" asp-items="@(new SelectList(ViewBag.Enrollments, "Id", "Description"))">
+                            <select asp-for="EnrollmentId" class="form-select">
                                 <option value="">-- Selecciona una inscripció --</option>
+                                @foreach(var enrollment in ViewBag.Enrollments)
+                                {
+                                    <option value="@enrollment.Id">@enrollment.StudentName - @enrollment.AcademicYear</option>
+                                }
                             </select>
                             <span asp-validation-for="EnrollmentId" class="text-danger"></span>
                         </div>
@@ -49,7 +53,7 @@
                             </label>
                         </div>
 
-                        <div class="mb-3" id="paymentRefGroup" style="display: @(Model.IsPaid ? "block" : "none");">
+                        <div class="mb-3 @(Model.IsPaid ? "visible" : "")" id="paymentRefGroup">
                             <label asp-for="PaymentRef" class="form-label">Referència de pagament</label>
                             <input asp-for="PaymentRef" class="form-control" />
                             <span asp-validation-for="PaymentRef" class="text-danger"></span>
@@ -79,10 +83,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        document.getElementById('isPaidCheck').addEventListener('change', function() {
-            var paymentRefGroup = document.getElementById('paymentRefGroup');
-            paymentRefGroup.style.display = this.checked ? 'block' : 'none';
-        });
-    </script>
+    <script src="~/js/annualfees-create.js"></script>
 }

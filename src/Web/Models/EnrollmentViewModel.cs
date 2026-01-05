@@ -11,4 +11,5 @@ public class EnrollmentViewModel
     public string? EnrollmentType { get; set; }
     public string Status { get; set; } = string.Empty;
     public DateTime EnrolledAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

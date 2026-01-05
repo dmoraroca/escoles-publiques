@@ -4,7 +4,10 @@
 
 @{
     ViewData["Title"] = "Escoles";
-    var modalConfig = ModalConfigFactory.GetSchoolModalConfig();
+    
+    // Obtenir scopes del ViewBag per al modal
+    var scopeOptions = ViewBag.Scopes as List<Web.Models.SelectOption> ?? new List<Web.Models.SelectOption>();
+    var modalConfig = ModalConfigFactory.GetSchoolModalConfig(scopeOptions);
     
     // Configuració de la taula genèrica
     var tableConfig = new TableViewModel<SchoolViewModel>

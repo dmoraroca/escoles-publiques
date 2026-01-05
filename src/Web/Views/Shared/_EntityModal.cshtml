@@ -1,16 +1,23 @@
 @model Web.Models.EntityModalConfig
 
-<div class="modal fade" id="@Model.ModalId" tabindex="-1" aria-labelledby="@(Model.ModalId)Label" aria-hidden="true">
+<div class="modal fade" id="@Model.ModalId" data-modal-id="@Model.ModalId" data-entity-name="@Model.EntityName" tabindex="-1" aria-labelledby="@(Model.ModalId)Label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form asp-controller="@Model.Controller" asp-action="Create" method="post">
+            <form asp-controller="@Model.Controller" asp-action="Create" method="post" class="needs-validation" novalidate>
+                @Html.AntiForgeryToken()
                 <div class="modal-header">
                     <h5 class="modal-title" id="@(Model.ModalId)Label">
                         <i class="bi @Model.IconClass"></i> Crear @Model.EntityName
                     </h5>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <!-- Zona d'alertes per errors de validació -->
+                    <div class="alert alert-danger d-none" role="alert" id="@(Model.ModalId)-error">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span id="@(Model.ModalId)-error-message">Si us plau, omple tots els camps obligatoris correctament.</span>
+                    </div>
+                    
+                    <div class="row"> 
                         @foreach (var field in Model.Fields)
                         {
                             <div class="col-md-@field.ColumnSize mb-3">
@@ -109,6 +116,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Cancel·lar
+                    </button>
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check-lg"></i> Crear @Model.EntityName
                     </button>
@@ -117,3 +127,5 @@
         </div>
     </div>
 </div>
+
+<script src="~/js/entity-modal.js"></script>

@@ -34,7 +34,6 @@ public class StudentsController : BaseController
                 SchoolName = s.School?.Name ?? "Sense escola"
             });
             
-            // Carregar escoles per al dropdown del modal
             var schools = await _schoolService.GetAllSchoolsAsync();
             ViewBag.Schools = schools.Select(s => new SchoolViewModel
             {
@@ -65,8 +64,16 @@ public class StudentsController : BaseController
                 LastName = student.LastName,
                 Email = student.Email ?? "",
                 BirthDate = student.BirthDate.HasValue ? student.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
+                SchoolId = (int)student.SchoolId,
                 SchoolName = student.School?.Name ?? "Sense escola"
             };
+            
+            var schools = await _schoolService.GetAllSchoolsAsync();
+            ViewBag.Schools = schools.Select(s => new SchoolViewModel
+            {
+                Id = (int)s.Id,
+                Name = s.Name
+            }).ToList();
             
             return View(viewModel);
         }
@@ -147,7 +154,6 @@ public class StudentsController : BaseController
                 SchoolName = student.School?.Name ?? ""
             };
             
-            // Carregar escoles per al dropdown
             var schools = await _schoolService.GetAllSchoolsAsync();
             ViewBag.Schools = schools.Select(s => new SchoolViewModel
             {
@@ -179,7 +185,6 @@ public class StudentsController : BaseController
         {
             if (!ModelState.IsValid)
             {
-                // Recarregar escoles si hi ha errors
                 var schools = await _schoolService.GetAllSchoolsAsync();
                 ViewBag.Schools = schools.Select(s => new SchoolViewModel
                 {

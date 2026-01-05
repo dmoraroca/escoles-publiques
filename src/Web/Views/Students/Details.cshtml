@@ -2,57 +2,79 @@
 
 @{
     ViewData["Title"] = "Detalls de l'Alumne";
+    var schools = ViewBag.Schools as IEnumerable<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><i class="bi bi-person"></i> Detalls de l'Alumne</h2>
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Tornar
-        </a>
+        <div id="viewButtons">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Tornar
+            </a>
+            <button type="button" class="btn btn-warning" onclick="enableEditMode()">
+                <i class="bi bi-pencil"></i> Editar
+            </button>
+        </div>
+        <div id="editButtons">
+            <button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+                <i class="bi bi-x-lg"></i> Cancel·lar
+            </button>
+            <button type="button" class="btn btn-success" onclick="submitForm()">
+                <i class="bi bi-check-lg"></i> Guardar
+            </button>
+        </div>
     </div>
 
     <div class="card">
         <div class="card-body">
-            <form>
+            <form id="editForm" asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="Id" />
+                
+                <div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage">Si us plau, omple tots els camps obligatoris correctament.</span>
+                    <button type="button" class="btn-close" onclick="document.getElementById('errorAlert').style.display='none'"></button>
+                </div>
+                
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Nom</label>
-                        <input type="text" class="form-control bg-light" value="@Model.FirstName" readonly />
+                        <label class="form-label">Nom <span class="text-danger edit-only">*</span></label>
+                        <input type="text" id="FirstName" name="FirstName" class="form-control" value="@Model.FirstName" readonly required />
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Cognoms</label>
-                        <input type="text" class="form-control bg-light" value="@Model.LastName" readonly />
+                        <label class="form-label">Cognoms <span class="text-danger edit-only">*</span></label>
+                        <input type="text" id="LastName" name="LastName" class="form-control" value="@Model.LastName" readonly required />
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control bg-light" value="@(Model.Email ?? "-")" readonly />
+                        <input type="email" id="Email" name="Email" class="form-control" value="@(Model.Email ?? "")" readonly />
                     </div>
                     
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Data de Naixement</label>
-                        <input type="text" class="form-control bg-light" value="@(Model.BirthDate?.ToString("dd/MM/yyyy") ?? "-")" readonly />
+                        <input type="date" id="BirthDate" name="BirthDate" class="form-control" value="@(Model.BirthDate?.ToString("yyyy-MM-dd"))" readonly />
                     </div>
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label">Escola</label>
-                    <input type="text" class="form-control bg-light" value="@Model.SchoolName" readonly />
-                </div>
-
-                <div class="d-flex justify-content-end gap-2">
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="bi bi-x-lg"></i> Tancar
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
-                        <i class="bi bi-pencil"></i> Editar
-                    </a>
+                    <label class="form-label">Escola <span class="text-danger edit-only">*</span></label>
+                    <select id="SchoolId" name="SchoolId" class="form-select" disabled required>
+                        <option value="">-- Selecciona una escola --</option>
+                        @foreach (var school in schools)
+                        {
+                            <!option value="@school.Id" @(school.Id == Model.SchoolId ? "selected" : "")>@school.Name</!option>
+                        }
+                    </select>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/students-details.js"></script>
+}

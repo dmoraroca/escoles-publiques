@@ -50,7 +50,6 @@ public class AnnualFeeService : IAnnualFeeService
 
     public async Task<AnnualFee> CreateAnnualFeeAsync(AnnualFee annualFee)
     {
-        // Validacions de negoci
         if (annualFee.Amount <= 0)
         {
             throw new ValidationException("Amount", "L'import ha de ser superior a 0");

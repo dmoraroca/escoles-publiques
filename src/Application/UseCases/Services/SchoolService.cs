@@ -50,7 +50,6 @@ public class SchoolService : ISchoolService
 
     public async Task<School> CreateSchoolAsync(School school)
     {
-        // Validacions de negoci
         if (string.IsNullOrWhiteSpace(school.Code))
         {
             throw new ValidationException("Code", "El codi de l'escola és obligatori");

@@ -1,0 +1,16 @@
+/* Details Pages - Common styles */
+.edit-only {
+    display: none;
+}
+
+.edit-buttons-hidden {
+    display: none;
+}
+
+.alert-hidden {
+    display: none;
+}
+
+.status-display-height {
+    height: 38px;
+}

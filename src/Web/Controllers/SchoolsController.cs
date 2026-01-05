@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Domain.DomainExceptions;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Web.Hubs;
@@ -11,11 +12,13 @@ public class SchoolsController : BaseController
 {
     private readonly ISchoolService _schoolService;
     private readonly IHubContext<SchoolHub> _hubContext;
+    private readonly IScopeRepository _scopeRepository;
 
-    public SchoolsController(ISchoolService schoolService, IHubContext<SchoolHub> hubContext, ILogger<SchoolsController> logger) : base(logger)
+    public SchoolsController(ISchoolService schoolService, IHubContext<SchoolHub> hubContext, IScopeRepository scopeRepository, ILogger<SchoolsController> logger) : base(logger)
     {
         _schoolService = schoolService;
         _hubContext = hubContext;
+        _scopeRepository = scopeRepository;
     }
     
     public async Task<IActionResult> Index()
@@ -33,6 +36,13 @@ public class SchoolsController : BaseController
                 Scope = s.Scope,
                 CreatedAt = s.CreatedAt
             });
+            
+            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            ViewBag.Scopes = scopes.Select(s => new SelectOption
+            {
+                Value = s.Name,
+                Text = s.Name
+            }).ToList();
             
             return View(viewModels);
         }
@@ -60,6 +70,9 @@ public class SchoolsController : BaseController
                 Scope = school.Scope,
                 CreatedAt = school.CreatedAt
             };
+            
+            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            ViewBag.Scopes = scopes.Select(s => s.Name).ToList();
             
             return View(viewModel);
         }
@@ -105,7 +118,6 @@ public class SchoolsController : BaseController
 
             await _schoolService.CreateSchoolAsync(school);
             
-            // Broadcast actualització via SignalR
             await _hubContext.Clients.All.SendAsync("SchoolCreated", new 
             { 
                 id = school.Id,
@@ -195,7 +207,6 @@ public class SchoolsController : BaseController
 
             await _schoolService.UpdateSchoolAsync(school);
             
-            // Broadcast actualització via SignalR
             await _hubContext.Clients.All.SendAsync("SchoolUpdated", new 
             { 
                 id = school.Id,
@@ -246,7 +257,6 @@ public class SchoolsController : BaseController
             
             await _schoolService.DeleteSchoolAsync(id);
             
-            // Broadcast esborrat via SignalR
             await _hubContext.Clients.All.SendAsync("SchoolDeleted", new { id, code });
             
             SetSuccessMessage("Escola esborrada correctament.");

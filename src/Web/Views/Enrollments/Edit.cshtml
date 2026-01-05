@@ -17,8 +17,19 @@
                         
                         <div class="mb-3">
                             <label asp-for="StudentId" class="form-label">Alumne <span class="text-danger">*</span></label>
-                            <select asp-for="StudentId" class="form-select" asp-items="@(new SelectList(ViewBag.Students, "Id", "Name"))">
+                            <select name="StudentId" id="StudentId" class="form-select" required>
                                 <option value="">-- Selecciona un alumne --</option>
+                                @foreach(var student in ViewBag.Students)
+                                {
+                                    if (student.Id == Model.StudentId)
+                                    {
+                                        <option value="@student.Id" selected>@student.FirstName @student.LastName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@student.Id">@student.FirstName @student.LastName</option>
+                                    }
+                                }
                             </select>
                             <span asp-validation-for="StudentId" class="text-danger"></span>
                         </div>

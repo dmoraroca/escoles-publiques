@@ -72,6 +72,15 @@
                 DisplayText = "Detalls",
                 CssClass = "btn-info",
                 Icon = "👁️"
+            },
+            new TableAction 
+            { 
+                ActionName = "Delete", 
+                DisplayText = "Esborrar",
+                CssClass = "btn-danger",
+                Icon = "🗑️",
+                RequiresConfirmation = true,
+                ConfirmationMessage = "Estàs segur que vols esborrar aquesta quota?"
             }
         }
     };

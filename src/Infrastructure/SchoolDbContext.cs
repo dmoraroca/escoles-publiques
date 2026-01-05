@@ -15,6 +15,7 @@ public class SchoolDbContext : DbContext
     public DbSet<Student> Students => Set<Student>();
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
     public DbSet<AnnualFee> AnnualFees => Set<AnnualFee>();
+    public DbSet<Scope> Scopes => Set<Scope>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,6 +59,11 @@ public class SchoolDbContext : DbContext
         modelBuilder.Entity<AnnualFee>(entity =>
         {
             entity.ToTable("annual_fees");
+        });
+        
+        modelBuilder.Entity<Scope>(entity =>
+        {
+            entity.ToTable("scope_mnt");
         });
 
         // Aplica totes les configuracions Fluent API

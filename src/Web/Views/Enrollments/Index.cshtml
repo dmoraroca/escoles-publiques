@@ -1,8 +1,18 @@
+@using Web.Helpers
 @using Web.Models
 @model IEnumerable<Web.Models.EnrollmentViewModel>
 
 @{
     ViewData["Title"] = "Inscripcions";
+    
+    // Obtenir alumnes del ViewBag per al modal
+    var students = ViewBag.Students as List<Web.Models.StudentViewModel> ?? new List<Web.Models.StudentViewModel>();
+    var studentOptions = students.Select(s => new Web.Models.SelectOption 
+    { 
+        Value = s.Id.ToString(), 
+        Text = $"{s.FirstName} {s.LastName}" 
+    }).ToList();
+    var modalConfig = ModalConfigFactory.GetEnrollmentModalConfig(studentOptions);
     
     // Configuració de la taula genèrica per inscripcions
     var tableConfig = new TableViewModel<EnrollmentViewModel>
@@ -55,6 +65,15 @@
                 DisplayText = "Detalls",
                 CssClass = "btn-info",
                 Icon = "👁️"
+            },
+            new TableAction 
+            { 
+                ActionName = "Delete", 
+                DisplayText = "Esborrar",
+                CssClass = "btn-danger",
+                Icon = "🗑️",
+                RequiresConfirmation = true,
+                ConfirmationMessage = "Estàs segur que vols esborrar aquesta inscripció?"
             }
         }
     };
@@ -63,9 +82,9 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Inscripcions</h2>
-        <a asp-action="Create" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#@modalConfig.ModalId">
             <i class="bi bi-plus-lg"></i> Nova Inscripció
-        </a>
+        </button>
     </div>
 
     <div class="card">
@@ -74,3 +93,5 @@
         </div>
     </div>
 </div>
+
+@await Html.PartialAsync("_EntityModal", modalConfig)

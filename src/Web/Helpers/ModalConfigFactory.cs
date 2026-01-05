@@ -4,7 +4,7 @@ namespace Web.Helpers;
 
 public static class ModalConfigFactory
 {
-    public static EntityModalConfig GetSchoolModalConfig()
+    public static EntityModalConfig GetSchoolModalConfig(List<SelectOption> scopeOptions)
     {
         return new EntityModalConfig
         {
@@ -51,12 +51,7 @@ public static class ModalConfigFactory
                     Type = "select",
                     Required = false,
                     ColumnSize = 6,
-                    Options = new List<SelectOption>
-                    {
-                        new SelectOption { Value = "Urbà", Text = "Urbà" },
-                        new SelectOption { Value = "Rural", Text = "Rural" },
-                        new SelectOption { Value = "Semiurbà", Text = "Semiurbà" }
-                    }
+                    Options = scopeOptions
                 },
                 new ModalField
                 {
@@ -125,7 +120,7 @@ public static class ModalConfigFactory
     {
         return new EntityModalConfig
         {
-            EntityName = "Matrícula",
+            EntityName = "Inscripció",
             ModalId = "createEnrollmentModal",
             Controller = "Enrollments",
             IconClass = "bi-journal-text",
@@ -137,56 +132,39 @@ public static class ModalConfigFactory
                     Label = "Alumne",
                     Type = "select",
                     Required = true,
-                    ColumnSize = 6,
+                    ColumnSize = 12,
                     Options = studentOptions
                 },
                 new ModalField
                 {
-                    Name = "Year",
-                    Label = "Any",
-                    Type = "number",
+                    Name = "AcademicYear",
+                    Label = "Any acadèmic",
+                    Type = "text",
                     Required = true,
-                    ColumnSize = 4,
-                    Placeholder = "Ex: 2024"
+                    ColumnSize = 12,
+                    Placeholder = "Ex: 2024-2025"
                 },
                 new ModalField
                 {
                     Name = "CourseName",
-                    Label = "Curs",
-                    Type = "select",
+                    Label = "Nom del curs",
+                    Type = "text",
                     Required = false,
-                    ColumnSize = 4,
-                    Options = new List<SelectOption>
-                    {
-                        new SelectOption { Value = "1r Infantil", Text = "1r Infantil" },
-                        new SelectOption { Value = "2n Infantil", Text = "2n Infantil" },
-                        new SelectOption { Value = "3r Infantil", Text = "3r Infantil" },
-                        new SelectOption { Value = "1r Primària", Text = "1r Primària" },
-                        new SelectOption { Value = "2n Primària", Text = "2n Primària" },
-                        new SelectOption { Value = "3r Primària", Text = "3r Primària" },
-                        new SelectOption { Value = "4t Primària", Text = "4t Primària" },
-                        new SelectOption { Value = "5è Primària", Text = "5è Primària" },
-                        new SelectOption { Value = "6è Primària", Text = "6è Primària" },
-                        new SelectOption { Value = "1r ESO", Text = "1r ESO" },
-                        new SelectOption { Value = "2n ESO", Text = "2n ESO" },
-                        new SelectOption { Value = "3r ESO", Text = "3r ESO" },
-                        new SelectOption { Value = "4t ESO", Text = "4t ESO" },
-                        new SelectOption { Value = "1r Batxillerat", Text = "1r Batxillerat" },
-                        new SelectOption { Value = "2n Batxillerat", Text = "2n Batxillerat" }
-                    }
+                    ColumnSize = 12,
+                    Placeholder = "Ex: 1r ESO, 2n Batxillerat, etc."
                 },
                 new ModalField
                 {
-                    Name = "EnrollmentType",
-                    Label = "Tipus",
+                    Name = "Status",
+                    Label = "Estat",
                     Type = "select",
-                    Required = false,
-                    ColumnSize = 4,
+                    Required = true,
+                    ColumnSize = 12,
                     Options = new List<SelectOption>
                     {
-                        new SelectOption { Value = "Ordinària", Text = "Ordinària" },
-                        new SelectOption { Value = "Extraordinària", Text = "Extraordinària" },
-                        new SelectOption { Value = "Trasllat", Text = "Trasllat" }
+                        new SelectOption { Value = "Activa", Text = "Activa" },
+                        new SelectOption { Value = "Pendent", Text = "Pendent" },
+                        new SelectOption { Value = "Cancel·lada", Text = "Cancel·lada" }
                     }
                 }
             }

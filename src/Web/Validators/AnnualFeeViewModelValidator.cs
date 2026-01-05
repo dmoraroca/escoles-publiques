@@ -9,20 +9,14 @@ public class AnnualFeeViewModelValidator : AbstractValidator<AnnualFeeViewModel>
     {
         RuleFor(x => x.EnrollmentId)
             .GreaterThan(0)
-            .WithMessage("Has de seleccionar una matrícula vàlida");
+            .WithMessage("Has de seleccionar una inscripció vàlida");
 
         RuleFor(x => x.Amount)
-            .NotEmpty()
-            .WithMessage("L'import és obligatori")
             .GreaterThan(0)
-            .WithMessage("L'import ha de ser superior a zero")
-            .LessThanOrEqualTo(100000)
-            .WithMessage("L'import no pot superar els 100.000€");
+            .WithMessage("L'import ha de ser superior a zero");
 
         RuleFor(x => x.DueDate)
             .NotEmpty()
-            .WithMessage("La data de venciment és obligatòria")
-            .GreaterThanOrEqualTo(DateTime.Now.AddDays(-365))
-            .WithMessage("La data de venciment no pot ser anterior a fa un any");
+            .WithMessage("La data de venciment és obligatòria");
     }
 }

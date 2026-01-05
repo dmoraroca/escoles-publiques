@@ -7,40 +7,72 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><i class="bi bi-building"></i> Detalls de l'Escola</h2>
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Tornar
-        </a>
+        <div id="viewButtons">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Tornar
+            </a>
+            <button type="button" class="btn btn-warning" data-action="edit">
+                <i class="bi bi-pencil"></i> Editar
+            </button>
+        </div>
+        <div id="editButtons" class="edit-buttons-hidden">
+            <button type="button" class="btn btn-secondary" data-action="cancel">
+                <i class="bi bi-x-lg"></i> Cancel·lar
+            </button>
+            <button type="button" class="btn btn-success" data-action="submit">
+                <i class="bi bi-check-lg"></i> Guardar
+            </button>
+        </div>
     </div>
 
     <div class="card">
         <div class="card-body">
-            <form>
+            <form id="editForm" asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Code" />
+                
+                <div id="errorAlert" class="alert alert-danger alert-dismissible fade show alert-hidden" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage">Si us plau, omple tots els camps obligatoris correctament.</span>
+                    <button type="button" class="btn-close" data-action="close-alert"></button>
+                </div>
+                
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Codi</label>
-                        <input type="text" class="form-control bg-light" value="@Model.Code" readonly />
+                        <input type="text" class="form-control bg-secondary bg-opacity-10" value="@Model.Code" readonly disabled />
+                        <small class="form-text text-muted">El codi no es pot modificar</small>
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Ciutat</label>
-                        <input type="text" class="form-control bg-light" value="@Model.City" readonly />
+                        <label class="form-label">Ciutat <span class="text-danger edit-only">*</span></label>
+                        <input type="text" id="City" name="City" class="form-control" value="@Model.City" readonly required />
                     </div>
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label">Nom</label>
-                    <input type="text" class="form-control bg-light" value="@Model.Name" readonly />
+                    <label class="form-label">Nom <span class="text-danger edit-only">*</span></label>
+                    <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" readonly required />
                 </div>
                 
                 <div class="row">
                     <div class="col-md-8 mb-3">
                         <label class="form-label">Àmbit</label>
-                        <input type="text" class="form-control bg-light" value="@(Model.Scope ?? "-")" readonly />
+                        <select id="Scope" name="Scope" class="form-select" disabled>
+                            <option value="">-- Selecciona un àmbit --</option>
+                            @{
+                                var scopes = ViewBag.Scopes as List<string> ?? new List<string>();
+                                foreach (var scope in scopes)
+                                {
+                                    <option value="@scope" selected="@(Model.Scope == scope)">@scope</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Àmbit és obligatori</div>
                     </div>
                     
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Favorita</label>
-                        <div class="form-control bg-light d-flex align-items-center" style="height: 38px;">
+                        <div class="form-control bg-light d-flex align-items-center form-control-display" id="favoriteDisplay">
                             @if (Model.IsFavorite)
                             {
                                 <span class="star-icon star-filled">★</span>
@@ -52,23 +84,25 @@
                                 <span class="ms-2">No</span>
                             }
                         </div>
+                        <div class="form-check mt-2" id="favoriteEdit">
+                            <input type="checkbox" id="IsFavorite" name="IsFavorite" value="true" class="form-check-input" @(Model.IsFavorite ? "checked" : "") />
+                            <label class="form-check-label" for="IsFavorite">
+                                Favorita <span class="star-icon star-filled">★</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label class="form-label">Data de creació</label>
-                    <input type="text" class="form-control bg-light" value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" readonly />
-                </div>
-
-                <div class="d-flex justify-content-end gap-2">
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="bi bi-x-lg"></i> Tancar
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
-                        <i class="bi bi-pencil"></i> Editar
-                    </a>
+                    <input type="text" class="form-control bg-secondary bg-opacity-10" value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" readonly disabled />
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/details.css" />
+    <script src="~/js/schools-details.js"></script>
+}

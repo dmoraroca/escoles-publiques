@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     
     <link rel="stylesheet" href="~/css/gencat-theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/details-pages.css" asp-append-version="true" />
 </head>
 <body class="d-flex flex-column h-100">
     <header>
@@ -100,61 +101,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@@latest/dist/browser/signalr.min.js"></script>
-    
-    <!-- SignalR Global Scripts -->
-    <script>
-        // Connexió SignalR global per actualitzacions en temps real
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/schoolHub")
-            .withAutomaticReconnect()
-            .build();
-
-        // Funció per recarregar la pàgina actual
-        function reloadCurrentPage() {
-            console.log('🔄 Recàrrega automàtica per canvis detectats...');
-            setTimeout(() => location.reload(), 1000);
-        }
-
-        // Esdeveniment: nova escola creada
-        connection.on("SchoolCreated", function (school) {
-            console.log('✅ Nova escola creada:', school.name);
-            
-            // Si estem a la pàgina d'escoles, recarreguem
-            if (window.location.pathname.includes('/Schools')) {
-                reloadCurrentPage();
-            }
-        });
-
-        // Esdeveniment: escola actualitzada
-        connection.on("SchoolUpdated", function (school) {
-            console.log('🔄 Escola actualitzada:', school.name);
-            
-            // Si estem a la pàgina d'escoles, recarreguem
-            if (window.location.pathname.includes('/Schools')) {
-                reloadCurrentPage();
-            }
-        });
-
-        // Esdeveniment: escola esborrada
-        connection.on("SchoolDeleted", function (data) {
-            console.log('🗑️ Escola esborrada amb ID:', data.id);
-            
-            // Si estem a la pàgina d'escoles, recarreguem
-            if (window.location.pathname.includes('/Schools')) {
-                reloadCurrentPage();
-            }
-        });
-
-        // Iniciar connexió SignalR
-        connection.start()
-            .then(() => console.log('✅ SignalR connectat correctament'))
-            .catch(err => console.error('❌ Error connectant SignalR:', err));
-
-        // Reconnexió automàtica
-        connection.onreconnecting(() => console.log('🔄 Reconnectant SignalR...'));
-        connection.onreconnected(() => console.log('✅ SignalR reconnectat'));
-        connection.onclose(() => console.log('❌ Connexió SignalR tancada'));
-    </script>
+    <script src="~/js/signalr-connection.js"></script>
     
     @await RenderSectionAsync("Scripts", required: false)
 </body>
