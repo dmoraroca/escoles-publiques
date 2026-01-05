@@ -1,3 +1,4 @@
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
@@ -5,15 +6,22 @@ namespace Web.ViewComponents;
 
 public class ScopesViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    private readonly IScopeRepository _scopeRepository;
+
+    public ScopesViewComponent(IScopeRepository scopeRepository)
     {
-        var scopes = new List<ScopeViewModel>
+        _scopeRepository = scopeRepository;
+    }
+
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+        var scopeViewModels = scopes.Select(s => new ScopeViewModel
         {
-            new ScopeViewModel { Name = "Escoles públiques", Url = "#" },
-            new ScopeViewModel { Name = "Escoles privades", Url = "#" },
-            new ScopeViewModel { Name = "Formació professional", Url = "#" }
-        };
+            Name = s.Name,
+            Url = "#" // Pots canviar per una URL real si cal
+        }).ToList();
         
-        return View(scopes);
+        return View(scopeViewModels);
     }
 }

@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
@@ -5,15 +6,27 @@ namespace Web.ViewComponents;
 
 public class FavoriteSchoolsViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    private readonly ISchoolService _schoolService;
+
+    public FavoriteSchoolsViewComponent(ISchoolService schoolService)
     {
-        var favoriteSchools = new List<FavoriteSchoolViewModel>
-        {
-            new FavoriteSchoolViewModel { Id = 1, Name = "Escola Pia de Sarrià", Municipality = "Barcelona", Url = "#" },
-            new FavoriteSchoolViewModel { Id = 2, Name = "Institut Montserrat", Municipality = "Barcelona", Url = "#" },
-            new FavoriteSchoolViewModel { Id = 3, Name = "Col·legi Sagrada Família", Municipality = "Sabadell", Url = "#" },
-            new FavoriteSchoolViewModel { Id = 4, Name = "Escola Joan Maragall", Municipality = "Girona", Url = "#" }
-        };
+        _schoolService = schoolService;
+    }
+
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        var schools = await _schoolService.GetAllSchoolsAsync();
+        var favoriteSchools = schools
+            .Where(s => s.IsFavorite)
+            .Take(10)
+            .Select(s => new FavoriteSchoolViewModel
+            {
+                Id = (int)s.Id,
+                Name = s.Name,
+                Municipality = s.City ?? "Sense ciutat",
+                Url = Url.Action("Details", "Schools", new { id = s.Id })
+            })
+            .ToList();
         
         return View(favoriteSchools);
     }
