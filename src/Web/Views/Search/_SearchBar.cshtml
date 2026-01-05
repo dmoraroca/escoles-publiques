@@ -1,10 +1,17 @@
 <!-- Component de cerca -->
 <div>
     <h1 class="hero-title mb-4">educacio.gencat<span class="text-dark">.cat</span></h1>
-    <form asp-controller="Search" asp-action="Search" method="get">
+    <form asp-controller="Home" asp-action="Index" method="get">
+        <input type="hidden" name="scopeName" value="@ViewContext.HttpContext.Request.Query["scopeName"]">
         <div class="input-group input-group-lg mb-3">
-            <input type="text" name="query" class="form-control" placeholder="Cercar alumnes, escoles...">
+            <input type="text" name="searchQuery" class="form-control" placeholder="Cercar alumnes, escoles..." value="@ViewContext.HttpContext.Request.Query["searchQuery"]">
             <button class="btn search-btn" type="submit">🔍</button>
         </div>
+        @if (!string.IsNullOrEmpty(ViewContext.HttpContext.Request.Query["scopeName"]))
+        {
+            <div class="alert alert-info mb-3 d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-funnel"></i> Filtrant per àmbit: <strong>@ViewContext.HttpContext.Request.Query["scopeName"]</strong></span>
+            </div>
+        }
     </form>
 </div>

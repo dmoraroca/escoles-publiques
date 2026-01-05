@@ -9,7 +9,7 @@
         <div class="scope-grid">
             @foreach (var item in Model)
             {
-                <a href="@item.Url" class="scope-item">
+                <a href="@Url.Action("Index", "Home", new { scopeName = item.Name })" class="scope-item">
                     <span class="scope-text">@item.Name</span>
                 </a>
             }

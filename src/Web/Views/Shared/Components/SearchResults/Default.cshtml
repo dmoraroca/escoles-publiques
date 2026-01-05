@@ -1,0 +1,260 @@
+@model Web.Models.SearchResultsViewModel
+
+@if (!Model.HasResults)
+{
+    <section class="search-results-section">
+        <div class="container">
+            <div class="results-header fade-in">
+                <h2 class="results-title">
+                    <i class="bi bi-search"></i> Resultats de la cerca
+                    @if (!string.IsNullOrEmpty(Model.SearchQuery))
+                    {
+                        <span class="search-term">"@Model.SearchQuery"</span>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.ScopeName))
+                    {
+                        <span class="scope-badge">@Model.ScopeName</span>
+                    }
+                </h2>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-clear" title="Netejar cerca">
+                    <i class="bi bi-x-circle"></i> Netejar cerca
+                </a>
+                <div class="red-divider"></div>
+            </div>
+            
+            <div class="no-results fade-in-delayed">
+                <div class="no-results-icon">
+                    <i class="bi bi-inbox"></i>
+                </div>
+                <p class="no-results-text">No s'ha trobat cap informació</p>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <section class="search-results-section">
+        <div class="container">
+            <div class="results-header fade-in">
+                <h2 class="results-title">
+                    <i class="bi bi-search"></i> Resultats de la cerca
+                    @if (!string.IsNullOrEmpty(Model.SearchQuery))
+                    {
+                        <span class="search-term">"@Model.SearchQuery"</span>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.ScopeName))
+                    {
+                        <span class="scope-badge">@Model.ScopeName</span>
+                    }
+                </h2>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-clear" title="Netejar cerca">
+                    <i class="bi bi-x-circle"></i> Netejar cerca
+                </a>
+                <div class="red-divider"></div>
+            </div>
+
+            <div class="results-accordion">
+                <!-- ESCOLES -->
+                @if (Model.Schools.Any())
+                {
+                    <div class="accordion-item fade-in-up" style="animation-delay: 0.1s">
+                        <button class="accordion-header" data-bs-toggle="collapse" data-bs-target="#schoolsCollapse">
+                            <div class="header-content">
+                                <i class="bi bi-building"></i>
+                                <span class="header-title">Escoles</span>
+                                <span class="results-count">@Model.Schools.Count</span>
+                            </div>
+                            <i class="bi bi-chevron-down accordion-icon"></i>
+                        </button>
+                        <div id="schoolsCollapse" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <div class="results-table-wrapper">
+                                    <table class="results-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Codi</th>
+                                                <th>Ciutat</th>
+                                                <th>Àmbit</th>
+                                                <th>Accions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var school in Model.Schools)
+                                            {
+                                                <tr class="table-row-hover">
+                                                    <td class="font-weight-bold">@school.Name</td>
+                                                    <td><span class="code-badge">@school.Code</span></td>
+                                                    <td>@(school.City ?? "-")</td>
+                                                    <td>@(school.Scope ?? "-")</td>
+                                                    <td>
+                                                        <a href="@Url.Action("Details", "Schools", new { id = school.Id })" class="btn-view-detail">
+                                                            <i class="bi bi-eye"></i> Veure
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- ALUMNES -->
+                @if (Model.Students.Any())
+                {
+                    <div class="accordion-item fade-in-up" style="animation-delay: 0.2s">
+                        <button class="accordion-header collapsed" data-bs-toggle="collapse" data-bs-target="#studentsCollapse">
+                            <div class="header-content">
+                                <i class="bi bi-person"></i>
+                                <span class="header-title">Alumnes</span>
+                                <span class="results-count">@Model.Students.Count</span>
+                            </div>
+                            <i class="bi bi-chevron-down accordion-icon"></i>
+                        </button>
+                        <div id="studentsCollapse" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <div class="results-table-wrapper">
+                                    <table class="results-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Cognoms</th>
+                                                <th>Email</th>
+                                                <th>Escola</th>
+                                                <th>Accions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var student in Model.Students)
+                                            {
+                                                <tr class="table-row-hover">
+                                                    <td class="font-weight-bold">@student.FirstName</td>
+                                                    <td>@student.LastName</td>
+                                                    <td><span class="email-text">@student.Email</span></td>
+                                                    <td>@(student.SchoolName ?? "-")</td>
+                                                    <td>
+                                                        <a href="@Url.Action("Details", "Students", new { id = student.Id })" class="btn-view-detail">
+                                                            <i class="bi bi-eye"></i> Veure
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- INSCRIPCIONS -->
+                @if (Model.Enrollments.Any())
+                {
+                    <div class="accordion-item fade-in-up" style="animation-delay: 0.3s">
+                        <button class="accordion-header collapsed" data-bs-toggle="collapse" data-bs-target="#enrollmentsCollapse">
+                            <div class="header-content">
+                                <i class="bi bi-calendar-check"></i>
+                                <span class="header-title">Inscripcions</span>
+                                <span class="results-count">@Model.Enrollments.Count</span>
+                            </div>
+                            <i class="bi bi-chevron-down accordion-icon"></i>
+                        </button>
+                        <div id="enrollmentsCollapse" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <div class="results-table-wrapper">
+                                    <table class="results-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Alumne</th>
+                                                <th>Escola</th>
+                                                <th>Curs</th>
+                                                <th>Data</th>
+                                                <th>Accions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var enrollment in Model.Enrollments)
+                                            {
+                                                <tr class="table-row-hover">
+                                                    <td class="font-weight-bold">@enrollment.StudentName</td>
+                                                    <td>@enrollment.SchoolName</td>
+                                                    <td><span class="year-badge">@enrollment.AcademicYear</span></td>
+                                                    <td>@enrollment.EnrollmentDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>
+                                                        <a href="@Url.Action("Details", "Enrollments", new { id = enrollment.Id })" class="btn-view-detail">
+                                                            <i class="bi bi-eye"></i> Veure
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- QUOTES -->
+                @if (Model.AnnualFees.Any())
+                {
+                    <div class="accordion-item fade-in-up" style="animation-delay: 0.4s">
+                        <button class="accordion-header collapsed" data-bs-toggle="collapse" data-bs-target="#feesCollapse">
+                            <div class="header-content">
+                                <i class="bi bi-cash-coin"></i>
+                                <span class="header-title">Quotes Anuals</span>
+                                <span class="results-count">@Model.AnnualFees.Count</span>
+                            </div>
+                            <i class="bi bi-chevron-down accordion-icon"></i>
+                        </button>
+                        <div id="feesCollapse" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <div class="results-table-wrapper">
+                                    <table class="results-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Alumne</th>
+                                                <th>Import</th>
+                                                <th>Venciment</th>
+                                                <th>Estat</th>
+                                                <th>Accions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var fee in Model.AnnualFees)
+                                            {
+                                                <tr class="table-row-hover">
+                                                    <td class="font-weight-bold">@fee.StudentName</td>
+                                                    <td><span class="amount-text">@fee.Amount.ToString("N2") @fee.Currency</span></td>
+                                                    <td>@fee.DueDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>
+                                                        @if (fee.IsPaid)
+                                                        {
+                                                            <span class="status-badge status-paid">Pagada</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="status-badge status-pending">Pendent</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a href="@Url.Action("Details", "AnnualFees", new { id = fee.Id })" class="btn-view-detail">
+                                                            <i class="bi bi-eye"></i> Veure
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}

@@ -54,7 +54,40 @@ body { font-family: 'Open Sans', sans-serif; color: #333; }
     padding-left: 0;
     margin-bottom: 1.5rem;
 }
-.search-btn { background-color: var(--gencat-red); border: none; color: white; }
+.search-btn { 
+    background-color: var(--gencat-red); 
+    border: none; 
+    color: white; 
+    padding: 0.5rem 1.5rem;
+    font-size: 1.5rem;
+    transition: all 0.3s;
+}
+.search-btn:hover {
+    background-color: #990000;
+    color: white;
+}
+
+.btn-clear {
+    background-color: #6c757d;
+    border: none;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: 600;
+}
+.btn-clear:hover {
+    background-color: #5a6268;
+    color: white;
+    transform: translateY(-2px);
+}
+.btn-clear i {
+    font-size: 1.2rem;
+}
 
 /* Banner Vermell */
 .info-banner { 

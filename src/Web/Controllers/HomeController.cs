@@ -10,8 +10,10 @@ public class HomeController : BaseController
     {
     }
 
-    public IActionResult Index()
+    public IActionResult Index(string? searchQuery, string? scopeName)
     {
+        ViewBag.SearchQuery = searchQuery;
+        ViewBag.ScopeName = scopeName;
         return View();
     }
 

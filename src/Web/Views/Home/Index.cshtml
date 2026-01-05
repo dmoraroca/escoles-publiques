@@ -2,6 +2,10 @@
     ViewData["Title"] = "Inici";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/search-results.css" />
+}
+
 <!-- Hero Section with Search -->
 <section class="hero-section bg-light py-5">
     <div class="container">
@@ -21,3 +25,9 @@
 
 <!-- Component 3: Àmbits -->
 @await Component.InvokeAsync("Scopes")
+
+<!-- Component 4: Resultats de cerca (només si hi ha cerca) -->
+@if (!string.IsNullOrEmpty(ViewBag.SearchQuery as string) || !string.IsNullOrEmpty(ViewBag.ScopeName as string))
+{
+    @await Component.InvokeAsync("SearchResults", new { searchQuery = ViewBag.SearchQuery, scopeName = ViewBag.ScopeName })
+}

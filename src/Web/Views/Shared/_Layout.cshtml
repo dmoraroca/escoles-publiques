@@ -12,6 +12,8 @@
     
     <link rel="stylesheet" href="~/css/gencat-theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/details-pages.css" asp-append-version="true" />
+    
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="d-flex flex-column h-100">
     <header>
