@@ -18,6 +18,7 @@ public class AnnualFeeRepository : IAnnualFeeRepository
         return await _context.AnnualFees
             .Include(af => af.Enrollment)
                 .ThenInclude(e => e.Student)
+                    .ThenInclude(s => s.User)
             .OrderByDescending(af => af.DueDate)
             .ToListAsync();
     }
@@ -27,6 +28,7 @@ public class AnnualFeeRepository : IAnnualFeeRepository
         return await _context.AnnualFees
             .Include(af => af.Enrollment)
                 .ThenInclude(e => e.Student)
+                    .ThenInclude(s => s.User)
             .FirstOrDefaultAsync(af => af.Id == id);
     }
 

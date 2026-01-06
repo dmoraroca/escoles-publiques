@@ -3,8 +3,10 @@ using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
+using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+[Authorize]
 public class AnnualFeesController : BaseController
 {
     private readonly IAnnualFeeService _annualFeeService;
@@ -27,8 +29,8 @@ public class AnnualFeesController : BaseController
             var viewModels = fees.Select(f => new AnnualFeeViewModel
             {
                 Id = (int)f.Id,
-                EnrollmentInfo = f.Enrollment?.Student != null 
-                    ? $"{f.Enrollment.Student.FirstName} {f.Enrollment.Student.LastName} - {f.Enrollment.AcademicYear}"
+                EnrollmentInfo = f.Enrollment?.Student?.User != null 
+                    ? $"{f.Enrollment.Student.User.FirstName} {f.Enrollment.Student.User.LastName} - {f.Enrollment.AcademicYear}"
                     : "Inscripció desconeguda",
                 Amount = f.Amount,
                 Currency = f.Currency,
@@ -41,7 +43,7 @@ public class AnnualFeesController : BaseController
             ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
             {
                 Id = (int)e.Id,
-                StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "Alumne desconegut",
+                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
                 AcademicYear = e.AcademicYear
             }).ToList();
             
@@ -65,8 +67,8 @@ public class AnnualFeesController : BaseController
             {
                 Id = (int)fee.Id,
                 EnrollmentId = (int)fee.EnrollmentId,
-                EnrollmentInfo = fee.Enrollment?.Student != null 
-                    ? $"{fee.Enrollment.Student.FirstName} {fee.Enrollment.Student.LastName} - {fee.Enrollment.AcademicYear}"
+                EnrollmentInfo = fee.Enrollment?.Student?.User != null 
+                    ? $"{fee.Enrollment.Student.User.FirstName} {fee.Enrollment.Student.User.LastName} - {fee.Enrollment.AcademicYear}"
                     : "Inscripció desconeguda",
                 Amount = fee.Amount,
                 Currency = fee.Currency,
@@ -79,7 +81,7 @@ public class AnnualFeesController : BaseController
             ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
             {
                 Id = (int)e.Id,
-                StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "Alumne desconegut",
+                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
                 AcademicYear = e.AcademicYear
             }).ToList();
             
@@ -105,8 +107,10 @@ public class AnnualFeesController : BaseController
         ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
         {
             Id = (int)e.Id,
-            StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "Alumne desconegut",
-            AcademicYear = e.AcademicYear
+            StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+            AcademicYear = e.AcademicYear,
+            CourseName = e.CourseName,
+            EnrolledAt = e.EnrolledAt
         }).ToList();
         
         return View();
@@ -169,8 +173,8 @@ public class AnnualFeesController : BaseController
             {
                 Id = (int)annualFee.Id,
                 EnrollmentId = (int)annualFee.EnrollmentId,
-                EnrollmentInfo = annualFee.Enrollment?.Student != null 
-                    ? $"{annualFee.Enrollment.Student.FirstName} {annualFee.Enrollment.Student.LastName} - {annualFee.Enrollment.AcademicYear}"
+                EnrollmentInfo = annualFee.Enrollment?.Student?.User != null 
+                    ? $"{annualFee.Enrollment.Student.User.FirstName} {annualFee.Enrollment.Student.User.LastName} - {annualFee.Enrollment.AcademicYear}"
                     : "Inscripció desconeguda",
                 Amount = annualFee.Amount,
                 Currency = annualFee.Currency,
@@ -185,8 +189,10 @@ public class AnnualFeesController : BaseController
             ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
             {
                 Id = (int)e.Id,
-                StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "Alumne desconegut",
-                AcademicYear = e.AcademicYear
+                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+                AcademicYear = e.AcademicYear,
+                CourseName = e.CourseName,
+                EnrolledAt = e.EnrolledAt
             }).ToList();
             
             return View(viewModel);
@@ -211,8 +217,9 @@ public class AnnualFeesController : BaseController
     {
         try
         {
-            // Log del valor rebut
-            Logger.LogInformation("Edit POST - Amount rebut: {Amount}", model.Amount);
+            Logger.LogInformation("=== EDIT POST ===");
+            Logger.LogInformation("Amount rebut del formulari: {Amount}", model.Amount);
+            Logger.LogInformation("Model.Amount tipus: {Type}", model.Amount.GetType());
             
             if (!ModelState.IsValid)
             {
@@ -221,8 +228,10 @@ public class AnnualFeesController : BaseController
                 ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
                 {
                     Id = (int)e.Id,
-                    StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "Alumne desconegut",
-                    AcademicYear = e.AcademicYear
+                    StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+                    AcademicYear = e.AcademicYear,
+                    CourseName = e.CourseName,
+                    EnrolledAt = e.EnrolledAt
                 }).ToList();
                 
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
@@ -230,6 +239,8 @@ public class AnnualFeesController : BaseController
             }
 
             var annualFee = await _annualFeeService.GetAnnualFeeByIdAsync(model.Id);
+            
+            Logger.LogInformation("Amount ABANS d'actualitzar: {OldAmount}", annualFee.Amount);
             
             // Actualitzar tots els camps exactament com en Create
             annualFee.EnrollmentId = model.EnrollmentId;
@@ -239,7 +250,11 @@ public class AnnualFeesController : BaseController
             annualFee.PaidAt = model.IsPaid ? DateTime.Now : null;
             annualFee.PaymentRef = model.PaymentRef;
 
+            Logger.LogInformation("Amount DESPRÉS d'assignar: {NewAmount}", annualFee.Amount);
+
             await _annualFeeService.UpdateAnnualFeeAsync(annualFee);
+            
+            Logger.LogInformation("Quota actualitzada correctament");
             
             SetSuccessMessage("Quota actualitzada correctament.");
             return RedirectToAction(nameof(Details), new { id = model.Id });
@@ -265,6 +280,7 @@ public class AnnualFeesController : BaseController
     }
     
     [HttpPost]
+[HttpPost]
     public async Task<IActionResult> Delete(int id)
     {
         try
@@ -284,6 +300,37 @@ public class AnnualFeesController : BaseController
         {
             Logger.LogError(ex, "Error esborrant quota {Id}", id);
             SetErrorMessage("Error al esborrar la quota.");
+            return RedirectToAction(nameof(Index));
+        }
+    }
+    
+    // MÈTODE TEMPORAL PER CORREGIR IMPORTS
+    [HttpGet]
+    public async Task<IActionResult> FixAmounts()
+    {
+        try
+        {
+            var allFees = await _annualFeeService.GetAllAnnualFeesAsync();
+            int count = 0;
+            
+            foreach (var fee in allFees)
+            {
+                // Si l'import és massa gran (probablement multiplicat per 100)
+                if (fee.Amount > 10000)
+                {
+                    fee.Amount = fee.Amount / 100;
+                    await _annualFeeService.UpdateAnnualFeeAsync(fee);
+                    count++;
+                }
+            }
+            
+            SetSuccessMessage($"{count} quotes corregides correctament.");
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error corregint imports de quotes");
+            SetErrorMessage("Error al corregir les quotes.");
             return RedirectToAction(nameof(Index));
         }
     }

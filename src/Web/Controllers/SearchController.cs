@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
+using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
 public class SearchController : Controller

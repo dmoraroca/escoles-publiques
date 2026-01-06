@@ -3,8 +3,10 @@ using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
+using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+[Authorize]
 public class EnrollmentsController : BaseController
 {
     private readonly IEnrollmentService _enrollmentService;
@@ -27,7 +29,7 @@ public class EnrollmentsController : BaseController
             var viewModels = enrollments.Select(e => new EnrollmentViewModel
             {
                 Id = (int)e.Id,
-                StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "Alumne desconegut",
+                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
                 AcademicYear = e.AcademicYear,
                 Status = e.Status,
                 EnrolledAt = e.EnrolledAt
@@ -37,8 +39,8 @@ public class EnrollmentsController : BaseController
             ViewBag.Students = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
-                FirstName = s.FirstName,
-                LastName = s.LastName
+                FirstName = s.User?.FirstName ?? "",
+                LastName = s.User?.LastName ?? ""
             }).ToList();
             
             return View(viewModels);
@@ -61,7 +63,7 @@ public class EnrollmentsController : BaseController
             {
                 Id = (int)enrollment.Id,
                 StudentId = (int)enrollment.StudentId,
-                StudentName = enrollment.Student != null ? $"{enrollment.Student.FirstName} {enrollment.Student.LastName}" : "Alumne desconegut",
+                StudentName = enrollment.Student?.User != null ? $"{enrollment.Student.User.FirstName} {enrollment.Student.User.LastName}" : "Alumne desconegut",
                 AcademicYear = enrollment.AcademicYear,
                 CourseName = enrollment.CourseName,
                 Status = enrollment.Status,
@@ -72,8 +74,8 @@ public class EnrollmentsController : BaseController
             ViewBag.Students = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
-                FirstName = s.FirstName,
-                LastName = s.LastName
+                FirstName = s.User?.FirstName ?? "",
+                LastName = s.User?.LastName ?? ""
             }).ToList();
             
             return View(viewModel);
@@ -98,8 +100,8 @@ public class EnrollmentsController : BaseController
         ViewBag.Students = students.Select(s => new StudentViewModel
         {
             Id = (int)s.Id,
-            FirstName = s.FirstName,
-            LastName = s.LastName
+            FirstName = s.User?.FirstName ?? "",
+            LastName = s.User?.LastName ?? ""
         }).ToList();
         
         return View();
@@ -165,7 +167,7 @@ public class EnrollmentsController : BaseController
             {
                 Id = (int)enrollment.Id,
                 StudentId = (int)enrollment.StudentId,
-                StudentName = enrollment.Student != null ? $"{enrollment.Student.FirstName} {enrollment.Student.LastName}" : "Alumne desconegut",
+                StudentName = enrollment.Student?.User != null ? $"{enrollment.Student.User.FirstName} {enrollment.Student.User.LastName}" : "Alumne desconegut",
                 AcademicYear = enrollment.AcademicYear,
                 CourseName = enrollment.CourseName,
                 Status = enrollment.Status,
@@ -177,8 +179,8 @@ public class EnrollmentsController : BaseController
             ViewBag.Students = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
-                FirstName = s.FirstName,
-                LastName = s.LastName
+                FirstName = s.User?.FirstName ?? "",
+                LastName = s.User?.LastName ?? ""
             }).ToList();
             
             return View(viewModel);
@@ -210,8 +212,8 @@ public class EnrollmentsController : BaseController
                 ViewBag.Students = students.Select(s => new StudentViewModel
                 {
                     Id = (int)s.Id,
-                    FirstName = s.FirstName,
-                    LastName = s.LastName
+                    FirstName = s.User?.FirstName ?? "",
+                    LastName = s.User?.LastName ?? ""
                 }).ToList();
                 
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");

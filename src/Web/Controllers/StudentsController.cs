@@ -1,22 +1,27 @@
 using Application.Interfaces;
 using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Web.Models;
 
 namespace Web.Controllers;
 
+[Authorize]
 public class StudentsController : BaseController
 {
     private readonly IStudentService _studentService;
     private readonly ISchoolService _schoolService;
+    private readonly IUserService _userService;
 
     public StudentsController(
         IStudentService studentService, 
         ISchoolService schoolService,
+        IUserService userService,
         ILogger<StudentsController> logger) : base(logger)
     {
         _studentService = studentService;
         _schoolService = schoolService;
+        _userService = userService;
     }
     
     public async Task<IActionResult> Index()
@@ -27,10 +32,10 @@ public class StudentsController : BaseController
             var viewModels = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
-                FirstName = s.FirstName,
-                LastName = s.LastName,
-                Email = s.Email ?? "",
-                BirthDate = s.BirthDate.HasValue ? s.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
+                FirstName = s.User?.FirstName ?? "",
+                LastName = s.User?.LastName ?? "",
+                Email = s.User?.Email ?? "",
+                BirthDate = s.User?.BirthDate.HasValue == true ? s.User.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
                 SchoolName = s.School?.Name ?? "Sense escola"
             });
             
@@ -60,10 +65,10 @@ public class StudentsController : BaseController
             var viewModel = new StudentViewModel
             {
                 Id = (int)student.Id,
-                FirstName = student.FirstName,
-                LastName = student.LastName,
-                Email = student.Email ?? "",
-                BirthDate = student.BirthDate.HasValue ? student.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
+                FirstName = student.User?.FirstName ?? "",
+                LastName = student.User?.LastName ?? "",
+                Email = student.User?.Email ?? "",
+                BirthDate = student.User?.BirthDate.HasValue == true ? student.User.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
                 SchoolId = (int)student.SchoolId,
                 SchoolName = student.School?.Name ?? "Sense escola"
             };
@@ -81,13 +86,13 @@ public class StudentsController : BaseController
         {
             Logger.LogWarning(ex, "Alumne amb Id {Id} no trobat", id);
             SetErrorMessage($"Alumne amb ID {id} no trobat.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error obtenint detalls de l'alumne {Id}", id);
             SetErrorMessage("Error carregant els detalls de l'alumne.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
     }
     
@@ -99,41 +104,52 @@ public class StudentsController : BaseController
         {
             if (!ModelState.IsValid)
             {
-                SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
-                return RedirectToAction(nameof(Index));
+                return BadRequest(new { error = "Si us plau, omple tots els camps obligatoris correctament." });
             }
 
-            var student = new Domain.Entities.Student
+            // 1. Crear el User amb les dades personals
+            var user = new Domain.Entities.User
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                Email = string.IsNullOrEmpty(model.Email) ? null : model.Email,
-                BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null,
-                SchoolId = model.SchoolId
+                Email = model.Email,
+                BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null
+            };
+
+            // Crear user amb password per defecte "user123"
+            var createdUser = await _userService.CreateUserAsync(user, "user123");
+
+            // 2. Crear el Student associat al User
+            var student = new Domain.Entities.Student
+            {
+                SchoolId = model.SchoolId,
+                UserId = createdUser.Id
             };
             
             await _studentService.CreateStudentAsync(student);
             
             SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} creat correctament.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
+        }
+        catch (DuplicateEntityException ex)
+        {
+            Logger.LogWarning(ex, "Email duplicat al crear alumne");
+            return BadRequest(new { error = $"Ja existeix un usuari amb l'email {model.Email}" });
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Escola no trobada al crear alumne");
-            SetErrorMessage("L'escola seleccionada no existeix.");
-            return RedirectToAction(nameof(Index));
+            return BadRequest(new { error = "L'escola seleccionada no existeix." });
         }
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Error de validació al crear alumne");
-            SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
-            return RedirectToAction(nameof(Index));
+            return BadRequest(new { error = $"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}" });
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error creant alumne");
-            SetErrorMessage("Error creant l'alumne. Si us plau, intenta-ho de nou.");
-            return RedirectToAction(nameof(Index));
+            return BadRequest(new { error = "Error creant l'alumne. Si us plau, intenta-ho de nou." });
         }
     }
     
@@ -146,10 +162,10 @@ public class StudentsController : BaseController
             var viewModel = new StudentViewModel
             {
                 Id = (int)student.Id,
-                FirstName = student.FirstName,
-                LastName = student.LastName,
-                Email = student.Email ?? "",
-                BirthDate = student.BirthDate.HasValue ? student.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : null,
+                FirstName = student.User?.FirstName ?? "",
+                LastName = student.User?.LastName ?? "",
+                Email = student.User?.Email ?? "",
+                BirthDate = student.User?.BirthDate.HasValue == true ? student.User.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : null,
                 SchoolId = (int)student.SchoolId,
                 SchoolName = student.School?.Name ?? ""
             };
@@ -167,13 +183,13 @@ public class StudentsController : BaseController
         {
             Logger.LogWarning(ex, "Alumne amb Id {Id} no trobat per editar", id);
             SetErrorMessage($"Alumne amb ID {id} no trobat.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error carregant alumne per editar {Id}", id);
             SetErrorMessage("Error carregant l'alumne.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
     }
     
@@ -185,47 +201,47 @@ public class StudentsController : BaseController
         {
             if (!ModelState.IsValid)
             {
-                var schools = await _schoolService.GetAllSchoolsAsync();
-                ViewBag.Schools = schools.Select(s => new SchoolViewModel
-                {
-                    Id = (int)s.Id,
-                    Name = s.Name
-                }).ToList();
-                
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
-                return View(model);
+                return Redirect("/Students");
             }
 
             var student = await _studentService.GetStudentByIdAsync(model.Id);
             
-            student.FirstName = model.FirstName;
-            student.LastName = model.LastName;
-            student.Email = string.IsNullOrEmpty(model.Email) ? null : model.Email;
-            student.BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null;
+            // Actualitzar dades del User associat
+            if (student.UserId.HasValue && student.User != null)
+            {
+                student.User.FirstName = model.FirstName;
+                student.User.LastName = model.LastName;
+                student.User.Email = model.Email;
+                student.User.BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null;
+                
+                await _userService.UpdateUserAsync(student.User);
+            }
+            
+            // Actualitzar escola del Student
             student.SchoolId = model.SchoolId;
-
             await _studentService.UpdateStudentAsync(student);
             
-            SetSuccessMessage($"Alumne {student.FirstName} {student.LastName} actualitzat correctament.");
-            return RedirectToAction(nameof(Details), new { id = model.Id });
+            SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} actualitzat correctament.");
+            return Redirect("/Students");
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Alumne o escola no trobats al actualitzar");
             SetErrorMessage("L'alumne o l'escola no existeixen.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Error de validació al actualitzar alumne");
             SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error actualitzant alumne {Id}", model.Id);
             SetErrorMessage("Error al actualitzar l'alumne. Si us plau, intenta-ho de nou.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
     }
     
@@ -237,19 +253,19 @@ public class StudentsController : BaseController
             await _studentService.DeleteStudentAsync(id);
             
             SetSuccessMessage("Alumne esborrat correctament.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Intent d'esborrar alumne inexistent: {Id}", id);
             SetErrorMessage("L'alumne no existeix.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error esborrant alumne {Id}", id);
             SetErrorMessage("Error al esborrar l'alumne. Pot tenir matrícules associades.");
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Students");
         }
     }
 }

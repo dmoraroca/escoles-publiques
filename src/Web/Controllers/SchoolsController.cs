@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.SignalR;
 using Web.Hubs;
 using Web.Models;
 
+using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+[Authorize]
 public class SchoolsController : BaseController
 {
     private readonly ISchoolService _schoolService;

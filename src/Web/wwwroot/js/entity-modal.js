@@ -42,22 +42,31 @@
                 });
                 
                 if (response.type === 'opaqueredirect' || response.status === 302 || response.status === 301) {
-                    window.location.href = form.action.replace('/Create', '');
+                    // Redirigir a la pàgina actual sense /Index
+                    window.location.href = window.location.pathname.replace(/\/Index$/, '');
                     return;
                 }
                 
                 if (!response.ok) {
-                    const text = await response.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(text, 'text/html');
-                    const tempDataError = doc.querySelector('.alert-danger');
-                    
-                    if (tempDataError) {
-                        errorMessage.textContent = tempDataError.textContent.trim();
+                    // Intentar llegir resposta JSON
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const json = await response.json();
+                        errorMessage.textContent = json.error || 'Error creant el registre.';
                     } else {
-                        errorMessage.textContent = 'Error creant el registre. Si us plau, verifica les dades i intenta-ho de nou.';
+                        const text = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, 'text/html');
+                        const tempDataError = doc.querySelector('.alert-danger');
+                        
+                        if (tempDataError) {
+                            errorMessage.textContent = tempDataError.textContent.trim();
+                        } else {
+                            errorMessage.textContent = 'Error creant el registre. Si us plau, verifica les dades i intenta-ho de nou.';
+                        }
                     }
                     errorAlert.classList.remove('d-none');
+                    errorAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } else {
                     window.location.reload();
                 }

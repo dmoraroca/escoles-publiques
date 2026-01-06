@@ -70,17 +70,17 @@ public class SearchResultsViewComponent : ViewComponent
         var allStudents = await _studentService.GetAllStudentsAsync();
         model.Students = allStudents
             .Where(s => 
-                searchTerms.Count > 0 && searchTerms.Any(term =>
-                    s.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    s.LastName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    (s.Email != null && s.Email.Contains(term, StringComparison.OrdinalIgnoreCase))))
+                s.User != null && searchTerms.Count > 0 && searchTerms.Any(term =>
+                    s.User.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                    s.User.LastName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                    (s.User.Email != null && s.User.Email.Contains(term, StringComparison.OrdinalIgnoreCase))))
             .Take(10)
             .Select(s => new StudentResultViewModel
             {
                 Id = s.Id,
-                FirstName = s.FirstName,
-                LastName = s.LastName,
-                Email = s.Email ?? string.Empty,
+                FirstName = s.User?.FirstName ?? string.Empty,
+                LastName = s.User?.LastName ?? string.Empty,
+                Email = s.User?.Email ?? string.Empty,
                 SchoolName = s.School?.Name
             })
             .ToList();
@@ -93,14 +93,14 @@ public class SearchResultsViewComponent : ViewComponent
                     e.AcademicYear.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     (e.CourseName != null && e.CourseName.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
                     e.Status.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    (e.Student != null && (e.Student.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                                          e.Student.LastName.Contains(term, StringComparison.OrdinalIgnoreCase))) ||
+                    (e.Student?.User != null && (e.Student.User.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                                          e.Student.User.LastName.Contains(term, StringComparison.OrdinalIgnoreCase))) ||
                     (e.Student?.School != null && e.Student.School.Name.Contains(term, StringComparison.OrdinalIgnoreCase))))
             .Take(10)
             .Select(e => new EnrollmentResultViewModel
             {
                 Id = e.Id,
-                StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "Desconegut",
+                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Desconegut",
                 SchoolName = e.Student?.School?.Name ?? "Desconeguda",
                 AcademicYear = e.AcademicYear,
                 EnrollmentDate = e.EnrolledAt
@@ -112,9 +112,9 @@ public class SearchResultsViewComponent : ViewComponent
         model.AnnualFees = allFees
             .Where(f => 
                 searchTerms.Count > 0 && searchTerms.Any(term =>
-                    (f.Enrollment?.Student != null &&
-                     (f.Enrollment.Student.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                      f.Enrollment.Student.LastName.Contains(term, StringComparison.OrdinalIgnoreCase))) ||
+                    (f.Enrollment?.Student?.User != null &&
+                     (f.Enrollment.Student.User.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                      f.Enrollment.Student.User.LastName.Contains(term, StringComparison.OrdinalIgnoreCase))) ||
                     f.Amount.ToString().Contains(term) ||
                     f.Currency.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     (f.PaymentRef != null && f.PaymentRef.Contains(term, StringComparison.OrdinalIgnoreCase))))
@@ -122,8 +122,8 @@ public class SearchResultsViewComponent : ViewComponent
             .Select(f => new AnnualFeeResultViewModel
             {
                 Id = f.Id,
-                StudentName = f.Enrollment?.Student != null 
-                    ? $"{f.Enrollment.Student.FirstName} {f.Enrollment.Student.LastName}" 
+                StudentName = f.Enrollment?.Student?.User != null 
+                    ? $"{f.Enrollment.Student.User.FirstName} {f.Enrollment.Student.User.LastName}" 
                     : "Desconegut",
                 Amount = f.Amount,
                 Currency = f.Currency,

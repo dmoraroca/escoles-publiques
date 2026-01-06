@@ -19,7 +19,9 @@
                                 <option value="">-- Selecciona una inscripció --</option>
                                 @foreach(var enrollment in ViewBag.Enrollments)
                                 {
-                                    <option value="@enrollment.Id">@enrollment.StudentName - @enrollment.AcademicYear</option>
+                                    <option value="@enrollment.Id">
+                                        @enrollment.StudentName - @enrollment.AcademicYear - @enrollment.CourseName (@enrollment.EnrolledAt.ToString("dd/MM/yyyy"))
+                                    </option>
                                 }
                             </select>
                             <span asp-validation-for="EnrollmentId" class="text-danger"></span>

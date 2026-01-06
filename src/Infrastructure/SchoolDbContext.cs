@@ -16,10 +16,14 @@ public class SchoolDbContext : DbContext
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
     public DbSet<AnnualFee> AnnualFees => Set<AnnualFee>();
     public DbSet<Scope> Scopes => Set<Scope>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Configurar PostgreSQL per usar timestamps sense timezone
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
         // Configuració global: PostgreSQL utilitza snake_case
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
@@ -65,7 +69,11 @@ public class SchoolDbContext : DbContext
         {
             entity.ToTable("scope_mnt");
         });
-
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.ToTable("users");
+            entity.HasIndex(e => e.Email).IsUnique();
+        });
         // Aplica totes les configuracions Fluent API
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SchoolDbContext).Assembly);
     }

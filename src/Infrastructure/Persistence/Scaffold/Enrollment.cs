@@ -15,6 +15,8 @@ public partial class Enrollment
 
     public DateTime EnrolledAt { get; set; }
 
+    public string? CourseName { get; set; }
+
     public virtual ICollection<AnnualFee> AnnualFees { get; set; } = new List<AnnualFee>();
 
     public virtual Student Student { get; set; } = null!;

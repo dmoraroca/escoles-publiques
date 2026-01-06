@@ -97,10 +97,20 @@ public static class ModalConfigFactory
                 },
                 new ModalField
                 {
+                    Name = "Email",
+                    Label = "Email",
+                    Type = "email",
+                    Required = true,
+                    MaxLength = 255,
+                    ColumnSize = 6,
+                    Placeholder = "correu@exemple.cat"
+                },
+                new ModalField
+                {
                     Name = "BirthDate",
                     Label = "Data de naixement",
                     Type = "date",
-                    Required = false,
+                    Required = true,
                     ColumnSize = 6
                 },
                 new ModalField
@@ -109,7 +119,7 @@ public static class ModalConfigFactory
                     Label = "Escola",
                     Type = "select",
                     Required = true,
-                    ColumnSize = 6,
+                    ColumnSize = 12,
                     Options = schoolOptions
                 }
             }

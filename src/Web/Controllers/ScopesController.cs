@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
+using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
 public class ScopesController : Controller

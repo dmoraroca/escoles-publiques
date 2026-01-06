@@ -52,11 +52,12 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Import <span class="text-danger edit-only">*</span></label>
                         <div class="input-group">
-                            <input type="text" 
+                            <input type="number" 
+                                   step="0.01"
                                    id="Amount" 
                                    name="Amount" 
                                    class="form-control" 
-                                   value="@Model.Amount.ToString("F2", System.Globalization.CultureInfo.InvariantCulture).Replace(".", ",")" 
+                                   value="@Model.Amount.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)" 
                                    readonly 
                                    required />
                             <span class="input-group-text bg-light" id="currencyDisplay">@Model.Currency</span>

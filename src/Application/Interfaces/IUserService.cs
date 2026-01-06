@@ -1,0 +1,9 @@
+namespace Application.Interfaces;
+
+public interface IUserService
+{
+    Task<Domain.Entities.User?> GetUserByIdAsync(long id);
+    Task<Domain.Entities.User?> GetUserByEmailAsync(string email);
+    Task<Domain.Entities.User> CreateUserAsync(Domain.Entities.User user, string password);
+    Task UpdateUserAsync(Domain.Entities.User user);
+}

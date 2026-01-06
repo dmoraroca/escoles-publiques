@@ -50,14 +50,18 @@ public class StudentService : IStudentService
 
     public async Task<Student> CreateStudentAsync(Student student)
     {
-        if (string.IsNullOrWhiteSpace(student.FirstName))
+        // Validacions ara es fan a nivell d'User
+        if (student.UserId.HasValue && student.User != null)
         {
-            throw new ValidationException("FirstName", "El nom de l'alumne és obligatori");
-        }
-        
-        if (string.IsNullOrWhiteSpace(student.LastName))
-        {
-            throw new ValidationException("LastName", "Els cognoms de l'alumne són obligatoris");
+            if (string.IsNullOrWhiteSpace(student.User.FirstName))
+            {
+                throw new ValidationException("FirstName", "El nom de l'alumne és obligatori");
+            }
+            
+            if (string.IsNullOrWhiteSpace(student.User.LastName))
+            {
+                throw new ValidationException("LastName", "Els cognoms de l'alumne són obligatoris");
+            }
         }
         
         if (student.SchoolId > 0)
@@ -70,7 +74,7 @@ public class StudentService : IStudentService
         }
 
         student.CreatedAt = DateTime.UtcNow;
-        _logger.LogInformation("Creant nou alumne: {FirstName} {LastName}", student.FirstName, student.LastName);
+        _logger.LogInformation("Creant nou alumne per l'usuari: {UserId}", student.UserId);
         return await _studentRepository.AddAsync(student);
     }
 

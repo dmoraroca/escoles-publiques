@@ -70,11 +70,6 @@ function cancelEdit() {
 function submitForm() {
     const form = document.getElementById('editForm');
     
-    const amountInput = document.getElementById('Amount');
-    if (amountInput.value) {
-        amountInput.value = amountInput.value.replace(/,/g, '.');
-    }
-    
     document.querySelectorAll('#editForm select').forEach(select => {
         select.removeAttribute('disabled');
     });

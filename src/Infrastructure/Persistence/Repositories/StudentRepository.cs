@@ -17,8 +17,7 @@ public class StudentRepository : IStudentRepository
     {
         return await _context.Students
             .Include(s => s.School)
-            .OrderBy(s => s.LastName)
-            .ThenBy(s => s.FirstName)
+            .Include(s => s.User)
             .ToListAsync();
     }
 
@@ -26,6 +25,7 @@ public class StudentRepository : IStudentRepository
     {
         return await _context.Students
             .Include(s => s.School)
+            .Include(s => s.User)
             .Include(s => s.Enrollments)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
@@ -33,9 +33,8 @@ public class StudentRepository : IStudentRepository
     public async Task<IEnumerable<Student>> GetBySchoolIdAsync(long schoolId)
     {
         return await _context.Students
+            .Include(s => s.User)
             .Where(s => s.SchoolId == schoolId)
-            .OrderBy(s => s.LastName)
-            .ThenBy(s => s.FirstName)
             .ToListAsync();
     }
 
