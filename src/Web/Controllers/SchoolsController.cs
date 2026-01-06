@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Domain.DomainExceptions;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using Web.Hubs;
 using Web.Models;
@@ -64,6 +65,8 @@ public class SchoolsController : BaseController
                 Text = s.Name
             }).ToList();
             
+            var role = User.FindFirstValue("Role");
+            ViewBag.UserRole = role;
             return View(viewModels);
         }
         catch (Exception ex)

@@ -16,15 +16,26 @@
             </div>
             
             <!-- Component 2: Escoles favorites -->
-            <div class="col-12 col-md-6">
-                @await Component.InvokeAsync("FavoriteSchools")
-            </div>
+            @if ((ViewBag.UserRole as string) == "ADM")
+            {
+                <div class="col-12 col-md-6">
+                    @await Component.InvokeAsync("FavoriteSchools")
+                </div>
+            }
         </div>
     </div>
 </section>
 
-<!-- Component 3: Àmbits -->
-@await Component.InvokeAsync("Scopes")
+
+<!-- Component 3: Àmbits o Dashboard Usuari -->
+@if ((ViewBag.UserRole as string) == "ADM")
+{
+    @await Component.InvokeAsync("Scopes")
+}
+else if ((ViewBag.UserRole as string) == "USER")
+{
+    @await Html.PartialAsync("~/Views/User/Dashboard.cshtml")
+}
 
 <!-- Component 4: Resultats de cerca (només si hi ha cerca) -->
 @if (!string.IsNullOrEmpty(ViewBag.SearchQuery as string) || !string.IsNullOrEmpty(ViewBag.ScopeName as string))

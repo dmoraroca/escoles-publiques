@@ -1,12 +1,15 @@
 @model IEnumerable<Web.Models.FavoriteSchoolViewModel>
 
-<!-- Component d'escoles favorites -->
-<div class="most-consulted-box">
-    <h3 class="most-consulted-title">Escoles favorites</h3>
-    <ul class="most-consulted-list">
-        @foreach (var school in Model)
-        {
-            <li><a href="@school.Url">@school.Name - @school.Municipality</a></li>
-        }
-    </ul>
-</div>
+@if (User.FindFirst("Role")?.Value == "ADM")
+{
+    <!-- Component d'escoles favorites -->
+    <div class="most-consulted-box">
+        <h3 class="most-consulted-title">Escoles favorites</h3>
+        <ul class="most-consulted-list">
+            @foreach (var school in Model)
+            {
+                <li><a href="@school.Url">@school.Name - @school.Municipality</a></li>
+            }
+        </ul>
+    </div>
+}

@@ -1,18 +1,21 @@
 @model IEnumerable<Web.Models.ScopeViewModel>
 
-<!-- Component d'àmbits -->
-<div class="container">
-    <section class="scopes-section">
-        <h2 class="scopes-title">Àmbits</h2>
-        <div class="red-divider"></div>
+@if (User.FindFirst("Role")?.Value == "ADM")
+{
+    <!-- Component d'àmbits -->
+    <div class="container">
+        <section class="scopes-section">
+            <h2 class="scopes-title">Àmbits</h2>
+            <div class="red-divider"></div>
 
-        <div class="scope-grid">
-            @foreach (var item in Model)
-            {
-                <a href="@Url.Action("Index", "Home", new { scopeName = item.Name })" class="scope-item">
-                    <span class="scope-text">@item.Name</span>
-                </a>
-            }
-        </div>
-    </section>
-</div>
+            <div class="scope-grid">
+                @foreach (var item in Model)
+                {
+                    <a href="@Url.Action("Index", "Home", new { scopeName = item.Name })" class="scope-item">
+                        <span class="scope-text">@item.Name</span>
+                    </a>
+                }
+            </div>
+        </section>
+    </div>
+}

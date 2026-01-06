@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
+using System.Security.Claims;
 
 namespace Web.Controllers;
 
@@ -12,7 +13,7 @@ namespace Web.Controllers;
 /// Controlador principal de la web. Gestiona la pàgina d'inici, privacitat i errors.
 /// </summary>
 [Authorize]
-public class HomeController : BaseController
+public partial class HomeController : BaseController
 {
     /// <summary>
     /// Constructor del controlador Home.
@@ -34,6 +35,15 @@ public class HomeController : BaseController
     {
         ViewBag.SearchQuery = searchQuery;
         ViewBag.ScopeName = scopeName;
+        var role = User.FindFirstValue("Role");
+        ViewBag.UserRole = role;
+
+        if (role == "USER")
+        {
+            // Redirigeix directament al dashboard d'usuari
+            return RedirectToAction("Dashboard", "User");
+        }
+
         return View();
     }
 
