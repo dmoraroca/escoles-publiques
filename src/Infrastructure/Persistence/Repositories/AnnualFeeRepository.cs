@@ -4,15 +4,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
+/// <summary>
+/// Repositori per gestionar les quotes anuals a la base de dades.
+/// </summary>
 public class AnnualFeeRepository : IAnnualFeeRepository
 {
     private readonly SchoolDbContext _context;
 
+    /// <summary>
+    /// Constructor del repositori de quotes anuals.
+    /// </summary>
     public AnnualFeeRepository(SchoolDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Retorna totes les quotes anuals amb inscripcions i alumnes.
+    /// </summary>
     public async Task<IEnumerable<AnnualFee>> GetAllAsync()
     {
         return await _context.AnnualFees

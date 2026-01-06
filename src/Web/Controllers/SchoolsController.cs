@@ -9,6 +9,12 @@ using Web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+/// <summary>
+/// Controlador per gestionar les escoles: llistat, detalls, creació, edició i eliminació.
+/// </summary>
+/// <summary>
+/// Controlador per gestionar les escoles: llistat, detalls, creació, edició i eliminació.
+/// </summary>
 [Authorize]
 public class SchoolsController : BaseController
 {
@@ -16,6 +22,12 @@ public class SchoolsController : BaseController
     private readonly IHubContext<SchoolHub> _hubContext;
     private readonly IScopeRepository _scopeRepository;
 
+    /// <summary>
+    /// Constructor del controlador d'escoles.
+    /// </summary>
+    /// <summary>
+    /// Constructor del controlador d'escoles.
+    /// </summary>
     public SchoolsController(ISchoolService schoolService, IHubContext<SchoolHub> hubContext, IScopeRepository scopeRepository, ILogger<SchoolsController> logger) : base(logger)
     {
         _schoolService = schoolService;
@@ -23,6 +35,12 @@ public class SchoolsController : BaseController
         _scopeRepository = scopeRepository;
     }
     
+    /// <summary>
+    /// Mostra el llistat de totes les escoles.
+    /// </summary>
+    /// <summary>
+    /// Mostra el llistat de totes les escoles.
+    /// </summary>
     public async Task<IActionResult> Index()
     {
         try
@@ -56,6 +74,12 @@ public class SchoolsController : BaseController
         }
     }
     
+    /// <summary>
+    /// Mostra els detalls d'una escola concreta.
+    /// </summary>
+    /// <summary>
+    /// Mostra els detalls d'una escola concreta.
+    /// </summary>
     public async Task<IActionResult> Details(int id)
     {
         try
@@ -92,6 +116,12 @@ public class SchoolsController : BaseController
         }
     }
     
+    /// <summary>
+    /// Mostra el formulari per crear una nova escola.
+    /// </summary>
+    /// <summary>
+    /// Mostra el formulari per crear una nova escola.
+    /// </summary>
     public IActionResult Create()
     {
         return View(new SchoolViewModel());
@@ -99,6 +129,12 @@ public class SchoolsController : BaseController
     
     [HttpPost]
     [ValidateAntiForgeryToken]
+    /// <summary>
+    /// Processa la creació d'una nova escola.
+    /// </summary>
+    /// <summary>
+    /// Processa la creació d'una nova escola.
+    /// </summary>
     public async Task<IActionResult> Create(SchoolViewModel model)
     {
         try
@@ -154,6 +190,12 @@ public class SchoolsController : BaseController
         }
     }
     
+    /// <summary>
+    /// Mostra el formulari per editar una escola existent.
+    /// </summary>
+    /// <summary>
+    /// Mostra el formulari per editar una escola existent.
+    /// </summary>
     public async Task<IActionResult> Edit(int id)
     {
         try
@@ -189,6 +231,12 @@ public class SchoolsController : BaseController
     
     [HttpPost]
     [ValidateAntiForgeryToken]
+    /// <summary>
+    /// Processa l'edició d'una escola existent.
+    /// </summary>
+    /// <summary>
+    /// Processa l'edició d'una escola existent.
+    /// </summary>
     public async Task<IActionResult> Edit(SchoolViewModel model)
     {
         try
@@ -250,6 +298,12 @@ public class SchoolsController : BaseController
     }
     
     [HttpPost]
+    /// <summary>
+    /// Elimina una escola.
+    /// </summary>
+    /// <summary>
+    /// Elimina una escola.
+    /// </summary>
     public async Task<IActionResult> Delete(int id)
     {
         try

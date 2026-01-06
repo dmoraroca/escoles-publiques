@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Domain.Interfaces;
 
+/// <summary>
+/// Interfície de repositori per gestionar inscripcions al domini.
+/// </summary>
 public interface IEnrollmentRepository
 {
     Task<IEnumerable<Enrollment>> GetAllAsync();

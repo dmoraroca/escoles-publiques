@@ -4,8 +4,14 @@ using Web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+/// <summary>
+/// Controlador per mostrar els diferents àmbits del projecte.
+/// </summary>
 public class ScopesController : Controller
 {
+    /// <summary>
+    /// Mostra la llista d'àmbits disponibles com a partial view.
+    /// </summary>
     public IActionResult Index()
     {
         var scopes = new List<ScopeViewModel>

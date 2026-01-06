@@ -1,5 +1,8 @@
 namespace Web.Models;
 
+/// <summary>
+/// Model de vista per gestionar les quotes anuals d'una inscripció.
+/// </summary>
 public class AnnualFeeViewModel
 {
     public int Id { get; set; }

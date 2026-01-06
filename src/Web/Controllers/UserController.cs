@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
 
+/// <summary>
+/// Controlador per gestionar la informació i el dashboard de l'usuari.
+/// </summary>
 [Authorize]
 public class UserController : BaseController
 {
@@ -27,6 +30,9 @@ public class UserController : BaseController
         _userRepository = userRepository;
     }
 
+    /// <summary>
+    /// Mostra el dashboard personalitzat de l'usuari amb inscripcions i quotes.
+    /// </summary>
     public async Task<IActionResult> Dashboard()
     {
         try

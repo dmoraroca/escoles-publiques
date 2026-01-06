@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Application.Interfaces;
 
+/// <summary>
+/// Interfície de servei per gestionar escoles a l'aplicació.
+/// </summary>
 public interface ISchoolService
 {
     Task<IEnumerable<School>> GetAllSchoolsAsync();

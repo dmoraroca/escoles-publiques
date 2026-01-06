@@ -3,6 +3,9 @@ using Web.Models;
 
 namespace Web.Validators;
 
+/// <summary>
+/// Validador FluentValidation per la vista d'inscripció. Comprova alumne, any acadèmic i estat.
+/// </summary>
 public class EnrollmentViewModelValidator : AbstractValidator<EnrollmentViewModel>
 {
     public EnrollmentViewModelValidator()

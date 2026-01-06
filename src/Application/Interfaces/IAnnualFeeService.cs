@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Application.Interfaces;
 
+/// <summary>
+/// Interfície de servei per gestionar quotes anuals a l'aplicació.
+/// </summary>
 public interface IAnnualFeeService
 {
     Task<IEnumerable<AnnualFee>> GetAllAnnualFeesAsync();

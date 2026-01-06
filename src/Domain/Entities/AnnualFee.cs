@@ -1,5 +1,8 @@
 namespace Domain.Entities;
 
+/// <summary>
+/// Entitat que representa una quota anual associada a una inscripció.
+/// </summary>
 public class AnnualFee
 {
     public long Id { get; set; }

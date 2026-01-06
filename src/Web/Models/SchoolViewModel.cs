@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Web.Models;
 
+/// <summary>
+/// Model de vista per gestionar les dades d'una escola.
+/// </summary>
 public class SchoolViewModel
 {
     public int Id { get; set; }

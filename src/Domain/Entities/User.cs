@@ -1,5 +1,8 @@
 namespace Domain.Entities;
 
+/// <summary>
+/// Entitat que representa un usuari del sistema (administrador o usuari normal).
+/// </summary>
 public class User
 {
     public long Id { get; set; }

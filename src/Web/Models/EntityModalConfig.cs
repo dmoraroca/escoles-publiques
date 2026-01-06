@@ -1,5 +1,8 @@
 namespace Web.Models;
 
+/// <summary>
+/// Configuració per a un modal d'entitat (formulari dinàmic).
+/// </summary>
 public class EntityModalConfig
 {
     public string EntityName { get; set; } = string.Empty;
@@ -10,6 +13,9 @@ public class EntityModalConfig
     public List<ModalField> Fields { get; set; } = new();
 }
 
+/// <summary>
+/// Camp d'un formulari modal.
+/// </summary>
 public class ModalField
 {
     public string Name { get; set; } = string.Empty;
@@ -22,6 +28,9 @@ public class ModalField
     public List<SelectOption>? Options { get; set; } // Per selects
 }
 
+/// <summary>
+/// Opció per a camps select en formularis.
+/// </summary>
 public class SelectOption
 {
     public string Value { get; set; } = string.Empty;

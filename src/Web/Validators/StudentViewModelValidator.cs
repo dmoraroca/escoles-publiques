@@ -3,6 +3,9 @@ using Web.Models;
 
 namespace Web.Validators;
 
+/// <summary>
+/// Validador FluentValidation per la vista d'alumne. Comprova nom, cognoms, email i escola.
+/// </summary>
 public class StudentViewModelValidator : AbstractValidator<StudentViewModel>
 {
     public StudentViewModelValidator()

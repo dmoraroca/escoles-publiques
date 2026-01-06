@@ -1,3 +1,7 @@
+/**
+ * students-details.js
+ * Handles UI interactions and edit logic for student detail pages, including form actions and alerts.
+ */
 document.addEventListener('DOMContentLoaded', function() {
     // Event listeners per botons amb data-action
     document.querySelectorAll('[data-action]').forEach(button => {

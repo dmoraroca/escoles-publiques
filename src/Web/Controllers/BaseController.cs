@@ -3,15 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+/// <summary>
+/// Classe base per als controladors, amb gestió d'errors i missatges.
+/// </summary>
 public abstract class BaseController : Controller
 {
     protected readonly ILogger Logger;
 
+    /// <summary>
+    /// Constructor de la classe base amb logger.
+    /// </summary>
     protected BaseController(ILogger logger)
     {
         Logger = logger;
     }
 
+    /// <summary>
+    /// Gestiona errors i redirigeix a la pàgina d'error.
+    /// </summary>
     protected IActionResult HandleError(Exception ex, string action)
     {
         Logger.LogError(ex, "Error al executar {Action}", action);
@@ -19,11 +28,17 @@ public abstract class BaseController : Controller
         return RedirectToAction("Error", "Home");
     }
 
+    /// <summary>
+    /// Assigna un missatge d'èxit a TempData.
+    /// </summary>
     protected void SetSuccessMessage(string message)
     {
         TempData["Success"] = message;
     }
 
+    /// <summary>
+    /// Assigna un missatge d'error a TempData.
+    /// </summary>
     protected void SetErrorMessage(string message)
     {
         TempData["Error"] = message;

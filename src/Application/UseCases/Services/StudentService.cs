@@ -6,12 +6,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
 
+/// <summary>
+/// Service for managing students, including retrieval, creation, update, and deletion of student records.
+/// </summary>
 public class StudentService : IStudentService
 {
     private readonly IStudentRepository _studentRepository;
     private readonly ISchoolRepository _schoolRepository;
     private readonly ILogger<StudentService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the StudentService class.
+    /// </summary>
+    /// <param name="studentRepository">Repository for student data access.</param>
+    /// <param name="schoolRepository">Repository for school data access.</param>
+    /// <param name="logger">Logger instance.</param>
     public StudentService(
         IStudentRepository studentRepository,
         ISchoolRepository schoolRepository,
@@ -22,12 +31,21 @@ public class StudentService : IStudentService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Retrieves all students asynchronously.
+    /// </summary>
+    /// <returns>Enumerable of all students.</returns>
     public async Task<IEnumerable<Student>> GetAllStudentsAsync()
     {
         _logger.LogInformation("Obtenint tots els alumnes");
         return await _studentRepository.GetAllAsync();
     }
 
+    /// <summary>
+    /// Retrieves a student by their unique identifier asynchronously.
+    /// </summary>
+    /// <param name="id">Student identifier.</param>
+    /// <returns>The student if found; otherwise, throws NotFoundException.</returns>
     public async Task<Student?> GetStudentByIdAsync(long id)
     {
         _logger.LogInformation("Obtenint alumne amb Id: {Id}", id);

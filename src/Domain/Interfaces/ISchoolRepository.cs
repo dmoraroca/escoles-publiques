@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Domain.Interfaces;
 
+/// <summary>
+/// Interfície de repositori per gestionar escoles al domini.
+/// </summary>
 public interface ISchoolRepository
 {
     Task<IEnumerable<School>> GetAllAsync();

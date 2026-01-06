@@ -6,17 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
 
+/// <summary>
+/// Controlador d'autenticació d'usuaris: login i gestió de sessions.
+/// </summary>
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
     private readonly ILogger<AuthController> _logger;
 
+    /// <summary>
+    /// Constructor del controlador d'autenticació.
+    /// </summary>
     public AuthController(IAuthService authService, ILogger<AuthController> logger)
     {
         _authService = authService;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Mostra el formulari de login.
+    /// </summary>
     [AllowAnonymous]
     [HttpGet]
     public IActionResult Login()
@@ -31,6 +40,9 @@ public class AuthController : Controller
         return View();
     }
 
+    /// <summary>
+    /// Processa l'autenticació de l'usuari.
+    /// </summary>
     [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Login(string email, string password)

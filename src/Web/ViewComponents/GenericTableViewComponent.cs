@@ -4,11 +4,15 @@ using Web.Models;
 namespace Web.ViewComponents;
 
 /// <summary>
-/// ViewComponent genèric per renderitzar taules amb dades dinàmiques
-/// Suporta: ordenació, cerca, paginació, accions personalitzades, responsive
+/// ViewComponent for rendering generic tables with dynamic data. Supports sorting, searching, pagination, custom actions, and responsive design.
 /// </summary>
 public class GenericTableViewComponent : ViewComponent
 {
+    /// <summary>
+    /// Invokes the view component to render a table using the provided model.
+    /// </summary>
+    /// <param name="model">A TableViewModel&lt;T&gt; instance containing table data.</param>
+    /// <returns>The rendered table view.</returns>
     public IViewComponentResult Invoke(object model)
     {
         if (model == null)

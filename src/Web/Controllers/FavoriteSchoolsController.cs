@@ -4,8 +4,14 @@ using Web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+/// <summary>
+/// Controlador per mostrar les escoles preferides de l'usuari.
+/// </summary>
 public class FavoriteSchoolsController : Controller
 {
+    /// <summary>
+    /// Mostra la llista d'escoles preferides com a partial view.
+    /// </summary>
     public IActionResult Index()
     {
         var favoriteSchools = new List<FavoriteSchoolViewModel>

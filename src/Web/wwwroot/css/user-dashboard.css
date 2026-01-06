@@ -1,3 +1,10 @@
+/*
+ * user-dashboard.css
+ * Styles for the user dashboard, including hero section, widgets, and animations.
+ */
+.exclamation-large {
+    font-size: 3rem;
+}
 /* ================================
    USER DASHBOARD - ESPECTACULAR
    ================================ */

@@ -1,5 +1,8 @@
 namespace Domain.Entities;
 
+/// <summary>
+/// Entitat que representa un àmbit funcional dins el sistema.
+/// </summary>
 public class Scope
 {
     public long Id { get; set; }

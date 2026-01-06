@@ -1,3 +1,7 @@
+/**
+ * generic-table.js
+ * Provides filtering and sorting functionality for generic HTML tables in the application.
+ */
 function filterTable(input) {
     const filter = input.value.toLowerCase();
     const table = document.getElementById('genericTable');

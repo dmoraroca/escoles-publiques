@@ -1,5 +1,8 @@
 namespace Application.Interfaces;
 
+/// <summary>
+/// Interfície de servei per gestionar usuaris a l'aplicació.
+/// </summary>
 public interface IUserService
 {
     Task<Domain.Entities.User?> GetUserByIdAsync(long id);

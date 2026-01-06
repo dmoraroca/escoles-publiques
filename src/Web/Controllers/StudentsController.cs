@@ -6,6 +6,9 @@ using Web.Models;
 
 namespace Web.Controllers;
 
+/// <summary>
+/// Controlador per gestionar els alumnes del sistema.
+/// </summary>
 [Authorize]
 public class StudentsController : BaseController
 {
@@ -24,6 +27,9 @@ public class StudentsController : BaseController
         _userService = userService;
     }
     
+    /// <summary>
+    /// Mostra el llistat de tots els alumnes.
+    /// </summary>
     public async Task<IActionResult> Index()
     {
         try

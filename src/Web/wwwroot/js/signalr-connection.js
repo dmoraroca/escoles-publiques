@@ -1,3 +1,7 @@
+/**
+ * signalr-connection.js
+ * Manages SignalR connection for real-time updates on school events (create, update, etc.).
+ */
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/schoolHub")
     .withAutomaticReconnect()

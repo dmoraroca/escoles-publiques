@@ -4,6 +4,9 @@ using Web.Models;
 
 namespace Web.ViewComponents;
 
+/// <summary>
+/// ViewComponent for displaying a user's favorite schools in the UI.
+/// </summary>
 public class FavoriteSchoolsViewComponent : ViewComponent
 {
     private readonly ISchoolService _schoolService;

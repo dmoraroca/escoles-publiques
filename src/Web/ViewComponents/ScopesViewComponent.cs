@@ -4,6 +4,9 @@ using Web.Models;
 
 namespace Web.ViewComponents;
 
+/// <summary>
+/// ViewComponent for displaying available scopes in the UI.
+/// </summary>
 public class ScopesViewComponent : ViewComponent
 {
     private readonly IScopeRepository _scopeRepository;

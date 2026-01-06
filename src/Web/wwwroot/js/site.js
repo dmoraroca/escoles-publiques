@@ -1,4 +1,8 @@
-﻿document.addEventListener('DOMContentLoaded', function() {
+﻿/**
+ * site.js
+ * Provides global form validation and modal reset logic for the application.
+ */
+document.addEventListener('DOMContentLoaded', function() {
     const forms = document.querySelectorAll('.needs-validation');
     
     Array.from(forms).forEach(form => {

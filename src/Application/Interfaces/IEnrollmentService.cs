@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Application.Interfaces;
 
+/// <summary>
+/// Interfície de servei per gestionar inscripcions a l'aplicació.
+/// </summary>
 public interface IEnrollmentService
 {
     Task<IEnumerable<Enrollment>> GetAllEnrollmentsAsync();

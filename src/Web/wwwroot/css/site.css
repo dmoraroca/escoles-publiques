@@ -1,3 +1,7 @@
+/*
+ * site.css
+ * Base styles for HTML, body, and form elements. Includes global font size and focus states.
+ */
 html {
   font-size: 14px;
 }

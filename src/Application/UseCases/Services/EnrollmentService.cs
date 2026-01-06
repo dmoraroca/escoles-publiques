@@ -6,12 +6,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
 
+/// <summary>
+/// Service for managing enrollments, including retrieval, creation, update, and deletion of enrollment records.
+/// </summary>
 public class EnrollmentService : IEnrollmentService
 {
     private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly IStudentRepository _studentRepository;
     private readonly ILogger<EnrollmentService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the EnrollmentService class.
+    /// </summary>
+    /// <param name="enrollmentRepository">Repository for enrollment data access.</param>
+    /// <param name="studentRepository">Repository for student data access.</param>
+    /// <param name="logger">Logger instance.</param>
     public EnrollmentService(
         IEnrollmentRepository enrollmentRepository,
         IStudentRepository studentRepository,
@@ -22,12 +31,21 @@ public class EnrollmentService : IEnrollmentService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Retrieves all enrollments asynchronously.
+    /// </summary>
+    /// <returns>Enumerable of all enrollments.</returns>
     public async Task<IEnumerable<Enrollment>> GetAllEnrollmentsAsync()
     {
         _logger.LogInformation("Obtenint totes les inscripcions");
         return await _enrollmentRepository.GetAllAsync();
     }
 
+    /// <summary>
+    /// Retrieves an enrollment by its unique identifier asynchronously.
+    /// </summary>
+    /// <param name="id">Enrollment identifier.</param>
+    /// <returns>The enrollment if found; otherwise, throws NotFoundException.</returns>
     public async Task<Enrollment?> GetEnrollmentByIdAsync(long id)
     {
         _logger.LogInformation("Obtenint inscripció amb Id: {Id}", id);

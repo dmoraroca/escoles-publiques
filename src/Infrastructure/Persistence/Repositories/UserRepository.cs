@@ -5,15 +5,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
+/// <summary>
+/// Repositori per gestionar usuaris a la base de dades.
+/// </summary>
 public class UserRepository : IUserRepository
 {
     private readonly SchoolDbContext _context;
 
+    /// <summary>
+    /// Constructor del repositori d'usuaris.
+    /// </summary>
     public UserRepository(SchoolDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Retorna un usuari pel seu identificador, incloent l'alumne.
+    /// </summary>
     public async Task<User?> GetByIdAsync(long id)
     {
         return await _context.Users

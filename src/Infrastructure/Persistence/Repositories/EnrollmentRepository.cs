@@ -4,15 +4,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
+/// <summary>
+/// Repositori per gestionar inscripcions a la base de dades.
+/// </summary>
 public class EnrollmentRepository : IEnrollmentRepository
 {
     private readonly SchoolDbContext _context;
 
+    /// <summary>
+    /// Constructor del repositori d'inscripcions.
+    /// </summary>
     public EnrollmentRepository(SchoolDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Retorna totes les inscripcions amb alumnes i quotes.
+    /// </summary>
     public async Task<IEnumerable<Enrollment>> GetAllAsync()
     {
         return await _context.Enrollments

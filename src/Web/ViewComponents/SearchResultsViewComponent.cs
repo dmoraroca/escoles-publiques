@@ -4,6 +4,9 @@ using Web.Models;
 
 namespace Web.ViewComponents;
 
+/// <summary>
+/// ViewComponent for displaying search results in the UI.
+/// </summary>
 public class SearchResultsViewComponent : ViewComponent
 {
     private readonly ISchoolService _schoolService;

@@ -5,15 +5,28 @@ using Domain.Interfaces;
 
 namespace Application.UseCases.Services;
 
+/// <summary>
+/// Service for handling user authentication and token generation.
+/// </summary>
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
 
+    /// <summary>
+    /// Initializes a new instance of the AuthService class.
+    /// </summary>
+    /// <param name="userRepository">Repository for user data access.</param>
     public AuthService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
 
+    /// <summary>
+    /// Authenticates a user by email and password, returning authentication status, token, and role.
+    /// </summary>
+    /// <param name="email">User email address.</param>
+    /// <param name="password">User password.</param>
+    /// <returns>Tuple containing success flag, token, and role.</returns>
     public async Task<(bool success, string? token, string? role)> AuthenticateAsync(string email, string password)
     {
         var user = await _userRepository.GetByEmailAsync(email);

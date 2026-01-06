@@ -3,6 +3,9 @@ using Web.Models;
 
 namespace Web.Validators;
 
+/// <summary>
+/// Validador FluentValidation per la vista d'escola. Comprova codi, nom i ciutat.
+/// </summary>
 public class SchoolViewModelValidator : AbstractValidator<SchoolViewModel>
 {
     public SchoolViewModelValidator()

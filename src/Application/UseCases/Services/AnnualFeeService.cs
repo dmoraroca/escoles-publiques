@@ -6,12 +6,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
 
+/// <summary>
+/// Service for managing annual fees, including retrieval, creation, update, and deletion of annual fee records.
+/// </summary>
 public class AnnualFeeService : IAnnualFeeService
 {
     private readonly IAnnualFeeRepository _annualFeeRepository;
     private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly ILogger<AnnualFeeService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the AnnualFeeService class.
+    /// </summary>
+    /// <param name="annualFeeRepository">Repository for annual fee data access.</param>
+    /// <param name="enrollmentRepository">Repository for enrollment data access.</param>
+    /// <param name="logger">Logger instance.</param>
     public AnnualFeeService(
         IAnnualFeeRepository annualFeeRepository,
         IEnrollmentRepository enrollmentRepository,
@@ -22,12 +31,21 @@ public class AnnualFeeService : IAnnualFeeService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Retrieves all annual fees asynchronously.
+    /// </summary>
+    /// <returns>Enumerable of all annual fees.</returns>
     public async Task<IEnumerable<AnnualFee>> GetAllAnnualFeesAsync()
     {
         _logger.LogInformation("Obtenint totes les quotes");
         return await _annualFeeRepository.GetAllAsync();
     }
 
+    /// <summary>
+    /// Retrieves an annual fee by its unique identifier asynchronously.
+    /// </summary>
+    /// <param name="id">Annual fee identifier.</param>
+    /// <returns>The annual fee if found; otherwise, throws NotFoundException.</returns>
     public async Task<AnnualFee?> GetAnnualFeeByIdAsync(long id)
     {
         _logger.LogInformation("Obtenint quota amb Id: {Id}", id);

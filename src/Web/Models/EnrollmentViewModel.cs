@@ -1,5 +1,8 @@
 namespace Web.Models;
 
+/// <summary>
+/// Model de vista per gestionar les inscripcions d'alumnes.
+/// </summary>
 public class EnrollmentViewModel
 {
     public int Id { get; set; }

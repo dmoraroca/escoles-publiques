@@ -1,6 +1,14 @@
 namespace Web.Models;
 
 /// <summary>
+/// Model de vista per gestionar taules genèriques amb configuració de columnes i files.
+/// </summary>
+public class TableViewModel<T>
+{
+    // ...
+}
+
+/// <summary>
 /// Configuració per a una columna de la taula
 /// </summary>
 public class ColumnConfig

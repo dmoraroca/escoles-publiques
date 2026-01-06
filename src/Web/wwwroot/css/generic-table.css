@@ -1,3 +1,7 @@
+/*
+ * generic-table.css
+ * Styles for sortable tables, action columns, and responsive table layouts in the application.
+ */
 .sortable {
     cursor: pointer;
     user-select: none;
@@ -13,6 +17,7 @@
     background-color: rgba(255,255,255,0.25) !important;
 }
 
+/* Sortable table headers */
 .sort-icon {
     margin-left: 5px;
     opacity: 0.4;
@@ -34,6 +39,7 @@
     content: ' ↓';
 }
 
+/* Action column for buttons */
 .actions-column {
     min-width: 150px;
 }
@@ -89,3 +95,5 @@
         width: 100%;
     }
 }
+
+/* Responsive table layout for mobile devices */

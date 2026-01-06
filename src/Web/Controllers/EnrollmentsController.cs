@@ -6,6 +6,9 @@ using Web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+/// <summary>
+/// Controlador per gestionar les inscripcions dels alumnes.
+/// </summary>
 [Authorize]
 public class EnrollmentsController : BaseController
 {
@@ -21,6 +24,9 @@ public class EnrollmentsController : BaseController
         _studentService = studentService;
     }
     
+    /// <summary>
+    /// Mostra el llistat de totes les inscripcions.
+    /// </summary>
     public async Task<IActionResult> Index()
     {
         try

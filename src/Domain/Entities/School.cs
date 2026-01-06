@@ -1,5 +1,8 @@
 namespace Domain.Entities;
 
+/// <summary>
+/// Entitat que representa una escola dins el domini.
+/// </summary>
 public class School
 {
     public long Id { get; set; }

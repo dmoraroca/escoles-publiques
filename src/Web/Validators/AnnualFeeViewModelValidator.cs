@@ -3,6 +3,9 @@ using Web.Models;
 
 namespace Web.Validators;
 
+/// <summary>
+/// Validador FluentValidation per la vista de quota anual. Comprova inscripció, import i data de venciment.
+/// </summary>
 public class AnnualFeeViewModelValidator : AbstractValidator<AnnualFeeViewModel>
 {
     public AnnualFeeViewModelValidator()

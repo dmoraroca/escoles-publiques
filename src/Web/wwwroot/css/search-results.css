@@ -1,6 +1,10 @@
+/*
+ * search-results.css
+ * Styles for the search results page, including header, results section, and responsive layout.
+ */
 /* ================================
-   SEARCH RESULTS - SPECTACULAR STYLES
-   ================================ */
+    SEARCH RESULTS - SPECTACULAR STYLES
+    ================================ */
 
 .search-results-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);

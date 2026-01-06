@@ -4,15 +4,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
+/// <summary>
+/// Repositori per gestionar els alumnes a la base de dades.
+/// </summary>
 public class StudentRepository : IStudentRepository
 {
     private readonly SchoolDbContext _context;
 
+    /// <summary>
+    /// Constructor del repositori d'alumnes.
+    /// </summary>
     public StudentRepository(SchoolDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Retorna tots els alumnes amb escola i usuari.
+    /// </summary>
     public async Task<IEnumerable<Student>> GetAllAsync()
     {
         return await _context.Students

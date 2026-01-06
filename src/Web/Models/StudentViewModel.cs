@@ -1,5 +1,8 @@
 namespace Web.Models;
 
+/// <summary>
+/// Model de vista per gestionar les dades d'un alumne.
+/// </summary>
 public class StudentViewModel
 {
     public int Id { get; set; }

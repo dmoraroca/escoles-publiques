@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Domain.Interfaces;
 
+/// <summary>
+/// Interfície de repositori per gestionar usuaris al domini.
+/// </summary>
 public interface IUserRepository
 {
     Task<User?> GetByIdAsync(long id);

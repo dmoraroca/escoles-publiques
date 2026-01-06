@@ -1,5 +1,8 @@
 namespace Domain.Entities;
 
+/// <summary>
+/// Entitat que representa una inscripció d'alumne a un curs.
+/// </summary>
 public class Enrollment
 {
     public long Id { get; set; }

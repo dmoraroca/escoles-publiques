@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
 
+/// <summary>
+/// Servei d'aplicació per gestionar usuaris: consulta, creació i actualització.
+/// </summary>
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
@@ -18,16 +21,25 @@ public class UserService : IUserService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Retorna un usuari pel seu identificador.
+    /// </summary>
     public async Task<Domain.Entities.User?> GetUserByIdAsync(long id)
     {
         return await _userRepository.GetByIdAsync(id);
     }
 
+    /// <summary>
+    /// Retorna un usuari pel seu email.
+    /// </summary>
     public async Task<Domain.Entities.User?> GetUserByEmailAsync(string email)
     {
         return await _userRepository.GetByEmailAsync(email);
     }
 
+    /// <summary>
+    /// Crea un nou usuari amb validació i hash de contrasenya.
+    /// </summary>
     public async Task<Domain.Entities.User> CreateUserAsync(Domain.Entities.User user, string password)
     {
         // Validar que no existeixi un usuari amb aquest email
@@ -47,6 +59,9 @@ public class UserService : IUserService
         return await _userRepository.AddAsync(user);
     }
 
+    /// <summary>
+    /// Actualitza les dades d'un usuari existent.
+    /// </summary>
     public async Task UpdateUserAsync(Domain.Entities.User user)
     {
         var existingUser = await _userRepository.GetByIdAsync(user.Id);

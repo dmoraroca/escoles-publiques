@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Domain.Interfaces;
 
+/// <summary>
+/// Interfície de repositori per gestionar alumnes al domini.
+/// </summary>
 public interface IStudentRepository
 {
     Task<IEnumerable<Student>> GetAllAsync();

@@ -1,3 +1,7 @@
+/*
+ * gencat-theme.css
+ * Custom theme styles for the Gencat look and feel, including colors, headers, navigation, and layout.
+ */
 :root {
     --gencat-red: #C20000;
     --gencat-dark: #333333;

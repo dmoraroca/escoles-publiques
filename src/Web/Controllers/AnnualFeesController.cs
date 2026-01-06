@@ -6,12 +6,18 @@ using Web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
+/// <summary>
+/// Controlador per gestionar les quotes anuals dels alumnes.
+/// </summary>
 [Authorize]
 public class AnnualFeesController : BaseController
 {
     private readonly IAnnualFeeService _annualFeeService;
     private readonly IEnrollmentService _enrollmentService;
 
+    /// <summary>
+    /// Constructor del controlador de quotes anuals.
+    /// </summary>
     public AnnualFeesController(
         IAnnualFeeService annualFeeService,
         IEnrollmentService enrollmentService,
@@ -21,6 +27,9 @@ public class AnnualFeesController : BaseController
         _enrollmentService = enrollmentService;
     }
     
+    /// <summary>
+    /// Mostra el llistat de totes les quotes anuals.
+    /// </summary>
     public async Task<IActionResult> Index()
     {
         try
@@ -57,6 +66,9 @@ public class AnnualFeesController : BaseController
         }
     }
     
+    /// <summary>
+    /// Mostra els detalls d'una quota anual concreta.
+    /// </summary>
     public async Task<IActionResult> Details(int id)
     {
         try
@@ -101,6 +113,9 @@ public class AnnualFeesController : BaseController
         }
     }
     
+    /// <summary>
+    /// Mostra el formulari per crear una nova quota anual.
+    /// </summary>
     public async Task<IActionResult> Create()
     {
         var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
@@ -118,6 +133,9 @@ public class AnnualFeesController : BaseController
     
     [HttpPost]
     [ValidateAntiForgeryToken]
+    /// <summary>
+    /// Processa la creació d'una nova quota anual.
+    /// </summary>
     public async Task<IActionResult> Create(AnnualFeeViewModel model)
     {
         try
@@ -163,6 +181,9 @@ public class AnnualFeesController : BaseController
         }
     }
     
+    /// <summary>
+    /// Mostra el formulari per editar una quota anual existent.
+    /// </summary>
     public async Task<IActionResult> Edit(int id)
     {
         try
@@ -213,6 +234,9 @@ public class AnnualFeesController : BaseController
     
     [HttpPost]
     [ValidateAntiForgeryToken]
+    /// <summary>
+    /// Processa l'edició d'una quota anual existent.
+    /// </summary>
     public async Task<IActionResult> Edit(AnnualFeeViewModel model)
     {
         try
@@ -281,6 +305,9 @@ public class AnnualFeesController : BaseController
     
     [HttpPost]
 [HttpPost]
+    /// <summary>
+    /// Elimina una quota anual.
+    /// </summary>
     public async Task<IActionResult> Delete(int id)
     {
         try
@@ -304,7 +331,9 @@ public class AnnualFeesController : BaseController
         }
     }
     
-    // MÈTODE TEMPORAL PER CORREGIR IMPORTS
+    /// <summary>
+    /// Mètode temporal per corregir imports erronis de quotes anuals.
+    /// </summary>
     [HttpGet]
     public async Task<IActionResult> FixAmounts()
     {

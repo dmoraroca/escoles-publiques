@@ -1,3 +1,7 @@
+/*
+ * details.css
+ * Common styles for details pages, including edit buttons and alert visibility.
+ */
 /* Details Pages - Common styles */
 .edit-only {
     display: none;

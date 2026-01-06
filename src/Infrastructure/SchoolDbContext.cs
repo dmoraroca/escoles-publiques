@@ -3,21 +3,49 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
+/// <summary>
+/// Entity Framework Core database context for the school management system. Manages entity sets and configures schema mappings for PostgreSQL.
+/// </summary>
 public class SchoolDbContext : DbContext
 {
+    /// <summary>
+    /// Initializes a new instance of the SchoolDbContext class with the specified options.
+    /// </summary>
+    /// <param name="options">The options to be used by the DbContext.</param>
     public SchoolDbContext(DbContextOptions<SchoolDbContext> options)
         : base(options)
     {
     }
 
-    // DbSets (taules)
+    /// <summary>
+    /// Gets the set of schools.
+    /// </summary>
     public DbSet<School> Schools => Set<School>();
+    /// <summary>
+    /// Gets the set of students.
+    /// </summary>
     public DbSet<Student> Students => Set<Student>();
+    /// <summary>
+    /// Gets the set of enrollments.
+    /// </summary>
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+    /// <summary>
+    /// Gets the set of annual fees.
+    /// </summary>
     public DbSet<AnnualFee> AnnualFees => Set<AnnualFee>();
+    /// <summary>
+    /// Gets the set of scopes.
+    /// </summary>
     public DbSet<Scope> Scopes => Set<Scope>();
+    /// <summary>
+    /// Gets the set of users.
+    /// </summary>
     public DbSet<User> Users => Set<User>();
 
+    /// <summary>
+    /// Configures the entity mappings and schema for the database, including table and column naming conventions and specific table configurations.
+    /// </summary>
+    /// <param name="modelBuilder">The builder used to construct the model for the context.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -78,6 +106,11 @@ public class SchoolDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SchoolDbContext).Assembly);
     }
 
+    /// <summary>
+    /// Converts a string from PascalCase or camelCase to snake_case.
+    /// </summary>
+    /// <param name="name">The string to convert.</param>
+    /// <returns>The converted snake_case string.</returns>
     private static string ToSnakeCase(string name)
     {
         if (string.IsNullOrEmpty(name))

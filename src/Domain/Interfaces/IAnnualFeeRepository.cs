@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Domain.Interfaces;
 
+/// <summary>
+/// Interfície de repositori per gestionar quotes anuals al domini.
+/// </summary>
 public interface IAnnualFeeRepository
 {
     Task<IEnumerable<AnnualFee>> GetAllAsync();

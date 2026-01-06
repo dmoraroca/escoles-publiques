@@ -2,6 +2,9 @@ using Domain.Entities;
 
 namespace Application.Interfaces;
 
+/// <summary>
+/// Interfície de servei per gestionar alumnes a l'aplicació.
+/// </summary>
 public interface IStudentService
 {
     Task<IEnumerable<Student>> GetAllStudentsAsync();

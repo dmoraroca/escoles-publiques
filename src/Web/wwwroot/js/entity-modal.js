@@ -1,3 +1,7 @@
+/**
+ * entity-modal.js
+ * Handles modal form logic for creating and editing entities, including validation and error display.
+ */
 (function() {
     const modals = document.querySelectorAll('.modal[data-modal-id]');
     

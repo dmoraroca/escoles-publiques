@@ -1,0 +1,148 @@
+/*
+ * login.css
+ * Styles for the login page, including header, container, and form elements.
+ */
+.header-top-black {
+    background-color: #000;
+    padding: 8px 0;
+}
+
+.login-container {
+    max-width: 490px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.login-box {
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.login-header {
+    background: linear-gradient(to bottom, #6B9E3E 0%, #5C8A35 100%);
+    height: 15px;
+}
+
+.login-body {
+    padding: 30px 25px;
+}
+
+.login-body h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 25px 0;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-label .required {
+    color: #d32f2f;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    background-color: #e8f0fe;
+    border-radius: 3px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #6B9E3E;
+    background-color: #fff;
+}
+
+.btn-login {
+    background: linear-gradient(to bottom, #C20000 0%, #8B0000 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-login:hover {
+    background: linear-gradient(to bottom, #8B0000 0%, #6B0000 100%);
+}
+
+.alert {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+body.login-body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.login-header-black {
+    background-color: #000;
+    padding: 15px 0;
+}
+.login-header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.login-header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.login-header-logo {
+    height: 25px;
+}
+.login-header-title {
+    color: white;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+.login-footer {
+    margin-top: auto;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    padding: 20px 0;
+}
+.login-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.login-footer-muted {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+.login-footer-muted2 {
+    color: #6c757d;
+    font-size: 0.75rem;
+}

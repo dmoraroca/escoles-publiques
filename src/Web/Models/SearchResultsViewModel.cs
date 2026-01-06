@@ -1,5 +1,8 @@
 namespace Web.Models;
 
+/// <summary>
+/// Model de vista per mostrar els resultats d'una cerca global.
+/// </summary>
 public class SearchResultsViewModel
 {
     public string? SearchQuery { get; set; }
@@ -12,6 +15,9 @@ public class SearchResultsViewModel
     public bool HasResults => Schools.Any() || Students.Any() || Enrollments.Any() || AnnualFees.Any();
 }
 
+/// <summary>
+/// Resultat d'escola en la cerca.
+/// </summary>
 public class SchoolResultViewModel
 {
     public long Id { get; set; }
@@ -21,6 +27,9 @@ public class SchoolResultViewModel
     public string? Scope { get; set; }
 }
 
+/// <summary>
+/// Resultat d'alumne en la cerca.
+/// </summary>
 public class StudentResultViewModel
 {
     public long Id { get; set; }
@@ -30,6 +39,9 @@ public class StudentResultViewModel
     public string? SchoolName { get; set; }
 }
 
+/// <summary>
+/// Resultat d'inscripció en la cerca.
+/// </summary>
 public class EnrollmentResultViewModel
 {
     public long Id { get; set; }
