@@ -15,4 +15,6 @@ public class EnrollmentViewModel
     public string Status { get; set; } = string.Empty;
     public DateTime EnrolledAt { get; set; }
     public DateTime CreatedAt { get; set; }
+    public int SchoolId { get; set; }
+    public string SchoolName { get; set; } = string.Empty;
 }

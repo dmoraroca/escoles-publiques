@@ -25,6 +25,7 @@ public class SchoolRepository : ISchoolRepository
     public async Task<IEnumerable<School>> GetAllAsync()
     {
         return await _context.Schools
+            .Include(s => s.Scope)
             .OrderBy(s => s.Name)
             .ToListAsync();
     }
@@ -36,6 +37,7 @@ public class SchoolRepository : ISchoolRepository
     {
         return await _context.Schools
             .Include(s => s.Students)
+            .Include(s => s.Scope)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
@@ -45,6 +47,7 @@ public class SchoolRepository : ISchoolRepository
     public async Task<School?> GetByCodeAsync(string code)
     {
         return await _context.Schools
+            .Include(s => s.Scope)
             .FirstOrDefaultAsync(s => s.Code == code);
     }
 

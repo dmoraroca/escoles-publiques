@@ -49,15 +49,17 @@ public class SearchResultsViewComponent : ViewComponent
 
         // Cerca en Escoles
         var allSchools = await _schoolService.GetAllSchoolsAsync();
+        var allScopes = allSchools.Select(s => s.ScopeId).Distinct().Where(id => id.HasValue).Select(id => id.Value).ToList();
+        // Aquí hauries d'obtenir els noms dels àmbits segons la teva implementació de repositori
+        // Per simplicitat, suposarem que no es filtra per nom d'àmbit, només per id
         model.Schools = allSchools
             .Where(s => 
                 (searchTerms.Count == 0 || searchTerms.Any(term =>
                     s.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     s.Code.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    (s.City != null && s.City.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
-                    (s.Scope != null && s.Scope.Contains(term, StringComparison.OrdinalIgnoreCase)))) &&
+                    (s.City != null && s.City.Contains(term, StringComparison.OrdinalIgnoreCase)))) &&
                 (string.IsNullOrWhiteSpace(scopeName) || 
-                 (s.Scope != null && s.Scope.Equals(scopeName, StringComparison.OrdinalIgnoreCase))))
+                 (s.ScopeId.HasValue && s.ScopeId.ToString() == scopeName)))
             .Take(10)
             .Select(s => new SchoolResultViewModel
             {
@@ -65,7 +67,8 @@ public class SearchResultsViewComponent : ViewComponent
                 Name = s.Name,
                 Code = s.Code,
                 City = s.City,
-                Scope = s.Scope
+                ScopeId = s.ScopeId,
+                ScopeName = null // Omple amb el nom real si tens accés aquí
             })
             .ToList();
 

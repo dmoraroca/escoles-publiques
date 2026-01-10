@@ -47,6 +47,7 @@ public class SchoolsController : BaseController
         try
         {
             var schools = await _schoolService.GetAllSchoolsAsync();
+            var scopes = (await _scopeRepository.GetAllActiveScopesAsync()).ToList();
             var viewModels = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
@@ -54,17 +55,15 @@ public class SchoolsController : BaseController
                 Name = s.Name,
                 City = s.City ?? "",
                 IsFavorite = s.IsFavorite,
-                Scope = s.Scope,
+                ScopeId = s.ScopeId,
+                ScopeName = s.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == s.ScopeId)?.Name : null,
                 CreatedAt = s.CreatedAt
             });
-            
-            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
             ViewBag.Scopes = scopes.Select(s => new SelectOption
             {
-                Value = s.Name,
+                Value = s.Id.ToString(),
                 Text = s.Name
             }).ToList();
-            
             var role = User.FindFirstValue("Role");
             ViewBag.UserRole = role;
             return View(viewModels);
@@ -89,6 +88,8 @@ public class SchoolsController : BaseController
         {
             var school = await _schoolService.GetSchoolByIdAsync(id);
             
+            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
             var viewModel = new SchoolViewModel
             {
                 Id = (int)school.Id,
@@ -96,13 +97,11 @@ public class SchoolsController : BaseController
                 Name = school.Name,
                 City = school.City ?? "",
                 IsFavorite = school.IsFavorite,
-                Scope = school.Scope,
+                ScopeId = school.ScopeId,
+                ScopeName = scopeName,
                 CreatedAt = school.CreatedAt
             };
-            
-            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
-            ViewBag.Scopes = scopes.Select(s => s.Name).ToList();
-            
+            ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(viewModel);
         }
         catch (NotFoundException ex)
@@ -154,22 +153,26 @@ public class SchoolsController : BaseController
                 Name = model.Name,
                 City = model.City,
                 IsFavorite = model.IsFavorite,
-                Scope = model.Scope
+                ScopeId = model.ScopeId
             };
-
             await _schoolService.CreateSchoolAsync(school);
-            
+            var scopeName = string.Empty;
+            if (model.ScopeId.HasValue)
+            {
+                var scope = (await _scopeRepository.GetAllActiveScopesAsync()).FirstOrDefault(s => s.Id == model.ScopeId);
+                scopeName = scope?.Name ?? string.Empty;
+            }
             await _hubContext.Clients.All.SendAsync("SchoolCreated", new 
             { 
                 id = school.Id,
                 code = school.Code, 
                 name = school.Name, 
                 city = school.City,
-                scope = school.Scope,
+                scopeId = school.ScopeId,
+                scopeName = scopeName,
                 isFavorite = school.IsFavorite,
                 createdAt = school.CreatedAt.ToString("dd/MM/yyyy HH:mm")
             });
-            
             SetSuccessMessage($"Escola '{school.Name}' creada correctament.");
             return RedirectToAction(nameof(Index));
         }
@@ -205,6 +208,8 @@ public class SchoolsController : BaseController
         {
             var school = await _schoolService.GetSchoolByIdAsync(id);
             
+            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
             var viewModel = new SchoolViewModel
             {
                 Id = (int)school.Id,
@@ -212,10 +217,11 @@ public class SchoolsController : BaseController
                 Name = school.Name,
                 City = school.City ?? "",
                 IsFavorite = school.IsFavorite,
-                Scope = school.Scope,
+                ScopeId = school.ScopeId,
+                ScopeName = scopeName,
                 CreatedAt = school.CreatedAt
             };
-            
+            ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(viewModel);
         }
         catch (NotFoundException ex)
@@ -256,17 +262,24 @@ public class SchoolsController : BaseController
             school.Name = model.Name;
             school.City = model.City;
             school.IsFavorite = model.IsFavorite;
-            school.Scope = model.Scope;
+            school.ScopeId = model.ScopeId;
 
             await _schoolService.UpdateSchoolAsync(school);
             
+            var scopeName = string.Empty;
+            if (school.ScopeId.HasValue)
+            {
+                var scope = (await _scopeRepository.GetAllActiveScopesAsync()).FirstOrDefault(s => s.Id == school.ScopeId);
+                scopeName = scope?.Name ?? string.Empty;
+            }
             await _hubContext.Clients.All.SendAsync("SchoolUpdated", new 
             { 
                 id = school.Id,
                 code = school.Code, 
                 name = school.Name, 
                 city = school.City,
-                scope = school.Scope,
+                scopeId = school.ScopeId,
+                scopeName = scopeName,
                 isFavorite = school.IsFavorite,
                 createdAt = school.CreatedAt.ToString("dd/MM/yyyy HH:mm")
             });

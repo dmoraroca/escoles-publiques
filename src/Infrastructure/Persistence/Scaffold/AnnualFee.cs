@@ -19,5 +19,9 @@ public partial class AnnualFee
 
     public string? PaymentRef { get; set; }
 
+    // Eliminat: public long? StudentId { get; set; }
+
     public virtual Enrollment Enrollment { get; set; } = null!;
+
+    // Eliminat: public virtual Student? Student { get; set; }
 }

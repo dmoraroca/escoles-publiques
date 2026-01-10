@@ -17,7 +17,11 @@ public partial class Enrollment
 
     public string? CourseName { get; set; }
 
+    public long? SchoolId { get; set; }
+
     public virtual ICollection<AnnualFee> AnnualFees { get; set; } = new List<AnnualFee>();
+
+    public virtual School? School { get; set; }
 
     public virtual Student Student { get; set; } = null!;
 }

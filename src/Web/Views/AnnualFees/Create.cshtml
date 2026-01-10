@@ -15,16 +15,17 @@
                     <form asp-action="Create" method="post">
                         <div class="mb-3">
                             <label asp-for="EnrollmentId" class="form-label">Inscripció <span class="text-danger">*</span></label>
-                            <select asp-for="EnrollmentId" class="form-select">
+                            <select asp-for="EnrollmentId" class="form-select" id="enrollmentSelect">
                                 <option value="">-- Selecciona una inscripció --</option>
                                 @foreach(var enrollment in ViewBag.Enrollments)
                                 {
-                                    <option value="@enrollment.Id">
+                                    <option value="@enrollment.Id" data-school="@enrollment.SchoolName">
                                         @enrollment.StudentName - @enrollment.AcademicYear - @enrollment.CourseName (@enrollment.EnrolledAt.ToString("dd/MM/yyyy"))
                                     </option>
                                 }
                             </select>
                             <span asp-validation-for="EnrollmentId" class="text-danger"></span>
+                            <div id="schoolLabel" class="form-text mt-2 text-primary"></div>
                         </div>
 
                         <div class="row">
@@ -77,4 +78,13 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/annualfees-create.js"></script>
+    <script>
+        const select = document.getElementById('enrollmentSelect');
+        const label = document.getElementById('schoolLabel');
+        select.addEventListener('change', function() {
+            const selected = select.options[select.selectedIndex];
+            const school = selected.getAttribute('data-school');
+            label.textContent = school ? `Escola: ${school}` : '';
+        });
+    </script>
 }

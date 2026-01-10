@@ -1,3 +1,4 @@
+
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -15,20 +16,14 @@ public class EnrollmentService : IEnrollmentService
     private readonly IStudentRepository _studentRepository;
     private readonly ILogger<EnrollmentService> _logger;
 
-    /// <summary>
-    /// Initializes a new instance of the EnrollmentService class.
-    /// </summary>
-    /// <param name="enrollmentRepository">Repository for enrollment data access.</param>
-    /// <param name="studentRepository">Repository for student data access.</param>
-    /// <param name="logger">Logger instance.</param>
     public EnrollmentService(
         IEnrollmentRepository enrollmentRepository,
         IStudentRepository studentRepository,
         ILogger<EnrollmentService> logger)
     {
-        _enrollmentRepository = enrollmentRepository;
-        _studentRepository = studentRepository;
-        _logger = logger;
+        _enrollmentRepository = enrollmentRepository ?? throw new ArgumentNullException(nameof(enrollmentRepository));
+        _studentRepository = studentRepository ?? throw new ArgumentNullException(nameof(studentRepository));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     /// <summary>

@@ -13,6 +13,8 @@ public partial class Student
 
     public long? UserId { get; set; }
 
+    public virtual ICollection<AnnualFee> AnnualFees { get; set; } = new List<AnnualFee>();
+
     public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
     public virtual School School { get; set; } = null!;

@@ -20,11 +20,14 @@ public class SearchResultsViewModel
 /// </summary>
 public class SchoolResultViewModel
 {
+    // Per compatibilitat amb vistes antigues
+    public string? Scope { get; set; }
     public long Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Code { get; set; } = string.Empty;
     public string? City { get; set; }
-    public string? Scope { get; set; }
+    public long? ScopeId { get; set; }
+    public string? ScopeName { get; set; }
 }
 
 /// <summary>

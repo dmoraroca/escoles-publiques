@@ -20,10 +20,9 @@ public partial class School
     /// </summary>
     public bool IsFavorite { get; set; }
 
-    /// <summary>
-    /// Àmbit de l&apos;escola (ex: Infantil, Primària, Secundària, Batxillerat)
-    /// </summary>
-    public string? Scope { get; set; }
+    public long? ScopeId { get; set; }
+
+    public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
 }

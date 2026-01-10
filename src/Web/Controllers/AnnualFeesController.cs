@@ -43,7 +43,7 @@ public class AnnualFeesController : BaseController
                     : "Inscripció desconeguda",
                 Amount = f.Amount,
                 Currency = f.Currency,
-                DueDate = f.DueDate.ToDateTime(TimeOnly.MinValue),
+                DueDate = f.DueDate,
                 PaidAt = f.PaidAt,
                 PaymentRef = f.PaymentRef
             });
@@ -74,7 +74,11 @@ public class AnnualFeesController : BaseController
         try
         {
             var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
-            
+            if (fee == null)
+            {
+                SetErrorMessage("No s'ha trobat la quota.");
+                return RedirectToAction("Index");
+            }
             var viewModel = new AnnualFeeViewModel
             {
                 Id = (int)fee.Id,
@@ -84,11 +88,10 @@ public class AnnualFeesController : BaseController
                     : "Inscripció desconeguda",
                 Amount = fee.Amount,
                 Currency = fee.Currency,
-                DueDate = fee.DueDate.ToDateTime(TimeOnly.MinValue),
+                DueDate = fee.DueDate,
                 PaidAt = fee.PaidAt,
                 PaymentRef = fee.PaymentRef
             };
-            
             var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
             ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
             {
@@ -96,39 +99,14 @@ public class AnnualFeesController : BaseController
                 StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
                 AcademicYear = e.AcademicYear
             }).ToList();
-            
             return View(viewModel);
-        }
-        catch (NotFoundException ex)
-        {
-            Logger.LogWarning(ex, "Quota amb Id {Id} no trobada", id);
-            SetErrorMessage($"Quota amb ID {id} no trobada.");
-            return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error obtenint detalls de la quota {Id}", id);
-            SetErrorMessage("Error carregant els detalls de la quota.");
-            return RedirectToAction(nameof(Index));
+            Logger.LogError(ex, "Error obtenint detalls de la quota");
+            SetErrorMessage("Error carregant la quota. Si us plau, intenta-ho de nou.");
+            return RedirectToAction("Index");
         }
-    }
-    
-    /// <summary>
-    /// Mostra el formulari per crear una nova quota anual.
-    /// </summary>
-    public async Task<IActionResult> Create()
-    {
-        var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
-        ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
-        {
-            Id = (int)e.Id,
-            StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
-            AcademicYear = e.AcademicYear,
-            CourseName = e.CourseName,
-            EnrolledAt = e.EnrolledAt
-        }).ToList();
-        
-        return View();
     }
     
     [HttpPost]
@@ -151,7 +129,7 @@ public class AnnualFeesController : BaseController
                 EnrollmentId = model.EnrollmentId,
                 Amount = model.Amount,
                 Currency = model.Currency ?? "EUR",
-                DueDate = DateOnly.FromDateTime(model.DueDate),
+                DueDate = model.DueDate,
                 PaidAt = model.IsPaid ? DateTime.Now : null,
                 PaymentRef = model.PaymentRef
             };
@@ -189,7 +167,11 @@ public class AnnualFeesController : BaseController
         try
         {
             var annualFee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
-            
+            if (annualFee == null)
+            {
+                SetErrorMessage($"Quota amb ID {id} no trobada.");
+                return RedirectToAction(nameof(Index));
+            }
             var viewModel = new AnnualFeeViewModel
             {
                 Id = (int)annualFee.Id,
@@ -199,12 +181,11 @@ public class AnnualFeesController : BaseController
                     : "Inscripció desconeguda",
                 Amount = annualFee.Amount,
                 Currency = annualFee.Currency,
-                DueDate = annualFee.DueDate.ToDateTime(TimeOnly.MinValue),
+                DueDate = annualFee.DueDate,
                 IsPaid = annualFee.PaidAt.HasValue,
                 PaidAt = annualFee.PaidAt,
                 PaymentRef = annualFee.PaymentRef
             };
-            
             // Carregar inscripcions per al dropdown
             var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
             ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
@@ -215,7 +196,6 @@ public class AnnualFeesController : BaseController
                 CourseName = e.CourseName,
                 EnrolledAt = e.EnrolledAt
             }).ToList();
-            
             return View(viewModel);
         }
         catch (NotFoundException ex)
@@ -270,7 +250,7 @@ public class AnnualFeesController : BaseController
             annualFee.EnrollmentId = model.EnrollmentId;
             annualFee.Amount = model.Amount;
             annualFee.Currency = model.Currency ?? "EUR";
-            annualFee.DueDate = DateOnly.FromDateTime(model.DueDate);
+            annualFee.DueDate = model.DueDate;
             annualFee.PaidAt = model.IsPaid ? DateTime.Now : null;
             annualFee.PaymentRef = model.PaymentRef;
 

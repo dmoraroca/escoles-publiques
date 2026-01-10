@@ -47,53 +47,66 @@ public class AuthController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(string email, string password)
     {
-        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        try
         {
-            TempData["Error"] = "Email i contrasenya són obligatoris";
-            return View();
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                TempData["Error"] = "Email i contrasenya són obligatoris";
+                return View();
+            }
+
+            var (success, userId, role) = await _authService.AuthenticateAsync(email, password);
+
+            if (!success)
+            {
+                TempData["Error"] = "Credencials incorrectes";
+                return View();
+            }
+
+            // Obtenir l'usuari per agafar el nom complet
+            var userRepository = HttpContext.RequestServices.GetRequiredService<Domain.Interfaces.IUserRepository>();
+            var user = await userRepository.GetByIdAsync(long.Parse(userId!));
+            var fullName = user != null ? $"{user.FirstName} {user.LastName}" : email;
+
+            // Crear claims per l'usuari
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId!),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Name, fullName),
+                new Claim("Role", role!)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
+            };
+
+            await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
+
+            _logger.LogInformation("User {Email} logged in with role {Role}", email, role);
+
+            // Redirigir segons el rol
+            if (role == "ADM")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return RedirectToAction("Dashboard", "User");
+            }
         }
-
-        var (success, userId, role) = await _authService.AuthenticateAsync(email, password);
-
-        if (!success)
+        catch (Npgsql.NpgsqlException)
         {
-            TempData["Error"] = "Credencials incorrectes";
-            return View();
+            // Error de connexió a la base de dades
+            return View("~/Views/Shared/ErrorDb.cshtml");
         }
-
-        // Obtenir l'usuari per agafar el nom complet
-        var userRepository = HttpContext.RequestServices.GetRequiredService<Domain.Interfaces.IUserRepository>();
-        var user = await userRepository.GetByIdAsync(long.Parse(userId!));
-        var fullName = user != null ? $"{user.FirstName} {user.LastName}" : email;
-
-        // Crear claims per l'usuari
-        var claims = new List<Claim>
+        catch (Exception ex)
         {
-            new Claim(ClaimTypes.NameIdentifier, userId!),
-            new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Name, fullName),
-            new Claim("Role", role!)
-        };
-
-        var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
-        var authProperties = new AuthenticationProperties
-        {
-            IsPersistent = true,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
-        };
-
-        await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
-
-        _logger.LogInformation("User {Email} logged in with role {Role}", email, role);
-
-        // Redirigir segons el rol
-        if (role == "ADM")
-        {
-            return RedirectToAction("Index", "Home");
-        }
-        else
-        {
-            return RedirectToAction("Dashboard", "User");
+            _logger.LogError(ex, "Error inesperat al login");
+            return View("~/Views/Shared/ErrorDb.cshtml");
         }
     }
 

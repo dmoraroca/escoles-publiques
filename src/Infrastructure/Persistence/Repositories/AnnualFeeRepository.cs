@@ -28,6 +28,9 @@ public class AnnualFeeRepository : IAnnualFeeRepository
             .Include(af => af.Enrollment)
                 .ThenInclude(e => e.Student)
                     .ThenInclude(s => s.User)
+            .Include(af => af.Enrollment)
+                .ThenInclude(e => e.Student)
+                    .ThenInclude(s => s.School)
             .OrderByDescending(af => af.DueDate)
             .ToListAsync();
     }

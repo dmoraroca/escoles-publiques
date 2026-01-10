@@ -27,6 +27,7 @@ public class EnrollmentRepository : IEnrollmentRepository
         return await _context.Enrollments
             .Include(e => e.Student)
                 .ThenInclude(s => s.User)
+            .Include(e => e.School)
             .OrderByDescending(e => e.EnrolledAt)
             .ToListAsync();
     }

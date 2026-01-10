@@ -13,6 +13,7 @@
                 </div>
                 <div class="card-body">
                     <form asp-action="Create" method="post">
+
                         <div class="mb-3">
                             <label asp-for="StudentId" class="form-label">Alumne <span class="text-danger">*</span></label>
                             <select asp-for="StudentId" class="form-select">
@@ -23,6 +24,19 @@
                                 }
                             </select>
                             <span asp-validation-for="StudentId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <pre>@ViewBag.Schools</pre>
+                            <label asp-for="SchoolId" class="form-label">Escola <span class="text-danger">*</span></label>
+                            <select asp-for="SchoolId" class="form-select">
+                                <option value="">-- Selecciona una escola --</option>
+                                @foreach(var school in ViewBag.Schools)
+                                {
+                                    <option value="@school.Id">@school.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="SchoolId" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">

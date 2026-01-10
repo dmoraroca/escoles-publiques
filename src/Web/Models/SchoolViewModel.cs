@@ -7,6 +7,8 @@ namespace Web.Models;
 /// </summary>
 public class SchoolViewModel
 {
+    // Per compatibilitat amb vistes antigues
+    public string? Scope { get; set; }
     public int Id { get; set; }
     
     [Required(ErrorMessage = "El codi de l'escola és obligatori")]
@@ -26,9 +28,11 @@ public class SchoolViewModel
     [Display(Name = "Escola favorita")]
     public bool IsFavorite { get; set; }
     
-    [StringLength(100, ErrorMessage = "L'àmbit no pot superar els 100 caràcters")]
     [Display(Name = "Àmbit")]
-    public string? Scope { get; set; }
+    public long? ScopeId { get; set; }
+
+    [Display(Name = "Nom de l'àmbit")]
+    public string? ScopeName { get; set; }
     
     [Display(Name = "Data de creació")]
     public DateTime CreatedAt { get; set; }

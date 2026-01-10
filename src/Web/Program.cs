@@ -9,8 +9,16 @@ using Microsoft.EntityFrameworkCore;
 using Web.Hubs;
 using Web.Validators;
 using System.Globalization;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configuració Serilog: logs per dia a /logs/logYYYYMMDD.log
+var logPath = Path.Combine(AppContext.BaseDirectory, "logs", "log{Date}.log");
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Host.UseSerilog();
 
 // Configurar cultura invariant per evitar problemes amb decimals
 var cultureInfo = new CultureInfo("en-US");

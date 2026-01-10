@@ -16,18 +16,21 @@ public class UserController : BaseController
     private readonly IEnrollmentService _enrollmentService;
     private readonly IAnnualFeeService _annualFeeService;
     private readonly IUserRepository _userRepository;
+    private readonly ISchoolRepository _schoolRepository;
 
     public UserController(
         ILogger<UserController> logger,
         IStudentService studentService,
         IEnrollmentService enrollmentService,
         IAnnualFeeService annualFeeService,
-        IUserRepository userRepository) : base(logger)
+        IUserRepository userRepository,
+        ISchoolRepository schoolRepository) : base(logger)
     {
         _studentService = studentService;
         _enrollmentService = enrollmentService;
         _annualFeeService = annualFeeService;
         _userRepository = userRepository;
+        _schoolRepository = schoolRepository;
     }
 
     /// <summary>
@@ -89,6 +92,21 @@ public class UserController : BaseController
             var allEnrollments = await _enrollmentService.GetAllEnrollmentsAsync();
             Logger.LogInformation("Total enrollments in DB: {Count}", allEnrollments.Count());
             
+            // Pre-fetch all school names for enrollments
+            var schoolIds = allEnrollments
+                .Where(e => e.StudentId == student.Id)
+                .Select(e => e.SchoolId)
+                .Distinct()
+                .ToList();
+
+            var schoolNames = new Dictionary<long, string>();
+            foreach (var schoolId in schoolIds)
+            {
+                var school = await _schoolRepository.GetByIdAsync(schoolId);
+                var name = school?.Name;
+                schoolNames[schoolId] = name ?? "";
+            }
+
             var userEnrollments = allEnrollments
                 .Where(e => e.StudentId == student.Id)
                 .Select(e => new Web.Models.EnrollmentViewModel {
@@ -99,14 +117,24 @@ public class UserController : BaseController
                     CourseName = e.CourseName ?? "",
                     Status = e.Status ?? "",
                     EnrolledAt = e.EnrolledAt,
-                    CreatedAt = student.CreatedAt
+                    CreatedAt = student.CreatedAt,
+                    SchoolName = schoolNames.ContainsKey(e.SchoolId) ? schoolNames[e.SchoolId] : ""
                 })
                 .ToList();
             Logger.LogInformation("Enrollments for student {StudentId}: {Count}", student.Id, userEnrollments.Count);
 
             // Obtenir les quotes de les inscripcions
             var allFees = await _annualFeeService.GetAllAnnualFeesAsync();
-            var userFees = allFees.Where(f => f.Enrollment != null && f.Enrollment.StudentId == student.Id).ToList();
+                var userFees = allFees.Where(f => f.Enrollment != null && f.Enrollment.StudentId == student.Id)
+                    .Select(f => new Web.Models.AnnualFeeViewModel {
+                        Id = (int)f.Id,
+                        Amount = f.Amount,
+                        Currency = f.Currency,
+                        DueDate = f.DueDate,
+                        PaidAt = f.PaidAt,
+                        PaymentRef = f.PaymentRef
+                    })
+                    .ToList();
             Logger.LogInformation("Fees for student {StudentId}: {Count}", student.Id, userFees.Count);
 
             ViewBag.User = user;

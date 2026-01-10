@@ -86,6 +86,7 @@ public partial class AppDbContext : DbContext
                 .HasDefaultValueSql("'Active'::text")
                 .HasColumnName("status");
             entity.Property(e => e.StudentId).HasColumnName("student_id");
+            entity.Property(e => e.SchoolId).HasColumnName("school_id");
 
             entity.HasOne(d => d.Student).WithMany(p => p.Enrollments)
                 .HasForeignKey(d => d.StudentId)
@@ -100,7 +101,7 @@ public partial class AppDbContext : DbContext
 
             entity.HasIndex(e => e.IsFavorite, "idx_schools_is_favorite");
 
-            entity.HasIndex(e => e.Scope, "idx_schools_scope");
+            entity.HasIndex(e => e.ScopeId, "idx_schools_scopeId");
 
             entity.HasIndex(e => e.Code, "schools_code_key").IsUnique();
 
@@ -115,10 +116,8 @@ public partial class AppDbContext : DbContext
                 .HasComment("Indica si l'escola és marcada com a favorita")
                 .HasColumnName("is_favorite");
             entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.Scope)
-                .HasMaxLength(100)
-                .HasComment("Àmbit de l'escola (ex: Infantil, Primària, Secundària, Batxillerat)")
-                .HasColumnName("scope");
+            entity.Property(e => e.ScopeId)
+                .HasColumnName("scopeId");
         });
 
         modelBuilder.Entity<ScopeMnt>(entity =>

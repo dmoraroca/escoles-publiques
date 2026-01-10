@@ -3,7 +3,7 @@
     var user = ViewBag.User as Domain.Entities.User;
     var student = ViewBag.Student as Domain.Entities.Student;
     var enrollments = ViewBag.Enrollments as List<Web.Models.EnrollmentViewModel>;
-    var fees = ViewBag.Fees as List<dynamic>;
+    var fees = ViewBag.Fees as List<Web.Models.AnnualFeeViewModel>;
 }
 
 
@@ -101,14 +101,15 @@
                             <div class="col-md-6 mb-4">
                                 <div class="enrollment-card">
                                     <div class="enrollment-header">
-                                        <h4>@(enrollment.CourseName ?? "Sense curs")</h4>
+                                        <h4>@(enrollment.CourseName ?? "Sense curs") - @(enrollment.SchoolName ?? "Sense escola")</h4>
                                         <span class="badge badge-@(enrollment.Status == "Active" ? "success" : "secondary")">
                                             @enrollment.Status
                                         </span>
                                     </div>
                                     <div class="enrollment-body">
+                                        <p><i class="bi bi-building"></i> <strong>Escola:</strong> @student?.School?.Name ?? "-"</p>
                                         <p><i class="bi bi-calendar3"></i> <strong>Any acadèmic:</strong> @(enrollment.AcademicYear ?? "?")</p>
-                                        <p><i class="bi bi-clock-history"></i> <strong>Data inscripció:</strong> @(enrollment.EnrolledAt != null ? enrollment.EnrolledAt.ToString("dd/MM/yyyy") : "?")</p>
+                                        <p><i class="bi bi-clock-history"></i> <strong>Data inscripció:</strong> @(enrollment.EnrolledAt is DateTime dt ? dt.ToString("dd/MM/yyyy") : "?")</p>
                                     </div>
                                 </div>
                             </div>
@@ -137,6 +138,7 @@
                         <table class="fees-table">
                             <thead>
                                 <tr>
+                                    <th>Escola</th>
                                     <th>Curs</th>
                                     <th>Import</th>
                                     <th>Venciment</th>
@@ -147,12 +149,11 @@
                             <tbody>
                                 @foreach (var fee in fees.OrderBy(f => f.DueDate))
                                 {
-                                    <tr class="@(fee.PaidAt.HasValue ? "paid" : "pending")">
-                                        <td>@fee.Enrollment?.AcademicYear</td>
+                                    <tr class="@(fee.PaidAt != null ? "paid" : "pending")">
                                         <td class="amount">@fee.Amount.ToString("N2") @fee.Currency</td>
                                         <td>@fee.DueDate.ToString("dd/MM/yyyy")</td>
                                         <td>
-                                            @if (fee.PaidAt.HasValue)
+                                            @if (fee.PaidAt != null)
                                             {
                                                 <span class="status-badge status-paid">
                                                     <i class="bi bi-check-circle"></i> Pagada
@@ -166,9 +167,9 @@
                                             }
                                         </td>
                                         <td>
-                                            @if (fee.PaidAt.HasValue)
+                                            @if (fee.PaidAt != null)
                                             {
-                                                @fee.PaidAt.Value.ToString("dd/MM/yyyy")
+                                                @((fee.PaidAt as DateTime?)?.ToString("dd/MM/yyyy"))
                                             }
                                             else
                                             {
