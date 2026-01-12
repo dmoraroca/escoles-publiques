@@ -1,0 +1,162 @@
+Summary
+  Generated on: 12/1/2026 - 22:09:25
+  Coverage date: 12/1/2026 - 14:51:12 - 12/1/2026 - 22:09:15
+  Parser: MultiReport (29x Cobertura)
+  Assemblies: 4
+  Classes: 134
+  Files: 128
+  Line coverage: 20.1%
+  Covered lines: 994
+  Uncovered lines: 3938
+  Coverable lines: 4932
+  Total lines: 9660
+  Branch coverage: 10.8% (140 of 1296)
+  Covered branches: 140
+  Total branches: 1296
+  Method coverage: 25.1% (178 of 708)
+  Full method coverage: 22.4% (159 of 708)
+  Covered methods: 178
+  Fully covered methods: 159
+  Total methods: 708
+
+Application                                                                     79.6%
+  Application.UseCases.Services.AnnualFeeService                                38.5%
+  Application.UseCases.Services.AuthService                                       75%
+  Application.UseCases.Services.EnrollmentService                               93.1%
+  Application.UseCases.Services.SchoolService                                   87.7%
+  Application.UseCases.Services.StudentService                                  93.6%
+  Application.UseCases.Services.UserService                                     90.6%
+
+Domain                                                                          69.3%
+  Domain.DomainExceptions.DomainException                                         50%
+  Domain.DomainExceptions.DuplicateEntityException                               100%
+  Domain.DomainExceptions.NotFoundException                                       50%
+  Domain.DomainExceptions.ValidationException                                   43.7%
+  Domain.Entities.AnnualFee                                                      100%
+  Domain.Entities.Enrollment                                                      90%
+  Domain.Entities.School                                                        88.8%
+  Domain.Entities.Scope                                                            0%
+  Domain.Entities.Student                                                        100%
+  Domain.Entities.User                                                          71.4%
+
+Infrastructure                                                                   6.4%
+  Infrastructure.Infrastructure.Persistence.Scaffold.annual_fee                    0%
+  Infrastructure.Infrastructure.Persistence.Scaffold.AppDbContext                  0%
+  Infrastructure.Infrastructure.Persistence.Scaffold.enrollment                    0%
+  Infrastructure.Infrastructure.Persistence.Scaffold.school                        0%
+  Infrastructure.Infrastructure.Persistence.Scaffold.scope_mnt                     0%
+  Infrastructure.Infrastructure.Persistence.Scaffold.student                       0%
+  Infrastructure.Infrastructure.Persistence.Scaffold.user                          0%
+  Infrastructure.Migrations.SchoolDbContextModelSnapshot                           0%
+  Infrastructure.Migrations.UpdateStudentUserRelationship                          0%
+  Infrastructure.Persistence.AppDbContextFactory                                   0%
+  Infrastructure.Persistence.Repositories.AnnualFeeRepository                   33.3%
+  Infrastructure.Persistence.Repositories.EnrollmentRepository                  28.5%
+  Infrastructure.Persistence.Repositories.SchoolRepository                      26.3%
+  Infrastructure.Persistence.Repositories.StudentRepository                       25%
+  Infrastructure.Persistence.Repositories.UserRepository                        25.5%
+  Infrastructure.Persistence.Scaffold.AnnualFee                                    0%
+  Infrastructure.Persistence.Scaffold.AppDbContext                                 0%
+  Infrastructure.Persistence.Scaffold.Enrollment                                   0%
+  Infrastructure.Persistence.Scaffold.School                                       0%
+  Infrastructure.Persistence.Scaffold.ScopeMnt                                     0%
+  Infrastructure.Persistence.Scaffold.Student                                      0%
+  Infrastructure.Persistence.Scaffold.User                                         0%
+  Infrastructure.Persistence.SchoolDbContext                                    97.1%
+  Infrastructure.Persistence.ScopeRepository                                       0%
+  Infrastructure.src.Domain.Entities.AnnualFees                                    0%
+  Infrastructure.src.Domain.Entities.Enrollments                                   0%
+  Infrastructure.src.Domain.Entities.Schools                                       0%
+  Infrastructure.src.Domain.Entities.ScopeMnt                                      0%
+  Infrastructure.src.Domain.Entities.Students                                      0%
+  Infrastructure.src.Domain.Entities.Users                                         0%
+  Infrastructure.src.Infrastructure.Persistence.Scaffold.AnnualFee                 0%
+  Infrastructure.src.Infrastructure.Persistence.Scaffold.AppDbContext              0%
+  Infrastructure.src.Infrastructure.Persistence.Scaffold.Enrollment                0%
+  Infrastructure.src.Infrastructure.Persistence.Scaffold.School                    0%
+  Infrastructure.src.Infrastructure.Persistence.Scaffold.ScopeMnt                  0%
+  Infrastructure.src.Infrastructure.Persistence.Scaffold.Student                   0%
+  Infrastructure.src.Infrastructure.Persistence.Scaffold.User                      0%
+  Infrastructure.src.Infrastructure.SchoolDbContext                                0%
+
+Web                                                                               22%
+  AspNetCoreGeneratedDocument.Views__ViewStart                                     0%
+  AspNetCoreGeneratedDocument.Views_Admin_Manteniment                              0%
+  AspNetCoreGeneratedDocument.Views_AnnualFees_Create                              0%
+  AspNetCoreGeneratedDocument.Views_AnnualFees_Details                             0%
+  AspNetCoreGeneratedDocument.Views_AnnualFees_Edit                                0%
+  AspNetCoreGeneratedDocument.Views_AnnualFees_Index                               0%
+  AspNetCoreGeneratedDocument.Views_Auth_Login                                     0%
+  AspNetCoreGeneratedDocument.Views_Enrollments_Create                             0%
+  AspNetCoreGeneratedDocument.Views_Enrollments_Details                            0%
+  AspNetCoreGeneratedDocument.Views_Enrollments_Edit                               0%
+  AspNetCoreGeneratedDocument.Views_Enrollments_Index                              0%
+  AspNetCoreGeneratedDocument.Views_Home_Index                                     0%
+  AspNetCoreGeneratedDocument.Views_Home_Privacy                                   0%
+  AspNetCoreGeneratedDocument.Views_Schools_Create                                 0%
+  AspNetCoreGeneratedDocument.Views_Schools_Details                                0%
+  AspNetCoreGeneratedDocument.Views_Schools_Edit                                   0%
+  AspNetCoreGeneratedDocument.Views_Schools_Index                                  0%
+  AspNetCoreGeneratedDocument.Views_Search__SearchBar                              0%
+  AspNetCoreGeneratedDocument.Views_Shared__EntityModal                            0%
+  AspNetCoreGeneratedDocument.Views_Shared__Layout                                 0%
+  AspNetCoreGeneratedDocument.Views_Shared_Components_FavoriteSchools_Default      0%
+  AspNetCoreGeneratedDocument.Views_Shared_Components_GenericTable_Default         0%
+  AspNetCoreGeneratedDocument.Views_Shared_Components_Scopes_Default               0%
+  AspNetCoreGeneratedDocument.Views_Shared_Components_SearchResults_Default        0%
+  AspNetCoreGeneratedDocument.Views_Shared_Error                                   0%
+  AspNetCoreGeneratedDocument.Views_Shared_ErrorDb                                 0%
+  AspNetCoreGeneratedDocument.Views_Students_Create                                0%
+  AspNetCoreGeneratedDocument.Views_Students_Details                               0%
+  AspNetCoreGeneratedDocument.Views_Students_Edit                                  0%
+  AspNetCoreGeneratedDocument.Views_Students_Index                                 0%
+  AspNetCoreGeneratedDocument.Views_User_Dashboard                                 0%
+  Program                                                                          0%
+  Web.Controllers.AnnualFeesController                                          33.2%
+  Web.Controllers.AuthController                                                27.5%
+  Web.Controllers.BaseController                                                66.6%
+  Web.Controllers.EnrollmentsController                                         16.4%
+  Web.Controllers.FavoriteSchoolsController                                        0%
+  Web.Controllers.HomeController                                                  73%
+  Web.Controllers.SchoolsController                                             38.5%
+  Web.Controllers.ScopesController                                                 0%
+  Web.Controllers.SearchController                                                 0%
+  Web.Controllers.StudentsController                                            37.3%
+  Web.Controllers.UserController                                                78.9%
+  Web.Data.EscolesDbContext                                                        0%
+  Web.Helpers.ModalConfigFactory                                                54.3%
+  Web.Hubs.SchoolHub                                                               0%
+  Web.Models.AnnualFeeResultViewModel                                              0%
+  Web.Models.AnnualFeeViewModel                                                 85.7%
+  Web.Models.ColumnConfig                                                          0%
+  Web.Models.EnrollmentResultViewModel                                             0%
+  Web.Models.EnrollmentViewModel                                                  75%
+  Web.Models.EntityModalConfig                                                   100%
+  Web.Models.ErrorViewModel                                                       50%
+  Web.Models.FavoriteSchoolViewModel                                               0%
+  Web.Models.IndexViewModel                                                        0%
+  Web.Models.ModalField                                                          100%
+  Web.Models.Scaffold.annual_fee                                                   0%
+  Web.Models.Scaffold.enrollment                                                   0%
+  Web.Models.Scaffold.school                                                       0%
+  Web.Models.Scaffold.scope_mnt                                                    0%
+  Web.Models.Scaffold.student                                                      0%
+  Web.Models.Scaffold.user                                                         0%
+  Web.Models.SchoolResultViewModel                                                 0%
+  Web.Models.SchoolViewModel                                                    66.6%
+  Web.Models.ScopeViewModel                                                      100%
+  Web.Models.SearchResultsViewModel                                                0%
+  Web.Models.SelectOption                                                        100%
+  Web.Models.StudentResultViewModel                                                0%
+  Web.Models.StudentViewModel                                                   87.5%
+  Web.Models.TableAction                                                           0%
+  Web.Models.TableViewModel<T>                                                     0%
+  Web.Validators.AnnualFeeViewModelValidator                                       0%
+  Web.Validators.EnrollmentViewModelValidator                                      0%
+  Web.Validators.SchoolViewModelValidator                                          0%
+  Web.Validators.StudentViewModelValidator                                         0%
+  Web.ViewComponents.FavoriteSchoolsViewComponent                                  0%
+  Web.ViewComponents.GenericTableViewComponent                                     0%
+  Web.ViewComponents.MainMenuViewComponent                                         0%
+  Web.ViewComponents.ScopesViewComponent                                           0%
+  Web.ViewComponents.SearchResultsViewComponent                                    0%
