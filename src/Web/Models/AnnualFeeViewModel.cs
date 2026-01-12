@@ -5,6 +5,7 @@ namespace Web.Models;
 /// </summary>
 public class AnnualFeeViewModel
 {
+    public int SchoolId { get; set; }
     public long Id { get; set; }
     public int EnrollmentId { get; set; }
     public string EnrollmentInfo { get; set; } = string.Empty;

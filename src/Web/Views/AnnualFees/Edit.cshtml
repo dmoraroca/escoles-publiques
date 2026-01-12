@@ -14,20 +14,27 @@
                 <div class="card-body">
                     <form asp-action="Edit" method="post">
                         <input type="hidden" asp-for="Id" />
-                        
-                        <div class="mb-3">
-                            <label asp-for="EnrollmentId" class="form-label">Inscripció <span class="text-danger">*</span></label>
-                            <select asp-for="EnrollmentId" class="form-select">
-                                <option value="">-- Selecciona una inscripció --</option>
-                                @foreach(var enrollment in ViewBag.Enrollments)
-                                {
-                                    <option value="@enrollment.Id">
-                                        @enrollment.StudentName - @enrollment.AcademicYear - @enrollment.CourseName (@enrollment.EnrolledAt.ToString("dd/MM/yyyy"))
-                                    </option>
-                                }
-                            </select>
-                            <span asp-validation-for="EnrollmentId" class="text-danger"></span>
+                        <input type="hidden" asp-for="EnrollmentId" />
+                        <input type="hidden" asp-for="SchoolId" />
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Nom alumne</label>
+                                <input type="text" class="form-control" value="@Model.EnrollmentInfo.Split('-')[0].Trim()" readonly />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Nom inscripció o curs</label>
+                                <input type="text" class="form-control" value="@((Model.EnrollmentInfo.Split('-').Length > 1 ? Model.EnrollmentInfo.Split('-')[1].Trim() : ""))" readonly />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Any acadèmic</label>
+                                <input type="text" class="form-control" asp-for="AcademicYear" readonly />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Nom escola</label>
+                                <input type="text" class="form-control" value="@Model.SchoolName" readonly />
+                            </div>
                         </div>
+                        <input type="hidden" asp-for="SchoolId" />
 
                         <div class="row">
                             <div class="col-md-8 mb-3">

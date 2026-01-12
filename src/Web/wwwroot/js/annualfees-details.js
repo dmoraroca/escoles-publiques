@@ -28,22 +28,43 @@ document.addEventListener('DOMContentLoaded', function() {
 function enableEditMode() {
     document.getElementById('viewButtons').style.display = 'none';
     document.getElementById('editButtons').style.display = 'block';
-    
-    document.querySelectorAll('#editForm input:not([disabled])').forEach(input => {
-        input.removeAttribute('readonly');
-        input.classList.remove('bg-light');
+
+    // Inputs editables: PaidAt, PaymentRef, Amount, DueDate
+    ['PaidAt', 'PaymentRef', 'Amount', 'DueDate'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.removeAttribute('readonly');
+            el.classList.remove('bg-light');
+        }
     });
-    
+
+    // Select editable (Status)
+    var statusSel = document.getElementById('Status');
+    if (statusSel) {
+        statusSel.removeAttribute('disabled');
+        statusSel.classList.remove('bg-light');
+    }
+
+    // Checkbox editable (si existeix)
+    var paidCheckbox = document.getElementById('MarkAsPaid');
+    if (paidCheckbox) {
+        paidCheckbox.removeAttribute('disabled');
+    }
+
+    // Inputs readonly: tots menys PaidAt, PaymentRef, Amount, DueDate
+    document.querySelectorAll('#editForm input').forEach(input => {
+        if (['PaidAt', 'PaymentRef', 'MarkAsPaid', 'Amount', 'DueDate'].indexOf(input.id) === -1) {
+            input.setAttribute('readonly', 'readonly');
+            input.classList.add('bg-light');
+        }
+    });
+
+    // Selects readonly: només Status editable
     document.querySelectorAll('#editForm select').forEach(select => {
-        select.removeAttribute('disabled');
-        select.classList.remove('bg-light');
-    });
-    
-    document.getElementById('statusDisplay').style.display = 'none';
-    document.getElementById('statusEdit').style.display = 'block';
-    
-    document.querySelectorAll('.edit-only').forEach(elem => {
-        elem.style.display = 'inline';
+        if (select.id !== 'Status') {
+            select.setAttribute('disabled', 'disabled');
+            select.classList.add('bg-light');
+        }
     });
 }
 

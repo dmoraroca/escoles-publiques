@@ -138,8 +138,6 @@
                         <table class="fees-table">
                             <thead>
                                 <tr>
-                                    <th>Escola</th>
-                                    <th>Curs</th>
                                     <th>Import</th>
                                     <th>Venciment</th>
                                     <th>Estat</th>
@@ -149,7 +147,7 @@
                             <tbody>
                                 @foreach (var fee in fees.OrderBy(f => f.DueDate))
                                 {
-                                    <tr class="@(fee.PaidAt != null ? "paid" : "pending")">
+                                    <tr class="@(fee.PaidAt != null ? "paid" : "pending")">                                        
                                         <td class="amount">@fee.Amount.ToString("N2") @fee.Currency</td>
                                         <td>@fee.DueDate.ToString("dd/MM/yyyy")</td>
                                         <td>

@@ -5,87 +5,67 @@
 }
 
 
+
 <div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Edició de la Inscripció</h2>
             <div class="card">
-                <div class="card-header bg-warning text-dark">
-                    <h4 class="mb-0">Edició de la inscripció</h4>
-                </div>
                 <div class="card-body">
                     <form asp-action="Edit" method="post">
-                        
-
-
                         <input type="hidden" asp-for="Id" />
-                        
-
-                        <div class="mb-3">
-                            <label class="form-label">Alumne <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" value="@Model.StudentName" readonly style="background-color: #e9ecef;" />
-                            <input type="hidden" asp-for="StudentId" />
+                        <input type="hidden" asp-for="StudentId" />
+                        <input type="hidden" asp-for="Year" />
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Nom alumne <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" asp-for="StudentName" readonly />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Any acadèmic <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" asp-for="AcademicYear" readonly />
+                            </div>
+                            <div class="col-md-3">
+                                <label asp-for="CourseName" class="form-label">Nom del Curs <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" asp-for="CourseName" required />
+                                <span asp-validation-for="CourseName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <label asp-for="SchoolId" class="form-label">Nom escola <span class="text-danger">*</span></label>
+                                <select asp-for="SchoolId" class="form-select" required>
+                                    <option value="">-- Selecciona una escola --</option>
+                                    @if (ViewBag.Schools != null)
+                                    {
+                                        foreach (var school in ViewBag.Schools)
+                                        {
+                                            <option value="@school.Id">@school.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="SchoolId" class="text-danger"></span>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label asp-for="SchoolId" class="form-label">Escola <span class="text-danger">*</span></label>
-                            <select asp-for="SchoolId" class="form-select" style="background-color: #fff;" asp-items="@(new SelectList(ViewBag.Schools, "Id", "Name", Model.SchoolId))">
-                                <option value="">-- Selecciona una escola --</option>
-                            </select>
-                            <span asp-validation-for="SchoolId" class="text-danger"></span>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="Status" class="form-label">Estat <span class="text-danger">*</span></label>
+                                <select asp-for="Status" class="form-select" required>
+                                    <option value="">-- Selecciona un estat --</option>
+                                    <option value="Activa">Activa</option>
+                                    <option value="Pendent">Pendent</option>
+                                    <option value="Cancel·lada">Cancel·lada</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="EnrolledAt" class="form-label">Data d'Inscripció <span class="text-danger">*</span></label>
+                                <input asp-for="EnrolledAt" class="form-control" type="datetime-local" value="@Model.EnrolledAt.ToString("yyyy-MM-ddTHH:mm")" required />
+                                <span asp-validation-for="EnrolledAt" class="text-danger"></span>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label asp-for="AcademicYear" class="form-label">Curs Acadèmic <span class="text-danger">*</span></label>
-                            <input asp-for="AcademicYear" class="form-control" style="background-color: #fff;" />
-                            <span asp-validation-for="AcademicYear" class="text-danger"></span>
+                        <div class="d-flex justify-content-end mt-4">
+                            <a asp-action="Index" class="btn btn-secondary me-2">Cancel·lar</a>
+                            <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
-
-                        <div class="mb-3">
-                            <label asp-for="CourseName" class="form-label">Nom del Curs</label>
-                            <input asp-for="CourseName" class="form-control" style="background-color: #fff;" />
-                            <span asp-validation-for="CourseName" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Status" class="form-label">Estat <span class="text-danger">*</span></label>
-                            <select asp-for="Status" class="form-select" style="background-color: #fff;">
-                                <option value="">-- Selecciona un estat --</option>
-                                <option value="Activa">Activa</option>
-                                <option value="Pendent">Pendent</option>
-                                <option value="Cancel·lada">Cancel·lada</option>
-                            </select>
-                            <span asp-validation-for="Status" class="text-danger"></span>
-                            <div class="text-muted mt-1">DEBUG: Valor actual Status = <b>@Model.Status</b></div>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="EnrolledAt" class="form-label">Data d'Inscripció</label>
-                            <input asp-for="EnrolledAt" class="form-control" type="datetime-local" value="@Model.EnrolledAt.ToString("yyyy-MM-ddTHH:mm")" style="background-color: #fff;" />
-                            <span asp-validation-for="EnrolledAt" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-flex justify-content-between mt-4">
-                            <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Cancel·lar
-                            </a>
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-check-circle"></i> Guardar
-                            </button>
-                        </div>
-                    <div class="card mt-4">
-                        <div class="card-header bg-light text-dark">
-                            <strong>Inscripció actual</strong>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item"><strong>Alumne:</strong> @Model.StudentName</li>
-                                <li class="list-group-item"><strong>Escola:</strong> @Model.SchoolName</li>
-                                <li class="list-group-item"><strong>Curs Acadèmic:</strong> @Model.AcademicYear</li>
-                                <li class="list-group-item"><strong>Nom del Curs:</strong> @Model.CourseName</li>
-                                <li class="list-group-item"><strong>Estat:</strong> @Model.Status</li>
-                                <li class="list-group-item"><strong>Data d'Inscripció:</strong> @Model.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</li>
-                            </ul>
-                        </div>
-                    </div>
                     </form>
                 </div>
             </div>

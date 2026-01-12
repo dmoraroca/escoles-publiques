@@ -14,18 +14,33 @@
                 <div class="card-body">
                     <form asp-action="Create" method="post">
                         <div class="mb-3">
+                            <label for="studentSelect" class="form-label">Alumne <span class="text-danger">*</span></label>
+                            <select class="form-select" id="studentSelect" name="StudentId">
+                                <option value="">-- Selecciona un alumne --</option>
+                                @foreach(var student in ViewBag.Students)
+                                {
+                                    <option value="@student.Id" data-school="@student.SchoolName">
+                                        @student.FirstName @student.LastName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label asp-for="EnrollmentId" class="form-label">Inscripció <span class="text-danger">*</span></label>
                             <select asp-for="EnrollmentId" class="form-select" id="enrollmentSelect">
                                 <option value="">-- Selecciona una inscripció --</option>
                                 @foreach(var enrollment in ViewBag.Enrollments)
                                 {
-                                    <option value="@enrollment.Id" data-school="@enrollment.SchoolName">
-                                        @enrollment.StudentName - @enrollment.AcademicYear - @enrollment.CourseName (@enrollment.EnrolledAt.ToString("dd/MM/yyyy"))
+                                    <option value="@enrollment.Id" data-school="@enrollment.SchoolName" data-student-id="@enrollment.StudentId">
+                                        @enrollment.StudentName - @enrollment.CourseName - @enrollment.AcademicYear
                                     </option>
                                 }
                             </select>
                             <span asp-validation-for="EnrollmentId" class="text-danger"></span>
-                            <div id="schoolLabel" class="form-text mt-2 text-primary"></div>
+                            <div class="mt-2">
+                                <label class="form-label">Escola</label>
+                                <input type="text" id="schoolReadonly" class="form-control" value="" readonly style="background-color: #e9ecef; color: #6c757d;" />
+                            </div>
                         </div>
 
                         <div class="row">
@@ -79,12 +94,59 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/annualfees-create.js"></script>
     <script>
-        const select = document.getElementById('enrollmentSelect');
-        const label = document.getElementById('schoolLabel');
-        select.addEventListener('change', function() {
-            const selected = select.options[select.selectedIndex];
-            const school = selected.getAttribute('data-school');
-            label.textContent = school ? `Escola: ${school}` : '';
+        const enrollmentSelect = document.getElementById('enrollmentSelect');
+        const studentSelect = document.getElementById('studentSelect');
+        const schoolInput = document.getElementById('schoolReadonly');
+
+        // Filtrar inscripcions segons l'alumne seleccionat
+        function filterEnrollmentsByStudent() {
+            const selectedStudentId = studentSelect.value;
+            for (let i = 0; i < enrollmentSelect.options.length; i++) {
+                const opt = enrollmentSelect.options[i];
+                if (opt.value === '') {
+                    opt.style.display = '';
+                    continue;
+                }
+                const studentId = opt.getAttribute('data-student-id');
+                opt.style.display = (selectedStudentId === '' || studentId === selectedStudentId) ? '' : 'none';
+            }
+            // Si la inscripció seleccionada no és visible, deselecciona
+            if (enrollmentSelect.selectedIndex > 0 && enrollmentSelect.options[enrollmentSelect.selectedIndex].style.display === 'none') {
+                enrollmentSelect.selectedIndex = 0;
+            }
+        }
+
+        function updateSchoolField() {
+            const enrollmentSelected = enrollmentSelect.value !== '';
+            if (enrollmentSelected) {
+                // Si hi ha inscripció seleccionada, mostrar escola de la inscripció i readonly
+                const selected = enrollmentSelect.options[enrollmentSelect.selectedIndex];
+                const school = selected.getAttribute('data-school');
+                schoolInput.value = school ? school : '';
+                schoolInput.readOnly = true;
+                schoolInput.style.backgroundColor = '#e9ecef';
+                schoolInput.style.color = '#6c757d';
+            } else {
+                // Si NO hi ha inscripció seleccionada, mostrar escola de l'alumne i editable
+                const selectedStudent = studentSelect.options[studentSelect.selectedIndex];
+                const school = selectedStudent.getAttribute('data-school');
+                schoolInput.value = school ? school : '';
+                schoolInput.readOnly = false;
+                schoolInput.style.backgroundColor = '';
+                schoolInput.style.color = '';
+            }
+        }
+
+        enrollmentSelect.addEventListener('change', updateSchoolField);
+        studentSelect.addEventListener('change', function() {
+            filterEnrollmentsByStudent();
+            updateSchoolField();
+        });
+
+        // Inicialitzar el camp escola i el filtratge al carregar la pàgina
+        document.addEventListener('DOMContentLoaded', function() {
+            filterEnrollmentsByStudent();
+            updateSchoolField();
         });
     </script>
 }

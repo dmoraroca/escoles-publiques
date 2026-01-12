@@ -27,6 +27,12 @@
             { 
                 PropertyName = "StudentName", 
                 DisplayName = "Alumne",
+                IsSortable = true
+            },
+            new ColumnConfig 
+            { 
+                PropertyName = "CourseName", 
+                DisplayName = "Nom del Curs",
                 IsSortable = true 
             },
             new ColumnConfig 
@@ -43,10 +49,13 @@
                 CustomRender = (item) => 
                 {
                     var enrollment = item as EnrollmentViewModel;
-                    var badgeClass = enrollment?.Status == "Active" ? "success" 
-                                   : enrollment?.Status == "Cancelled" ? "danger" 
+                    var badgeClass = (enrollment?.Status == "Active" || enrollment?.Status == "Activa") ? "success"
+                                   : (enrollment?.Status == "Cancelled" || enrollment?.Status == "Cancel·lada") ? "danger"
                                    : "secondary";
-                    return $"<span class=\"badge bg-{badgeClass}\">{enrollment?.Status}</span>";
+                    var statusText = enrollment?.Status == "Active" ? "Activa"
+                        : enrollment?.Status == "Cancelled" ? "Cancel·lada"
+                        : enrollment?.Status;
+                    return $"<span class=\"badge bg-{badgeClass}\">{statusText}</span>";
                 }
             },
             new ColumnConfig 

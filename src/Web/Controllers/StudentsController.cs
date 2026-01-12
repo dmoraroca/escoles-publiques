@@ -113,27 +113,36 @@ public class StudentsController : BaseController
                 return BadRequest(new { error = "Si us plau, omple tots els camps obligatoris correctament." });
             }
 
-            // 1. Crear el User amb les dades personals
-            var user = new Domain.Entities.User
+            // 1. Comprova si ja existeix un usuari amb aquest email
+            var existingUser = await _userService.GetUserByEmailAsync(model.Email);
+            int userId;
+            if (existingUser != null)
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null
-            };
+                // Ja existeix, agafa el seu id
+                userId = (int)existingUser.Id;
+            }
+            else
+            {
+                // No existeix, crea el User
+                var user = new Domain.Entities.User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null
+                };
+                var createdUser = await _userService.CreateUserAsync(user, "user123");
+                userId = (int)createdUser.Id;
+            }
 
-            // Crear user amb password per defecte "user123"
-            var createdUser = await _userService.CreateUserAsync(user, "user123");
-
-            // 2. Crear el Student associat al User
+            // 2. Crear el Student associat al User (sigui nou o existent)
             var student = new Domain.Entities.Student
             {
                 SchoolId = model.SchoolId,
-                UserId = createdUser.Id
+                UserId = userId
             };
-            
             await _studentService.CreateStudentAsync(student);
-            
+
             SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} creat correctament.");
             return Redirect("/Students");
         }

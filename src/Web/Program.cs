@@ -117,4 +117,4 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHub<SchoolHub>("/schoolHub");
 });
 
-app.Run();
+app.Run("http://localhost:5042");

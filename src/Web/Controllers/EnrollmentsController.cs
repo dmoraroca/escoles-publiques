@@ -42,8 +42,9 @@ public class EnrollmentsController : BaseController
                 .Select(e => new EnrollmentViewModel
                 {
                     Id = (int)e.Id,
-                    StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+                    StudentName = e.Student?.User != null ? $"{e.StudentId}-{e.Student.User.FirstName} {e.Student.User.LastName}" : $"{e.StudentId}-Alumne desconegut",
                     AcademicYear = e.AcademicYear,
+                    CourseName = e.CourseName,
                     Status = e.Status,
                     EnrolledAt = e.EnrolledAt,
                     SchoolId = (int)e.SchoolId,
