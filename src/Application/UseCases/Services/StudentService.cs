@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.Interfaces;
 using Domain.DomainExceptions;
 using Microsoft.Extensions.Logging;
+using System.Transactions;
 
 namespace Application.UseCases.Services;
 
@@ -13,6 +14,7 @@ public class StudentService : IStudentService
 {
     private readonly IStudentRepository _studentRepository;
     private readonly ISchoolRepository _schoolRepository;
+    private readonly IUserService _userService;
     private readonly ILogger<StudentService> _logger;
 
     /// <summary>
@@ -24,10 +26,12 @@ public class StudentService : IStudentService
     public StudentService(
         IStudentRepository studentRepository,
         ISchoolRepository schoolRepository,
+        IUserService userService,
         ILogger<StudentService> logger)
     {
         _studentRepository = studentRepository;
         _schoolRepository = schoolRepository;
+        _userService = userService;
         _logger = logger;
     }
 
@@ -96,6 +100,22 @@ public class StudentService : IStudentService
         return await _studentRepository.AddAsync(student);
     }
 
+    public async Task<Student> CreateStudentWithUserAsync(Domain.Entities.User user, string password, Student student)
+    {
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+        // Create user (will throw if duplicate)
+        var createdUser = await _userService.CreateUserAsync(user, password);
+
+        // Associate and create student
+        student.UserId = createdUser.Id;
+        student.CreatedAt = DateTime.UtcNow;
+        var createdStudent = await _studentRepository.AddAsync(student);
+
+        scope.Complete();
+        return createdStudent;
+    }
+
     public async Task UpdateStudentAsync(Student student)
     {
         var existingStudent = await _studentRepository.GetByIdAsync(student.Id);
@@ -106,6 +126,25 @@ public class StudentService : IStudentService
         
         _logger.LogInformation("Actualitzant alumne amb Id: {Id}", student.Id);
         await _studentRepository.UpdateAsync(student);
+    }
+
+    public async Task UpdateStudentWithUserAsync(Student student, Domain.Entities.User user)
+    {
+        var existingStudent = await _studentRepository.GetByIdAsync(student.Id);
+        if (existingStudent == null)
+        {
+            throw new NotFoundException("Student", student.Id);
+        }
+
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+        // Update user first
+        await _userService.UpdateUserAsync(user);
+
+        // Update student
+        await _studentRepository.UpdateAsync(student);
+
+        scope.Complete();
     }
 
     public async Task DeleteStudentAsync(long id)

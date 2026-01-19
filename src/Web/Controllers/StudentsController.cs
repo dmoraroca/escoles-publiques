@@ -35,16 +35,35 @@ public class StudentsController : BaseController
         try
         {
             var students = await _studentService.GetAllStudentsAsync();
+            // Log diagnostics: how many students have birthdate populated
+            var total = students.Count();
+            var withBirth = students.Count(s => s.User?.BirthDate.HasValue == true);
+            Logger.LogInformation("Students fetched: {Total}, with BirthDate: {WithBirth}", total, withBirth);
             var viewModels = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
+                UserId = s.UserId,
                 FirstName = s.User?.FirstName ?? "",
                 LastName = s.User?.LastName ?? "",
                 Email = s.User?.Email ?? "",
                 BirthDate = s.User?.BirthDate.HasValue == true ? s.User.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
                 SchoolName = s.School?.Name ?? "Sense escola"
             });
-            
+            var vmList = viewModels.ToList();
+
+            // Try to populate missing BirthDate from user repository/service
+            foreach (var vm in vmList)
+            {
+                if (!vm.BirthDate.HasValue && vm.UserId.HasValue)
+                {
+                    var user = await _userService.GetUserByIdAsync(vm.UserId.Value);
+                    if (user?.BirthDate.HasValue == true)
+                    {
+                        vm.BirthDate = user.BirthDate.Value.ToDateTime(TimeOnly.MinValue);
+                    }
+                }
+            }
+
             var schools = await _schoolService.GetAllSchoolsAsync();
             ViewBag.Schools = schools.Select(s => new SchoolViewModel
             {
@@ -52,7 +71,7 @@ public class StudentsController : BaseController
                 Name = s.Name
             }).ToList();
             
-            return View(viewModels);
+            return View(vmList);
         }
         catch (Exception ex)
         {
@@ -115,15 +134,19 @@ public class StudentsController : BaseController
 
             // 1. Comprova si ja existeix un usuari amb aquest email
             var existingUser = await _userService.GetUserByEmailAsync(model.Email);
-            int userId;
             if (existingUser != null)
             {
-                // Ja existeix, agafa el seu id
-                userId = (int)existingUser.Id;
+                // Ja existeix, crea només el Student associat
+                var student = new Domain.Entities.Student
+                {
+                    SchoolId = model.SchoolId,
+                    UserId = existingUser.Id
+                };
+                await _studentService.CreateStudentAsync(student);
             }
             else
             {
-                // No existeix, crea el User
+                // No existeix, crear User+Student dins d'una transacció
                 var user = new Domain.Entities.User
                 {
                     FirstName = model.FirstName,
@@ -131,17 +154,14 @@ public class StudentsController : BaseController
                     Email = model.Email,
                     BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null
                 };
-                var createdUser = await _userService.CreateUserAsync(user, "user123");
-                userId = (int)createdUser.Id;
-            }
 
-            // 2. Crear el Student associat al User (sigui nou o existent)
-            var student = new Domain.Entities.Student
-            {
-                SchoolId = model.SchoolId,
-                UserId = userId
-            };
-            await _studentService.CreateStudentAsync(student);
+                var student = new Domain.Entities.Student
+                {
+                    SchoolId = model.SchoolId
+                };
+
+                await _studentService.CreateStudentWithUserAsync(user, "user123", student);
+            }
 
             SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} creat correctament.");
             return Redirect("/Students");
@@ -229,13 +249,17 @@ public class StudentsController : BaseController
                 student.User.LastName = model.LastName;
                 student.User.Email = model.Email;
                 student.User.BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null;
-                
-                await _userService.UpdateUserAsync(student.User);
+
+                // Actualitzar amb transacció User+Student
+                student.SchoolId = model.SchoolId;
+                await _studentService.UpdateStudentWithUserAsync(student, student.User);
             }
-            
-            // Actualitzar escola del Student
-            student.SchoolId = model.SchoolId;
-            await _studentService.UpdateStudentAsync(student);
+            else
+            {
+                // Sense usuari associat (cas estrany), actualitza només student
+                student.SchoolId = model.SchoolId;
+                await _studentService.UpdateStudentAsync(student);
+            }
             
             SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} actualitzat correctament.");
             return Redirect("/Students");

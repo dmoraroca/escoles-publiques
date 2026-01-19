@@ -38,14 +38,14 @@
             },
             new ColumnConfig 
             { 
-                PropertyName = "Scope", 
+                PropertyName = "ScopeName", 
                 DisplayName = "Àmbit",
                 IsSortable = true,
                 CustomRender = (item) => 
                 {
                     var school = item as SchoolViewModel;
-                    if (!string.IsNullOrEmpty(school?.Scope))
-                        return $"<span class=\"badge bg-info\">{school.Scope}</span>";
+                    if (!string.IsNullOrEmpty(school?.ScopeName))
+                        return $"<span class=\"badge bg-info\">{school.ScopeName}</span>";
                     return "<span class=\"text-muted\">-</span>";
                 }
             },

@@ -1,0 +1,39 @@
+@using Web.Helpers
+@using Web.Models
+@model IEnumerable<Web.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Usuaris (Alumnes)";
+
+    var tableConfig = new TableViewModel<UserViewModel>
+    {
+        Data = Model,
+        EntityName = "Usuaris (Alumnes)",
+        ControllerName = "Users",
+        EmptyMessage = "No hi ha usuaris-alumne registrats.",
+        Columns = new List<ColumnConfig>
+        {
+            new ColumnConfig { PropertyName = "FirstName", DisplayName = "Nom", IsSortable = true },
+            new ColumnConfig { PropertyName = "LastName", DisplayName = "Cognoms", IsSortable = true },
+            new ColumnConfig { PropertyName = "Email", DisplayName = "Email", IsSortable = true },
+            new ColumnConfig {
+                PropertyName = "BirthDate",
+                DisplayName = "Data naixement",
+                IsSortable = true,
+                CustomRender = (item) => {
+                    var u = item as UserViewModel;
+                    return u?.BirthDate.HasValue == true ? u.BirthDate.Value.ToString("dd/MM/yyyy") : "<span class=\"text-muted\">-</span>";
+                }
+            }
+        }
+    };
+}
+
+<div class="container mt-4">
+    <h2>Usuaris (Alumnes)</h2>
+    <div class="card mt-3">
+        <div class="card-body">
+            @await Component.InvokeAsync("GenericTable", tableConfig)
+        </div>
+    </div>
+</div>
