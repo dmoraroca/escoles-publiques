@@ -17,4 +17,6 @@ public class EnrollmentViewModel
     public DateTime CreatedAt { get; set; }
     public int SchoolId { get; set; }
     public string SchoolName { get; set; } = string.Empty;
+    [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Cal acceptar la política de privacitat.")]
+    public bool AgreesToPrivacy { get; set; } = false;
 }

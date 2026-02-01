@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Web.Services.Api;
 using Domain.DomainExceptions;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace Web.Controllers;
 [Authorize]
 public class SchoolsController : BaseController
 {
-    private readonly ISchoolService _schoolService;
+    private readonly ISchoolsApiClient _schoolApi;
     private readonly IHubContext<SchoolHub> _hubContext;
     private readonly IScopeRepository _scopeRepository;
 
@@ -29,9 +30,9 @@ public class SchoolsController : BaseController
     /// <summary>
     /// Constructor del controlador d'escoles.
     /// </summary>
-    public SchoolsController(ISchoolService schoolService, IHubContext<SchoolHub> hubContext, IScopeRepository scopeRepository, ILogger<SchoolsController> logger) : base(logger)
+    public SchoolsController(ISchoolsApiClient schoolApi, IHubContext<SchoolHub> hubContext, IScopeRepository scopeRepository, ILogger<SchoolsController> logger) : base(logger)
     {
-        _schoolService = schoolService;
+        _schoolApi = schoolApi;
         _hubContext = hubContext;
         _scopeRepository = scopeRepository;
     }
@@ -46,7 +47,7 @@ public class SchoolsController : BaseController
     {
         try
         {
-            var schools = await _schoolService.GetAllSchoolsAsync();
+            var schools = await _schoolApi.GetAllAsync();
             var scopes = (await _scopeRepository.GetAllActiveScopesAsync()).ToList();
             var viewModels = schools.Select(s => new SchoolViewModel
             {
@@ -86,7 +87,7 @@ public class SchoolsController : BaseController
     {
         try
         {
-            var school = await _schoolService.GetSchoolByIdAsync(id);
+            var school = await _schoolApi.GetByIdAsync(id);
             
             var scopes = await _scopeRepository.GetAllActiveScopesAsync();
             var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
@@ -155,7 +156,7 @@ public class SchoolsController : BaseController
                 IsFavorite = model.IsFavorite,
                 ScopeId = model.ScopeId
             };
-            await _schoolService.CreateSchoolAsync(school);
+            var created = await _schoolApi.CreateAsync(school);
             var scopeName = string.Empty;
             if (model.ScopeId.HasValue)
             {
@@ -206,7 +207,7 @@ public class SchoolsController : BaseController
     {
         try
         {
-            var school = await _schoolService.GetSchoolByIdAsync(id);
+            var school = await _schoolApi.GetByIdAsync(id);
             
             var scopes = await _scopeRepository.GetAllActiveScopesAsync();
             var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
@@ -256,7 +257,7 @@ public class SchoolsController : BaseController
                 return View(model);
             }
 
-            var school = await _schoolService.GetSchoolByIdAsync(model.Id);
+            var school = await _schoolApi.GetByIdAsync(model.Id);
             
             school.Code = model.Code;
             school.Name = model.Name;
@@ -264,7 +265,7 @@ public class SchoolsController : BaseController
             school.IsFavorite = model.IsFavorite;
             school.ScopeId = model.ScopeId;
 
-            await _schoolService.UpdateSchoolAsync(school);
+            await _schoolApi.UpdateAsync(school.Id, school);
             
             var scopeName = string.Empty;
             if (school.ScopeId.HasValue)
@@ -324,10 +325,10 @@ public class SchoolsController : BaseController
     {
         try
         {
-            var school = await _schoolService.GetSchoolByIdAsync(id);
-            var code = school.Code;
+            var school = await _schoolApi.GetByIdAsync(id);
+            var code = school?.Code;
             
-            await _schoolService.DeleteSchoolAsync(id);
+            await _schoolApi.DeleteAsync(id);
             
             await _hubContext.Clients.All.SendAsync("SchoolDeleted", new { id, code });
             

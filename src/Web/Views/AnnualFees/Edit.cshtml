@@ -79,9 +79,18 @@
                             <a asp-action="Index" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Tornar
                             </a>
-                            <button type="submit" class="btn btn-warning">
-                                <i class="bi bi-check-circle"></i> Guardar Canvis
-                            </button>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="form-check mb-0">
+                                    <input asp-for="AgreesToPrivacy" class="form-check-input" id="agreesToPrivacy" />
+                                    <label asp-for="AgreesToPrivacy" class="form-check-label small">
+                                        Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a>
+                                    </label>
+                                    <span asp-validation-for="AgreesToPrivacy" class="text-danger d-block"></span>
+                                </div>
+                                <button type="submit" id="saveButton" class="btn btn-warning" disabled>
+                                    <i class="bi bi-check-circle"></i> Guardar Canvis
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -93,4 +102,17 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/annualfees-create.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkbox = document.getElementById('agreesToPrivacy') || document.getElementsByName('AgreesToPrivacy')[0];
+            var saveBtn = document.getElementById('saveButton');
+            if (!saveBtn) return;
+            saveBtn.disabled = true;
+            if (!checkbox) return;
+            saveBtn.disabled = !checkbox.checked;
+            checkbox.addEventListener('change', function () {
+                saveBtn.disabled = !this.checked;
+            });
+        });
+    </script>
 }

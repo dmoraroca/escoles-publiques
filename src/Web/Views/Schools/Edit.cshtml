@@ -68,15 +68,24 @@
                     <a asp-action="Index" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Tornar
                     </a>
-                    <button type="submit" class="btn btn-warning">
-                        <i class="bi bi-check-circle"></i> Guardar Canvis
-                    </button>
+                        @{ 
+                            var opts = new {
+                                submitText = "Guardar",
+                                submitClass = "btn btn-primary",
+                                cancelText = "Tornar",
+                                cancelClass = "btn btn-secondary",
+                                cancelHref = Url.Action("Index"),
+                                privacySelector = "#agreesToPrivacy",
+                                disabledByDefault = true
+                            };
+                        }
+                        @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
 }

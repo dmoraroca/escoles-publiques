@@ -10,6 +10,7 @@ using Web.Hubs;
 using Web.Validators;
 using System.Globalization;
 using Serilog;
+using Web.Services.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configuració Serilog: logs per dia a /logs/logYYYYMMDD.log
@@ -50,6 +51,30 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<SchoolViewModelValidator>();
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(8);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
+builder.Services.AddHttpContextAccessor();
+
+// HTTP client to call the API project
+builder.Services.AddTransient<ApiAuthTokenHandler>();
+var apiBaseUrl = builder.Configuration["Api:BaseUrl"] ?? "http://localhost:7000";
+builder.Services.AddHttpClient<ISchoolsApiClient, SchoolsApiClient>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<ApiAuthTokenHandler>();
+
+builder.Services.AddHttpClient<IAuthApiClient, AuthApiClient>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+});
 
 builder.Services.AddControllersWithViews(options =>
 {
@@ -105,6 +130,7 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -117,4 +143,4 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHub<SchoolHub>("/schoolHub");
 });
 
-app.Run("http://localhost:5042");
+app.Run();

@@ -1,8 +1,9 @@
 using System.Security.Claims;
-using Application.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using Web.Services.Api;
 
 namespace Web.Controllers;
 
@@ -11,15 +12,15 @@ namespace Web.Controllers;
 /// </summary>
 public class AuthController : Controller
 {
-    private readonly IAuthService _authService;
+    private readonly IAuthApiClient _authApiClient;
     private readonly ILogger<AuthController> _logger;
 
     /// <summary>
     /// Constructor del controlador d'autenticació.
     /// </summary>
-    public AuthController(IAuthService authService, ILogger<AuthController> logger)
+    public AuthController(IAuthApiClient authApiClient, ILogger<AuthController> logger)
     {
-        _authService = authService;
+        _authApiClient = authApiClient;
         _logger = logger;
     }
 
@@ -55,26 +56,28 @@ public class AuthController : Controller
                 return View();
             }
 
-            var (success, userId, role) = await _authService.AuthenticateAsync(email, password);
-
-            if (!success)
+            var token = await _authApiClient.GetTokenAsync(email, password);
+            if (string.IsNullOrWhiteSpace(token))
             {
                 TempData["Error"] = "Credencials incorrectes";
                 return View();
             }
 
-            // Obtenir l'usuari per agafar el nom complet
-            var userRepository = HttpContext.RequestServices.GetRequiredService<Domain.Interfaces.IUserRepository>();
-            var user = await userRepository.GetByIdAsync(long.Parse(userId!));
-            var fullName = user != null ? $"{user.FirstName} {user.LastName}" : email;
+            HttpContext.Session.SetString(SessionKeys.ApiToken, token);
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(token);
+            var userId = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            var role = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
+            var fullName = email;
 
             // Crear claims per l'usuari
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userId!),
+                new Claim(ClaimTypes.NameIdentifier, userId),
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Name, fullName),
-                new Claim("Role", role!)
+                new Claim("Role", role)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
@@ -114,6 +117,7 @@ public class AuthController : Controller
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync("CookieAuth");
+        HttpContext.Session.Remove(SessionKeys.ApiToken);
         return RedirectToAction("Login");
     }
 }

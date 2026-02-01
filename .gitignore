@@ -39,6 +39,7 @@ docker/**/data/
 # =========================
 .DS_Store
 Thumbs.db
+.build-status
 
 # =========================
 # Test / Coverage

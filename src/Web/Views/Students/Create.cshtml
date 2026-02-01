@@ -45,6 +45,14 @@
                             <span asp-validation-for="SchoolId" class="text-danger"></span>
                         </div>
 
+                        <div class="mb-3 form-check">
+                            <input asp-for="AgreesToPrivacy" class="form-check-input" />
+                            <label asp-for="AgreesToPrivacy" class="form-check-label">
+                                Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a> d'aquest entorn de proves.
+                            </label>
+                            <span asp-validation-for="AgreesToPrivacy" class="text-danger"></span>
+                        </div>
+
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-secondary">
                                 <i class="bi bi-x-lg"></i> Cancel·lar

@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+
+WORKDIR /app
+
+# Eines NECESSÀRIES per debug i inspecció
+RUN apt-get update && apt-get install -y \
+    curl \
+    procps \
+    psmisc \
+    iproute2 \
+    lsof \
+  && curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1

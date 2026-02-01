@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  api:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    container_name: escoles_api
+    working_dir: /app
+    volumes:
+      - ./:/app:cached
+    entrypoint: ["/bin/bash","-lc"]
+    command: ["dotnet build src/Api/Api.csproj -c Debug && exec /app/src/Api/bin/Debug/net8.0/Api --urls http://0.0.0.0:7000"]
+    ports:
+      - "7000:7000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=host.docker.internal;Port=5432;Database=escoles;Username=app;Password=app
+      - Jwt__Key=${JWT_KEY}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  web:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    container_name: escoles_web
+    working_dir: /app
+    volumes:
+      - ./:/app:cached
+    entrypoint: ["/bin/bash","-lc"]
+    command: ["dotnet build src/Web/Web.csproj -c Debug && exec /app/src/Web/bin/Debug/net8.0/Web --urls http://0.0.0.0:5042"]
+    ports:
+      - "5042:5042"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=host.docker.internal;Port=5432;Database=escoles;Username=app;Password=app
+      - Api__BaseUrl=http://api:7000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - api

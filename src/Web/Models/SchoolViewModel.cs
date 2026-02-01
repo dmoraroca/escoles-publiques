@@ -36,4 +36,7 @@ public class SchoolViewModel
     
     [Display(Name = "Data de creació")]
     public DateTime CreatedAt { get; set; }
+
+    [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Cal acceptar la política de privacitat.")]
+    public bool AgreesToPrivacy { get; set; } = false;
 }
