@@ -106,6 +106,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
 else
 {
@@ -117,8 +118,6 @@ else
         await next();
     });
 }
-
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 // Forçar cultura invariant per a cada request

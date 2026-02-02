@@ -16,8 +16,13 @@ services:
       - Jwt__Key=${JWT_KEY}
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
+      - COMPlus_EnableDiagnostics=1
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
 
   web:
     image: mcr.microsoft.com/dotnet/sdk:8.0
@@ -33,7 +38,12 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Default=Host=host.docker.internal;Port=5432;Database=escoles;Username=app;Password=app
       - Api__BaseUrl=http://api:7000
+      - COMPlus_EnableDiagnostics=1
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
       - api
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
