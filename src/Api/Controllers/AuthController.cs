@@ -17,7 +17,7 @@ public class AuthController : ControllerBase
     public AuthController(IAuthService authService, IConfiguration config)
     {
         _authService = authService;
-        _config = config;  
+        _config = config;   
     }
 
     [HttpPost("token")]
