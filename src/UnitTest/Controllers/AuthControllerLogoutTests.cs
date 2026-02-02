@@ -1,7 +1,7 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
-using Application.Interfaces;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,15 +9,21 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace UnitTest.Controllers
 {
     public class AuthControllerLogoutTests
     {
+        private sealed class TestSessionFeature : ISessionFeature
+        {
+            public ISession Session { get; set; } = default!;
+        }
+
         [Fact]
         public async Task Logout_Post_RedirectsToLogin()
         {
-            var authServiceMock = new Mock<IAuthService>();
+            var authServiceMock = new Mock<IAuthApiClient>();
             var loggerMock = new Mock<ILogger<AuthController>>();
             var controller = new AuthController(authServiceMock.Object, loggerMock.Object);
 
@@ -29,6 +35,9 @@ namespace UnitTest.Controllers
             var provider = services.BuildServiceProvider();
 
             var httpContext = new DefaultHttpContext();
+            var sessionMock = new Mock<ISession>();
+            sessionMock.Setup(s => s.Remove(It.IsAny<string>()));
+            httpContext.Features.Set<ISessionFeature>(new TestSessionFeature { Session = sessionMock.Object });
             httpContext.RequestServices = provider;
             controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
             controller.Url = Moq.Mock.Of<Microsoft.AspNetCore.Mvc.IUrlHelper>();
@@ -42,7 +51,7 @@ namespace UnitTest.Controllers
         [Fact]
         public void Login_Get_Redirects_WhenAuthenticated_Admin()
         {
-            var authServiceMock = new Mock<IAuthService>();
+            var authServiceMock = new Mock<IAuthApiClient>();
             var loggerMock = new Mock<ILogger<AuthController>>();
             var controller = new AuthController(authServiceMock.Object, loggerMock.Object);
 

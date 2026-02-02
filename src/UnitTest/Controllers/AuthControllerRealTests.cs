@@ -1,7 +1,7 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
-using Application.Interfaces;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace UnitTest.Controllers
         [Fact]
         public void Login_Get_ReturnsView_WhenNotAuthenticated()
         {
-            var authServiceMock = new Mock<IAuthService>();
+            var authServiceMock = new Mock<IAuthApiClient>();
             var loggerMock = new Mock<ILogger<AuthController>>();
             var controller = new AuthController(authServiceMock.Object, loggerMock.Object);
             controller.ControllerContext = new ControllerContext { HttpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext() };
@@ -26,7 +26,8 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Login_Post_InvalidCredentials_ReturnsViewWithError()
         {
-            var authServiceMock = new Mock<IAuthService>();
+            var authServiceMock = new Mock<IAuthApiClient>();
+            authServiceMock.Setup(a => a.GetTokenAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(string.Empty);
             var loggerMock = new Mock<ILogger<AuthController>>();
             var controller = new AuthController(authServiceMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();

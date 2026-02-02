@@ -1,7 +1,7 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
-using Application.Interfaces;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -17,12 +17,12 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Create_Post_Redirects_OnSuccess()
         {
-            var schoolServiceMock = new Mock<ISchoolService>();
+            var schoolServiceMock = new Mock<ISchoolsApiClient>();
             var hubContextMock = new Mock<IHubContext<SchoolHub>>();
             var scopeRepoMock = new Mock<Domain.Interfaces.IScopeRepository>();
             var loggerMock = new Mock<ILogger<SchoolsController>>();
 
-            schoolServiceMock.Setup(s => s.CreateSchoolAsync(It.IsAny<School>())).ReturnsAsync(new School { Id = 1 });
+            schoolServiceMock.Setup(s => s.CreateAsync(It.IsAny<School>())).ReturnsAsync(new School { Id = 1 });
             scopeRepoMock.Setup(s => s.GetAllActiveScopesAsync()).ReturnsAsync(new System.Collections.Generic.List<Domain.Entities.Scope>());
 
             var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopeRepoMock.Object, loggerMock.Object);
@@ -41,12 +41,13 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Edit_Post_ReturnsView_WhenDuplicateCode()
         {
-            var schoolServiceMock = new Mock<ISchoolService>();
+            var schoolServiceMock = new Mock<ISchoolsApiClient>();
             var hubContextMock = new Mock<IHubContext<SchoolHub>>();
             var scopeRepoMock = new Mock<Domain.Interfaces.IScopeRepository>();
             var loggerMock = new Mock<ILogger<SchoolsController>>();
 
-            schoolServiceMock.Setup(s => s.UpdateSchoolAsync(It.IsAny<School>())).ThrowsAsync(new DuplicateEntityException("School"));
+            schoolServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(new School { Id = 5, Code = "C1", Name = "Escola X" });
+            schoolServiceMock.Setup(s => s.UpdateAsync(It.IsAny<long>(), It.IsAny<School>())).ThrowsAsync(new DuplicateEntityException("School"));
             scopeRepoMock.Setup(s => s.GetAllActiveScopesAsync()).ReturnsAsync(new System.Collections.Generic.List<Domain.Entities.Scope>());
 
             var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopeRepoMock.Object, loggerMock.Object);
