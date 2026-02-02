@@ -18,6 +18,7 @@ var logPath = Path.Combine(AppContext.BaseDirectory, "logs", "log{Date}.log");
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+    .WriteTo.Console()
     .CreateLogger();
 builder.Host.UseSerilog();
 
