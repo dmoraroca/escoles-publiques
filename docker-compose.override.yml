@@ -8,6 +8,7 @@ services:
       - SYS_PTRACE
     security_opt:
       - seccomp=unconfined
+    command: ["exec /app/src/Web/bin/Debug/net8.0/Web --urls http://0.0.0.0:5042"]
 
   api:
     build:
@@ -18,3 +19,4 @@ services:
       - SYS_PTRACE
     security_opt:
       - seccomp=unconfined
+    command: ["exec /app/src/Api/bin/Debug/net8.0/Api --urls http://0.0.0.0:7000"]
