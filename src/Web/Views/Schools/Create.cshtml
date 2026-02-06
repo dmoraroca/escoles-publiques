@@ -39,19 +39,26 @@
                         
                         <div class="row">
                             <div class="col-md-8 mb-3">
-                                <label asp-for="Scope" class="form-label"></label>
-                                <select asp-for="Scope" class="form-select">
+                                <label asp-for="ScopeId" class="form-label">Àmbit</label>
+                                <select asp-for="ScopeId" class="form-select">
                                     <option value="">-- Selecciona un àmbit --</option>
-                                    <option value="Infantil">Infantil</option>
-                                    <option value="Primària">Primària</option>
-                                    <option value="Infantil i Primària">Infantil i Primària</option>
-                                    <option value="Secundària">Secundària (ESO)</option>
-                                    <option value="Batxillerat">Batxillerat</option>
-                                    <option value="Secundària i Batxillerat">Secundària i Batxillerat</option>
-                                    <option value="Formació Professional">Formació Professional</option>
-                                    <option value="Educació Especial">Educació Especial</option>
+                                    @{
+                                        var scopes = ViewBag.Scopes as List<Web.Models.SelectOption> ?? new List<Web.Models.SelectOption>();
+                                        foreach (var scope in scopes)
+                                        {
+                                            var selected = Model.ScopeId.HasValue && scope.Value == Model.ScopeId.Value.ToString();
+                                            if (selected)
+                                            {
+                                                <option value="@scope.Value" selected="selected">@scope.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@scope.Value">@scope.Text</option>
+                                            }
+                                        }
+                                    }
                                 </select>
-                                <span asp-validation-for="Scope" class="text-danger"></span>
+                                <span asp-validation-for="ScopeId" class="text-danger"></span>
                             </div>
                             
                             <div class="col-md-4 mb-3">

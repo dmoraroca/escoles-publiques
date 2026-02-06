@@ -15,6 +15,7 @@
     <div class="card">
         <div class="card-body">
             <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                 <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="Code" />
                 
@@ -40,17 +41,26 @@
                 
                 <div class="row">
                     <div class="col-md-8 mb-3">
-                        <label asp-for="Scope" class="form-label">Àmbit</label>
-                        <select asp-for="Scope" class="form-select">
+                        <label asp-for="ScopeId" class="form-label">Àmbit</label>
+                        <select asp-for="ScopeId" class="form-select">
                             <option value="">-- Selecciona un àmbit --</option>
-                            <option value="Infantil">Infantil</option>
-                            <option value="Primària">Primària</option>
-                            <option value="Infantil i Primària">Infantil i Primària</option>
-                            <option value="Secundària">Secundària</option>
-                            <option value="Batxillerat">Batxillerat</option>
-                            <option value="FP">FP</option>
+                            @{
+                                var scopes = ViewBag.Scopes as List<Web.Models.SelectOption> ?? new List<Web.Models.SelectOption>();
+                                foreach (var scope in scopes)
+                                {
+                                    var selected = Model.ScopeId.HasValue && scope.Value == Model.ScopeId.Value.ToString();
+                                    if (selected)
+                                    {
+                                        <option value="@scope.Value" selected="selected">@scope.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@scope.Value">@scope.Text</option>
+                                    }
+                                }
+                            }
                         </select>
-                        <span asp-validation-for="Scope" class="text-danger"></span>
+                        <span asp-validation-for="ScopeId" class="text-danger"></span>
                     </div>
                     
                     <div class="col-md-4 mb-3">
@@ -75,7 +85,7 @@
                                 cancelText = "Tornar",
                                 cancelClass = "btn btn-secondary",
                                 cancelHref = Url.Action("Index"),
-                                privacySelector = "#agreesToPrivacy",
+                                privacySelector = "#AgreesToPrivacy",
                                 disabledByDefault = true
                             };
                         }

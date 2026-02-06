@@ -43,4 +43,18 @@ public abstract class BaseController : Controller
     {
         TempData["Error"] = message;
     }
+
+    /// <summary>
+    /// Indica si una excepció és per accés no autoritzat.
+    /// </summary>
+    protected static bool IsUnauthorized(Exception ex)
+    {
+        if (ex is HttpRequestException httpEx && httpEx.StatusCode.HasValue)
+        {
+            return httpEx.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                || httpEx.StatusCode == System.Net.HttpStatusCode.Forbidden;
+        }
+
+        return false;
+    }
 }

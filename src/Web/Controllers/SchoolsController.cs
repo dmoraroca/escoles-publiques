@@ -69,6 +69,12 @@ public class SchoolsController : BaseController
             ViewBag.UserRole = role;
             return View(viewModels);
         }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (llistat escoles)");
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return View(new List<SchoolViewModel>());
+        }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error obtenint llista d'escoles");
@@ -105,6 +111,12 @@ public class SchoolsController : BaseController
             ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(viewModel);
         }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (detalls escola {Id})", id);
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return RedirectToAction(nameof(Index));
+        }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Escola amb Id {Id} no trobada", id);
@@ -125,8 +137,10 @@ public class SchoolsController : BaseController
     /// <summary>
     /// Mostra el formulari per crear una nova escola.
     /// </summary>
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+        ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
         return View(new SchoolViewModel());
     }
     
@@ -144,8 +158,19 @@ public class SchoolsController : BaseController
         {
             if (!ModelState.IsValid)
             {
+                foreach (var entry in ModelState)
+                {
+                    var errors = entry.Value?.Errors;
+                    if (errors == null || errors.Count == 0) continue;
+                    foreach (var error in errors)
+                    {
+                        Logger.LogWarning("ModelState error on {Field}: {Message}", entry.Key, error.ErrorMessage);
+                    }
+                }
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris.");
-                return RedirectToAction(nameof(Index));
+                var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+                ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
+                return View(model);
             }
 
             var school = new Domain.Entities.School
@@ -176,6 +201,12 @@ public class SchoolsController : BaseController
             });
             SetSuccessMessage($"Escola '{school.Name}' creada correctament.");
             return RedirectToAction(nameof(Index));
+        }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear escola)");
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return RedirectToAction("Login", "Auth");
         }
         catch (DuplicateEntityException ex)
         {
@@ -225,6 +256,12 @@ public class SchoolsController : BaseController
             ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(viewModel);
         }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (editar escola {Id})", id);
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return RedirectToAction(nameof(Index));
+        }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Escola amb Id {Id} no trobada per editar", id);
@@ -254,6 +291,8 @@ public class SchoolsController : BaseController
             if (!ModelState.IsValid)
             {
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris.");
+                var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+                ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
                 return View(model);
             }
 
@@ -288,6 +327,12 @@ public class SchoolsController : BaseController
             SetSuccessMessage($"Escola '{school.Name}' actualitzada correctament.");
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (actualitzar escola {Id})", model.Id);
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return RedirectToAction("Login", "Auth");
+        }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Escola no trobada al actualitzar: {Id}", model.Id);
@@ -298,12 +343,16 @@ public class SchoolsController : BaseController
         {
             Logger.LogWarning(ex, "Intent d'actualitzar amb codi duplicat: {Code}", model.Code);
             SetErrorMessage($"Ja existeix una altra escola amb el codi '{model.Code}'.");
+            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(model);
         }
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Validació fallida al actualitzar escola");
             SetErrorMessage($"Error de validació: {ex.Message}");
+            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(model);
         }
         catch (Exception ex)
@@ -334,6 +383,12 @@ public class SchoolsController : BaseController
             
             SetSuccessMessage("Escola esborrada correctament.");
             return RedirectToAction(nameof(Index));
+        }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (esborrar escola {Id})", id);
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return RedirectToAction("Login", "Auth");
         }
         catch (NotFoundException ex)
         {

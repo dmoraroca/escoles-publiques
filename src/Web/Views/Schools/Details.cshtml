@@ -49,13 +49,21 @@
                 <div class="row">
                     <div class="col-md-8 mb-3">
                         <label class="form-label">Àmbit</label>
-                        <select id="Scope" name="Scope" class="form-select" disabled>
+                        <select id="ScopeId" name="ScopeId" class="form-select" disabled>
                             <option value="">-- Selecciona un àmbit --</option>
                             @{
-                                var scopes = ViewBag.Scopes as List<string> ?? new List<string>();
+                                var scopes = ViewBag.Scopes as List<Web.Models.SelectOption> ?? new List<Web.Models.SelectOption>();
                                 foreach (var scope in scopes)
                                 {
-                                    <option value="@scope" selected="@(Model.Scope == scope)">@scope</option>
+                                    var selected = Model.ScopeId.HasValue && scope.Value == Model.ScopeId.Value.ToString();
+                                    if (selected)
+                                    {
+                                        <option value="@scope.Value" selected="selected">@scope.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@scope.Value">@scope.Text</option>
+                                    }
                                 }
                             }
                         </select>

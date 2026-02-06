@@ -9,23 +9,48 @@
     bool disabledByDefault = true;
     string cancelAction = null;
     string privacySelector = null;
-    if (Model != null)
+    if (Model is string json)
     {
-        try {
-            var dyn = Model as dynamic;
-            submitText = dyn.submitText ?? submitText;
-            cancelText = dyn.cancelText ?? cancelText;
-            disabledByDefault = dyn.disabledByDefault ?? disabledByDefault;
-            cancelAction = dyn.cancelAction ?? cancelAction;
-            privacySelector = dyn.privacySelector ?? privacySelector;
-        } catch { }
+        try
+        {
+            using var doc = System.Text.Json.JsonDocument.Parse(json);
+            var root = doc.RootElement;
+            if (root.TryGetProperty("submitText", out var st)) submitText = st.GetString() ?? submitText;
+            if (root.TryGetProperty("cancelText", out var ct)) cancelText = ct.GetString() ?? cancelText;
+            if (root.TryGetProperty("disabledByDefault", out var dbd)) disabledByDefault = dbd.GetBoolean();
+            if (root.TryGetProperty("cancelAction", out var ca)) cancelAction = ca.GetString() ?? cancelAction;
+            if (root.TryGetProperty("privacySelector", out var ps)) privacySelector = ps.GetString() ?? privacySelector;
+        }
+        catch
+        {
+            // ignore invalid JSON
+        }
+    }
+    else if (Model != null)
+    {
+        var type = Model.GetType();
+        submitText = type.GetProperty("submitText")?.GetValue(Model) as string ?? submitText;
+        cancelText = type.GetProperty("cancelText")?.GetValue(Model) as string ?? cancelText;
+        disabledByDefault = type.GetProperty("disabledByDefault")?.GetValue(Model) as bool? ?? disabledByDefault;
+        cancelAction = type.GetProperty("cancelAction")?.GetValue(Model) as string ?? cancelAction;
+        privacySelector = type.GetProperty("privacySelector")?.GetValue(Model) as string ?? privacySelector;
     }
 }
 
+@{
+    var agreesChecked = false;
+    if (ViewContext?.ViewData?.ModelState != null && ViewContext.ViewData.ModelState.TryGetValue("AgreesToPrivacy", out var agreeEntry))
+    {
+        var attempted = agreeEntry?.AttemptedValue;
+        agreesChecked = string.Equals(attempted, "true", System.StringComparison.OrdinalIgnoreCase)
+            || string.Equals(attempted, "on", System.StringComparison.OrdinalIgnoreCase);
+    }
+}
 <div class="save-cancel-component" data-options='@Html.Raw(optionsJson)'>
     <div class="d-flex align-items-center gap-3">
         <div class="form-check mb-0">
-            <input id="AgreesToPrivacy" name="AgreesToPrivacy" class="form-check-input" type="checkbox" />
+            <input type="hidden" name="AgreesToPrivacy" value="false" />
+            <input id="AgreesToPrivacy" name="AgreesToPrivacy" class="form-check-input" type="checkbox" value="true" @(agreesChecked ? "checked" : "") />
             <label class="form-check-label small" for="AgreesToPrivacy">Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a></label>
         </div>
 

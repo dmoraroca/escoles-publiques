@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Persistence;
 
@@ -10,14 +11,16 @@ namespace Infrastructure.Persistence;
 public class ScopeRepository : IScopeRepository
 {
     private readonly SchoolDbContext _context;
+    private readonly ILogger<ScopeRepository> _logger;
 
     /// <summary>
     /// Initializes a new instance of the ScopeRepository class.
     /// </summary>
     /// <param name="context">The database context to use.</param>
-    public ScopeRepository(SchoolDbContext context)
+    public ScopeRepository(SchoolDbContext context, ILogger<ScopeRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     /// <summary>
@@ -26,11 +29,14 @@ public class ScopeRepository : IScopeRepository
     /// <returns>Enumerable of active scopes.</returns>
     public async Task<IEnumerable<Scope>> GetAllActiveScopesAsync()
     {
-        return await _context.Set<Scope>()
+        var scopes = await _context.Set<Scope>()
             .Where(s => s.IsActive)
             .OrderBy(s => s.Name)
             .AsNoTracking()
             .ToListAsync();
+
+        _logger.LogInformation("Scopes loaded: {Count}. DB={Database}", scopes.Count, _context.Database.GetDbConnection().Database);
+        return scopes;
     }
 
     /// <summary>

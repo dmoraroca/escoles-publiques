@@ -23,7 +23,7 @@ public class SchoolsController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var schools = await _schoolService.GetAllSchoolsAsync();
-        return Ok(schools);
+        return Ok(schools.Select(ToDto));
     }
 
     [HttpGet("{id}")]
@@ -32,7 +32,7 @@ public class SchoolsController : ControllerBase
         try
         {
             var school = await _schoolService.GetSchoolByIdAsync(id);
-            return Ok(school);
+            return Ok(ToDto(school));
         }
         catch (Exception ex)
         {
@@ -105,6 +105,19 @@ public class SchoolsController : ControllerBase
             return Problem(detail: ex.Message);
         }
     }
+
+    private static SchoolDtoOut ToDto(School school)
+    {
+        return new SchoolDtoOut(
+            school.Id,
+            school.Code,
+            school.Name,
+            school.City,
+            school.IsFavorite,
+            school.ScopeId,
+            school.CreatedAt
+        );
+    }
 }
 
 public record SchoolDto
@@ -115,4 +128,15 @@ public record SchoolDto
     string? City,
     bool IsFavorite,
     long? ScopeId
+);
+
+public record SchoolDtoOut
+(
+    long Id,
+    string Code,
+    string Name,
+    string? City,
+    bool IsFavorite,
+    long? ScopeId,
+    DateTime CreatedAt
 );
