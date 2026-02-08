@@ -1,6 +1,6 @@
-using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
+using Web.Services.Api;
 
 namespace Web.ViewComponents;
 
@@ -9,19 +9,19 @@ namespace Web.ViewComponents;
 /// </summary>
 public class ScopesViewComponent : ViewComponent
 {
-    private readonly IScopeRepository _scopeRepository;
+    private readonly IScopesApiClient _scopesApi;
 
-    public ScopesViewComponent(IScopeRepository scopeRepository)
+    public ScopesViewComponent(IScopesApiClient scopesApi)
     {
-        _scopeRepository = scopeRepository;
+        _scopesApi = scopesApi;
     }
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+        var scopes = await _scopesApi.GetAllAsync();
         var scopeViewModels = scopes.Select(s => new ScopeViewModel
         {
-            Name = s.Name,
+            Name = s.Name?.Trim() ?? string.Empty,
             Url = "#" // Pots canviar per una URL real si cal
         }).ToList();
         

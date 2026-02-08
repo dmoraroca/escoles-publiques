@@ -1,6 +1,6 @@
-using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
+using Web.Services.Api;
 
 namespace Web.ViewComponents;
 
@@ -9,16 +9,16 @@ namespace Web.ViewComponents;
 /// </summary>
 public class FavoriteSchoolsViewComponent : ViewComponent
 {
-    private readonly ISchoolService _schoolService;
+    private readonly ISchoolsApiClient _schoolApi;
 
-    public FavoriteSchoolsViewComponent(ISchoolService schoolService)
+    public FavoriteSchoolsViewComponent(ISchoolsApiClient schoolApi)
     {
-        _schoolService = schoolService;
+        _schoolApi = schoolApi;
     }
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var schools = await _schoolService.GetAllSchoolsAsync();
+        var schools = await _schoolApi.GetAllAsync();
         var favoriteSchools = schools
             .Where(s => s.IsFavorite)
             .Take(10)

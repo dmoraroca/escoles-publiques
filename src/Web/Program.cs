@@ -6,6 +6,8 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
 using Web.Hubs;
 using Web.Validators;
 using System.Globalization;
@@ -79,6 +81,26 @@ builder.Services.AddHttpClient<IAuthApiClient, AuthApiClient>(client =>
     client.BaseAddress = new Uri(apiBaseUrl);
 });
 
+builder.Services.AddHttpClient<IScopesApiClient, ScopesApiClient>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<ApiAuthTokenHandler>();
+
+builder.Services.AddHttpClient<IStudentsApiClient, StudentsApiClient>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<ApiAuthTokenHandler>();
+
+builder.Services.AddHttpClient<IEnrollmentsApiClient, EnrollmentsApiClient>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<ApiAuthTokenHandler>();
+
+builder.Services.AddHttpClient<IAnnualFeesApiClient, AnnualFeesApiClient>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<ApiAuthTokenHandler>();
+
 builder.Services.AddControllersWithViews(options =>
 {
     // Requerir autenticació per defecte a tots els controladors
@@ -135,6 +157,21 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (UnauthorizedAccessException)
+    {
+        context.Session.Remove(Web.Services.Api.SessionKeys.ApiToken);
+        var auth = context.RequestServices.GetRequiredService<IAuthenticationService>();
+        await auth.SignOutAsync(context, "CookieAuth", null);
+        context.Response.Redirect("/Auth/Login");
+    }
+});
 
 app.UseEndpoints(endpoints =>
 {

@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Web.Services.Api;
 
@@ -13,7 +14,7 @@ public class ApiAuthTokenHandler : DelegatingHandler
         _logger = logger;
     }
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var token = _httpContextAccessor.HttpContext?.Session.GetString(SessionKeys.ApiToken);
         if (!string.IsNullOrWhiteSpace(token) && request.Headers.Authorization == null)
@@ -26,7 +27,20 @@ public class ApiAuthTokenHandler : DelegatingHandler
             _logger.LogWarning("API token missing for request {Method} {Url}", request.Method, request.RequestUri);
         }
 
-        return base.SendAsync(request, cancellationToken);
+        var response = await base.SendAsync(request, cancellationToken);
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+            response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+        {
+            var ctx = _httpContextAccessor.HttpContext;
+            if (ctx != null)
+            {
+                ctx.Session.Remove(SessionKeys.ApiToken);
+                await ctx.SignOutAsync("CookieAuth");
+            }
+            throw new UnauthorizedAccessException($"API unauthorized for {request.Method} {request.RequestUri}");
+        }
+
+        return response;
     }
 }
 

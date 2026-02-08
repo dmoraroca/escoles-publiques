@@ -18,7 +18,7 @@ public class SchoolsApiClient : ISchoolsApiClient
     public async Task<IEnumerable<School>> GetAllAsync()
     {
         var res = await _http.GetAsync("api/schools");
-        res.EnsureSuccessStatusCode();
+        ApiResponseHelper.EnsureSuccessOrUnauthorized(res, "GET api/schools");
         var s = await res.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<IEnumerable<School>>(s, _jsonOptions) ?? Enumerable.Empty<School>();
     }
@@ -27,7 +27,7 @@ public class SchoolsApiClient : ISchoolsApiClient
     {
         var res = await _http.GetAsync($"api/schools/{id}");
         if (res.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
-        res.EnsureSuccessStatusCode();
+        ApiResponseHelper.EnsureSuccessOrUnauthorized(res, $"GET api/schools/{id}");
         var s = await res.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<School>(s, _jsonOptions);
     }
@@ -36,7 +36,7 @@ public class SchoolsApiClient : ISchoolsApiClient
     {
         var json = JsonSerializer.Serialize(school);
         var res = await _http.PostAsync("api/schools", new StringContent(json, Encoding.UTF8, "application/json"));
-        res.EnsureSuccessStatusCode();
+        ApiResponseHelper.EnsureSuccessOrUnauthorized(res, "POST api/schools");
         var s = await res.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<School>(s, _jsonOptions)!;
     }
@@ -45,12 +45,12 @@ public class SchoolsApiClient : ISchoolsApiClient
     {
         var json = JsonSerializer.Serialize(school);
         var res = await _http.PutAsync($"api/schools/{id}", new StringContent(json, Encoding.UTF8, "application/json"));
-        res.EnsureSuccessStatusCode();
+        ApiResponseHelper.EnsureSuccessOrUnauthorized(res, $"PUT api/schools/{id}");
     }
 
     public async Task DeleteAsync(long id)
     {
         var res = await _http.DeleteAsync($"api/schools/{id}");
-        res.EnsureSuccessStatusCode();
+        ApiResponseHelper.EnsureSuccessOrUnauthorized(res, $"DELETE api/schools/{id}");
     }
 }

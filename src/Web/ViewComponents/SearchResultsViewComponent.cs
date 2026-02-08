@@ -1,6 +1,6 @@
-using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
+using Web.Services.Api;
 
 namespace Web.ViewComponents;
 
@@ -9,21 +9,24 @@ namespace Web.ViewComponents;
 /// </summary>
 public class SearchResultsViewComponent : ViewComponent
 {
-    private readonly ISchoolService _schoolService;
-    private readonly IStudentService _studentService;
-    private readonly IEnrollmentService _enrollmentService;
-    private readonly IAnnualFeeService _annualFeeService;
+    private readonly ISchoolsApiClient _schoolApi;
+    private readonly IScopesApiClient _scopesApi;
+    private readonly IStudentsApiClient _studentsApi;
+    private readonly IEnrollmentsApiClient _enrollmentsApi;
+    private readonly IAnnualFeesApiClient _annualFeesApi;
 
     public SearchResultsViewComponent(
-        ISchoolService schoolService,
-        IStudentService studentService,
-        IEnrollmentService enrollmentService,
-        IAnnualFeeService annualFeeService)
+        ISchoolsApiClient schoolApi,
+        IScopesApiClient scopesApi,
+        IStudentsApiClient studentsApi,
+        IEnrollmentsApiClient enrollmentsApi,
+        IAnnualFeesApiClient annualFeesApi)
     {
-        _schoolService = schoolService;
-        _studentService = studentService;
-        _enrollmentService = enrollmentService;
-        _annualFeeService = annualFeeService;
+        _schoolApi = schoolApi;
+        _scopesApi = scopesApi;
+        _studentsApi = studentsApi;
+        _enrollmentsApi = enrollmentsApi;
+        _annualFeesApi = annualFeesApi;
     }
 
     public async Task<IViewComponentResult> InvokeAsync(string? searchQuery, string? scopeName)
@@ -47,19 +50,38 @@ public class SearchResultsViewComponent : ViewComponent
                          .Where(t => !string.IsNullOrWhiteSpace(t))
                          .ToList();
 
+        // Carrega àmbits per resoldre nom -> id i id -> nom (normalitzat)
+        var scopes = (await _scopesApi.GetAllAsync()).ToList();
+        var scopeById = scopes.ToDictionary(s => s.Id, s => s.Name);
+        var scopeIdByName = scopes
+            .Select(s => new { Id = s.Id, Name = NormalizeKey(s.Name) })
+            .Where(s => !string.IsNullOrWhiteSpace(s.Name))
+            .GroupBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(g => g.Key, g => g.First().Id, StringComparer.OrdinalIgnoreCase);
+
+        var normalizedScopeName = NormalizeKey(scopeName);
+        long? scopeFilterId = null;
+        if (!string.IsNullOrWhiteSpace(normalizedScopeName) && scopeIdByName.TryGetValue(normalizedScopeName, out var foundScopeId))
+        {
+            scopeFilterId = foundScopeId;
+        }
+
         // Cerca en Escoles
-        var allSchools = await _schoolService.GetAllSchoolsAsync();
-        var allScopes = allSchools.Select(s => s.ScopeId).Distinct().Where(id => id.HasValue).Select(id => id.Value).ToList();
-        // Aquí hauries d'obtenir els noms dels àmbits segons la teva implementació de repositori
-        // Per simplicitat, suposarem que no es filtra per nom d'àmbit, només per id
+        var allSchools = (await _schoolApi.GetAllAsync()).ToList();
         model.Schools = allSchools
             .Where(s => 
                 (searchTerms.Count == 0 || searchTerms.Any(term =>
                     s.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     s.Code.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     (s.City != null && s.City.Contains(term, StringComparison.OrdinalIgnoreCase)))) &&
-                (string.IsNullOrWhiteSpace(scopeName) || 
-                 (s.ScopeId.HasValue && s.ScopeId.ToString() == scopeName)))
+                (
+                    scopeFilterId == null
+                        ? (string.IsNullOrWhiteSpace(normalizedScopeName) ||
+                           (s.ScopeId.HasValue &&
+                            scopeById.TryGetValue(s.ScopeId.Value, out var scopeLabel) &&
+                            NormalizeKey(scopeLabel) == normalizedScopeName))
+                        : (s.ScopeId.HasValue && s.ScopeId.Value == scopeFilterId.Value)
+                ))
             .Take(10)
             .Select(s => new SchoolResultViewModel
             {
@@ -68,76 +90,93 @@ public class SearchResultsViewComponent : ViewComponent
                 Code = s.Code,
                 City = s.City,
                 ScopeId = s.ScopeId,
-                ScopeName = null // Omple amb el nom real si tens accés aquí
+                ScopeName = s.ScopeId.HasValue && scopeById.TryGetValue(s.ScopeId.Value, out var scopeLabel) ? scopeLabel : null,
+                Scope = s.ScopeId.HasValue && scopeById.TryGetValue(s.ScopeId.Value, out var scopeLabelLegacy) ? scopeLabelLegacy : null
             })
             .ToList();
 
         // Cerca en Alumnes
-        var allStudents = await _studentService.GetAllStudentsAsync();
+        var allStudents = await _studentsApi.GetAllAsync();
         model.Students = allStudents
             .Where(s => 
-                s.User != null && searchTerms.Count > 0 && searchTerms.Any(term =>
-                    s.User.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    s.User.LastName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    (s.User.Email != null && s.User.Email.Contains(term, StringComparison.OrdinalIgnoreCase))))
+                searchTerms.Count > 0 && searchTerms.Any(term =>
+                    s.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                    s.LastName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                    (s.Email != null && s.Email.Contains(term, StringComparison.OrdinalIgnoreCase))))
             .Take(10)
             .Select(s => new StudentResultViewModel
             {
                 Id = s.Id,
-                FirstName = s.User?.FirstName ?? string.Empty,
-                LastName = s.User?.LastName ?? string.Empty,
-                Email = s.User?.Email ?? string.Empty,
-                SchoolName = s.School?.Name
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Email = s.Email,
+                SchoolName = s.SchoolName
             })
             .ToList();
 
         // Cerca en Inscripcions
-        var allEnrollments = await _enrollmentService.GetAllEnrollmentsAsync();
+        var allEnrollments = await _enrollmentsApi.GetAllAsync();
         model.Enrollments = allEnrollments
             .Where(e => 
                 searchTerms.Count > 0 && searchTerms.Any(term =>
                     e.AcademicYear.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    (e.CourseName != null && e.CourseName.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
-                    e.Status.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    (e.Student?.User != null && (e.Student.User.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                                          e.Student.User.LastName.Contains(term, StringComparison.OrdinalIgnoreCase))) ||
-                    (e.Student?.School != null && e.Student.School.Name.Contains(term, StringComparison.OrdinalIgnoreCase))))
+                    e.StudentName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                    e.SchoolName.Contains(term, StringComparison.OrdinalIgnoreCase)))
             .Take(10)
             .Select(e => new EnrollmentResultViewModel
             {
                 Id = e.Id,
-                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Desconegut",
-                SchoolName = e.Student?.School?.Name ?? "Desconeguda",
+                StudentName = e.StudentName,
+                SchoolName = e.SchoolName,
                 AcademicYear = e.AcademicYear,
                 EnrollmentDate = e.EnrolledAt
             })
             .ToList();
 
         // Cerca en Quotes
-        var allFees = await _annualFeeService.GetAllAnnualFeesAsync();
+        var allFees = await _annualFeesApi.GetAllAsync();
         model.AnnualFees = allFees
             .Where(f => 
                 searchTerms.Count > 0 && searchTerms.Any(term =>
-                    (f.Enrollment?.Student?.User != null &&
-                     (f.Enrollment.Student.User.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                      f.Enrollment.Student.User.LastName.Contains(term, StringComparison.OrdinalIgnoreCase))) ||
+                    f.StudentName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     f.Amount.ToString().Contains(term) ||
-                    f.Currency.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-                    (f.PaymentRef != null && f.PaymentRef.Contains(term, StringComparison.OrdinalIgnoreCase))))
+                    f.Currency.Contains(term, StringComparison.OrdinalIgnoreCase)))
             .Take(10)
             .Select(f => new AnnualFeeResultViewModel
             {
                 Id = f.Id,
-                StudentName = f.Enrollment?.Student?.User != null 
-                    ? $"{f.Enrollment.Student.User.FirstName} {f.Enrollment.Student.User.LastName}" 
-                    : "Desconegut",
+                StudentName = f.StudentName,
                 Amount = f.Amount,
                 Currency = f.Currency,
                 DueDate = f.DueDate,
-                IsPaid = f.PaidAt.HasValue
+                IsPaid = f.IsPaid
             })
             .ToList();
 
         return View(model);
+    }
+
+    private static string NormalizeKey(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+        var sb = new System.Text.StringBuilder(value.Length);
+        var prevWasSpace = false;
+        foreach (var ch in value)
+        {
+            if (char.IsWhiteSpace(ch))
+            {
+                if (!prevWasSpace)
+                {
+                    sb.Append(' ');
+                    prevWasSpace = true;
+                }
+            }
+            else
+            {
+                sb.Append(ch);
+                prevWasSpace = false;
+            }
+        }
+        return sb.ToString().Trim().ToLowerInvariant();
     }
 }

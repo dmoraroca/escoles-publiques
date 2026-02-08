@@ -33,8 +33,8 @@ public partial class HomeController : BaseController
     /// </summary>
     public IActionResult Index(string? searchQuery, string? scopeName)
     {
-        ViewBag.SearchQuery = searchQuery;
-        ViewBag.ScopeName = scopeName;
+        ViewBag.SearchQuery = searchQuery?.Trim();
+        ViewBag.ScopeName = scopeName?.Trim();
         var role = User.FindFirstValue("Role");
         ViewBag.UserRole = role;
 

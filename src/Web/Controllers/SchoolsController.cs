@@ -1,12 +1,12 @@
 using Application.Interfaces;
 using Web.Services.Api;
 using Domain.DomainExceptions;
-using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using Web.Hubs;
 using Web.Models;
+using Web.Services.Api;
 
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
@@ -22,7 +22,7 @@ public class SchoolsController : BaseController
 {
     private readonly ISchoolsApiClient _schoolApi;
     private readonly IHubContext<SchoolHub> _hubContext;
-    private readonly IScopeRepository _scopeRepository;
+    private readonly IScopesApiClient _scopesApi;
 
     /// <summary>
     /// Constructor del controlador d'escoles.
@@ -30,11 +30,11 @@ public class SchoolsController : BaseController
     /// <summary>
     /// Constructor del controlador d'escoles.
     /// </summary>
-    public SchoolsController(ISchoolsApiClient schoolApi, IHubContext<SchoolHub> hubContext, IScopeRepository scopeRepository, ILogger<SchoolsController> logger) : base(logger)
+    public SchoolsController(ISchoolsApiClient schoolApi, IHubContext<SchoolHub> hubContext, IScopesApiClient scopesApi, ILogger<SchoolsController> logger) : base(logger)
     {
         _schoolApi = schoolApi;
         _hubContext = hubContext;
-        _scopeRepository = scopeRepository;
+        _scopesApi = scopesApi;
     }
     
     /// <summary>
@@ -48,7 +48,7 @@ public class SchoolsController : BaseController
         try
         {
             var schools = await _schoolApi.GetAllAsync();
-            var scopes = (await _scopeRepository.GetAllActiveScopesAsync()).ToList();
+            var scopes = (await _scopesApi.GetAllAsync()).ToList();
             var viewModels = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
@@ -95,7 +95,7 @@ public class SchoolsController : BaseController
         {
             var school = await _schoolApi.GetByIdAsync(id);
             
-            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            var scopes = await _scopesApi.GetAllAsync();
             var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
             var viewModel = new SchoolViewModel
             {
@@ -139,7 +139,7 @@ public class SchoolsController : BaseController
     /// </summary>
     public async Task<IActionResult> Create()
     {
-        var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+        var scopes = await _scopesApi.GetAllAsync();
         ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
         return View(new SchoolViewModel());
     }
@@ -168,7 +168,7 @@ public class SchoolsController : BaseController
                     }
                 }
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris.");
-                var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+                var scopes = await _scopesApi.GetAllAsync();
                 ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
                 return View(model);
             }
@@ -185,7 +185,7 @@ public class SchoolsController : BaseController
             var scopeName = string.Empty;
             if (model.ScopeId.HasValue)
             {
-                var scope = (await _scopeRepository.GetAllActiveScopesAsync()).FirstOrDefault(s => s.Id == model.ScopeId);
+                var scope = (await _scopesApi.GetAllAsync()).FirstOrDefault(s => s.Id == model.ScopeId);
                 scopeName = scope?.Name ?? string.Empty;
             }
             await _hubContext.Clients.All.SendAsync("SchoolCreated", new 
@@ -240,7 +240,7 @@ public class SchoolsController : BaseController
         {
             var school = await _schoolApi.GetByIdAsync(id);
             
-            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            var scopes = await _scopesApi.GetAllAsync();
             var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
             var viewModel = new SchoolViewModel
             {
@@ -291,7 +291,7 @@ public class SchoolsController : BaseController
             if (!ModelState.IsValid)
             {
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris.");
-                var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+                var scopes = await _scopesApi.GetAllAsync();
                 ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
                 return View(model);
             }
@@ -309,7 +309,7 @@ public class SchoolsController : BaseController
             var scopeName = string.Empty;
             if (school.ScopeId.HasValue)
             {
-                var scope = (await _scopeRepository.GetAllActiveScopesAsync()).FirstOrDefault(s => s.Id == school.ScopeId);
+                var scope = (await _scopesApi.GetAllAsync()).FirstOrDefault(s => s.Id == school.ScopeId);
                 scopeName = scope?.Name ?? string.Empty;
             }
             await _hubContext.Clients.All.SendAsync("SchoolUpdated", new 
@@ -343,7 +343,7 @@ public class SchoolsController : BaseController
         {
             Logger.LogWarning(ex, "Intent d'actualitzar amb codi duplicat: {Code}", model.Code);
             SetErrorMessage($"Ja existeix una altra escola amb el codi '{model.Code}'.");
-            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            var scopes = await _scopesApi.GetAllAsync();
             ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(model);
         }
@@ -351,7 +351,7 @@ public class SchoolsController : BaseController
         {
             Logger.LogWarning(ex, "Validació fallida al actualitzar escola");
             SetErrorMessage($"Error de validació: {ex.Message}");
-            var scopes = await _scopeRepository.GetAllActiveScopesAsync();
+            var scopes = await _scopesApi.GetAllAsync();
             ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(model);
         }
