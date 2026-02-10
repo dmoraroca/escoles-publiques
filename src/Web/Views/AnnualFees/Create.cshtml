@@ -81,13 +81,13 @@
                             </a>
                             <div class="d-flex align-items-center gap-3">
                                 <div class="form-check mb-0">
-                                    <input asp-for="AgreesToPrivacy" class="form-check-input" />
+                                    <input asp-for="AgreesToPrivacy" class="form-check-input" id="agreesToPrivacy" />
                                     <label asp-for="AgreesToPrivacy" class="form-check-label small">
                                         Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a>
                                     </label>
                                     <span asp-validation-for="AgreesToPrivacy" class="text-danger d-block"></span>
                                 </div>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" id="createButton" class="btn btn-primary" disabled>
                                     <i class="bi bi-check-circle"></i> Crear Quota
                                 </button>
                             </div>
@@ -102,6 +102,19 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/annualfees-create.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkbox = document.getElementById('agreesToPrivacy');
+            var createBtn = document.getElementById('createButton');
+            if (!createBtn) return;
+            createBtn.disabled = true;
+            if (!checkbox) return;
+            createBtn.disabled = !checkbox.checked;
+            checkbox.addEventListener('change', function () {
+                createBtn.disabled = !this.checked;
+            });
+        });
+    </script>
     <script>
         const enrollmentSelect = document.getElementById('enrollmentSelect');
         const studentSelect = document.getElementById('studentSelect');

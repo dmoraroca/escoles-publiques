@@ -15,15 +15,6 @@
                 <i class="bi bi-pencil"></i> Editar
             </button>
         </div>
-        <div id="editButtons" class="edit-buttons-hidden">
-            <button type="button" class="btn btn-secondary" data-action="cancel">
-                <i class="bi bi-x-lg"></i> Cancel·lar
-            </button>
-            <button type="button" class="btn btn-success" data-action="submit">
-                
-                <i class="bi bi-check-lg"></i> Guardar
-            </button>
-        </div>
     </div>
 
     <div class="card">
@@ -109,6 +100,24 @@
                     </select>
 				</div>
 				<input type="hidden" id="Currency" name="Currency" value="@Model.Currency" />
+
+                <div id="editButtons" class="edit-buttons-hidden d-flex justify-content-end mt-4">
+                    @{
+                        var opts = new
+                        {
+                            submitText = "Guardar",
+                            submitClass = "btn btn-success",
+                            cancelText = "Cancel·lar",
+                            cancelClass = "btn btn-secondary",
+                            cancelAction = "reload",
+                            privacySelector = "#AgreesToPrivacy",
+                            disabledByDefault = true
+                        };
+                    }
+                    <div class="save-cancel-wrapper" style="display:none;">
+                        @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
+                    </div>
+                </div>
 			</form>
 		</div>
 	</div>

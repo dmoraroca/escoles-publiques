@@ -156,6 +156,34 @@ public class SchoolsController : BaseController
     {
         try
         {
+            // Normalitza l'àmbit abans de validar (p.ex. si arriba com a nom en lloc d'Id)
+            if (!model.ScopeId.HasValue || ModelState.ContainsKey(nameof(SchoolViewModel.ScopeId)))
+            {
+                if (Request.Form.TryGetValue("ScopeId", out var scopeIdRaw)
+                    && long.TryParse(scopeIdRaw, out var parsedScopeId))
+                {
+                    model.ScopeId = parsedScopeId;
+                    ModelState.Remove(nameof(SchoolViewModel.ScopeId));
+                }
+                else if (Request.Form.TryGetValue("Scope", out var scopeRaw)
+                    && long.TryParse(scopeRaw, out var parsedLegacyScopeId))
+                {
+                    model.ScopeId = parsedLegacyScopeId;
+                    ModelState.Remove(nameof(SchoolViewModel.ScopeId));
+                }
+                else if (!string.IsNullOrWhiteSpace(scopeIdRaw))
+                {
+                    var scopes = await _scopesApi.GetAllAsync();
+                    var matched = scopes.FirstOrDefault(s =>
+                        string.Equals(s.Name, scopeIdRaw.ToString(), StringComparison.OrdinalIgnoreCase));
+                    if (matched != null)
+                    {
+                        model.ScopeId = matched.Id;
+                        ModelState.Remove(nameof(SchoolViewModel.ScopeId));
+                    }
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 foreach (var entry in ModelState)
@@ -172,6 +200,11 @@ public class SchoolsController : BaseController
                 ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
                 return View(model);
             }
+
+            Logger.LogInformation("Create school form ScopeId raw={ScopeIdRaw} parsed={ScopeId} name={ScopeName}",
+                Request.Form.TryGetValue("ScopeId", out var scopeIdRawLog) ? scopeIdRawLog.ToString() : "",
+                model.ScopeId,
+                Request.Form.TryGetValue("ScopeId", out var scopeNameRawLog) ? scopeNameRawLog.ToString() : "");
 
             var school = new Domain.Entities.School
             {
@@ -199,12 +232,20 @@ public class SchoolsController : BaseController
                 isFavorite = school.IsFavorite,
                 createdAt = school.CreatedAt.ToString("dd/MM/yyyy HH:mm")
             });
+            if (IsAjaxRequest())
+            {
+                return Ok(new { message = $"Escola '{school.Name}' creada correctament." });
+            }
             SetSuccessMessage($"Escola '{school.Name}' creada correctament.");
             return RedirectToAction(nameof(Index));
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear escola)");
+            if (IsAjaxRequest())
+            {
+                return Unauthorized(new { error = "Accés no autoritzat. Torna a iniciar sessió." });
+            }
             SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
             return RedirectToAction("Login", "Auth");
         }

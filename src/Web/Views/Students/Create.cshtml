@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="mb-3 form-check">
-                            <input asp-for="AgreesToPrivacy" class="form-check-input" />
+                            <input asp-for="AgreesToPrivacy" class="form-check-input" id="agreesToPrivacy" />
                             <label asp-for="AgreesToPrivacy" class="form-check-label">
                                 Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a> d'aquest entorn de proves.
                             </label>
@@ -57,7 +57,7 @@
                             <a asp-action="Index" class="btn btn-secondary">
                                 <i class="bi bi-x-lg"></i> Cancel·lar
                             </a>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" id="createButton" class="btn btn-primary" disabled>
                                 <i class="bi bi-check-circle"></i> Crear Alumne
                             </button>
                         </div>
@@ -70,4 +70,17 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkbox = document.getElementById('agreesToPrivacy');
+            var createBtn = document.getElementById('createButton');
+            if (!createBtn) return;
+            createBtn.disabled = true;
+            if (!checkbox) return;
+            createBtn.disabled = !checkbox.checked;
+            checkbox.addEventListener('change', function () {
+                createBtn.disabled = !this.checked;
+            });
+        });
+    </script>
 }

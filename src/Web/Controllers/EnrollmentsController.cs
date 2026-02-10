@@ -1,8 +1,7 @@
-using Application.Interfaces;
 using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
-using Domain.Entities;
+using Web.Services.Api;
 
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
@@ -13,19 +12,19 @@ namespace Web.Controllers;
 [Authorize]
 public class EnrollmentsController : BaseController
 {
-    private readonly IEnrollmentService _enrollmentService;
-    private readonly IStudentService _studentService;
-    private readonly ISchoolService _schoolService;
+    private readonly IEnrollmentsApiClient _enrollmentsApi;
+    private readonly IStudentsApiClient _studentsApi;
+    private readonly ISchoolsApiClient _schoolsApi;
 
     public EnrollmentsController(
-        IEnrollmentService enrollmentService, 
-        IStudentService studentService,
-        ISchoolService schoolService,
+        IEnrollmentsApiClient enrollmentsApi,
+        IStudentsApiClient studentsApi,
+        ISchoolsApiClient schoolsApi,
         ILogger<EnrollmentsController> logger) : base(logger ?? throw new ArgumentNullException(nameof(logger), "Logger cannot be null in EnrollmentsController"))
     {
-        _enrollmentService = enrollmentService;
-        _studentService = studentService;
-        _schoolService = schoolService;
+        _enrollmentsApi = enrollmentsApi;
+        _studentsApi = studentsApi;
+        _schoolsApi = schoolsApi;
     }
     
     /// <summary>
@@ -35,28 +34,34 @@ public class EnrollmentsController : BaseController
     {
         try
         {
-            var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
-            var schoolsList = ViewBag.Schools as List<SchoolViewModel> ?? new List<SchoolViewModel>();
+            var enrollments = await _enrollmentsApi.GetAllAsync();
             var viewModels = enrollments
                 .Where(e => e != null)
                 .Select(e => new EnrollmentViewModel
                 {
                     Id = (int)e.Id,
-                    StudentName = e.Student?.User != null ? $"{e.StudentId}-{e.Student.User.FirstName} {e.Student.User.LastName}" : $"{e.StudentId}-Alumne desconegut",
+                    StudentName = $"{e.StudentId}-{e.StudentName}",
                     AcademicYear = e.AcademicYear,
                     CourseName = e.CourseName,
                     Status = e.Status,
                     EnrolledAt = e.EnrolledAt,
                     SchoolId = (int)e.SchoolId,
-                    SchoolName = schoolsList.FirstOrDefault(s => s.Id == (int)e.SchoolId)?.Name ?? string.Empty
+                    SchoolName = e.SchoolName ?? string.Empty
                 });
 
-            var students = await _studentService.GetAllStudentsAsync();
+            var students = await _studentsApi.GetAllAsync();
             ViewBag.Students = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
-                FirstName = s.User?.FirstName ?? "",
-                LastName = s.User?.LastName ?? ""
+                FirstName = s.FirstName,
+                LastName = s.LastName
+            }).ToList();
+
+            var schools = await _schoolsApi.GetAllAsync();
+            ViewBag.Schools = schools.Select(s => new SchoolViewModel
+            {
+                Id = (int)s.Id,
+                Name = s.Name
             }).ToList();
 
             return View(viewModels);
@@ -80,40 +85,39 @@ public class EnrollmentsController : BaseController
     {
         try
         {
-            var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
-            string schoolName = "";
-            if (enrollment != null)
-            {
-                var school = await _schoolService.GetSchoolByIdAsync((int)enrollment.SchoolId);
-                schoolName = school?.Name ?? "";
-            }
+            var enrollment = await _enrollmentsApi.GetByIdAsync(id);
             var viewModel = (enrollment == null)
                 ? new EnrollmentViewModel()
                 : new EnrollmentViewModel {
                     Id = (int)enrollment.Id,
                     StudentId = (int)enrollment.StudentId,
-                    StudentName = enrollment.Student?.User != null ? $"{enrollment.Student.User.FirstName} {enrollment.Student.User.LastName}" : "Alumne desconegut",
+                    StudentName = enrollment.StudentName,
                     AcademicYear = enrollment.AcademicYear,
                     CourseName = enrollment.CourseName,
                     Status = enrollment.Status,
                     EnrolledAt = enrollment.EnrolledAt,
                     SchoolId = (int)enrollment.SchoolId,
-                    SchoolName = schoolName
+                    SchoolName = enrollment.SchoolName
                 };
-            var students = await _studentService.GetAllStudentsAsync();
+            var students = await _studentsApi.GetAllAsync();
             ViewBag.Students = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
-                FirstName = s.User?.FirstName ?? "",
-                LastName = s.User?.LastName ?? ""
+                FirstName = s.FirstName,
+                LastName = s.LastName
             }).ToList();
 
-            var schools = await _schoolService.GetAllSchoolsAsync();
-            ViewBag.Schools = schools.Select(s => new SchoolViewModel
+            var schools = await _schoolsApi.GetAllAsync();
+            var schoolList = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
                 Name = s.Name
             }).ToList();
+            ViewBag.Schools = schoolList;
+            if (string.IsNullOrWhiteSpace(viewModel.SchoolName) && viewModel.SchoolId != 0)
+            {
+                viewModel.SchoolName = schoolList.FirstOrDefault(s => s.Id == viewModel.SchoolId)?.Name ?? string.Empty;
+            }
             return View(viewModel);
         }
         catch (NotFoundException ex)
@@ -132,16 +136,16 @@ public class EnrollmentsController : BaseController
     
     public async Task<IActionResult> Create()
     {
-        var students = await _studentService.GetAllStudentsAsync();
+        var students = await _studentsApi.GetAllAsync();
         ViewBag.Students = students.Select(s => new StudentViewModel
         {
             Id = (int)s.Id,
-            FirstName = s.User?.FirstName ?? "",
-            LastName = s.User?.LastName ?? ""
+            FirstName = s.FirstName,
+            LastName = s.LastName
         }).ToList();
 
         // Afegim escoles al ViewBag
-        var schools = await _schoolService.GetAllSchoolsAsync();
+        var schools = await _schoolsApi.GetAllAsync();
         ViewBag.Schools = schools.Select(s => new SchoolViewModel
         {
             Id = (int)s.Id,
@@ -182,7 +186,19 @@ public class EnrollmentsController : BaseController
                 SchoolId = model.SchoolId
             };
 
-            await _enrollmentService.CreateEnrollmentAsync(enrollment);
+            var dto = new ApiEnrollmentIn(
+                model.StudentId,
+                model.AcademicYear,
+                model.CourseName,
+                model.Status,
+                null,
+                model.SchoolId
+            );
+            await _enrollmentsApi.CreateAsync(dto);
+            if (IsAjaxRequest())
+            {
+                return Ok(new { message = "Inscripció creada correctament." });
+            }
             SetSuccessMessage("Inscripció creada correctament.");
             return RedirectToAction(nameof(Index));
         }
@@ -198,6 +214,16 @@ public class EnrollmentsController : BaseController
             SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
             return RedirectToAction(nameof(Index));
         }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear inscripció)");
+            if (IsAjaxRequest())
+            {
+                return Unauthorized(new { error = "Accés no autoritzat. Torna a iniciar sessió." });
+            }
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return RedirectToAction("Login", "Auth");
+        }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error creant inscripció");
@@ -210,41 +236,45 @@ public class EnrollmentsController : BaseController
     {
         try
         {
-            var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
+            var enrollment = await _enrollmentsApi.GetByIdAsync(id);
             if (enrollment == null)
             {
                 SetErrorMessage($"Inscripció amb ID {id} no trobada.");
                 return RedirectToAction(nameof(Index));
             }
 
-            var school = await _schoolService.GetSchoolByIdAsync((int)enrollment.SchoolId);
-            var students = await _studentService.GetAllStudentsAsync();
+            var students = await _studentsApi.GetAllAsync();
             ViewBag.Students = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
-                FirstName = s.User?.FirstName ?? "",
-                LastName = s.User?.LastName ?? ""
+                FirstName = s.FirstName,
+                LastName = s.LastName
             }).ToList();
 
             // Afegim escoles al ViewBag
-            var schools = await _schoolService.GetAllSchoolsAsync();
-            ViewBag.Schools = schools.Select(s => new SchoolViewModel
+            var schools = await _schoolsApi.GetAllAsync();
+            var schoolList = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
                 Name = s.Name
             }).ToList();
+            ViewBag.Schools = schoolList;
 
             var viewModel = new EnrollmentViewModel
             {
                 Id = (int)enrollment.Id,
                 StudentId = (int)enrollment.StudentId,
-                StudentName = enrollment.Student?.User != null ? $"{enrollment.Student.User.FirstName} {enrollment.Student.User.LastName}" : "Alumne desconegut",
+                StudentName = enrollment.StudentName,
                 AcademicYear = enrollment.AcademicYear,
                 CourseName = enrollment.CourseName,
                 Status = enrollment.Status,
                 SchoolId = (int)enrollment.SchoolId,
-                SchoolName = school?.Name ?? ""
+                SchoolName = enrollment.SchoolName ?? ""
             };
+            if (string.IsNullOrWhiteSpace(viewModel.SchoolName) && viewModel.SchoolId != 0)
+            {
+                viewModel.SchoolName = schoolList.FirstOrDefault(s => s.Id == viewModel.SchoolId)?.Name ?? string.Empty;
+            }
 
             return View(viewModel);
         }
@@ -265,23 +295,36 @@ public class EnrollmentsController : BaseController
             if (!ModelState.IsValid)
             {
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
+                var students = await _studentsApi.GetAllAsync();
+                ViewBag.Students = students.Select(s => new StudentViewModel
+                {
+                    Id = (int)s.Id,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName
+                }).ToList();
+                var schools = await _schoolsApi.GetAllAsync();
+                var schoolList = schools.Select(s => new SchoolViewModel
+                {
+                    Id = (int)s.Id,
+                    Name = s.Name
+                }).ToList();
+                ViewBag.Schools = schoolList;
+                if (string.IsNullOrWhiteSpace(model.SchoolName) && model.SchoolId != 0)
+                {
+                    model.SchoolName = schoolList.FirstOrDefault(s => s.Id == model.SchoolId)?.Name ?? string.Empty;
+                }
                 return View(model);
             }
-            var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(model.Id);
-            if (enrollment == null)
-            {
-                SetErrorMessage($"Inscripció amb ID {model.Id} no trobada.");
-                return RedirectToAction(nameof(Index));
-            }
 
-            // No permetem canviar l'alumne, però sí l'escola i la resta de camps
-            enrollment.SchoolId = model.SchoolId;
-            enrollment.AcademicYear = model.AcademicYear;
-            enrollment.CourseName = model.CourseName;
-            enrollment.Status = model.Status;
-            enrollment.EnrolledAt = model.EnrolledAt;
-
-            await _enrollmentService.UpdateEnrollmentAsync(enrollment);
+            var dto = new ApiEnrollmentIn(
+                model.StudentId,
+                model.AcademicYear,
+                model.CourseName,
+                model.Status,
+                model.EnrolledAt,
+                model.SchoolId
+            );
+            await _enrollmentsApi.UpdateAsync(model.Id, dto);
             SetSuccessMessage("Inscripció actualitzada correctament.");
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
@@ -310,7 +353,7 @@ public class EnrollmentsController : BaseController
     {
         try
         {
-            await _enrollmentService.DeleteEnrollmentAsync(id);
+            await _enrollmentsApi.DeleteAsync(id);
             
             SetSuccessMessage("Inscripció esborrada correctament.");
             return RedirectToAction(nameof(Index));

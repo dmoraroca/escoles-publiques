@@ -114,14 +114,23 @@
                             </div>
                         }
                     </div>
+
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer d-flex justify-content-between align-items-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x-lg"></i> Cancel·lar
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-lg"></i> Crear @Model.EntityName
-                    </button>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="form-check mb-0">
+                            <input class="form-check-input js-privacy-check" type="checkbox" id="@(Model.ModalId)-AgreesToPrivacy" name="AgreesToPrivacy" value="true" />
+                            <label class="form-check-label small" for="@(Model.ModalId)-AgreesToPrivacy">
+                                Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Crear @Model.EntityName
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

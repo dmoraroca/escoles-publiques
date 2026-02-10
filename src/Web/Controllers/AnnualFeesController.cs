@@ -1,9 +1,9 @@
 
-using Application.Interfaces;
 using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Web.Services.Api;
 
 namespace Web.Controllers
 {
@@ -13,22 +13,22 @@ namespace Web.Controllers
     [Authorize]
     public class AnnualFeesController : BaseController
     {
-        private readonly IAnnualFeeService _annualFeeService;
-        private readonly IEnrollmentService _enrollmentService;
-        private readonly IStudentService _studentService;
+        private readonly IAnnualFeesApiClient _annualFeesApi;
+        private readonly IEnrollmentsApiClient _enrollmentsApi;
+        private readonly IStudentsApiClient _studentsApi;
 
         /// <summary>
         /// Constructor del controlador de quotes anuals.
         /// </summary>
         public AnnualFeesController(
-            IAnnualFeeService annualFeeService,
-            IEnrollmentService enrollmentService,
-            IStudentService studentService,
+            IAnnualFeesApiClient annualFeesApi,
+            IEnrollmentsApiClient enrollmentsApi,
+            IStudentsApiClient studentsApi,
             ILogger<AnnualFeesController> logger) : base(logger)
         {
-            _annualFeeService = annualFeeService;
-            _enrollmentService = enrollmentService;
-            _studentService = studentService;
+            _annualFeesApi = annualFeesApi;
+            _enrollmentsApi = enrollmentsApi;
+            _studentsApi = studentsApi;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Web.Controllers
         public async Task<IActionResult> Create()
         {
 
-            var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
+            var enrollments = await _enrollmentsApi.GetAllAsync();
             var enrollmentVMs = enrollments
                 .GroupBy(e => e.Id)
                 .Select(g => g.First())
@@ -46,25 +46,25 @@ namespace Web.Controllers
                 {
                     Id = (int)e.Id,
                     StudentId = (int)e.StudentId,
-                    StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+                    StudentName = e.StudentName,
                     AcademicYear = e.AcademicYear,
                     CourseName = e.CourseName,
                     EnrolledAt = e.EnrolledAt,
                     SchoolId = (int)e.SchoolId,
-                    SchoolName = e.School?.Name ?? ""
+                    SchoolName = e.SchoolName ?? ""
                 })
                 .ToList();
             ViewBag.Enrollments = enrollmentVMs;
 
             // Afegir llista d'alumnes per al combo
-            var students = await _studentService.GetAllStudentsAsync();
+            var students = await _studentsApi.GetAllAsync();
             ViewBag.Students = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
-                FirstName = s.User?.FirstName ?? "",
-                LastName = s.User?.LastName ?? "",
+                FirstName = s.FirstName,
+                LastName = s.LastName,
                 SchoolId = s.SchoolId != 0 ? (int)s.SchoolId : 0,
-                SchoolName = s.School?.Name ?? ""
+                SchoolName = s.SchoolName ?? ""
             }).ToList();
 
             return View();
@@ -75,29 +75,31 @@ namespace Web.Controllers
     /// <summary>
     /// Mostra el llistat de totes les quotes anuals.
     /// </summary>
-    public async Task<IActionResult> Index()
-    {
-        try
+        public async Task<IActionResult> Index()
         {
-            var fees = await _annualFeeService.GetAllAnnualFeesAsync();
+            try
+            {
+            var fees = await _annualFeesApi.GetAllAsync();
             var viewModels = fees.Select(f => new AnnualFeeViewModel
             {
                 Id = (int)f.Id,
-                EnrollmentInfo = f.Enrollment?.Student?.User != null 
-                    ? $"{f.Enrollment.Student.User.FirstName} {f.Enrollment.Student.User.LastName} - {f.Enrollment.AcademicYear}"
-                    : "Inscripció desconeguda",
+                EnrollmentId = (int)f.EnrollmentId,
+                EnrollmentInfo = f.EnrollmentInfo,
                 Amount = f.Amount,
                 Currency = f.Currency,
                 DueDate = f.DueDate,
                 PaidAt = f.PaidAt,
-                PaymentRef = f.PaymentRef
+                PaymentRef = f.PaymentRef,
+                AcademicYear = f.AcademicYear,
+                SchoolName = f.SchoolName ?? string.Empty,
+                SchoolId = (int)(f.SchoolId ?? 0)
             });
             
-            var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
+            var enrollments = await _enrollmentsApi.GetAllAsync();
             ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
             {
                 Id = (int)e.Id,
-                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+                StudentName = e.StudentName,
                 AcademicYear = e.AcademicYear
             }).ToList();
             
@@ -114,11 +116,11 @@ namespace Web.Controllers
     /// <summary>
     /// Mostra els detalls d'una quota anual concreta.
     /// </summary>
-    public async Task<IActionResult> Details(int id)
-    {
-        try
+        public async Task<IActionResult> Details(int id)
         {
-            var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
+            try
+            {
+            var fee = await _annualFeesApi.GetByIdAsync(id);
             if (fee == null)
             {
                 SetErrorMessage("No s'ha trobat la quota.");
@@ -128,20 +130,21 @@ namespace Web.Controllers
             {
                 Id = (int)fee.Id,
                 EnrollmentId = (int)fee.EnrollmentId,
-                EnrollmentInfo = fee.Enrollment?.Student?.User != null 
-                    ? $"{fee.Enrollment.Student.User.FirstName} {fee.Enrollment.Student.User.LastName} - {fee.Enrollment.AcademicYear}"
-                    : "Inscripció desconeguda",
+                EnrollmentInfo = fee.EnrollmentInfo,
                 Amount = fee.Amount,
                 Currency = fee.Currency,
                 DueDate = fee.DueDate,
                 PaidAt = fee.PaidAt,
-                PaymentRef = fee.PaymentRef
+                PaymentRef = fee.PaymentRef,
+                AcademicYear = fee.AcademicYear,
+                SchoolName = fee.SchoolName ?? string.Empty,
+                SchoolId = (int)(fee.SchoolId ?? 0)
             };
-            var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
+            var enrollments = await _enrollmentsApi.GetAllAsync();
             ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
             {
                 Id = (int)e.Id,
-                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+                StudentName = e.StudentName,
                 AcademicYear = e.AcademicYear
             }).ToList();
             return View(viewModel);
@@ -169,18 +172,20 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var annualFee = new Domain.Entities.AnnualFee
+            var dto = new ApiAnnualFeeIn(
+                model.EnrollmentId,
+                model.Amount,
+                model.Currency ?? "EUR",
+                model.DueDate,
+                model.IsPaid,
+                model.PaymentRef
+            );
+            await _annualFeesApi.CreateAsync(dto);
+            
+            if (IsAjaxRequest())
             {
-                EnrollmentId = model.EnrollmentId,
-                Amount = model.Amount,
-                Currency = model.Currency ?? "EUR",
-                DueDate = model.DueDate,
-                PaidAt = model.IsPaid ? DateTime.Now : null,
-                PaymentRef = model.PaymentRef
-            };
-            
-            await _annualFeeService.CreateAnnualFeeAsync(annualFee);
-            
+                return Ok(new { message = "Quota creada correctament." });
+            }
             SetSuccessMessage("Quota creada correctament.");
             return RedirectToAction(nameof(Index));
         }
@@ -196,6 +201,16 @@ namespace Web.Controllers
             SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
             return RedirectToAction(nameof(Index));
         }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear quota)");
+            if (IsAjaxRequest())
+            {
+                return Unauthorized(new { error = "Accés no autoritzat. Torna a iniciar sessió." });
+            }
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return RedirectToAction("Login", "Auth");
+        }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error creant quota");
@@ -207,11 +222,11 @@ namespace Web.Controllers
     /// <summary>
     /// Mostra el formulari per editar una quota anual existent.
     /// </summary>
-    public async Task<IActionResult> Edit(int id)
-    {
-        try
+        public async Task<IActionResult> Edit(int id)
         {
-            var annualFee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
+            try
+            {
+            var annualFee = await _annualFeesApi.GetByIdAsync(id);
             if (annualFee == null)
             {
                 SetErrorMessage($"Quota amb ID {id} no trobada.");
@@ -221,25 +236,23 @@ namespace Web.Controllers
             {
                 Id = (int)annualFee.Id,
                 EnrollmentId = (int)annualFee.EnrollmentId,
-                EnrollmentInfo = annualFee.Enrollment?.Student?.User != null 
-                    ? $"{annualFee.Enrollment.Student.User.FirstName} {annualFee.Enrollment.Student.User.LastName} - {annualFee.Enrollment.CourseName} - {annualFee.Enrollment.AcademicYear}"
-                    : "Inscripció desconeguda",
+                EnrollmentInfo = annualFee.EnrollmentInfo,
                 Amount = annualFee.Amount,
                 Currency = annualFee.Currency,
                 DueDate = annualFee.DueDate,
                 IsPaid = annualFee.PaidAt.HasValue,
                 PaidAt = annualFee.PaidAt,
                 PaymentRef = annualFee.PaymentRef,
-                AcademicYear = annualFee.Enrollment?.AcademicYear ?? string.Empty,
-                SchoolName = annualFee.Enrollment?.School?.Name ?? string.Empty,
-                SchoolId = (int)(annualFee.Enrollment?.SchoolId ?? 0)
+                AcademicYear = annualFee.AcademicYear ?? string.Empty,
+                SchoolName = annualFee.SchoolName ?? string.Empty,
+                SchoolId = (int)(annualFee.SchoolId ?? 0)
             };
             // Carregar inscripcions per al dropdown
-            var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
+            var enrollments = await _enrollmentsApi.GetAllAsync();
             ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
             {
                 Id = (int)e.Id,
-                StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+                StudentName = e.StudentName,
                 AcademicYear = e.AcademicYear,
                 CourseName = e.CourseName,
                 EnrolledAt = e.EnrolledAt
@@ -275,11 +288,11 @@ namespace Web.Controllers
             
             if (!ModelState.IsValid)
             {
-                var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
+                var enrollments = await _enrollmentsApi.GetAllAsync();
                 ViewBag.Enrollments = enrollments.Select(e => new EnrollmentViewModel
                 {
                     Id = (int)e.Id,
-                    StudentName = e.Student?.User != null ? $"{e.Student.User.FirstName} {e.Student.User.LastName}" : "Alumne desconegut",
+                    StudentName = e.StudentName,
                     AcademicYear = e.AcademicYear,
                     CourseName = e.CourseName,
                     EnrolledAt = e.EnrolledAt
@@ -288,26 +301,15 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            var annualFee = await _annualFeeService.GetAnnualFeeByIdAsync(model.Id);
-            if (annualFee == null)
-            {
-                SetErrorMessage($"Quota amb ID {model.Id} no trobada.");
-                return RedirectToAction(nameof(Index));
-            }
-
-            Logger.LogInformation("Amount ABANS d'actualitzar: {OldAmount}", annualFee.Amount);
-
-            // Actualitzar tots els camps exactament com en Create
-            annualFee.EnrollmentId = model.EnrollmentId;
-            annualFee.Amount = model.Amount;
-            annualFee.Currency = model.Currency ?? "EUR";
-            annualFee.DueDate = model.DueDate;
-            annualFee.PaidAt = model.IsPaid ? DateTime.Now : null;
-            annualFee.PaymentRef = model.PaymentRef;
-
-            Logger.LogInformation("Amount DESPRÉS d'assignar: {NewAmount}", annualFee.Amount);
-
-            await _annualFeeService.UpdateAnnualFeeAsync(annualFee);
+            var dto = new ApiAnnualFeeIn(
+                model.EnrollmentId,
+                model.Amount,
+                model.Currency ?? "EUR",
+                model.DueDate,
+                model.IsPaid,
+                model.PaymentRef
+            );
+            await _annualFeesApi.UpdateAsync(model.Id, dto);
 
             Logger.LogInformation("Quota actualitzada correctament");
 
@@ -339,11 +341,11 @@ namespace Web.Controllers
     /// <summary>
     /// Elimina una quota anual.
     /// </summary>
-    public async Task<IActionResult> Delete(int id)
-    {
-        try
+        public async Task<IActionResult> Delete(int id)
         {
-            await _annualFeeService.DeleteAnnualFeeAsync(id);
+            try
+            {
+            await _annualFeesApi.DeleteAsync(id);
             
             SetSuccessMessage("Quota esborrada correctament.");
             return RedirectToAction(nameof(Index));
@@ -366,11 +368,11 @@ namespace Web.Controllers
     /// Mètode temporal per corregir imports erronis de quotes anuals.
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> FixAmounts()
-    {
-        try
+        public async Task<IActionResult> FixAmounts()
         {
-            var allFees = await _annualFeeService.GetAllAnnualFeesAsync();
+            try
+            {
+            var allFees = await _annualFeesApi.GetAllAsync();
             int count = 0;
             
             foreach (var fee in allFees)
@@ -378,8 +380,15 @@ namespace Web.Controllers
                 // Si l'import és massa gran (probablement multiplicat per 100)
                 if (fee.Amount > 10000)
                 {
-                    fee.Amount = fee.Amount / 100;
-                    await _annualFeeService.UpdateAnnualFeeAsync(fee);
+                    var dto = new ApiAnnualFeeIn(
+                        fee.EnrollmentId,
+                        fee.Amount / 100,
+                        fee.Currency,
+                        fee.DueDate,
+                        fee.PaidAt.HasValue,
+                        fee.PaymentRef
+                    );
+                    await _annualFeesApi.UpdateAsync(fee.Id, dto);
                     count++;
                 }
             }

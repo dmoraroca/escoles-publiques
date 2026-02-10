@@ -28,7 +28,7 @@ public static class ModalConfigFactory
                     Label = "Codi",
                     Type = "text",
                     Required = true,
-                    MaxLength = 10,
+                    MaxLength = 20,
                     ColumnSize = 6,
                     Placeholder = "Ex: 08001234"
                 },
@@ -54,7 +54,7 @@ public static class ModalConfigFactory
                 },
                 new ModalField
                 {
-                    Name = "Scope",
+                    Name = "ScopeId",
                     Label = "Àmbit",
                     Type = "select",
                     Required = false,
@@ -144,7 +144,7 @@ public static class ModalConfigFactory
     /// </summary>
     /// <param name="studentOptions">List of student options for the select field.</param>
     /// <returns>EntityModalConfig for Enrollment.</returns>
-    public static EntityModalConfig GetEnrollmentModalConfig(List<SelectOption> studentOptions)
+    public static EntityModalConfig GetEnrollmentModalConfig(List<SelectOption> studentOptions, List<SelectOption> schoolOptions)
     {
         return new EntityModalConfig
         {
@@ -162,6 +162,15 @@ public static class ModalConfigFactory
                     Required = true,
                     ColumnSize = 12,
                     Options = studentOptions
+                },
+                new ModalField
+                {
+                    Name = "SchoolId",
+                    Label = "Escola",
+                    Type = "select",
+                    Required = true,
+                    ColumnSize = 12,
+                    Options = schoolOptions
                 },
                 new ModalField
                 {
@@ -200,7 +209,7 @@ public static class ModalConfigFactory
     }
 
     /// <summary>
-    /// Creates a modal configuration for the AnnualFee entity.
+    /// Creates a modal configuration for the Annual Fee entity.
     /// </summary>
     /// <param name="enrollmentOptions">List of enrollment options for the select field.</param>
     /// <returns>EntityModalConfig for AnnualFee.</returns>
@@ -208,16 +217,16 @@ public static class ModalConfigFactory
     {
         return new EntityModalConfig
         {
-            EntityName = "Quota Anual",
+            EntityName = "Quota",
             ModalId = "createAnnualFeeModal",
             Controller = "AnnualFees",
-            IconClass = "bi-currency-euro",
+            IconClass = "bi-cash-coin",
             Fields = new List<ModalField>
             {
                 new ModalField
                 {
                     Name = "EnrollmentId",
-                    Label = "Matrícula",
+                    Label = "Inscripció",
                     Type = "select",
                     Required = true,
                     ColumnSize = 12,
@@ -226,11 +235,20 @@ public static class ModalConfigFactory
                 new ModalField
                 {
                     Name = "Amount",
-                    Label = "Import (€)",
+                    Label = "Import",
                     Type = "number",
                     Required = true,
-                    ColumnSize = 6,
-                    Placeholder = "Ex: 150.00"
+                    ColumnSize = 8,
+                    Placeholder = "0.00"
+                },
+                new ModalField
+                {
+                    Name = "Currency",
+                    Label = "Moneda",
+                    Type = "text",
+                    Required = true,
+                    ColumnSize = 4,
+                    Placeholder = "EUR"
                 },
                 new ModalField
                 {
@@ -238,17 +256,27 @@ public static class ModalConfigFactory
                     Label = "Data de venciment",
                     Type = "date",
                     Required = true,
-                    ColumnSize = 6
+                    ColumnSize = 12
                 },
                 new ModalField
                 {
                     Name = "IsPaid",
-                    Label = "Pagada",
+                    Label = "Marcar com a pagada",
                     Type = "checkbox",
                     Required = false,
                     ColumnSize = 12
+                },
+                new ModalField
+                {
+                    Name = "PaymentRef",
+                    Label = "Referència de pagament",
+                    Type = "text",
+                    Required = false,
+                    ColumnSize = 12,
+                    Placeholder = "Referència o número de transacció"
                 }
             }
         };
     }
+
 }

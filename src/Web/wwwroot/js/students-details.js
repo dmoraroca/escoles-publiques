@@ -1,84 +1,39 @@
 /**
  * students-details.js
- * Handles UI interactions and edit logic for student detail pages, including form actions and alerts.
+ * Handles UI interactions and edit logic for student detail pages.
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // Event listeners per botons amb data-action
-    document.querySelectorAll('[data-action]').forEach(button => {
-        button.addEventListener('click', function() {
-            const action = this.getAttribute('data-action');
-            switch(action) {
-                case 'edit':
-                    enableEditMode();
-                    break;
-                case 'cancel':
-                    cancelEdit();
-                    break;
-                case 'submit':
-                    submitForm();
-                    break;
-                case 'close-alert':
-                    closeAlert();
-                    break;
-            }
+    var editBtn = document.getElementById('editButton');
+    var wrapper = document.getElementById('saveCancelWrapper');
+    var form = document.getElementById('editForm');
+    if (!editBtn || !wrapper || !form) return;
+
+    // Ensure save/cancel wrapper is hidden on initial load
+    wrapper.style.display = 'none';
+    var internalSave = wrapper.querySelector('.save-btn');
+    var internalCancel = wrapper.querySelector('.cancel-btn');
+    var internalPrivacy = wrapper.querySelector('input[type=checkbox]');
+    if (internalSave) internalSave.style.display = 'none';
+    if (internalCancel) internalCancel.style.display = 'none';
+    if (internalPrivacy) internalPrivacy.closest('.form-check').style.display = 'none';
+
+    function enableEditMode() {
+        var header = document.getElementById('headerButtons');
+        if (header) header.style.display = 'none';
+
+        form.querySelectorAll('input,select,textarea').forEach(function(el) {
+            if (el.hasAttribute('readonly')) el.removeAttribute('readonly');
+            if (el.hasAttribute('disabled')) el.removeAttribute('disabled');
+            el.classList.remove('bg-light');
         });
-    });
-});
 
-function enableEditMode() {
-    document.getElementById('viewButtons').style.display = 'none';
-    document.getElementById('editButtons').style.display = 'block';
-    
-    document.querySelectorAll('#editForm input').forEach(input => {
-        input.removeAttribute('readonly');
-        input.classList.remove('bg-light');
-    });
-    
-    document.getElementById('SchoolId').removeAttribute('disabled');
-    document.getElementById('SchoolId').classList.remove('bg-light');
-    
-    document.querySelectorAll('.edit-only').forEach(elem => {
-        elem.style.display = 'inline';
-    });
-}
+        document.querySelectorAll('.edit-only').forEach(function(e){ e.style.display = 'inline'; });
 
-function cancelEdit() {
-    document.getElementById('editButtons').style.display = 'none';
-    document.getElementById('viewButtons').style.display = 'block';
-    
-    document.querySelectorAll('#editForm input').forEach(input => {
-        input.setAttribute('readonly', 'readonly');
-        input.classList.add('bg-light');
-    });
-    
-    document.getElementById('SchoolId').setAttribute('disabled', 'disabled');
-    document.getElementById('SchoolId').classList.add('bg-light');
-    
-    document.querySelectorAll('.edit-only').forEach(elem => {
-        elem.style.display = 'none';
-    });
-    
-    location.reload();
-}
-
-function submitForm() {
-    const form = document.getElementById('editForm');
-    
-    document.querySelectorAll('#editForm select').forEach(select => {
-        select.removeAttribute('disabled');
-    });
-    
-    form.classList.add('was-validated');
-    
-    if (!form.checkValidity()) {
-        document.getElementById('errorAlert').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return false;
+        wrapper.style.display = 'block';
+        if (internalSave) internalSave.style.display = '';
+        if (internalCancel) internalCancel.style.display = '';
+        if (internalPrivacy) internalPrivacy.closest('.form-check').style.display = '';
     }
-    
-    form.submit();
-}
 
-function closeAlert() {
-    document.getElementById('errorAlert').style.display = 'none';
-}
+    editBtn.addEventListener('click', function() { enableEditMode(); });
+});

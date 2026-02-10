@@ -149,7 +149,7 @@ public class SearchResultsViewComponent : ViewComponent
                 Amount = f.Amount,
                 Currency = f.Currency,
                 DueDate = f.DueDate,
-                IsPaid = f.IsPaid
+                IsPaid = f.PaidAt.HasValue
             })
             .ToList();
 

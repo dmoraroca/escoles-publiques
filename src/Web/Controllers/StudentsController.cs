@@ -1,8 +1,8 @@
-using Application.Interfaces;
 using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Web.Models;
+using Web.Services.Api;
 
 namespace Web.Controllers;
 
@@ -12,19 +12,16 @@ namespace Web.Controllers;
 [Authorize]
 public class StudentsController : BaseController
 {
-    private readonly IStudentService _studentService;
-    private readonly ISchoolService _schoolService;
-    private readonly IUserService _userService;
+    private readonly IStudentsApiClient _studentsApi;
+    private readonly ISchoolsApiClient _schoolsApi;
 
     public StudentsController(
-        IStudentService studentService, 
-        ISchoolService schoolService,
-        IUserService userService,
+        IStudentsApiClient studentsApi,
+        ISchoolsApiClient schoolsApi,
         ILogger<StudentsController> logger) : base(logger)
     {
-        _studentService = studentService;
-        _schoolService = schoolService;
-        _userService = userService;
+        _studentsApi = studentsApi;
+        _schoolsApi = schoolsApi;
     }
     
     /// <summary>
@@ -34,44 +31,27 @@ public class StudentsController : BaseController
     {
         try
         {
-            var students = await _studentService.GetAllStudentsAsync();
-            // Log diagnostics: how many students have birthdate populated
-            var total = students.Count();
-            var withBirth = students.Count(s => s.User?.BirthDate.HasValue == true);
-            Logger.LogInformation("Students fetched: {Total}, with BirthDate: {WithBirth}", total, withBirth);
+            var students = await _studentsApi.GetAllAsync();
             var viewModels = students.Select(s => new StudentViewModel
             {
                 Id = (int)s.Id,
                 UserId = s.UserId,
-                FirstName = s.User?.FirstName ?? "",
-                LastName = s.User?.LastName ?? "",
-                Email = s.User?.Email ?? "",
-                BirthDate = s.User?.BirthDate.HasValue == true ? s.User.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
-                SchoolName = s.School?.Name ?? "Sense escola"
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Email = s.Email,
+                BirthDate = s.BirthDate.HasValue ? s.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
+                SchoolId = (int)s.SchoolId,
+                SchoolName = s.SchoolName ?? "Sense escola"
             });
-            var vmList = viewModels.ToList();
 
-            // Try to populate missing BirthDate from user repository/service
-            foreach (var vm in vmList)
-            {
-                if (!vm.BirthDate.HasValue && vm.UserId.HasValue)
-                {
-                    var user = await _userService.GetUserByIdAsync(vm.UserId.Value);
-                    if (user?.BirthDate.HasValue == true)
-                    {
-                        vm.BirthDate = user.BirthDate.Value.ToDateTime(TimeOnly.MinValue);
-                    }
-                }
-            }
-
-            var schools = await _schoolService.GetAllSchoolsAsync();
+            var schools = await _schoolsApi.GetAllAsync();
             ViewBag.Schools = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
                 Name = s.Name
             }).ToList();
             
-            return View(vmList);
+            return View(viewModels.ToList());
         }
         catch (Exception ex)
         {
@@ -80,25 +60,60 @@ public class StudentsController : BaseController
             return View(new List<StudentViewModel>());
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> CheckEmail(string email)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return Ok(new { exists = false });
+            }
+
+            var students = await _studentsApi.GetAllAsync();
+            var exists = students.Any(s =>
+                !string.IsNullOrWhiteSpace(s.Email) &&
+                string.Equals(s.Email.Trim(), email.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            return Ok(new { exists });
+        }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (check email alumne)");
+            return Unauthorized(new { error = "Accés no autoritzat." });
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error comprovant email d'alumne");
+            return Ok(new { exists = false });
+        }
+    }
     
     public async Task<IActionResult> Details(int id)
     {
         try
         {
-            var student = await _studentService.GetStudentByIdAsync(id);
+            var student = await _studentsApi.GetByIdAsync(id);
+            if (student == null)
+            {
+                SetErrorMessage($"Alumne amb ID {id} no trobat.");
+                return Redirect("/Students");
+            }
             
             var viewModel = new StudentViewModel
             {
                 Id = (int)student.Id,
-                FirstName = student.User?.FirstName ?? "",
-                LastName = student.User?.LastName ?? "",
-                Email = student.User?.Email ?? "",
-                BirthDate = student.User?.BirthDate.HasValue == true ? student.User.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
+                UserId = student.UserId,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                Email = student.Email,
+                BirthDate = student.BirthDate.HasValue ? student.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
                 SchoolId = (int)student.SchoolId,
-                SchoolName = student.School?.Name ?? "Sense escola"
+                SchoolName = student.SchoolName ?? "Sense escola"
             };
             
-            var schools = await _schoolService.GetAllSchoolsAsync();
+            var schools = await _schoolsApi.GetAllAsync();
             ViewBag.Schools = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
@@ -132,37 +147,19 @@ public class StudentsController : BaseController
                 return BadRequest(new { error = "Si us plau, omple tots els camps obligatoris correctament." });
             }
 
-            // 1. Comprova si ja existeix un usuari amb aquest email
-            var existingUser = await _userService.GetUserByEmailAsync(model.Email);
-            if (existingUser != null)
+            var dto = new ApiStudentIn(
+                model.FirstName,
+                model.LastName,
+                model.Email,
+                model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null,
+                model.SchoolId
+            );
+            await _studentsApi.CreateAsync(dto);
+
+            if (IsAjaxRequest())
             {
-                // Ja existeix, crea només el Student associat
-                var student = new Domain.Entities.Student
-                {
-                    SchoolId = model.SchoolId,
-                    UserId = existingUser.Id
-                };
-                await _studentService.CreateStudentAsync(student);
+                return Ok(new { message = $"Alumne {model.FirstName} {model.LastName} creat correctament." });
             }
-            else
-            {
-                // No existeix, crear User+Student dins d'una transacció
-                var user = new Domain.Entities.User
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null
-                };
-
-                var student = new Domain.Entities.Student
-                {
-                    SchoolId = model.SchoolId
-                };
-
-                await _studentService.CreateStudentWithUserAsync(user, "user123", student);
-            }
-
             SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} creat correctament.");
             return Redirect("/Students");
         }
@@ -181,6 +178,16 @@ public class StudentsController : BaseController
             Logger.LogWarning(ex, "Error de validació al crear alumne");
             return BadRequest(new { error = $"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}" });
         }
+        catch (HttpRequestException ex) when (IsUnauthorized(ex))
+        {
+            Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear alumne)");
+            if (IsAjaxRequest())
+            {
+                return Unauthorized(new { error = "Accés no autoritzat. Torna a iniciar sessió." });
+            }
+            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            return RedirectToAction("Login", "Auth");
+        }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error creant alumne");
@@ -192,20 +199,26 @@ public class StudentsController : BaseController
     {
         try
         {
-            var student = await _studentService.GetStudentByIdAsync(id);
+            var student = await _studentsApi.GetByIdAsync(id);
+            if (student == null)
+            {
+                SetErrorMessage($"Alumne amb ID {id} no trobat.");
+                return Redirect("/Students");
+            }
             
             var viewModel = new StudentViewModel
             {
                 Id = (int)student.Id,
-                FirstName = student.User?.FirstName ?? "",
-                LastName = student.User?.LastName ?? "",
-                Email = student.User?.Email ?? "",
-                BirthDate = student.User?.BirthDate.HasValue == true ? student.User.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : null,
+                UserId = student.UserId,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                Email = student.Email,
+                BirthDate = student.BirthDate.HasValue ? student.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : null,
                 SchoolId = (int)student.SchoolId,
-                SchoolName = student.School?.Name ?? ""
+                SchoolName = student.SchoolName ?? ""
             };
             
-            var schools = await _schoolService.GetAllSchoolsAsync();
+            var schools = await _schoolsApi.GetAllAsync();
             ViewBag.Schools = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
@@ -237,29 +250,23 @@ public class StudentsController : BaseController
             if (!ModelState.IsValid)
             {
                 SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
-                return Redirect("/Students");
+                var schools = await _schoolsApi.GetAllAsync();
+                ViewBag.Schools = schools.Select(s => new SchoolViewModel
+                {
+                    Id = (int)s.Id,
+                    Name = s.Name
+                }).ToList();
+                return View(model);
             }
 
-            var student = await _studentService.GetStudentByIdAsync(model.Id);
-            
-            // Actualitzar dades del User associat
-            if (student.UserId.HasValue && student.User != null)
-            {
-                student.User.FirstName = model.FirstName;
-                student.User.LastName = model.LastName;
-                student.User.Email = model.Email;
-                student.User.BirthDate = model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null;
-
-                // Actualitzar amb transacció User+Student
-                student.SchoolId = model.SchoolId;
-                await _studentService.UpdateStudentWithUserAsync(student, student.User);
-            }
-            else
-            {
-                // Sense usuari associat (cas estrany), actualitza només student
-                student.SchoolId = model.SchoolId;
-                await _studentService.UpdateStudentAsync(student);
-            }
+            var dto = new ApiStudentIn(
+                model.FirstName,
+                model.LastName,
+                model.Email,
+                model.BirthDate.HasValue ? DateOnly.FromDateTime(model.BirthDate.Value) : null,
+                model.SchoolId
+            );
+            await _studentsApi.UpdateAsync(model.Id, dto);
             
             SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} actualitzat correctament.");
             return Redirect("/Students");
@@ -289,7 +296,7 @@ public class StudentsController : BaseController
     {
         try
         {
-            await _studentService.DeleteStudentAsync(id);
+            await _studentsApi.DeleteAsync(id);
             
             SetSuccessMessage("Alumne esborrat correctament.");
             return Redirect("/Students");

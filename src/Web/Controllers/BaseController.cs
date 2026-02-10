@@ -57,4 +57,19 @@ public abstract class BaseController : Controller
 
         return false;
     }
+
+    /// <summary>
+    /// Detecta si la petició és AJAX (modal/fetch).
+    /// </summary>
+    protected bool IsAjaxRequest()
+    {
+        if (Request?.Headers == null) return false;
+        if (Request.Headers.TryGetValue("X-Requested-With", out var value)
+            && value == "XMLHttpRequest")
+        {
+            return true;
+        }
+        var accept = Request.Headers["Accept"].ToString();
+        return accept.Contains("application/json", StringComparison.OrdinalIgnoreCase);
+    }
 }

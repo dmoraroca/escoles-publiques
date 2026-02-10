@@ -17,13 +17,12 @@
             <form asp-action="Edit" method="post" class="needs-validation" novalidate>
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                 <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="Code" />
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Codi</label>
-                        <input type="text" class="form-control bg-light" value="@Model.Code" readonly disabled />
-                        <small class="form-text text-muted">El codi no es pot modificar</small>
+                        <label asp-for="Code" class="form-label">Codi <span class="text-danger">*</span></label>
+                        <input asp-for="Code" class="form-control" placeholder="Ex: 08001234" maxlength="20" required />
+                        <span asp-validation-for="Code" class="text-danger"></span>
                     </div>
                     
                     <div class="col-md-6 mb-3">

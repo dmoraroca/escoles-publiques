@@ -7,12 +7,18 @@
     
     // Obtenir alumnes del ViewBag per al modal
     var students = ViewBag.Students as List<Web.Models.StudentViewModel> ?? new List<Web.Models.StudentViewModel>();
+    var schools = ViewBag.Schools as List<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
     var studentOptions = students.Select(s => new Web.Models.SelectOption 
     { 
         Value = s.Id.ToString(), 
         Text = $"{s.FirstName} {s.LastName}" 
     }).ToList();
-    var modalConfig = ModalConfigFactory.GetEnrollmentModalConfig(studentOptions);
+    var schoolOptions = schools.Select(s => new Web.Models.SelectOption
+    {
+        Value = s.Id.ToString(),
+        Text = s.Name
+    }).ToList();
+    var modalConfig = ModalConfigFactory.GetEnrollmentModalConfig(studentOptions, schoolOptions);
     
     // Configuració de la taula genèrica per inscripcions
     var tableConfig = new TableViewModel<EnrollmentViewModel>
@@ -91,9 +97,9 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Inscripcions</h2>
-        <a href="/Enrollments/Create" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createEnrollmentModal">
             <i class="bi bi-plus-lg"></i> Nova Inscripció
-        </a>
+        </button>
     </div>
 
     <div class="card">

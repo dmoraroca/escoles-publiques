@@ -2,69 +2,79 @@
 
 @{
     ViewData["Title"] = "Editar Inscripció";
+    var schools = ViewBag.Schools as IEnumerable<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
 }
 
 
 
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="mb-4">Edició de la Inscripció</h2>
-            <div class="card">
-                <div class="card-body">
-                    <form asp-action="Edit" method="post">
-                        <input type="hidden" asp-for="Id" />
-                        <input type="hidden" asp-for="StudentId" />
-                        <input type="hidden" asp-for="Year" />
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">Nom alumne <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" asp-for="StudentName" readonly />
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Any acadèmic <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" asp-for="AcademicYear" readonly />
-                            </div>
-                            <div class="col-md-3">
-                                <label asp-for="CourseName" class="form-label">Nom del Curs <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" asp-for="CourseName" required />
-                                <span asp-validation-for="CourseName" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-3">
-                                <label asp-for="SchoolId" class="form-label">Nom escola <span class="text-danger">*</span></label>
-                                <select asp-for="SchoolId" class="form-select" required>
-                                    <option value="">-- Selecciona una escola --</option>
-                                    @if (ViewBag.Schools != null)
-                                    {
-                                        foreach (var school in ViewBag.Schools)
-                                        {
-                                            <option value="@school.Id">@school.Name</option>
-                                        }
-                                    }
-                                </select>
-                                <span asp-validation-for="SchoolId" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label asp-for="Status" class="form-label">Estat <span class="text-danger">*</span></label>
-                                <select asp-for="Status" class="form-select" required>
-                                    <option value="">-- Selecciona un estat --</option>
-                                    <option value="Activa">Activa</option>
-                                    <option value="Pendent">Pendent</option>
-                                    <option value="Cancel·lada">Cancel·lada</option>
-                                </select>
-                                <span asp-validation-for="Status" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4">
-                                <label asp-for="EnrolledAt" class="form-label">Data d'Inscripció <span class="text-danger">*</span></label>
-                                <input asp-for="EnrolledAt" class="form-control" type="datetime-local" value="@Model.EnrolledAt.ToString("yyyy-MM-ddTHH:mm")" required />
-                                <span asp-validation-for="EnrolledAt" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </form>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-pencil"></i> Edició de la Inscripció</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="StudentId" />
+                <input type="hidden" asp-for="Year" />
+                <input type="hidden" asp-for="SchoolId" />
+
+                <div class="mb-3">
+                    <label class="form-label">Alumne <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-secondary bg-opacity-10" asp-for="StudentName" readonly />
                 </div>
-            </div>
+                <div class="mb-3">
+                    <label class="form-label">Escola <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-secondary bg-opacity-10" value="@Model.SchoolName" readonly />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Curs Acadèmic <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" asp-for="AcademicYear" required />
+                        <span asp-validation-for="AcademicYear" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="CourseName" class="form-label">Nom del Curs</label>
+                        <input type="text" class="form-control" asp-for="CourseName" />
+                        <span asp-validation-for="CourseName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Status" class="form-label">Estat <span class="text-danger">*</span></label>
+                        <select asp-for="Status" class="form-select" required>
+                            <option value="">-- Selecciona un estat --</option>
+                            <option value="Activa">Activa</option>
+                            <option value="Pendent">Pendent</option>
+                            <option value="Cancel·lada">Cancel·lada</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EnrolledAt" class="form-label">Data d'Inscripció <span class="text-danger">*</span></label>
+                    <input asp-for="EnrolledAt" class="form-control" type="datetime-local" value="@Model.EnrolledAt.ToString("yyyy-MM-ddTHH:mm")" required />
+                    <span asp-validation-for="EnrolledAt" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    @{
+                        var opts = new
+                        {
+                            submitText = "Guardar",
+                            submitClass = "btn btn-primary",
+                            cancelText = "Cancel·lar",
+                            cancelClass = "btn btn-secondary",
+                            cancelHref = Url.Action("Details", new { id = Model.Id }),
+                            privacySelector = "#AgreesToPrivacy",
+                            disabledByDefault = true
+                        };
+                    }
+                    @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
+                </div>
+            </form>
         </div>
     </div>
 </div>

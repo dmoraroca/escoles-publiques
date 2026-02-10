@@ -13,12 +13,85 @@
         const errorAlert = document.getElementById(modalId + '-error');
         const errorMessage = document.getElementById(modalId + '-error-message');
         const submitButton = form.querySelector('button[type="submit"]');
+        const privacyCheck = form.querySelector('.js-privacy-check');
+
+        function updateSubmitState() {
+            if (!privacyCheck || !submitButton) return;
+            submitButton.disabled = !privacyCheck.checked;
+        }
         
         modalElement.addEventListener('show.bs.modal', function() {
             errorAlert.classList.add('d-none');
             form.classList.remove('was-validated');
-            form.reset();
+            updateSubmitState();
         });
+
+        if (privacyCheck) {
+            privacyCheck.addEventListener('change', updateSubmitState);
+            updateSubmitState();
+        }
+
+        // Student email existence check (create modal)
+        if (modalId === 'createStudentModal') {
+            const emailInput = form.querySelector('input[name="Email"]');
+            if (emailInput) {
+                let checkTimer = null;
+                let lastValue = '';
+                const getMessageEl = () => {
+                    let el = emailInput.parentElement?.querySelector('.js-email-exists');
+                    if (!el) {
+                        el = document.createElement('div');
+                        el.className = 'text-danger small js-email-exists d-none';
+                        el.textContent = "Aquest email ja existeix.";
+                        emailInput.parentElement?.appendChild(el);
+                    }
+                    return el;
+                };
+
+                const setEmailValidity = (exists) => {
+                    const msgEl = getMessageEl();
+                    if (exists) {
+                        emailInput.setCustomValidity('Email existent');
+                        msgEl.classList.remove('d-none');
+                    } else {
+                        emailInput.setCustomValidity('');
+                        msgEl.classList.add('d-none');
+                    }
+                };
+
+                const checkEmail = async (value) => {
+                    const trimmed = value.trim();
+                    if (!trimmed) {
+                        setEmailValidity(false);
+                        return;
+                    }
+                    try {
+                        const res = await fetch(`/Students/CheckEmail?email=${encodeURIComponent(trimmed)}`, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        });
+                        if (!res.ok) return;
+                        const data = await res.json();
+                        setEmailValidity(!!data.exists);
+                    } catch (e) {
+                        // ignore network errors
+                    }
+                };
+
+                const scheduleCheck = () => {
+                    const value = emailInput.value;
+                    if (value === lastValue) return;
+                    lastValue = value;
+                    if (checkTimer) clearTimeout(checkTimer);
+                    checkTimer = setTimeout(() => checkEmail(value), 300);
+                };
+
+                emailInput.addEventListener('blur', scheduleCheck);
+                emailInput.addEventListener('input', scheduleCheck);
+            }
+        }
         
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -41,11 +114,27 @@
                 const formData = new FormData(form);
                 const response = await fetch(form.action, {
                     method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
                     body: formData,
                     redirect: 'manual'
                 });
                 
+                if (response.status === 401 || response.status === 403) {
+                    errorMessage.textContent = 'Sessió caducada. Torna a iniciar sessió.';
+                    errorAlert.classList.remove('d-none');
+                    window.location.href = '/Auth/Login';
+                    return;
+                }
+
                 if (response.type === 'opaqueredirect' || response.status === 302 || response.status === 301) {
+                    const location = response.headers.get('location');
+                    if (location) {
+                        window.location.href = location;
+                        return;
+                    }
                     // Redirigir a la pàgina actual sense /Index
                     window.location.href = window.location.pathname.replace(/\/Index$/, '');
                     return;
@@ -72,6 +161,19 @@
                     errorAlert.classList.remove('d-none');
                     errorAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } else {
+                    let successMessage = 'Operació completada correctament.';
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const json = await response.json();
+                        if (json && json.message) {
+                            successMessage = json.message;
+                        }
+                    }
+                    try {
+                        sessionStorage.setItem('flashSuccess', successMessage);
+                    } catch (e) {
+                        // ignore storage errors
+                    }
                     window.location.reload();
                 }
             } catch (error) {

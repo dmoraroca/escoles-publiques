@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function enableEditMode() {
     document.getElementById('viewButtons').style.display = 'none';
     document.getElementById('editButtons').style.display = 'block';
+    document.querySelectorAll('.save-cancel-wrapper').forEach(function(el){ el.style.display = 'block'; });
 
     // Inputs editables: PaidAt, PaymentRef, Amount, DueDate
     ['PaidAt', 'PaymentRef', 'Amount', 'DueDate'].forEach(function(id) {
@@ -71,6 +72,7 @@ function enableEditMode() {
 function cancelEdit() {
     document.getElementById('editButtons').style.display = 'none';
     document.getElementById('viewButtons').style.display = 'block';
+    document.querySelectorAll('.save-cancel-wrapper').forEach(function(el){ el.style.display = 'none'; });
     
     document.querySelectorAll('#editForm input:not([disabled])').forEach(input => {
         input.setAttribute('readonly', 'readonly');

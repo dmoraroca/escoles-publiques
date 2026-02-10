@@ -1,8 +1,17 @@
+@using Web.Helpers
 @using Web.Models
 @model IEnumerable<Web.Models.AnnualFeeViewModel>
 
 @{
     ViewData["Title"] = "Quotes anuals";
+    
+    var enrollments = ViewBag.Enrollments as List<Web.Models.EnrollmentViewModel> ?? new List<Web.Models.EnrollmentViewModel>();
+    var enrollmentOptions = enrollments.Select(e => new Web.Models.SelectOption
+    {
+        Value = e.Id.ToString(),
+        Text = $"{e.StudentName} - {e.AcademicYear}"
+    }).ToList();
+    var modalConfig = ModalConfigFactory.GetAnnualFeeModalConfig(enrollmentOptions);
     
     // Configuració de la taula genèrica per quotes anuals
     var tableConfig = new TableViewModel<AnnualFeeViewModel>
@@ -89,9 +98,9 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Quotes anuals</h2>
-        <a asp-action="Create" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAnnualFeeModal">
             <i class="bi bi-plus-lg"></i> Nova Quota
-        </a>
+        </button>
     </div>
 
     <div class="card">
@@ -100,3 +109,5 @@
         </div>
     </div>
 </div>
+
+@await Html.PartialAsync("_EntityModal", modalConfig)
