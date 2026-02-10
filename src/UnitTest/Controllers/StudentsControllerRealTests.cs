@@ -1,13 +1,12 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
-using Application.Interfaces;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Domain.Entities;
 using System.Collections.Generic;
-using Domain.DomainExceptions;
 
 namespace UnitTest.Controllers
 {
@@ -16,16 +15,18 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Index_ReturnsView_WithStudents()
         {
-            var studentServiceMock = new Mock<IStudentService>();
-            var schoolServiceMock = new Mock<ISchoolService>();
-            var userServiceMock = new Mock<IUserService>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
+            var schoolsApiMock = new Mock<ISchoolsApiClient>();
             var loggerMock = new Mock<ILogger<StudentsController>>();
 
-            var students = new List<Student> { new Student { Id = 1, User = new User { FirstName = "X", LastName = "Y" }, School = new School { Name = "Escola" } } };
-            studentServiceMock.Setup(s => s.GetAllStudentsAsync()).ReturnsAsync(students);
-            schoolServiceMock.Setup(s => s.GetAllSchoolsAsync()).ReturnsAsync(new List<School>());
+            var students = new List<ApiStudent>
+            {
+                new ApiStudent(1, 1, "X", "Y", "x@y.com", null, 1, "Escola")
+            };
+            studentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(students);
+            schoolsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<School>());
 
-            var controller = new StudentsController(studentServiceMock.Object, schoolServiceMock.Object, userServiceMock.Object, loggerMock.Object);
+            var controller = new StudentsController(studentsApiMock.Object, schoolsApiMock.Object, loggerMock.Object);
 
             var action = await controller.Index();
             var result = Assert.IsType<ViewResult>(action);
@@ -35,15 +36,13 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Details_Redirects_WhenNotFound()
         {
-            var studentServiceMock = new Mock<IStudentService>();
-            var schoolServiceMock = new Mock<ISchoolService>();
-            var userServiceMock = new Mock<IUserService>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
+            var schoolsApiMock = new Mock<ISchoolsApiClient>();
             var loggerMock = new Mock<ILogger<StudentsController>>();
 
-            studentServiceMock.Setup(s => s.GetStudentByIdAsync(99)).ThrowsAsync(new NotFoundException("Student", 99));
-            schoolServiceMock.Setup(s => s.GetAllSchoolsAsync()).ReturnsAsync(new List<School>());
+            studentsApiMock.Setup(s => s.GetByIdAsync(99)).ReturnsAsync((ApiStudent?)null);
 
-            var controller = new StudentsController(studentServiceMock.Object, schoolServiceMock.Object, userServiceMock.Object, loggerMock.Object);
+            var controller = new StudentsController(studentsApiMock.Object, schoolsApiMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());

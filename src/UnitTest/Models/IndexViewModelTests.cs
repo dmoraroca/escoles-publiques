@@ -1,3 +1,4 @@
+using Web.Models;
 using Xunit;
 
 namespace UnitTest.Models
@@ -5,9 +6,12 @@ namespace UnitTest.Models
     public class IndexViewModelTests
     {
         [Fact]
-        public void DummyTest()
+        public void Lists_AreInitialized()
         {
-            Assert.True(true);
+            var model = new IndexViewModel();
+
+            Assert.NotNull(model.FavoriteSchools);
+            Assert.NotNull(model.Scopes);
         }
     }
 }

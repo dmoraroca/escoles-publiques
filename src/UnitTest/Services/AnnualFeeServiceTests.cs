@@ -1,64 +1,108 @@
-using Xunit;
-using Moq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Application.UseCases.Services;
+using Domain.DomainExceptions;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
+using Moq;
+using Xunit;
 
 namespace UnitTest.Services
 {
     public class AnnualFeeServiceTests
     {
         [Fact]
-        public async Task GetAllAnnualFeesAsync_ReturnsAnnualFees()
+        public async Task GetAnnualFeeByIdAsync_Throws_WhenNotFound()
         {
-            var repoMock = new Mock<IAnnualFeeRepository>();
-            var enrollmentRepoMock = new Mock<IEnrollmentRepository>();
-            var loggerMock = new Mock<ILogger<AnnualFeeService>>();
-            var annualFees = new List<AnnualFee> {
-                new AnnualFee { Id = 1, Amount = 100, Currency = "EUR", DueDate = System.DateOnly.FromDateTime(System.DateTime.UtcNow), EnrollmentId = 1 },
-                new AnnualFee { Id = 2, Amount = 200, Currency = "EUR", DueDate = System.DateOnly.FromDateTime(System.DateTime.UtcNow), EnrollmentId = 2 }
-            };
-            repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(annualFees);
-            var service = new AnnualFeeService(repoMock.Object, enrollmentRepoMock.Object, loggerMock.Object);
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            annualRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync((AnnualFee?)null);
+
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => service.GetAnnualFeeByIdAsync(1));
+        }
+
+        [Fact]
+        public async Task CreateAnnualFeeAsync_Throws_WhenAmountInvalid()
+        {
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
+
+            await Assert.ThrowsAsync<ValidationException>(() =>
+                service.CreateAnnualFeeAsync(new AnnualFee { Amount = 0, EnrollmentId = 1 }));
+        }
+
+        [Fact]
+        public async Task CreateAnnualFeeAsync_Throws_WhenEnrollmentMissing()
+        {
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            enrollmentRepo.Setup(r => r.GetByIdAsync(5)).ReturnsAsync((Enrollment?)null);
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
+
+            await Assert.ThrowsAsync<NotFoundException>(() =>
+                service.CreateAnnualFeeAsync(new AnnualFee { Amount = 10, EnrollmentId = 5 }));
+        }
+
+        [Fact]
+        public async Task UpdateAnnualFeeAsync_Throws_WhenNotFound()
+        {
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            annualRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync((AnnualFee?)null);
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
+
+            await Assert.ThrowsAsync<NotFoundException>(() =>
+                service.UpdateAnnualFeeAsync(new AnnualFee { Id = 1, Amount = 10, EnrollmentId = 1 }));
+        }
+
+        [Fact]
+        public async Task DeleteAnnualFeeAsync_Throws_WhenNotFound()
+        {
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            annualRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync((AnnualFee?)null);
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAnnualFeeAsync(1));
+        }
+
+        [Fact]
+        public async Task GetAllAnnualFeesAsync_ReturnsFees()
+        {
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            annualRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<AnnualFee> { new AnnualFee { Id = 1 } });
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
 
             var result = await service.GetAllAnnualFeesAsync();
 
-            Assert.Equal(2, result.Count());
+            Assert.Single(result);
         }
 
         [Fact]
-        public async Task GetAnnualFeeByIdAsync_ReturnsAnnualFee_WhenExists()
+        public async Task CreateAnnualFeeAsync_Creates_WhenValid()
         {
-            var repoMock = new Mock<IAnnualFeeRepository>();
-            var enrollmentRepoMock = new Mock<IEnrollmentRepository>();
-            var loggerMock = new Mock<ILogger<AnnualFeeService>>();
-            var annualFee = new AnnualFee { Id = 1, Amount = 100, Currency = "EUR", DueDate = System.DateOnly.FromDateTime(System.DateTime.UtcNow), EnrollmentId = 1 };
-            repoMock.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(annualFee);
-            var service = new AnnualFeeService(repoMock.Object, enrollmentRepoMock.Object, loggerMock.Object);
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            enrollmentRepo.Setup(r => r.GetByIdAsync(2)).ReturnsAsync(new Enrollment { Id = 2 });
+            annualRepo.Setup(r => r.AddAsync(It.IsAny<AnnualFee>())).ReturnsAsync(new AnnualFee { Id = 5, EnrollmentId = 2, Amount = 10 });
 
-            var result = await service.GetAnnualFeeByIdAsync(1);
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
 
-            Assert.NotNull(result);
-            Assert.Equal(1, result.Id);
-        }
+            var result = await service.CreateAnnualFeeAsync(new AnnualFee { EnrollmentId = 2, Amount = 10 });
 
-        [Fact]
-        public async Task GetAnnualFeeByIdAsync_ReturnsNull_WhenNotExists()
-        {
-            var repoMock = new Mock<IAnnualFeeRepository>();
-            var enrollmentRepoMock = new Mock<IEnrollmentRepository>();
-            var loggerMock = new Mock<ILogger<AnnualFeeService>>();
-            repoMock.Setup(r => r.GetByIdAsync(2)).ReturnsAsync((AnnualFee?)null);
-            var service = new AnnualFeeService(repoMock.Object, enrollmentRepoMock.Object, loggerMock.Object);
-
-            await Assert.ThrowsAsync<Domain.DomainExceptions.NotFoundException>(async () =>
-            {
-                await service.GetAnnualFeeByIdAsync(2);
-            });
+            Assert.Equal(5, result.Id);
         }
     }
 }

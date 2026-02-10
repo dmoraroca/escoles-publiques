@@ -213,152 +213,120 @@ var assemblies = [
   {
     "name": "Application",
     "classes": [
-      { "name": "Application.UseCases.Services.AnnualFeeService", "rp": "Application_AnnualFeeService.html", "cl": 22, "ucl": 35, "cal": 57, "tl": 115, "cb": 2, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.AnnualFeeResultDto", "rp": "Application_AnnualFeeResultDto.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 52, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.AnnualFeeSearchDto", "rp": "Application_AnnualFeeSearchDto.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.EnrollmentResultDto", "rp": "Application_EnrollmentResultDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 52, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.EnrollmentSearchDto", "rp": "Application_EnrollmentSearchDto.html", "cl": 2, "ucl": 4, "cal": 6, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.SchoolResultDto", "rp": "Application_SchoolResultDto.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 52, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.ScopeLookupDto", "rp": "Application_ScopeLookupDto.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.SearchResultsDto", "rp": "Application_SearchResultsDto.html", "cl": 6, "ucl": 1, "cal": 7, "tl": 52, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.StudentResultDto", "rp": "Application_StudentResultDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 52, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.DTOs.StudentSearchDto", "rp": "Application_StudentSearchDto.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.UseCases.Queries.SearchResults.SearchResultsQuery", "rp": "Application_SearchResultsQuery.html", "cl": 137, "ucl": 12, "cal": 149, "tl": 179, "cb": 38, "tb": 62, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.UseCases.Services.AnnualFeeService", "rp": "Application_AnnualFeeService.html", "cl": 43, "ucl": 14, "cal": 57, "tl": 115, "cb": 8, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Application.UseCases.Services.AuthService", "rp": "Application_AuthService.html", "cl": 21, "ucl": 7, "cal": 28, "tl": 69, "cb": 5, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Application.UseCases.Services.EnrollmentService", "rp": "Application_EnrollmentService.html", "cl": 22, "ucl": 36, "cal": 58, "tl": 111, "cb": 5, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Application.UseCases.Services.SchoolService", "rp": "Application_SchoolService.html", "cl": 18, "ucl": 39, "cal": 57, "tl": 120, "cb": 2, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Application.UseCases.Services.StudentService", "rp": "Application_StudentService.html", "cl": 22, "ucl": 41, "cal": 63, "tl": 122, "cb": 2, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Application.UseCases.Services.UserService", "rp": "Application_UserService.html", "cl": 9, "ucl": 23, "cal": 32, "tl": 76, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.UseCases.Services.EnrollmentService", "rp": "Application_EnrollmentService.html", "cl": 54, "ucl": 4, "cal": 58, "tl": 111, "cb": 15, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.UseCases.Services.SchoolService", "rp": "Application_SchoolService.html", "cl": 50, "ucl": 7, "cal": 57, "tl": 120, "cb": 12, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.UseCases.Services.StudentService", "rp": "Application_StudentService.html", "cl": 61, "ucl": 23, "cal": 84, "tl": 161, "cb": 17, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Application.UseCases.Services.UserService", "rp": "Application_UserService.html", "cl": 29, "ucl": 3, "cal": 32, "tl": 76, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "Domain",
     "classes": [
-      { "name": "Domain.DomainExceptions.DomainException", "rp": "Domain_DomainException.html", "cl": 3, "ucl": 3, "cal": 6, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Domain.DomainExceptions.DuplicateEntityException", "rp": "Domain_DuplicateEntityException.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Domain.DomainExceptions.NotFoundException", "rp": "Domain_NotFoundException.html", "cl": 3, "ucl": 3, "cal": 6, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Domain.DomainExceptions.ValidationException", "rp": "Domain_ValidationException.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.DomainExceptions.DomainException", "rp": "Domain_DomainException.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.DomainExceptions.DuplicateEntityException", "rp": "Domain_DuplicateEntityException.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.DomainExceptions.NotFoundException", "rp": "Domain_NotFoundException.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.DomainExceptions.ValidationException", "rp": "Domain_ValidationException.html", "cl": 12, "ucl": 4, "cal": 16, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Domain.Entities.AnnualFee", "rp": "Domain_AnnualFee.html", "cl": 6, "ucl": 2, "cal": 8, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Domain.Entities.Enrollment", "rp": "Domain_Enrollment.html", "cl": 8, "ucl": 2, "cal": 10, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Domain.Entities.School", "rp": "Domain_School.html", "cl": 5, "ucl": 4, "cal": 9, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Domain.Entities.Scope", "rp": "Domain_Scope.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Domain.Entities.Student", "rp": "Domain_Student.html", "cl": 5, "ucl": 2, "cal": 7, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Domain.Entities.User", "rp": "Domain_User.html", "cl": 9, "ucl": 5, "cal": 14, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.Entities.Enrollment", "rp": "Domain_Enrollment.html", "cl": 9, "ucl": 1, "cal": 10, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.Entities.School", "rp": "Domain_School.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.Entities.Scope", "rp": "Domain_Scope.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.Entities.Student", "rp": "Domain_Student.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Domain.Entities.User", "rp": "Domain_User.html", "cl": 11, "ucl": 3, "cal": 14, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "Infrastructure",
     "classes": [
-      { "name": "Infrastructure.Infrastructure.Persistence.Scaffold.annual_fee", "rp": "Infrastructure_annual_fee.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Infrastructure.Persistence.Scaffold.AppDbContext", "rp": "Infrastructure_AppDbContext.html", "cl": 0, "ucl": 96, "cal": 96, "tl": 128, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Infrastructure.Persistence.Scaffold.enrollment", "rp": "Infrastructure_enrollment.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Infrastructure.Persistence.Scaffold.school", "rp": "Infrastructure_school.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Infrastructure.Persistence.Scaffold.scope_mnt", "rp": "Infrastructure_scope_mnt.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Infrastructure.Persistence.Scaffold.student", "rp": "Infrastructure_student.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Infrastructure.Persistence.Scaffold.user", "rp": "Infrastructure_user.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Migrations.SchoolDbContextModelSnapshot", "rp": "Infrastructure_SchoolDbContextModelSnapshot.html", "cl": 0, "ucl": 303, "cal": 303, "tl": 337, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Migrations.UpdateStudentUserRelationship", "rp": "Infrastructure_UpdateStudentUserRelationship.html", "cl": 0, "ucl": 465, "cal": 465, "tl": 535, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.AppDbContextFactory", "rp": "Infrastructure_AppDbContextFactory.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Repositories.AnnualFeeRepository", "rp": "Infrastructure_AnnualFeeRepository.html", "cl": 15, "ucl": 30, "cal": 45, "tl": 77, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Repositories.EnrollmentRepository", "rp": "Infrastructure_EnrollmentRepository.html", "cl": 12, "ucl": 30, "cal": 42, "tl": 74, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Repositories.SchoolRepository", "rp": "Infrastructure_SchoolRepository.html", "cl": 10, "ucl": 28, "cal": 38, "tl": 79, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Repositories.StudentRepository", "rp": "Infrastructure_StudentRepository.html", "cl": 10, "ucl": 30, "cal": 40, "tl": 72, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Repositories.UserRepository", "rp": "Infrastructure_UserRepository.html", "cl": 11, "ucl": 32, "cal": 43, "tl": 78, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Scaffold.AnnualFee", "rp": "Infrastructure_AnnualFee.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Scaffold.AppDbContext", "rp": "Infrastructure_AppDbContext.2.html", "cl": 0, "ucl": 207, "cal": 207, "tl": 239, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Scaffold.Enrollment", "rp": "Infrastructure_Enrollment.2.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Scaffold.School", "rp": "Infrastructure_School.2.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 28, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Scaffold.ScopeMnt", "rp": "Infrastructure_ScopeMnt.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 40, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Scaffold.Student", "rp": "Infrastructure_Student.2.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.Scaffold.User", "rp": "Infrastructure_User.2.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.SchoolDbContext", "rp": "Infrastructure_SchoolDbContext.html", "cl": 67, "ucl": 2, "cal": 69, "tl": 137, "cb": 13, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.Persistence.ScopeRepository", "rp": "Infrastructure_ScopeRepository.html", "cl": 0, "ucl": 21, "cal": 21, "tl": 59, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Domain.Entities.AnnualFees", "rp": "Infrastructure_AnnualFees.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Domain.Entities.Enrollments", "rp": "Infrastructure_Enrollments.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Domain.Entities.Schools", "rp": "Infrastructure_Schools.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Domain.Entities.ScopeMnt", "rp": "Infrastructure_ScopeMnt.2.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 40, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Domain.Entities.Students", "rp": "Infrastructure_Students.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Domain.Entities.Users", "rp": "Infrastructure_Users.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Infrastructure.Persistence.Scaffold.AnnualFee", "rp": "Infrastructure_AnnualFee.2.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Infrastructure.Persistence.Scaffold.AppDbContext", "rp": "Infrastructure_AppDbContext.3.html", "cl": 0, "ucl": 157, "cal": 157, "tl": 189, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Infrastructure.Persistence.Scaffold.Enrollment", "rp": "Infrastructure_Enrollment.3.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Infrastructure.Persistence.Scaffold.School", "rp": "Infrastructure_School.3.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Infrastructure.Persistence.Scaffold.ScopeMnt", "rp": "Infrastructure_ScopeMnt.3.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Infrastructure.Persistence.Scaffold.Student", "rp": "Infrastructure_Student.3.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Infrastructure.Persistence.Scaffold.User", "rp": "Infrastructure_User.3.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Infrastructure.src.Infrastructure.SchoolDbContext", "rp": "Infrastructure_SchoolDbContext.2.html", "cl": 0, "ucl": 212, "cal": 212, "tl": 241, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.Persistence.Repositories.AnnualFeeRepository", "rp": "Infrastructure_AnnualFeeRepository.html", "cl": 33, "ucl": 12, "cal": 45, "tl": 77, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.Persistence.Repositories.EnrollmentRepository", "rp": "Infrastructure_EnrollmentRepository.html", "cl": 36, "ucl": 6, "cal": 42, "tl": 74, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.Persistence.Repositories.SchoolRepository", "rp": "Infrastructure_SchoolRepository.html", "cl": 28, "ucl": 10, "cal": 38, "tl": 79, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.Persistence.Repositories.StudentRepository", "rp": "Infrastructure_StudentRepository.html", "cl": 31, "ucl": 9, "cal": 40, "tl": 72, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.Persistence.Repositories.UserRepository", "rp": "Infrastructure_UserRepository.html", "cl": 38, "ucl": 5, "cal": 43, "tl": 78, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.Persistence.ScopeRepository", "rp": "Infrastructure_ScopeRepository.html", "cl": 22, "ucl": 2, "cal": 24, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.src.Domain.Entities.AnnualFees", "rp": "Infrastructure_AnnualFees.html", "cl": 10, "ucl": 0, "cal": 10, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.src.Domain.Entities.Enrollments", "rp": "Infrastructure_Enrollments.html", "cl": 7, "ucl": 1, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.src.Domain.Entities.Schools", "rp": "Infrastructure_Schools.html", "cl": 6, "ucl": 2, "cal": 8, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.src.Domain.Entities.ScopeMnt", "rp": "Infrastructure_ScopeMnt.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 40, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.src.Domain.Entities.Students", "rp": "Infrastructure_Students.html", "cl": 7, "ucl": 1, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Infrastructure.src.Domain.Entities.Users", "rp": "Infrastructure_Users.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "Web",
     "classes": [
-      { "name": "AspNetCoreGeneratedDocument.Views__ViewStart", "rp": "Web_Views__ViewStart.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 3, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Admin_Manteniment", "rp": "Web_Views_Admin_Manteniment.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_AnnualFees_Create", "rp": "Web_Views_AnnualFees_Create.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 152, "cb": 0, "tb": 76, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_AnnualFees_Details", "rp": "Web_Views_AnnualFees_Details.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 119, "cb": 0, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_AnnualFees_Edit", "rp": "Web_Views_AnnualFees_Edit.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 96, "cb": 0, "tb": 46, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_AnnualFees_Index", "rp": "Web_Views_AnnualFees_Index.html", "cl": 0, "ucl": 80, "cal": 80, "tl": 102, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Auth_Login", "rp": "Web_Views_Auth_Login.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 85, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Enrollments_Create", "rp": "Web_Views_Enrollments_Create.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 82, "cb": 0, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Enrollments_Details", "rp": "Web_Views_Enrollments_Details.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 53, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Enrollments_Edit", "rp": "Web_Views_Enrollments_Edit.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 78, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Enrollments_Index", "rp": "Web_Views_Enrollments_Index.html", "cl": 0, "ucl": 79, "cal": 79, "tl": 106, "cb": 0, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Home_Index", "rp": "Web_Views_Home_Index.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 44, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Home_Privacy", "rp": "Web_Views_Home_Privacy.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Schools_Create", "rp": "Web_Views_Schools_Create.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 85, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Schools_Details", "rp": "Web_Views_Schools_Details.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 108, "cb": 0, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Schools_Edit", "rp": "Web_Views_Schools_Edit.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 82, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Schools_Index", "rp": "Web_Views_Schools_Index.html", "cl": 0, "ucl": 86, "cal": 86, "tl": 113, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Search__SearchBar", "rp": "Web_Views_Search__SearchBar.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 17, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Shared__EntityModal", "rp": "Web_Views_Shared__EntityModal.html", "cl": 0, "ucl": 42, "cal": 42, "tl": 131, "cb": 0, "tb": 46, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Shared__Layout", "rp": "Web_Views_Shared__Layout.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 128, "cb": 0, "tb": 52, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Shared_Components_FavoriteSchools_Default", "rp": "Web_Views_Shared_Components_FavoriteSchools_Default.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 15, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Shared_Components_GenericTable_Default", "rp": "Web_Views_Shared_Components_GenericTable_Default.html", "cl": 0, "ucl": 96, "cal": 96, "tl": 176, "cb": 0, "tb": 118, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Shared_Components_Scopes_Default", "rp": "Web_Views_Shared_Components_Scopes_Default.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 21, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Shared_Components_SearchResults_Default", "rp": "Web_Views_Shared_Components_SearchResults_Default.html", "cl": 0, "ucl": 46, "cal": 46, "tl": 260, "cb": 0, "tb": 34, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Shared_Error", "rp": "Web_Views_Shared_Error.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 25, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Shared_ErrorDb", "rp": "Web_Views_Shared_ErrorDb.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Students_Create", "rp": "Web_Views_Students_Create.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 65, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Students_Details", "rp": "Web_Views_Students_Details.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 80, "cb": 0, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Students_Edit", "rp": "Web_Views_Students_Edit.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 76, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_Students_Index", "rp": "Web_Views_Students_Index.html", "cl": 0, "ucl": 80, "cal": 80, "tl": 111, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "AspNetCoreGeneratedDocument.Views_User_Dashboard", "rp": "Web_Views_User_Dashboard.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 186, "cb": 0, "tb": 64, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Program", "rp": "Web_Program.html", "cl": 0, "ucl": 83, "cal": 83, "tl": 120, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.AnnualFeesController", "rp": "Web_AnnualFeesController.html", "cl": 46, "ucl": 219, "cal": 265, "tl": 398, "cb": 6, "tb": 92, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.AuthController", "rp": "Web_AuthController.html", "cl": 0, "ucl": 58, "cal": 58, "tl": 119, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.BaseController", "rp": "Web_BaseController.html", "cl": 4, "ucl": 11, "cal": 15, "tl": 46, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.EnrollmentsController", "rp": "Web_EnrollmentsController.html", "cl": 0, "ucl": 237, "cal": 237, "tl": 331, "cb": 0, "tb": 90, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.FavoriteSchoolsController", "rp": "Web_FavoriteSchoolsController.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.HomeController", "rp": "Web_HomeController.html", "cl": 19, "ucl": 7, "cal": 26, "tl": 93, "cb": 10, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.SchoolsController", "rp": "Web_SchoolsController.html", "cl": 0, "ucl": 218, "cal": 218, "tl": 350, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.ScopesController", "rp": "Web_ScopesController.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.SearchController", "rp": "Web_SearchController.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.StudentsController", "rp": "Web_StudentsController.html", "cl": 0, "ucl": 190, "cal": 190, "tl": 286, "cb": 0, "tb": 74, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Controllers.UserController", "rp": "Web_UserController.html", "cl": 8, "ucl": 87, "cal": 95, "tl": 157, "cb": 0, "tb": 54, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Data.EscolesDbContext", "rp": "Web_EscolesDbContext.html", "cl": 0, "ucl": 92, "cal": 92, "tl": 121, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Helpers.ModalConfigFactory", "rp": "Web_ModalConfigFactory.html", "cl": 0, "ucl": 217, "cal": 217, "tl": 254, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Hubs.SchoolHub", "rp": "Web_SchoolHub.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 40, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.AnnualFeeResultViewModel", "rp": "Web_AnnualFeeResultViewModel.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.AnnualFeeViewModel", "rp": "Web_AnnualFeeViewModel.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.ColumnConfig", "rp": "Web_ColumnConfig.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 159, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.EnrollmentResultViewModel", "rp": "Web_EnrollmentResultViewModel.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.EnrollmentViewModel", "rp": "Web_EnrollmentViewModel.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.EntityModalConfig", "rp": "Web_EntityModalConfig.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 38, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.ErrorViewModel", "rp": "Web_ErrorViewModel.html", "cl": 1, "ucl": 1, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.FavoriteSchoolViewModel", "rp": "Web_FavoriteSchoolViewModel.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.IndexViewModel", "rp": "Web_IndexViewModel.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.ModalField", "rp": "Web_ModalField.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 38, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.Scaffold.annual_fee", "rp": "Web_annual_fee.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.Scaffold.enrollment", "rp": "Web_enrollment.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.Scaffold.school", "rp": "Web_school.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.Scaffold.scope_mnt", "rp": "Web_scope_mnt.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.Scaffold.student", "rp": "Web_student.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.Scaffold.user", "rp": "Web_user.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.SchoolResultViewModel", "rp": "Web_SchoolResultViewModel.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.SchoolViewModel", "rp": "Web_SchoolViewModel.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 39, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.AnnualFeesController", "rp": "Web_AnnualFeesController.html", "cl": 170, "ucl": 108, "cal": 278, "tl": 407, "cb": 19, "tb": 36, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.AuthController", "rp": "Web_AuthController.html", "cl": 56, "ucl": 6, "cal": 62, "tl": 123, "cb": 11, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.BaseController", "rp": "Web_BaseController.html", "cl": 30, "ucl": 1, "cal": 31, "tl": 75, "cb": 9, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.DashboardController", "rp": "Web_DashboardController.html", "cl": 86, "ucl": 24, "cal": 110, "tl": 165, "cb": 23, "tb": 54, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.EnrollmentsController", "rp": "Web_EnrollmentsController.html", "cl": 168, "ucl": 113, "cal": 281, "tl": 375, "cb": 21, "tb": 52, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.FavoriteSchoolsController", "rp": "Web_FavoriteSchoolsController.html", "cl": 10, "ucl": 0, "cal": 10, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.HomeController", "rp": "Web_HomeController.html", "cl": 26, "ucl": 0, "cal": 26, "tl": 93, "cb": 14, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.SchoolsController", "rp": "Web_SchoolsController.html", "cl": 190, "ucl": 113, "cal": 303, "tl": 447, "cb": 39, "tb": 64, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.ScopesController", "rp": "Web_ScopesController.html", "cl": 14, "ucl": 0, "cal": 14, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.SearchController", "rp": "Web_SearchController.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.StudentsController", "rp": "Web_StudentsController.html", "cl": 133, "ucl": 87, "cal": 220, "tl": 317, "cb": 16, "tb": 32, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Controllers.UsersController", "rp": "Web_UsersController.html", "cl": 26, "ucl": 0, "cal": 26, "tl": 46, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Helpers.ModalConfigFactory", "rp": "Web_ModalConfigFactory.html", "cl": 244, "ucl": 0, "cal": 244, "tl": 282, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Hubs.SchoolHub", "rp": "Web_SchoolHub.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 40, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.AnnualFeeResultViewModel", "rp": "Web_AnnualFeeResultViewModel.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.AnnualFeeViewModel", "rp": "Web_AnnualFeeViewModel.html", "cl": 14, "ucl": 1, "cal": 15, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.ColumnConfig", "rp": "Web_ColumnConfig.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 159, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.EnrollmentResultViewModel", "rp": "Web_EnrollmentResultViewModel.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.EnrollmentViewModel", "rp": "Web_EnrollmentViewModel.html", "cl": 10, "ucl": 3, "cal": 13, "tl": 22, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.EntityModalConfig", "rp": "Web_EntityModalConfig.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 38, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.ErrorViewModel", "rp": "Web_ErrorViewModel.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.FavoriteSchoolViewModel", "rp": "Web_FavoriteSchoolViewModel.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.IndexViewModel", "rp": "Web_IndexViewModel.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.ModalField", "rp": "Web_ModalField.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 38, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.SchoolResultViewModel", "rp": "Web_SchoolResultViewModel.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.SchoolViewModel", "rp": "Web_SchoolViewModel.html", "cl": 9, "ucl": 1, "cal": 10, "tl": 42, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Web.Models.ScopeViewModel", "rp": "Web_ScopeViewModel.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.SearchResultsViewModel", "rp": "Web_SearchResultsViewModel.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 65, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.SelectOption", "rp": "Web_SelectOption.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 38, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.StudentResultViewModel", "rp": "Web_StudentResultViewModel.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.StudentViewModel", "rp": "Web_StudentViewModel.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.TableAction", "rp": "Web_TableAction.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 159, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Models.TableViewModel<T>", "rp": "Web_TableViewModel_1.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 159, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Validators.AnnualFeeViewModelValidator", "rp": "Web_AnnualFeeViewModelValidator.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Validators.EnrollmentViewModelValidator", "rp": "Web_EnrollmentViewModelValidator.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Validators.SchoolViewModelValidator", "rp": "Web_SchoolViewModelValidator.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.Validators.StudentViewModelValidator", "rp": "Web_StudentViewModelValidator.html", "cl": 0, "ucl": 20, "cal": 20, "tl": 34, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.ViewComponents.FavoriteSchoolsViewComponent", "rp": "Web_FavoriteSchoolsViewComponent.html", "cl": 0, "ucl": 19, "cal": 19, "tl": 36, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.ViewComponents.GenericTableViewComponent", "rp": "Web_GenericTableViewComponent.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 32, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.ViewComponents.MainMenuViewComponent", "rp": "Web_MainMenuViewComponent.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 17, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.ViewComponents.ScopesViewComponent", "rp": "Web_ScopesViewComponent.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Web.ViewComponents.SearchResultsViewComponent", "rp": "Web_SearchResultsViewComponent.html", "cl": 0, "ucl": 109, "cal": 109, "tl": 143, "cb": 0, "tb": 100, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.SearchResultsViewModel", "rp": "Web_SearchResultsViewModel.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 65, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.SelectOption", "rp": "Web_SelectOption.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 38, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.StudentResultViewModel", "rp": "Web_StudentResultViewModel.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.StudentViewModel", "rp": "Web_StudentViewModel.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.TableAction", "rp": "Web_TableAction.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 159, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.TableViewModel<T>", "rp": "Web_TableViewModel_1.html", "cl": 12, "ucl": 1, "cal": 13, "tl": 159, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Models.UserViewModel", "rp": "Web_UserViewModel.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.AnnualFeesApiClient", "rp": "Web_AnnualFeesApiClient.html", "cl": 31, "ucl": 3, "cal": 34, "tl": 54, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiAnnualFee", "rp": "Web_ApiAnnualFee.html", "cl": 14, "ucl": 0, "cal": 14, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiAnnualFeeIn", "rp": "Web_ApiAnnualFeeIn.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiAuthTokenHandler", "rp": "Web_ApiAuthTokenHandler.html", "cl": 28, "ucl": 0, "cal": 28, "tl": 50, "cb": 11, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiEnrollment", "rp": "Web_ApiEnrollment.html", "cl": 10, "ucl": 0, "cal": 10, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiEnrollmentIn", "rp": "Web_ApiEnrollmentIn.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiResponseHelper", "rp": "Web_ApiResponseHelper.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 15, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiScope", "rp": "Web_ApiScope.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiStudent", "rp": "Web_ApiStudent.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ApiStudentIn", "rp": "Web_ApiStudentIn.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.AuthApiClient", "rp": "Web_AuthApiClient.html", "cl": 27, "ucl": 11, "cal": 38, "tl": 59, "cb": 9, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.EnrollmentsApiClient", "rp": "Web_EnrollmentsApiClient.html", "cl": 31, "ucl": 3, "cal": 34, "tl": 54, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.SchoolsApiClient", "rp": "Web_SchoolsApiClient.html", "cl": 34, "ucl": 0, "cal": 34, "tl": 56, "cb": 3, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.ScopesApiClient", "rp": "Web_ScopesApiClient.html", "cl": 11, "ucl": 0, "cal": 11, "tl": 22, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Api.StudentsApiClient", "rp": "Web_StudentsApiClient.html", "cl": 31, "ucl": 3, "cal": 34, "tl": 54, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Search.Adapters.AnnualFeeSearchSource", "rp": "Web_AnnualFeeSearchSource.html", "cl": 14, "ucl": 0, "cal": 14, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Search.Adapters.EnrollmentSearchSource", "rp": "Web_EnrollmentSearchSource.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Search.Adapters.SchoolSearchSource", "rp": "Web_SchoolSearchSource.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Search.Adapters.ScopeLookupSource", "rp": "Web_ScopeLookupSource.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Search.Adapters.StudentSearchSource", "rp": "Web_StudentSearchSource.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 26, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Services.Search.SearchResultsBuilder", "rp": "Web_SearchResultsBuilder.html", "cl": 47, "ucl": 0, "cal": 47, "tl": 60, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Validators.AnnualFeeViewModelValidator", "rp": "Web_AnnualFeeViewModelValidator.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Validators.EnrollmentViewModelValidator", "rp": "Web_EnrollmentViewModelValidator.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Validators.SchoolViewModelValidator", "rp": "Web_SchoolViewModelValidator.html", "cl": 18, "ucl": 0, "cal": 18, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.Validators.StudentViewModelValidator", "rp": "Web_StudentViewModelValidator.html", "cl": 20, "ucl": 0, "cal": 20, "tl": 34, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.ViewComponents.FavoriteSchoolsViewComponent", "rp": "Web_FavoriteSchoolsViewComponent.html", "cl": 19, "ucl": 0, "cal": 19, "tl": 36, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.ViewComponents.GenericTableViewComponent", "rp": "Web_GenericTableViewComponent.html", "cl": 10, "ucl": 0, "cal": 10, "tl": 32, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.ViewComponents.MainMenuViewComponent", "rp": "Web_MainMenuViewComponent.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 17, "cb": 3, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.ViewComponents.ScopesViewComponent", "rp": "Web_ScopesViewComponent.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 30, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Web.ViewComponents.SearchResultsViewComponent", "rp": "Web_SearchResultsViewComponent.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 29, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -373,298 +341,70 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Shared_Components_GenericTable_Default", "reportPath": "Web_Views_Shared_Components_GenericTable_Default.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 6,
+    "assembly": "Web", "class": "Web.Controllers.EnrollmentsController", "reportPath": "Web_EnrollmentsController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 237,
     "metrics": [
-      { "value": 14042, "exceeded": true },
-      { "value": 118, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_User_Dashboard", "reportPath": "Web_Views_User_Dashboard.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 2,
-    "metrics": [
-      { "value": 4422, "exceeded": true },
-      { "value": 66, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Shared__Layout", "reportPath": "Web_Views_Shared__Layout.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 27,
-    "metrics": [
-      { "value": 2756, "exceeded": true },
-      { "value": 52, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_AnnualFees_Create", "reportPath": "Web_Views_AnnualFees_Create.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 20,
-    "metrics": [
-      { "value": 2550, "exceeded": true },
-      { "value": 50, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Shared__EntityModal", "reportPath": "Web_Views_Shared__EntityModal.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 21,
-    "metrics": [
-      { "value": 2162, "exceeded": true },
-      { "value": 46, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_AnnualFees_Edit", "reportPath": "Web_Views_AnnualFees_Edit.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 71,
-    "metrics": [
-      { "value": 1806, "exceeded": true },
-      { "value": 42, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.UserController", "reportPath": "Web_UserController.html", "methodName": "Dashboard()", "methodShortName": "Dashboard()", "fileIndex": 0, "line": 40,
-    "metrics": [
-      { "value": 1640, "exceeded": true },
-      { "value": 40, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Shared_Components_SearchResults_Default", "reportPath": "Web_Views_Shared_Components_SearchResults_Default.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 3,
-    "metrics": [
-      { "value": 1190, "exceeded": true },
-      { "value": 34, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Home_Index", "reportPath": "Web_Views_Home_Index.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 2,
-    "metrics": [
-      { "value": 600, "exceeded": true },
-      { "value": 24, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_AnnualFees_Create", "reportPath": "Web_Views_AnnualFees_Create.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 32,
-    "metrics": [
-      { "value": 506, "exceeded": true },
-      { "value": 22, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Enrollments_Edit", "reportPath": "Web_Views_Enrollments_Edit.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 37,
-    "metrics": [
-      { "value": 506, "exceeded": true },
-      { "value": 22, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.AnnualFeesController", "reportPath": "Web_AnnualFeesController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 211,
-    "metrics": [
-      { "value": 506, "exceeded": true },
-      { "value": 22, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.StudentsController", "reportPath": "Web_StudentsController.html", "methodName": "Details()", "methodShortName": "Details()", "fileIndex": 0, "line": 66,
-    "metrics": [
-      { "value": 506, "exceeded": true },
-      { "value": 22, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.StudentsController", "reportPath": "Web_StudentsController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 172,
-    "metrics": [
-      { "value": 506, "exceeded": true },
-      { "value": 22, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Schools_Details", "reportPath": "Web_Views_Schools_Details.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 63,
-    "metrics": [
-      { "value": 342, "exceeded": true },
-      { "value": 18, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.EnrollmentsController", "reportPath": "Web_EnrollmentsController.html", "methodName": "Index()", "methodShortName": "Index()", "fileIndex": 0, "line": 35,
-    "metrics": [
-      { "value": 342, "exceeded": true },
-      { "value": 18, "exceeded": true },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.EnrollmentsController", "reportPath": "Web_EnrollmentsController.html", "methodName": "Details()", "methodShortName": "Details()", "fileIndex": 0, "line": 80,
-    "metrics": [
-      { "value": 272, "exceeded": true },
+      { "value": 121, "exceeded": true },
       { "value": 16, "exceeded": true },
     ]},
   {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_AnnualFees_Details", "reportPath": "Web_Views_AnnualFees_Details.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 97,
+    "assembly": "Web", "class": "Web.Controllers.DashboardController", "reportPath": "Web_DashboardController.html", "methodName": "Dashboard()", "methodShortName": "Dashboard()", "fileIndex": 0, "line": 37,
     "metrics": [
-      { "value": 210, "exceeded": true },
+      { "value": 95, "exceeded": true },
+      { "value": 40, "exceeded": true },
+    ]},
+  {
+    "assembly": "Web", "class": "Web.Controllers.EnrollmentsController", "reportPath": "Web_EnrollmentsController.html", "methodName": "Index()", "methodShortName": "Index()", "fileIndex": 0, "line": 34,
+    "metrics": [
+      { "value": 74, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "Web", "class": "Web.Controllers.SchoolsController", "reportPath": "Web_SchoolsController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 279,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "Web", "class": "Web.Controllers.SchoolsController", "reportPath": "Web_SchoolsController.html", "methodName": "Create()", "methodShortName": "Create()", "fileIndex": 0, "line": 156,
+    "metrics": [
+      { "value": 65, "exceeded": true },
+      { "value": 44, "exceeded": true },
+    ]},
+  {
+    "assembly": "Application", "class": "Application.DTOs.SearchResultsDto", "reportPath": "Application_SearchResultsDto.html", "methodName": "get_HasResults()", "methodShortName": "get_HasResults()", "fileIndex": 0, "line": 12,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "Web", "class": "Web.Controllers.AnnualFeesController", "reportPath": "Web_AnnualFeesController.html", "methodName": "Details()", "methodShortName": "Details()", "fileIndex": 0, "line": 120,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "Web", "class": "Web.Controllers.SchoolsController", "reportPath": "Web_SchoolsController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 329,
+    "metrics": [
+      { "value": 34, "exceeded": true },
       { "value": 14, "exceeded": false },
     ]},
   {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Enrollments_Create", "reportPath": "Web_Views_Enrollments_Create.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 34,
+    "assembly": "Web", "class": "Web.Controllers.StudentsController", "reportPath": "Web_StudentsController.html", "methodName": "Details()", "methodShortName": "Details()", "fileIndex": 0, "line": 94,
     "metrics": [
-      { "value": 210, "exceeded": true },
-      { "value": 14, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Enrollments_Create", "reportPath": "Web_Views_Enrollments_Create.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 21,
-    "metrics": [
-      { "value": 210, "exceeded": true },
-      { "value": 14, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Students_Details", "reportPath": "Web_Views_Students_Details.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 67,
-    "metrics": [
-      { "value": 210, "exceeded": true },
-      { "value": 14, "exceeded": false },
-    ]},
-  {
-    "assembly": "Application", "class": "Application.UseCases.Services.StudentService", "reportPath": "Application_StudentService.html", "methodName": "CreateStudentAsync()", "methodShortName": "CreateStudentAsync()", "fileIndex": 0, "line": 70,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.EnrollmentsController", "reportPath": "Web_EnrollmentsController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 210,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Enrollments_Details", "reportPath": "Web_Views_Enrollments_Details.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 4,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.AnnualFeesController", "reportPath": "Web_AnnualFeesController.html", "methodName": "Details()", "methodShortName": "Details()", "fileIndex": 0, "line": 118,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.AuthController", "reportPath": "Web_AuthController.html", "methodName": "Login()", "methodShortName": "Login()", "fileIndex": 0, "line": 49,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_AnnualFees_Details", "reportPath": "Web_Views_AnnualFees_Details.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 4,
-    "metrics": [
-      { "value": 72, "exceeded": true },
+      { "value": 34, "exceeded": true },
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Schools_Index", "reportPath": "Web_Views_Schools_Index.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 6,
+    "assembly": "Web", "class": "Web.Services.Api.AuthApiClient", "reportPath": "Web_AuthApiClient.html", "methodName": "GetTokenAsync()", "methodShortName": "GetTokenAsync()", "fileIndex": 0, "line": 19,
     "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
+      { "value": 32, "exceeded": true },
+      { "value": 18, "exceeded": true },
     ]},
   {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Students_Details", "reportPath": "Web_Views_Students_Details.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 4,
+    "assembly": "Web", "class": "Web.Controllers.AuthController", "reportPath": "Web_AuthController.html", "methodName": "Login()", "methodShortName": "Login()", "fileIndex": 0, "line": 50,
     "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Students_Edit", "reportPath": "Web_Views_Students_Edit.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 53,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Students_Edit", "reportPath": "Web_Views_Students_Edit.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 4,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.AnnualFeesController", "reportPath": "Web_AnnualFeesController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 269,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.SchoolsController", "reportPath": "Web_SchoolsController.html", "methodName": "Create()", "methodShortName": "Create()", "fileIndex": 0, "line": 141,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.SchoolsController", "reportPath": "Web_SchoolsController.html", "methodName": "Details()", "methodShortName": "Details()", "fileIndex": 0, "line": 86,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.SchoolsController", "reportPath": "Web_SchoolsController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 206,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.SchoolsController", "reportPath": "Web_SchoolsController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 250,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.StudentsController", "reportPath": "Web_StudentsController.html", "methodName": "Edit()", "methodShortName": "Edit()", "fileIndex": 0, "line": 214,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Application", "class": "Application.UseCases.Services.AnnualFeeService", "reportPath": "Application_AnnualFeeService.html", "methodName": "CreateAnnualFeeAsync()", "methodShortName": "CreateAnnualFeeAsync()", "fileIndex": 0, "line": 70,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Application", "class": "Application.UseCases.Services.EnrollmentService", "reportPath": "Application_EnrollmentService.html", "methodName": "CreateEnrollmentAsync()", "methodShortName": "CreateEnrollmentAsync()", "fileIndex": 0, "line": 65,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Application", "class": "Application.UseCases.Services.SchoolService", "reportPath": "Application_SchoolService.html", "methodName": "CreateSchoolAsync()", "methodShortName": "CreateSchoolAsync()", "fileIndex": 0, "line": 74,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Shared_Components_FavoriteSchools_Default", "reportPath": "Web_Views_Shared_Components_FavoriteSchools_Default.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 3,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "AspNetCoreGeneratedDocument.Views_Shared_Components_Scopes_Default", "reportPath": "Web_Views_Shared_Components_Scopes_Default.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 3,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.AnnualFeesController", "reportPath": "Web_AnnualFeesController.html", "methodName": "Create()", "methodShortName": "Create()", "fileIndex": 0, "line": 163,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.AuthController", "reportPath": "Web_AuthController.html", "methodName": "Login()", "methodShortName": "Login()", "fileIndex": 0, "line": 32,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.EnrollmentsController", "reportPath": "Web_EnrollmentsController.html", "methodName": "Create()", "methodShortName": "Create()", "fileIndex": 0, "line": 157,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Controllers.StudentsController", "reportPath": "Web_StudentsController.html", "methodName": "Create()", "methodShortName": "Create()", "fileIndex": 0, "line": 108,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.Models.SearchResultsViewModel", "reportPath": "Web_SearchResultsViewModel.html", "methodName": "get_HasResults()", "methodShortName": "get_HasResults()", "fileIndex": 0, "line": 15,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.ViewComponents.GenericTableViewComponent", "reportPath": "Web_GenericTableViewComponent.html", "methodName": "Invoke(System.Object)", "methodShortName": "Invoke(...)", "fileIndex": 0, "line": 17,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Web", "class": "Web.ViewComponents.SearchResultsViewComponent", "reportPath": "Web_SearchResultsViewComponent.html", "methodName": "InvokeAsync()", "methodShortName": "InvokeAsync()", "fileIndex": 0, "line": 30,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
+      { "value": 17, "exceeded": false },
+      { "value": 16, "exceeded": true },
     ]},
 ];
 

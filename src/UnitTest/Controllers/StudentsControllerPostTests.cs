@@ -1,12 +1,11 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
-using Application.Interfaces;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Domain.DomainExceptions;
-using Domain.Entities;
 
 namespace UnitTest.Controllers
 {
@@ -15,16 +14,14 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Create_Post_Redirects_WhenValid()
         {
-            var studentServiceMock = new Mock<IStudentService>();
-            var schoolServiceMock = new Mock<ISchoolService>();
-            var userServiceMock = new Mock<IUserService>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
+            var schoolsApiMock = new Mock<ISchoolsApiClient>();
             var loggerMock = new Mock<ILogger<StudentsController>>();
 
-            userServiceMock.Setup(s => s.GetUserByEmailAsync(It.IsAny<string>())).ReturnsAsync((Domain.Entities.User?)null);
-            userServiceMock.Setup(s => s.CreateUserAsync(It.IsAny<Domain.Entities.User>(), It.IsAny<string>())).ReturnsAsync(new Domain.Entities.User { Id = 10 });
-            studentServiceMock.Setup(s => s.CreateStudentAsync(It.IsAny<Student>())).ReturnsAsync(new Student { Id = 20 });
+            studentsApiMock.Setup(s => s.CreateAsync(It.IsAny<ApiStudentIn>()))
+                .ReturnsAsync(new ApiStudent(1, null, "A", "B", "a@b.com", null, 1, "Escola"));
 
-            var controller = new StudentsController(studentServiceMock.Object, schoolServiceMock.Object, userServiceMock.Object, loggerMock.Object);
+            var controller = new StudentsController(studentsApiMock.Object, schoolsApiMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());
@@ -40,19 +37,19 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Edit_Post_Redirects_WhenNotFound()
         {
-            var studentServiceMock = new Mock<IStudentService>();
-            var schoolServiceMock = new Mock<ISchoolService>();
-            var userServiceMock = new Mock<IUserService>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
+            var schoolsApiMock = new Mock<ISchoolsApiClient>();
             var loggerMock = new Mock<ILogger<StudentsController>>();
 
-            studentServiceMock.Setup(s => s.GetStudentByIdAsync(It.IsAny<int>())).ThrowsAsync(new Domain.DomainExceptions.NotFoundException("Student", 1));
+            studentsApiMock.Setup(s => s.UpdateAsync(It.IsAny<long>(), It.IsAny<ApiStudentIn>()))
+                .ThrowsAsync(new NotFoundException("Student", 1));
 
-            var controller = new StudentsController(studentServiceMock.Object, schoolServiceMock.Object, userServiceMock.Object, loggerMock.Object);
+            var controller = new StudentsController(studentsApiMock.Object, schoolsApiMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());
 
-            var model = new Web.Models.StudentViewModel { Id = 1 };
+            var model = new Web.Models.StudentViewModel { Id = 1, FirstName = "A", LastName = "B", Email = "a@b.com", SchoolId = 1 };
 
             var result = await controller.Edit(model);
 

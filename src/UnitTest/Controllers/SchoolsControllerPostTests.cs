@@ -9,6 +9,7 @@ using Domain.DomainExceptions;
 using Domain.Entities;
 using Web.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System.Collections.Generic;
 
 namespace UnitTest.Controllers
 {
@@ -19,13 +20,13 @@ namespace UnitTest.Controllers
         {
             var schoolServiceMock = new Mock<ISchoolsApiClient>();
             var hubContextMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeRepoMock = new Mock<Domain.Interfaces.IScopeRepository>();
+            var scopesApiMock = new Mock<IScopesApiClient>();
             var loggerMock = new Mock<ILogger<SchoolsController>>();
 
             schoolServiceMock.Setup(s => s.CreateAsync(It.IsAny<School>())).ReturnsAsync(new School { Id = 1 });
-            scopeRepoMock.Setup(s => s.GetAllActiveScopesAsync()).ReturnsAsync(new System.Collections.Generic.List<Domain.Entities.Scope>());
+            scopesApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
 
-            var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopeRepoMock.Object, loggerMock.Object);
+            var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopesApiMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());
@@ -43,14 +44,14 @@ namespace UnitTest.Controllers
         {
             var schoolServiceMock = new Mock<ISchoolsApiClient>();
             var hubContextMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeRepoMock = new Mock<Domain.Interfaces.IScopeRepository>();
+            var scopesApiMock = new Mock<IScopesApiClient>();
             var loggerMock = new Mock<ILogger<SchoolsController>>();
 
             schoolServiceMock.Setup(s => s.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(new School { Id = 5, Code = "C1", Name = "Escola X" });
             schoolServiceMock.Setup(s => s.UpdateAsync(It.IsAny<long>(), It.IsAny<School>())).ThrowsAsync(new DuplicateEntityException("School"));
-            scopeRepoMock.Setup(s => s.GetAllActiveScopesAsync()).ReturnsAsync(new System.Collections.Generic.List<Domain.Entities.Scope>());
+            scopesApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
 
-            var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopeRepoMock.Object, loggerMock.Object);
+            var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopesApiMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());

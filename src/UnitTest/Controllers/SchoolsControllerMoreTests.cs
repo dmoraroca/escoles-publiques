@@ -18,11 +18,11 @@ namespace UnitTest.Controllers
         private SchoolsController CreateController(
             Mock<ISchoolsApiClient> schoolMock,
             Mock<IHubContext<SchoolHub>> hubMock,
-            Mock<Domain.Interfaces.IScopeRepository> scopeMock,
+            Mock<IScopesApiClient> scopesMock,
             out Mock<ILogger<SchoolsController>> loggerMock)
         {
             loggerMock = new Mock<ILogger<SchoolsController>>();
-            var controller = new SchoolsController(schoolMock.Object, hubMock.Object, scopeMock.Object, loggerMock.Object);
+            var controller = new SchoolsController(schoolMock.Object, hubMock.Object, scopesMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());
@@ -35,11 +35,11 @@ namespace UnitTest.Controllers
         {
             var schoolMock = new Mock<ISchoolsApiClient>();
             var hubMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeMock = new Mock<Domain.Interfaces.IScopeRepository>();
-            var schools = new List<Domain.Entities.School> { new Domain.Entities.School { Id = 1, Name = "A" } };
+            var scopesMock = new Mock<IScopesApiClient>();
+            var schools = new List<Domain.Entities.School> { new Domain.Entities.School { Id = 1, Name = "A", Code = "A1" } };
             schoolMock.Setup(s => s.GetAllAsync()).ReturnsAsync(schools);
-            scopeMock.Setup(s => s.GetAllActiveScopesAsync()).ReturnsAsync(new List<Domain.Entities.Scope>());
-            var controller = CreateController(schoolMock, hubMock, scopeMock, out var loggerMock);
+            scopesMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
+            var controller = CreateController(schoolMock, hubMock, scopesMock, out var loggerMock);
 
             var result = await controller.Index();
 
@@ -51,9 +51,10 @@ namespace UnitTest.Controllers
         {
             var schoolMock = new Mock<ISchoolsApiClient>();
             var hubMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeMock = new Mock<Domain.Interfaces.IScopeRepository>();
+            var scopesMock = new Mock<IScopesApiClient>();
             schoolMock.Setup(s => s.GetByIdAsync(99)).ThrowsAsync(new Domain.DomainExceptions.NotFoundException("School", 99));
-            var controller = CreateController(schoolMock, hubMock, scopeMock, out var loggerMock);
+            scopesMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
+            var controller = CreateController(schoolMock, hubMock, scopesMock, out var loggerMock);
 
             var result = await controller.Details(99);
 
@@ -61,14 +62,15 @@ namespace UnitTest.Controllers
         }
 
         [Fact]
-        public void Create_Get_ReturnsView()
+        public async Task Create_Get_ReturnsView()
         {
             var schoolMock = new Mock<ISchoolsApiClient>();
             var hubMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeMock = new Mock<Domain.Interfaces.IScopeRepository>();
-            var controller = CreateController(schoolMock, hubMock, scopeMock, out var loggerMock);
+            var scopesMock = new Mock<IScopesApiClient>();
+            scopesMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
+            var controller = CreateController(schoolMock, hubMock, scopesMock, out var loggerMock);
 
-            var result = controller.Create();
+            var result = await controller.Create();
 
             Assert.IsType<ViewResult>(result);
         }
@@ -78,9 +80,10 @@ namespace UnitTest.Controllers
         {
             var schoolMock = new Mock<ISchoolsApiClient>();
             var hubMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeMock = new Mock<Domain.Interfaces.IScopeRepository>();
+            var scopesMock = new Mock<IScopesApiClient>();
             schoolMock.Setup(s => s.CreateAsync(It.IsAny<Domain.Entities.School>())).ThrowsAsync(new Domain.DomainExceptions.DuplicateEntityException("School", "code", "X"));
-            var controller = CreateController(schoolMock, hubMock, scopeMock, out var loggerMock);
+            scopesMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
+            var controller = CreateController(schoolMock, hubMock, scopesMock, out var loggerMock);
 
             var model = new SchoolViewModel { Code = "X", Name = "Name" };
 
@@ -94,9 +97,10 @@ namespace UnitTest.Controllers
         {
             var schoolMock = new Mock<ISchoolsApiClient>();
             var hubMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeMock = new Mock<Domain.Interfaces.IScopeRepository>();
+            var scopesMock = new Mock<IScopesApiClient>();
             schoolMock.Setup(s => s.GetByIdAsync(99)).ThrowsAsync(new Domain.DomainExceptions.NotFoundException("School", 99));
-            var controller = CreateController(schoolMock, hubMock, scopeMock, out var loggerMock);
+            scopesMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
+            var controller = CreateController(schoolMock, hubMock, scopesMock, out var loggerMock);
 
             var result = await controller.Delete(99);
 

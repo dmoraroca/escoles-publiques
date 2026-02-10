@@ -1,12 +1,12 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
-using Application.Interfaces;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Domain.Entities;
 using System.Collections.Generic;
+using Domain.Entities;
 
 namespace UnitTest.Controllers
 {
@@ -15,15 +15,21 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Index_ReturnsView_WithEnrollments()
         {
-            var enrollmentServiceMock = new Mock<IEnrollmentService>();
-            var studentServiceMock = new Mock<IStudentService>();
-            var schoolServiceMock = new Mock<ISchoolService>();
+            var enrollmentsApiMock = new Mock<IEnrollmentsApiClient>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
+            var schoolsApiMock = new Mock<ISchoolsApiClient>();
             var loggerMock = new Mock<ILogger<EnrollmentsController>>();
-            var enrollments = new List<Enrollment> { new Enrollment { Id = 1 }, new Enrollment { Id = 2 } };
-            enrollmentServiceMock.Setup(s => s.GetAllEnrollmentsAsync()).ReturnsAsync(enrollments);
-            studentServiceMock.Setup(s => s.GetAllStudentsAsync()).ReturnsAsync(new List<Student>());
-            schoolServiceMock.Setup(s => s.GetAllSchoolsAsync()).ReturnsAsync(new List<School>());
-            var controller = new EnrollmentsController(enrollmentServiceMock.Object, studentServiceMock.Object, schoolServiceMock.Object, loggerMock.Object);
+
+            var enrollments = new List<ApiEnrollment>
+            {
+                new ApiEnrollment(1, 1, "Student A", "2025", null, "Active", System.DateTime.UtcNow, 1, "School A"),
+                new ApiEnrollment(2, 2, "Student B", "2026", null, "Active", System.DateTime.UtcNow, 1, "School A")
+            };
+            enrollmentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(enrollments);
+            studentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiStudent>());
+            schoolsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<School>());
+
+            var controller = new EnrollmentsController(enrollmentsApiMock.Object, studentsApiMock.Object, schoolsApiMock.Object, loggerMock.Object);
 
             var action = await controller.Index();
             var result = Assert.IsType<ViewResult>(action);
@@ -32,26 +38,26 @@ namespace UnitTest.Controllers
         }
 
         [Fact]
-        public async Task Details_ReturnsNotFound_WhenIdNotFound()
+        public async Task Details_ReturnsView_WhenIdNotFound()
         {
-            var enrollmentServiceMock = new Mock<IEnrollmentService>();
-            var studentServiceMock = new Mock<IStudentService>();
-            var schoolServiceMock = new Mock<ISchoolService>();
+            var enrollmentsApiMock = new Mock<IEnrollmentsApiClient>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
+            var schoolsApiMock = new Mock<ISchoolsApiClient>();
             var loggerMock = new Mock<ILogger<EnrollmentsController>>();
-            enrollmentServiceMock.Setup(s => s.GetEnrollmentByIdAsync(99)).ThrowsAsync(new Domain.DomainExceptions.NotFoundException("Enrollment", 99));
-            studentServiceMock.Setup(s => s.GetAllStudentsAsync()).ReturnsAsync(new List<Student>());
-            schoolServiceMock.Setup(s => s.GetAllSchoolsAsync()).ReturnsAsync(new List<School>());
-            var controller = new EnrollmentsController(enrollmentServiceMock.Object, studentServiceMock.Object, schoolServiceMock.Object, loggerMock.Object);
 
-            // Initialize TempData to avoid NullReference in BaseController.SetErrorMessage
+            enrollmentsApiMock.Setup(s => s.GetByIdAsync(99)).ReturnsAsync((ApiEnrollment?)null);
+            studentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiStudent>());
+            schoolsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<School>());
+
+            var controller = new EnrollmentsController(enrollmentsApiMock.Object, studentsApiMock.Object, schoolsApiMock.Object, loggerMock.Object);
+
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());
 
             var result = await controller.Details(99);
 
-            // The controller redirects on NotFoundException, so expect RedirectToActionResult
-            Assert.IsType<RedirectToActionResult>(result);
+            Assert.IsType<ViewResult>(result);
         }
     }
 }

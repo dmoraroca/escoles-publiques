@@ -7,18 +7,18 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Create_ReturnsViewWithEnrollmentsAndStudents()
         {
-            var mockAnnualFeeService = new Moq.Mock<Application.Interfaces.IAnnualFeeService>();
-            var mockEnrollmentService = new Moq.Mock<Application.Interfaces.IEnrollmentService>();
-            var mockStudentService = new Moq.Mock<Application.Interfaces.IStudentService>();
+            var mockAnnualFeesApi = new Moq.Mock<Web.Services.Api.IAnnualFeesApiClient>();
+            var mockEnrollmentsApi = new Moq.Mock<Web.Services.Api.IEnrollmentsApiClient>();
+            var mockStudentsApi = new Moq.Mock<Web.Services.Api.IStudentsApiClient>();
             var logger = new Moq.Mock<Microsoft.Extensions.Logging.ILogger<Web.Controllers.AnnualFeesController>>();
 
-            mockEnrollmentService.Setup(s => s.GetAllEnrollmentsAsync()).Returns(System.Threading.Tasks.Task.FromResult<IEnumerable<Domain.Entities.Enrollment>>(new List<Domain.Entities.Enrollment>()));
-            mockStudentService.Setup(s => s.GetAllStudentsAsync()).Returns(System.Threading.Tasks.Task.FromResult<IEnumerable<Domain.Entities.Student>>(new List<Domain.Entities.Student>()));
+            mockEnrollmentsApi.Setup(s => s.GetAllAsync()).Returns(System.Threading.Tasks.Task.FromResult<System.Collections.Generic.IEnumerable<Web.Services.Api.ApiEnrollment>>(new System.Collections.Generic.List<Web.Services.Api.ApiEnrollment>()));
+            mockStudentsApi.Setup(s => s.GetAllAsync()).Returns(System.Threading.Tasks.Task.FromResult<System.Collections.Generic.IEnumerable<Web.Services.Api.ApiStudent>>(new System.Collections.Generic.List<Web.Services.Api.ApiStudent>()));
 
             var controller = new Web.Controllers.AnnualFeesController(
-                mockAnnualFeeService.Object,
-                mockEnrollmentService.Object,
-                mockStudentService.Object,
+                mockAnnualFeesApi.Object,
+                mockEnrollmentsApi.Object,
+                mockStudentsApi.Object,
                 logger.Object
             );
 
@@ -29,17 +29,19 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Index_ReturnsViewResult()
         {
-            var mockAnnualFeeService = new Moq.Mock<Application.Interfaces.IAnnualFeeService>();
-            var mockEnrollmentService = new Moq.Mock<Application.Interfaces.IEnrollmentService>();
-            var mockStudentService = new Moq.Mock<Application.Interfaces.IStudentService>();
+            var mockAnnualFeesApi = new Moq.Mock<Web.Services.Api.IAnnualFeesApiClient>();
+            var mockEnrollmentsApi = new Moq.Mock<Web.Services.Api.IEnrollmentsApiClient>();
+            var mockStudentsApi = new Moq.Mock<Web.Services.Api.IStudentsApiClient>();
             var logger = new Moq.Mock<Microsoft.Extensions.Logging.ILogger<Web.Controllers.AnnualFeesController>>();
 
-            mockAnnualFeeService.Setup(s => s.GetAllAnnualFeesAsync()).Returns(System.Threading.Tasks.Task.FromResult<IEnumerable<Domain.Entities.AnnualFee>>(new List<Domain.Entities.AnnualFee>()));
+            mockAnnualFeesApi.Setup(s => s.GetAllAsync()).Returns(System.Threading.Tasks.Task.FromResult<System.Collections.Generic.IEnumerable<Web.Services.Api.ApiAnnualFee>>(new System.Collections.Generic.List<Web.Services.Api.ApiAnnualFee>()));
+            mockEnrollmentsApi.Setup(s => s.GetAllAsync()).Returns(System.Threading.Tasks.Task.FromResult<System.Collections.Generic.IEnumerable<Web.Services.Api.ApiEnrollment>>(new System.Collections.Generic.List<Web.Services.Api.ApiEnrollment>()));
+            mockStudentsApi.Setup(s => s.GetAllAsync()).Returns(System.Threading.Tasks.Task.FromResult<System.Collections.Generic.IEnumerable<Web.Services.Api.ApiStudent>>(new System.Collections.Generic.List<Web.Services.Api.ApiStudent>()));
 
             var controller = new Web.Controllers.AnnualFeesController(
-                mockAnnualFeeService.Object,
-                mockEnrollmentService.Object,
-                mockStudentService.Object,
+                mockAnnualFeesApi.Object,
+                mockEnrollmentsApi.Object,
+                mockStudentsApi.Object,
                 logger.Object
             );
 

@@ -1,11 +1,10 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
-using Application.Interfaces;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Domain.Entities;
 using System.Collections.Generic;
 
 namespace UnitTest.Controllers
@@ -15,15 +14,21 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Index_ReturnsView_WithAnnualFees()
         {
-            var annualFeeServiceMock = new Mock<IAnnualFeeService>();
-            var enrollmentServiceMock = new Mock<IEnrollmentService>();
-            var studentServiceMock = new Mock<IStudentService>();
+            var annualFeesApiMock = new Mock<IAnnualFeesApiClient>();
+            var enrollmentsApiMock = new Mock<IEnrollmentsApiClient>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
             var loggerMock = new Mock<ILogger<AnnualFeesController>>();
-            var fees = new List<AnnualFee> { new AnnualFee { Id = 1 }, new AnnualFee { Id = 2 } };
-            annualFeeServiceMock.Setup(s => s.GetAllAnnualFeesAsync()).ReturnsAsync(fees);
-            enrollmentServiceMock.Setup(s => s.GetAllEnrollmentsAsync()).ReturnsAsync(new List<Enrollment>());
-            studentServiceMock.Setup(s => s.GetAllStudentsAsync()).ReturnsAsync(new List<Student>());
-            var controller = new AnnualFeesController(annualFeeServiceMock.Object, enrollmentServiceMock.Object, studentServiceMock.Object, loggerMock.Object);
+
+            var fees = new List<ApiAnnualFee>
+            {
+                new ApiAnnualFee(1, 1, "Info", "Student", "2025", null, 100m, "EUR", new DateOnly(2025, 9, 1), null, null, null, null),
+                new ApiAnnualFee(2, 1, "Info", "Student", "2025", null, 200m, "EUR", new DateOnly(2025, 9, 1), null, null, null, null)
+            };
+            annualFeesApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(fees);
+            enrollmentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiEnrollment>());
+            studentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiStudent>());
+
+            var controller = new AnnualFeesController(annualFeesApiMock.Object, enrollmentsApiMock.Object, studentsApiMock.Object, loggerMock.Object);
 
             var action = await controller.Index();
             var result = Assert.IsType<ViewResult>(action);
@@ -33,13 +38,15 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Create_ReturnsView_WithModel_WhenCalled()
         {
-            var annualFeeServiceMock = new Mock<IAnnualFeeService>();
-            var enrollmentServiceMock = new Mock<IEnrollmentService>();
-            var studentServiceMock = new Mock<IStudentService>();
+            var annualFeesApiMock = new Mock<IAnnualFeesApiClient>();
+            var enrollmentsApiMock = new Mock<IEnrollmentsApiClient>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
             var loggerMock = new Mock<ILogger<AnnualFeesController>>();
-            enrollmentServiceMock.Setup(s => s.GetAllEnrollmentsAsync()).ReturnsAsync(new List<Enrollment>());
-            studentServiceMock.Setup(s => s.GetAllStudentsAsync()).ReturnsAsync(new List<Student>());
-            var controller = new AnnualFeesController(annualFeeServiceMock.Object, enrollmentServiceMock.Object, studentServiceMock.Object, loggerMock.Object);
+
+            enrollmentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiEnrollment>());
+            studentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiStudent>());
+
+            var controller = new AnnualFeesController(annualFeesApiMock.Object, enrollmentsApiMock.Object, studentsApiMock.Object, loggerMock.Object);
 
             var action = await controller.Create();
             var result = Assert.IsType<ViewResult>(action);

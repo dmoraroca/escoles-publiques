@@ -1,4 +1,5 @@
 using Xunit;
+using Moq;
 
 namespace UnitTest.Controllers
 {
@@ -7,25 +8,20 @@ namespace UnitTest.Controllers
         [Fact]
         public void Constructor_InjectsDependencies_NotNull()
         {
-            // Arrange
-            var logger = new Moq.Mock<Microsoft.Extensions.Logging.ILogger<Web.Controllers.UserController>>();
-            var studentService = new Moq.Mock<Application.Interfaces.IStudentService>();
-            var enrollmentService = new Moq.Mock<Application.Interfaces.IEnrollmentService>();
-            var annualFeeService = new Moq.Mock<Application.Interfaces.IAnnualFeeService>();
-            var userRepository = new Moq.Mock<Domain.Interfaces.IUserRepository>();
-            var schoolRepository = new Moq.Mock<Domain.Interfaces.ISchoolRepository>();
+            var logger = new Moq.Mock<Microsoft.Extensions.Logging.ILogger<Web.Controllers.DashboardController>>();
+            var studentsApi = new Moq.Mock<Web.Services.Api.IStudentsApiClient>();
+            var enrollmentsApi = new Moq.Mock<Web.Services.Api.IEnrollmentsApiClient>();
+            var annualFeesApi = new Moq.Mock<Web.Services.Api.IAnnualFeesApiClient>();
+            var schoolsApi = new Moq.Mock<Web.Services.Api.ISchoolsApiClient>();
 
-            // Act
-            var controller = new Web.Controllers.UserController(
+            var controller = new Web.Controllers.DashboardController(
                 logger.Object,
-                studentService.Object,
-                enrollmentService.Object,
-                annualFeeService.Object,
-                userRepository.Object,
-                schoolRepository.Object
+                studentsApi.Object,
+                enrollmentsApi.Object,
+                annualFeesApi.Object,
+                schoolsApi.Object
             );
 
-            // Assert
             Assert.NotNull(controller);
         }
     }

@@ -1,12 +1,11 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
-using Application.Interfaces;
-using Domain.Interfaces;
-using Domain.Entities;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace UnitTest.Controllers
 {
@@ -15,28 +14,25 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Dashboard_ReturnsView_WhenUserHasStudent()
         {
-            var logger = new Mock<ILogger<UserController>>();
-            var studentServiceMock = new Mock<IStudentService>();
-            var enrollmentServiceMock = new Mock<IEnrollmentService>();
-            var annualFeeServiceMock = new Mock<IAnnualFeeService>();
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var schoolRepositoryMock = new Mock<ISchoolRepository>();
+            var logger = new Mock<ILogger<DashboardController>>();
+            var studentsApiMock = new Mock<IStudentsApiClient>();
+            var enrollmentsApiMock = new Mock<IEnrollmentsApiClient>();
+            var annualFeesApiMock = new Mock<IAnnualFeesApiClient>();
+            var schoolsApiMock = new Mock<ISchoolsApiClient>();
 
-            var user = new User { Id = 1, FirstName = "Test", LastName = "User", Email = "test@a.com", Role = "USER" };
-            var student = new Student { Id = 1, UserId = 1, User = user };
-            userRepositoryMock.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(user);
-            studentServiceMock.Setup(s => s.GetAllStudentsAsync()).ReturnsAsync(new System.Collections.Generic.List<Student> { student });
-            enrollmentServiceMock.Setup(e => e.GetAllEnrollmentsAsync()).ReturnsAsync(new System.Collections.Generic.List<Enrollment>());
-            schoolRepositoryMock.Setup(s => s.GetByIdAsync(It.IsAny<long>())).ReturnsAsync((School?)null);
-            annualFeeServiceMock.Setup(a => a.GetAllAnnualFeesAsync()).ReturnsAsync(new System.Collections.Generic.List<AnnualFee>());
+            studentsApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiStudent>
+            {
+                new ApiStudent(1, 1, "Test", "User", "test@a.com", null, 1, "Escola")
+            });
+            enrollmentsApiMock.Setup(e => e.GetAllAsync()).ReturnsAsync(new List<ApiEnrollment>());
+            annualFeesApiMock.Setup(a => a.GetAllAsync()).ReturnsAsync(new List<ApiAnnualFee>());
 
-            var controller = new UserController(
+            var controller = new DashboardController(
                 logger.Object,
-                studentServiceMock.Object,
-                enrollmentServiceMock.Object,
-                annualFeeServiceMock.Object,
-                userRepositoryMock.Object,
-                schoolRepositoryMock.Object);
+                studentsApiMock.Object,
+                enrollmentsApiMock.Object,
+                annualFeesApiMock.Object,
+                schoolsApiMock.Object);
 
             var userClaims = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity(new[] {
                 new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, "1"),

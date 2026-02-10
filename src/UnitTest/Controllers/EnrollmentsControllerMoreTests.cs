@@ -1,22 +1,23 @@
 using Xunit;
 using Moq;
 using Web.Controllers;
-using Application.Interfaces;
+using Web.Services.Api;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Domain.Entities;
 using System.Collections.Generic;
 using Web.Models;
+using Domain.DomainExceptions;
+using Domain.Entities;
 
 namespace UnitTest.Controllers
 {
     public class EnrollmentsControllerMoreTests
     {
         private EnrollmentsController CreateController(
-            Mock<IEnrollmentService> enrollmentMock,
-            Mock<IStudentService> studentMock,
-            Mock<ISchoolService> schoolMock,
+            Mock<IEnrollmentsApiClient> enrollmentMock,
+            Mock<IStudentsApiClient> studentMock,
+            Mock<ISchoolsApiClient> schoolMock,
             out Mock<ILogger<EnrollmentsController>> loggerMock)
         {
             loggerMock = new Mock<ILogger<EnrollmentsController>>();
@@ -30,9 +31,9 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Create_Post_InvalidModel_RedirectsToIndex()
         {
-            var enrollmentMock = new Mock<IEnrollmentService>();
-            var studentMock = new Mock<IStudentService>();
-            var schoolMock = new Mock<ISchoolService>();
+            var enrollmentMock = new Mock<IEnrollmentsApiClient>();
+            var studentMock = new Mock<IStudentsApiClient>();
+            var schoolMock = new Mock<ISchoolsApiClient>();
             var controller = CreateController(enrollmentMock, studentMock, schoolMock, out var loggerMock);
 
             controller.ModelState.AddModelError("StudentId", "Required");
@@ -45,9 +46,9 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Create_Post_SchoolIdZero_RedirectsToIndex()
         {
-            var enrollmentMock = new Mock<IEnrollmentService>();
-            var studentMock = new Mock<IStudentService>();
-            var schoolMock = new Mock<ISchoolService>();
+            var enrollmentMock = new Mock<IEnrollmentsApiClient>();
+            var studentMock = new Mock<IStudentsApiClient>();
+            var schoolMock = new Mock<ISchoolsApiClient>();
             var controller = CreateController(enrollmentMock, studentMock, schoolMock, out var loggerMock);
 
             var model = new EnrollmentViewModel { SchoolId = 0 };
@@ -58,15 +59,17 @@ namespace UnitTest.Controllers
         }
 
         [Fact]
-        public async Task Create_Post_Success_CallsService_AndRedirects()
+        public async Task Create_Post_Success_CallsApi_AndRedirects()
         {
-            var enrollmentMock = new Mock<IEnrollmentService>();
-            var studentMock = new Mock<IStudentService>();
-            var schoolMock = new Mock<ISchoolService>();
-            enrollmentMock.Setup(s => s.CreateEnrollmentAsync(It.IsAny<Domain.Entities.Enrollment>())).ReturnsAsync(new Domain.Entities.Enrollment { Id = 1 }).Verifiable();
+            var enrollmentMock = new Mock<IEnrollmentsApiClient>();
+            var studentMock = new Mock<IStudentsApiClient>();
+            var schoolMock = new Mock<ISchoolsApiClient>();
+            enrollmentMock.Setup(s => s.CreateAsync(It.IsAny<ApiEnrollmentIn>()))
+                .ReturnsAsync(new ApiEnrollment(1, 2, "Student", "2025", null, "Active", System.DateTime.UtcNow, 1, "School"))
+                .Verifiable();
             var controller = CreateController(enrollmentMock, studentMock, schoolMock, out var loggerMock);
 
-            var model = new EnrollmentViewModel { SchoolId = 1, StudentId = 2, AcademicYear = "2025" };
+            var model = new EnrollmentViewModel { SchoolId = 1, StudentId = 2, AcademicYear = "2025", Status = "Active" };
 
             var result = await controller.Create(model);
 
@@ -77,13 +80,14 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Create_Post_NotFoundException_RedirectsToIndex()
         {
-            var enrollmentMock = new Mock<IEnrollmentService>();
-            var studentMock = new Mock<IStudentService>();
-            var schoolMock = new Mock<ISchoolService>();
-            enrollmentMock.Setup(s => s.CreateEnrollmentAsync(It.IsAny<Domain.Entities.Enrollment>())).ThrowsAsync(new Domain.DomainExceptions.NotFoundException("Student", 5));
+            var enrollmentMock = new Mock<IEnrollmentsApiClient>();
+            var studentMock = new Mock<IStudentsApiClient>();
+            var schoolMock = new Mock<ISchoolsApiClient>();
+            enrollmentMock.Setup(s => s.CreateAsync(It.IsAny<ApiEnrollmentIn>()))
+                .ThrowsAsync(new NotFoundException("Student", 5));
             var controller = CreateController(enrollmentMock, studentMock, schoolMock, out var loggerMock);
 
-            var model = new EnrollmentViewModel { SchoolId = 1, StudentId = 5 };
+            var model = new EnrollmentViewModel { SchoolId = 1, StudentId = 5, AcademicYear = "2025", Status = "Active" };
 
             var result = await controller.Create(model);
 
@@ -93,9 +97,11 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Edit_Post_InvalidModel_ReturnsView()
         {
-            var enrollmentMock = new Mock<IEnrollmentService>();
-            var studentMock = new Mock<IStudentService>();
-            var schoolMock = new Mock<ISchoolService>();
+            var enrollmentMock = new Mock<IEnrollmentsApiClient>();
+            var studentMock = new Mock<IStudentsApiClient>();
+            var schoolMock = new Mock<ISchoolsApiClient>();
+            studentMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiStudent>());
+            schoolMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<School>());
             var controller = CreateController(enrollmentMock, studentMock, schoolMock, out var loggerMock);
 
             controller.ModelState.AddModelError("CourseName", "Required");
@@ -109,10 +115,10 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Delete_Post_NotFoundException_RedirectsToIndex()
         {
-            var enrollmentMock = new Mock<IEnrollmentService>();
-            var studentMock = new Mock<IStudentService>();
-            var schoolMock = new Mock<ISchoolService>();
-            enrollmentMock.Setup(s => s.DeleteEnrollmentAsync(99)).ThrowsAsync(new Domain.DomainExceptions.NotFoundException("Enrollment", 99));
+            var enrollmentMock = new Mock<IEnrollmentsApiClient>();
+            var studentMock = new Mock<IStudentsApiClient>();
+            var schoolMock = new Mock<ISchoolsApiClient>();
+            enrollmentMock.Setup(s => s.DeleteAsync(99)).ThrowsAsync(new NotFoundException("Enrollment", 99));
             var controller = CreateController(enrollmentMock, studentMock, schoolMock, out var loggerMock);
 
             var result = await controller.Delete(99);
@@ -123,10 +129,10 @@ namespace UnitTest.Controllers
         [Fact]
         public async Task Delete_Post_Success_RedirectsToIndex()
         {
-            var enrollmentMock = new Mock<IEnrollmentService>();
-            var studentMock = new Mock<IStudentService>();
-            var schoolMock = new Mock<ISchoolService>();
-            enrollmentMock.Setup(s => s.DeleteEnrollmentAsync(1)).Returns(Task.CompletedTask).Verifiable();
+            var enrollmentMock = new Mock<IEnrollmentsApiClient>();
+            var studentMock = new Mock<IStudentsApiClient>();
+            var schoolMock = new Mock<ISchoolsApiClient>();
+            enrollmentMock.Setup(s => s.DeleteAsync(1)).Returns(Task.CompletedTask).Verifiable();
             var controller = CreateController(enrollmentMock, studentMock, schoolMock, out var loggerMock);
 
             var result = await controller.Delete(1);

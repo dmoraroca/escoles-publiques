@@ -13,6 +13,10 @@ using Web.Validators;
 using System.Globalization;
 using Serilog;
 using Web.Services.Api;
+using Web.Services.Search;
+using Application.Interfaces.Search;
+using Application.UseCases.Queries.SearchResults;
+using Web.Services.Search.Adapters;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configuració Serilog: logs per dia a /logs/logYYYYMMDD.log
@@ -100,6 +104,14 @@ builder.Services.AddHttpClient<IAnnualFeesApiClient, AnnualFeesApiClient>(client
 {
     client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<ApiAuthTokenHandler>();
+
+builder.Services.AddScoped<IScopeLookupSource, ScopeLookupSource>();
+builder.Services.AddScoped<ISchoolSearchSource, SchoolSearchSource>();
+builder.Services.AddScoped<IStudentSearchSource, StudentSearchSource>();
+builder.Services.AddScoped<IEnrollmentSearchSource, EnrollmentSearchSource>();
+builder.Services.AddScoped<IAnnualFeeSearchSource, AnnualFeeSearchSource>();
+builder.Services.AddScoped<ISearchResultsQuery, SearchResultsQuery>();
+builder.Services.AddScoped<ISearchResultsBuilder, SearchResultsBuilder>();
 
 builder.Services.AddControllersWithViews(options =>
 {

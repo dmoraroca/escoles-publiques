@@ -20,14 +20,14 @@ namespace UnitTest.Controllers
         {
             var schoolServiceMock = new Mock<ISchoolsApiClient>();
             var hubContextMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeRepoMock = new Mock<Domain.Interfaces.IScopeRepository>();
+            var scopesApiMock = new Mock<IScopesApiClient>();
             var loggerMock = new Mock<ILogger<SchoolsController>>();
 
-            var schools = new List<School> { new School { Id = 1, Name = "Escola 1" } };
+            var schools = new List<School> { new School { Id = 1, Name = "Escola 1", Code = "C1" } };
             schoolServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(schools);
-            scopeRepoMock.Setup(s => s.GetAllActiveScopesAsync()).ReturnsAsync(new List<Domain.Entities.Scope>());
+            scopesApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
 
-            var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopeRepoMock.Object, loggerMock.Object);
+            var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopesApiMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());
@@ -42,13 +42,13 @@ namespace UnitTest.Controllers
         {
             var schoolServiceMock = new Mock<ISchoolsApiClient>();
             var hubContextMock = new Mock<IHubContext<SchoolHub>>();
-            var scopeRepoMock = new Mock<Domain.Interfaces.IScopeRepository>();
+            var scopesApiMock = new Mock<IScopesApiClient>();
             var loggerMock = new Mock<ILogger<SchoolsController>>();
 
             schoolServiceMock.Setup(s => s.GetByIdAsync(99)).ThrowsAsync(new NotFoundException("School", 99));
-            scopeRepoMock.Setup(s => s.GetAllActiveScopesAsync()).ReturnsAsync(new List<Domain.Entities.Scope>());
+            scopesApiMock.Setup(s => s.GetAllAsync()).ReturnsAsync(new List<ApiScope>());
 
-            var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopeRepoMock.Object, loggerMock.Object);
+            var controller = new SchoolsController(schoolServiceMock.Object, hubContextMock.Object, scopesApiMock.Object, loggerMock.Object);
             var httpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext();
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext };
             controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(httpContext, Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());
