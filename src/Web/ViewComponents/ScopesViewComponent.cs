@@ -24,7 +24,7 @@ public class ScopesViewComponent : ViewComponent
             Name = s.Name?.Trim() ?? string.Empty,
             Url = "#" // Pots canviar per una URL real si cal
         }).ToList();
-        
+
         return View(scopeViewModels);
     }
 }

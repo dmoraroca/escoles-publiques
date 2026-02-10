@@ -21,7 +21,7 @@ public class FavoriteSchoolsController : Controller
             new FavoriteSchoolViewModel { Id = 3, Name = "Col·legi Sagrada Família", Municipality = "Sabadell", Url = "#" },
             new FavoriteSchoolViewModel { Id = 4, Name = "Escola Joan Maragall", Municipality = "Girona", Url = "#" }
         };
-        
+
         return PartialView("_FavoriteSchools", favoriteSchools);
     }
 }

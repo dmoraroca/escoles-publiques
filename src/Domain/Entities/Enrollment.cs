@@ -12,7 +12,7 @@ public class Enrollment
     public string Status { get; set; } = null!;
     public DateTime EnrolledAt { get; set; }
     public long SchoolId { get; set; }
-    
+
     public virtual Student Student { get; set; } = null!;
     public virtual School? School { get; set; }
     public virtual ICollection<AnnualFee> AnnualFees { get; set; } = new List<AnnualFee>();

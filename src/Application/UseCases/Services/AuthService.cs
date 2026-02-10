@@ -30,14 +30,14 @@ public class AuthService : IAuthService
     public async Task<(bool success, string? token, string? role)> AuthenticateAsync(string email, string password)
     {
         var user = await _userRepository.GetByEmailAsync(email);
-        
+
         if (user == null || !user.IsActive)
         {
             return (false, null, null);
         }
 
         var passwordHash = HashPassword(password);
-        
+
         if (user.PasswordHash != passwordHash)
         {
             return (false, null, null);

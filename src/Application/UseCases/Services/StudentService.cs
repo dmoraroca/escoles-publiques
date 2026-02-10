@@ -54,13 +54,13 @@ public class StudentService : IStudentService
     {
         _logger.LogInformation("Obtenint alumne amb Id: {Id}", id);
         var student = await _studentRepository.GetByIdAsync(id);
-        
+
         if (student == null)
         {
             _logger.LogWarning("Alumne amb Id {Id} no trobat", id);
             throw new NotFoundException("Student", id);
         }
-        
+
         return student;
     }
 
@@ -79,13 +79,13 @@ public class StudentService : IStudentService
             {
                 throw new ValidationException("FirstName", "El nom de l'alumne és obligatori");
             }
-            
+
             if (string.IsNullOrWhiteSpace(student.User.LastName))
             {
                 throw new ValidationException("LastName", "Els cognoms de l'alumne són obligatoris");
             }
         }
-        
+
         if (student.SchoolId > 0)
         {
             var school = await _schoolRepository.GetByIdAsync(student.SchoolId);
@@ -123,7 +123,7 @@ public class StudentService : IStudentService
         {
             throw new NotFoundException("Student", student.Id);
         }
-        
+
         _logger.LogInformation("Actualitzant alumne amb Id: {Id}", student.Id);
         await _studentRepository.UpdateAsync(student);
     }
@@ -154,7 +154,7 @@ public class StudentService : IStudentService
         {
             throw new NotFoundException("Student", id);
         }
-        
+
         _logger.LogInformation("Eliminant alumne amb Id: {Id}", id);
         await _studentRepository.DeleteAsync(id);
     }

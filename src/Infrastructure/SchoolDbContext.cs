@@ -77,22 +77,22 @@ public class SchoolDbContext : DbContext
         {
             entity.ToTable("schools");
         });
-        
+
         modelBuilder.Entity<Student>(entity =>
         {
             entity.ToTable("students");
         });
-        
+
         modelBuilder.Entity<Enrollment>(entity =>
         {
             entity.ToTable("enrollments");
         });
-        
+
         modelBuilder.Entity<AnnualFee>(entity =>
         {
             entity.ToTable("annual_fees");
         });
-        
+
         modelBuilder.Entity<Scope>(entity =>
         {
             entity.ToTable("scope_mnt");

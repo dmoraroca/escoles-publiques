@@ -30,7 +30,7 @@ public class FavoriteSchoolsViewComponent : ViewComponent
                 Url = Url.Action("Details", "Schools", new { id = s.Id })
             })
             .ToList();
-        
+
         return View(favoriteSchools);
     }
 }

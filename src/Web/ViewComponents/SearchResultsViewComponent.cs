@@ -43,8 +43,8 @@ public class SearchResultsViewComponent : ViewComponent
         }
 
         // Dividir la cerca per comes i netejar espais
-        var searchTerms = string.IsNullOrWhiteSpace(searchQuery) 
-            ? new List<string>() 
+        var searchTerms = string.IsNullOrWhiteSpace(searchQuery)
+            ? new List<string>()
             : searchQuery.Split(',', StringSplitOptions.RemoveEmptyEntries)
                          .Select(t => t.Trim())
                          .Where(t => !string.IsNullOrWhiteSpace(t))
@@ -69,7 +69,7 @@ public class SearchResultsViewComponent : ViewComponent
         // Cerca en Escoles
         var allSchools = (await _schoolApi.GetAllAsync()).ToList();
         model.Schools = allSchools
-            .Where(s => 
+            .Where(s =>
                 (searchTerms.Count == 0 || searchTerms.Any(term =>
                     s.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     s.Code.Contains(term, StringComparison.OrdinalIgnoreCase) ||
@@ -98,7 +98,7 @@ public class SearchResultsViewComponent : ViewComponent
         // Cerca en Alumnes
         var allStudents = await _studentsApi.GetAllAsync();
         model.Students = allStudents
-            .Where(s => 
+            .Where(s =>
                 searchTerms.Count > 0 && searchTerms.Any(term =>
                     s.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     s.LastName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
@@ -117,7 +117,7 @@ public class SearchResultsViewComponent : ViewComponent
         // Cerca en Inscripcions
         var allEnrollments = await _enrollmentsApi.GetAllAsync();
         model.Enrollments = allEnrollments
-            .Where(e => 
+            .Where(e =>
                 searchTerms.Count > 0 && searchTerms.Any(term =>
                     e.AcademicYear.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     e.StudentName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
@@ -136,7 +136,7 @@ public class SearchResultsViewComponent : ViewComponent
         // Cerca en Quotes
         var allFees = await _annualFeesApi.GetAllAsync();
         model.AnnualFees = allFees
-            .Where(f => 
+            .Where(f =>
                 searchTerms.Count > 0 && searchTerms.Any(term =>
                     f.StudentName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                     f.Amount.ToString().Contains(term) ||

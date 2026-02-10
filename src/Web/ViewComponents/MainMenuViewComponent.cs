@@ -11,7 +11,7 @@ public class MainMenuViewComponent : ViewComponent
     {
         var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
         ViewBag.CurrentController = currentController;
-        
+
         return View();
     }
 }

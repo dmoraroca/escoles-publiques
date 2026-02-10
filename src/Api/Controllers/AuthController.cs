@@ -17,9 +17,9 @@ public class AuthController : ControllerBase
     public AuthController(ILogger<AuthController> logger, IAuthService authService, IConfiguration config)
     {
         _authService = authService;
-        _config = config;   
+        _config = config;
         _logger = logger;
-    
+
     }
 
     [HttpPost("token")]
@@ -28,19 +28,19 @@ public class AuthController : ControllerBase
         try
         {
             _logger.LogInformation("Auth token request received. Email={Email}", dto.Email);
-            
+
             // API
             var (success, userId, role) = await _authService.AuthenticateAsync(dto.Email, dto.Password);
             _logger.LogInformation("Auth result. Success={Success}, UserId={UserId}, Role={Role}", success, userId ?? "null", role ?? "null");
             if (!success) return Unauthorized();
-    
+
             var jwtSection = _config.GetSection("Jwt");
             var key = jwtSection.GetValue<string>("Key") ?? "dev-secret-key-please-change";
             var issuer = jwtSection.GetValue<string>("Issuer") ?? "EscolesApi";
             var audience = jwtSection.GetValue<string>("Audience") ?? "EscolesClients";
             _logger.LogDebug("JWT settings. Issuer={Issuer}, Audience={Audience}, KeyLength={KeyLength}",
                 issuer, audience, key.Length);
-    
+
             var claims = new[] {
                 new Claim(ClaimTypes.NameIdentifier, userId ?? string.Empty),
                 new Claim(ClaimTypes.Role, role ?? string.Empty)

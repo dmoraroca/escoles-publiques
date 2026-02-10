@@ -26,7 +26,7 @@ public class EnrollmentsController : BaseController
         _studentsApi = studentsApi;
         _schoolsApi = schoolsApi;
     }
-    
+
     /// <summary>
     /// Mostra el llistat de totes les inscripcions.
     /// </summary>
@@ -80,7 +80,7 @@ public class EnrollmentsController : BaseController
             return View("~/Views/Shared/ErrorDb.cshtml");
         }
     }
-    
+
     public async Task<IActionResult> Details(int id)
     {
         try
@@ -88,7 +88,8 @@ public class EnrollmentsController : BaseController
             var enrollment = await _enrollmentsApi.GetByIdAsync(id);
             var viewModel = (enrollment == null)
                 ? new EnrollmentViewModel()
-                : new EnrollmentViewModel {
+                : new EnrollmentViewModel
+                {
                     Id = (int)enrollment.Id,
                     StudentId = (int)enrollment.StudentId,
                     StudentName = enrollment.StudentName,
@@ -133,7 +134,7 @@ public class EnrollmentsController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
-    
+
     public async Task<IActionResult> Create()
     {
         var students = await _studentsApi.GetAllAsync();
@@ -154,7 +155,7 @@ public class EnrollmentsController : BaseController
 
         return View();
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(EnrollmentViewModel model)
@@ -231,7 +232,7 @@ public class EnrollmentsController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
-    
+
     public async Task<IActionResult> Edit(int id)
     {
         try
@@ -347,14 +348,14 @@ public class EnrollmentsController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Delete(int id)
     {
         try
         {
             await _enrollmentsApi.DeleteAsync(id);
-            
+
             SetSuccessMessage("Inscripció esborrada correctament.");
             return RedirectToAction(nameof(Index));
         }

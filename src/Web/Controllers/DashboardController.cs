@@ -41,7 +41,7 @@ public class DashboardController : BaseController
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Logger.LogInformation("=== DASHBOARD ===");
             Logger.LogInformation("UserIdClaim: {UserIdClaim}", userIdClaim);
-            
+
             if (string.IsNullOrEmpty(userIdClaim) || !long.TryParse(userIdClaim, out long userId))
             {
                 return RedirectToAction("Login", "Auth");
@@ -52,7 +52,7 @@ public class DashboardController : BaseController
             // Verificar que l'usuari és USER, no ADM
             var role = User.FindFirstValue("Role");
             Logger.LogInformation("Role: {Role}", role);
-            
+
             if (role == "ADM")
             {
                 return RedirectToAction("Index", "Home");

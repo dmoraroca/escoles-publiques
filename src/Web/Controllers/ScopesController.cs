@@ -25,7 +25,7 @@ public class ScopesController : Controller
             new ScopeViewModel { Name = "Homologació d'estudis estrangers", Url = "#" },
             new ScopeViewModel { Name = "Portal de centre", Url = "#" }
         };
-        
+
         return PartialView("_Scopes", scopes);
     }
 }

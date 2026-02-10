@@ -11,7 +11,7 @@ public class SearchResultsViewModel
     public List<StudentResultViewModel> Students { get; set; } = new();
     public List<EnrollmentResultViewModel> Enrollments { get; set; } = new();
     public List<AnnualFeeResultViewModel> AnnualFees { get; set; } = new();
-    
+
     public bool HasResults => Schools.Any() || Students.Any() || Enrollments.Any() || AnnualFees.Any();
 }
 

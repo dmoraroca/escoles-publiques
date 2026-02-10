@@ -36,7 +36,7 @@ public class SchoolsController : BaseController
         _hubContext = hubContext;
         _scopesApi = scopesApi;
     }
-    
+
     /// <summary>
     /// Mostra el llistat de totes les escoles.
     /// </summary>
@@ -82,7 +82,7 @@ public class SchoolsController : BaseController
             return View(new List<SchoolViewModel>());
         }
     }
-    
+
     /// <summary>
     /// Mostra els detalls d'una escola concreta.
     /// </summary>
@@ -94,7 +94,7 @@ public class SchoolsController : BaseController
         try
         {
             var school = await _schoolApi.GetByIdAsync(id);
-            
+
             var scopes = await _scopesApi.GetAllAsync();
             var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
             var viewModel = new SchoolViewModel
@@ -130,7 +130,7 @@ public class SchoolsController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
-    
+
     /// <summary>
     /// Mostra el formulari per crear una nova escola.
     /// </summary>
@@ -143,7 +143,7 @@ public class SchoolsController : BaseController
         ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
         return View(new SchoolViewModel());
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     /// <summary>
@@ -221,11 +221,11 @@ public class SchoolsController : BaseController
                 var scope = (await _scopesApi.GetAllAsync()).FirstOrDefault(s => s.Id == model.ScopeId);
                 scopeName = scope?.Name ?? string.Empty;
             }
-            await _hubContext.Clients.All.SendAsync("SchoolCreated", new 
-            { 
+            await _hubContext.Clients.All.SendAsync("SchoolCreated", new
+            {
                 id = school.Id,
-                code = school.Code, 
-                name = school.Name, 
+                code = school.Code,
+                name = school.Name,
                 city = school.City,
                 scopeId = school.ScopeId,
                 scopeName = scopeName,
@@ -268,7 +268,7 @@ public class SchoolsController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
-    
+
     /// <summary>
     /// Mostra el formulari per editar una escola existent.
     /// </summary>
@@ -280,7 +280,7 @@ public class SchoolsController : BaseController
         try
         {
             var school = await _schoolApi.GetByIdAsync(id);
-            
+
             var scopes = await _scopesApi.GetAllAsync();
             var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
             var viewModel = new SchoolViewModel
@@ -316,7 +316,7 @@ public class SchoolsController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     /// <summary>
@@ -338,7 +338,7 @@ public class SchoolsController : BaseController
             }
 
             var school = await _schoolApi.GetByIdAsync(model.Id);
-            
+
             school.Code = model.Code;
             school.Name = model.Name;
             school.City = model.City;
@@ -346,25 +346,25 @@ public class SchoolsController : BaseController
             school.ScopeId = model.ScopeId;
 
             await _schoolApi.UpdateAsync(school.Id, school);
-            
+
             var scopeName = string.Empty;
             if (school.ScopeId.HasValue)
             {
                 var scope = (await _scopesApi.GetAllAsync()).FirstOrDefault(s => s.Id == school.ScopeId);
                 scopeName = scope?.Name ?? string.Empty;
             }
-            await _hubContext.Clients.All.SendAsync("SchoolUpdated", new 
-            { 
+            await _hubContext.Clients.All.SendAsync("SchoolUpdated", new
+            {
                 id = school.Id,
-                code = school.Code, 
-                name = school.Name, 
+                code = school.Code,
+                name = school.Name,
                 city = school.City,
                 scopeId = school.ScopeId,
                 scopeName = scopeName,
                 isFavorite = school.IsFavorite,
                 createdAt = school.CreatedAt.ToString("dd/MM/yyyy HH:mm")
             });
-            
+
             SetSuccessMessage($"Escola '{school.Name}' actualitzada correctament.");
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
@@ -403,7 +403,7 @@ public class SchoolsController : BaseController
             return View(model);
         }
     }
-    
+
     [HttpPost]
     /// <summary>
     /// Elimina una escola.
@@ -417,11 +417,11 @@ public class SchoolsController : BaseController
         {
             var school = await _schoolApi.GetByIdAsync(id);
             var code = school?.Code;
-            
+
             await _schoolApi.DeleteAsync(id);
-            
+
             await _hubContext.Clients.All.SendAsync("SchoolDeleted", new { id, code });
-            
+
             SetSuccessMessage("Escola esborrada correctament.");
             return RedirectToAction(nameof(Index));
         }

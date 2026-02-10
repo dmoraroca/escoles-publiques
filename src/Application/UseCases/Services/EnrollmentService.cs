@@ -45,13 +45,13 @@ public class EnrollmentService : IEnrollmentService
     {
         _logger.LogInformation("Obtenint inscripció amb Id: {Id}", id);
         var enrollment = await _enrollmentRepository.GetByIdAsync(id);
-        
+
         if (enrollment == null)
         {
             _logger.LogWarning("Inscripció amb Id {Id} no trobada", id);
             throw new NotFoundException("Enrollment", id);
         }
-        
+
         return enrollment;
     }
 
@@ -67,12 +67,12 @@ public class EnrollmentService : IEnrollmentService
         {
             throw new ValidationException("AcademicYear", "El curs acadèmic és obligatori");
         }
-        
+
         if (enrollment.StudentId <= 0)
         {
             throw new ValidationException("StudentId", "L'ID de l'alumne és obligatori");
         }
-        
+
         var student = await _studentRepository.GetByIdAsync(enrollment.StudentId);
         if (student == null)
         {
@@ -80,7 +80,7 @@ public class EnrollmentService : IEnrollmentService
         }
 
         enrollment.EnrolledAt = DateTime.UtcNow;
-        _logger.LogInformation("Creant nova inscripció per l'alumne {StudentId} - Curs {AcademicYear}", 
+        _logger.LogInformation("Creant nova inscripció per l'alumne {StudentId} - Curs {AcademicYear}",
             enrollment.StudentId, enrollment.AcademicYear);
         return await _enrollmentRepository.AddAsync(enrollment);
     }
@@ -92,7 +92,7 @@ public class EnrollmentService : IEnrollmentService
         {
             throw new NotFoundException("Enrollment", enrollment.Id);
         }
-        
+
         _logger.LogInformation("Actualitzant inscripció amb Id: {Id}", enrollment.Id);
         await _enrollmentRepository.UpdateAsync(enrollment);
     }
@@ -104,7 +104,7 @@ public class EnrollmentService : IEnrollmentService
         {
             throw new NotFoundException("Enrollment", id);
         }
-        
+
         _logger.LogInformation("Eliminant inscripció amb Id: {Id}", id);
         await _enrollmentRepository.DeleteAsync(id);
     }

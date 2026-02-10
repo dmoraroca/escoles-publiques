@@ -23,7 +23,7 @@ public class StudentsController : BaseController
         _studentsApi = studentsApi;
         _schoolsApi = schoolsApi;
     }
-    
+
     /// <summary>
     /// Mostra el llistat de tots els alumnes.
     /// </summary>
@@ -50,7 +50,7 @@ public class StudentsController : BaseController
                 Id = (int)s.Id,
                 Name = s.Name
             }).ToList();
-            
+
             return View(viewModels.ToList());
         }
         catch (Exception ex)
@@ -89,7 +89,7 @@ public class StudentsController : BaseController
             return Ok(new { exists = false });
         }
     }
-    
+
     public async Task<IActionResult> Details(int id)
     {
         try
@@ -100,7 +100,7 @@ public class StudentsController : BaseController
                 SetErrorMessage($"Alumne amb ID {id} no trobat.");
                 return Redirect("/Students");
             }
-            
+
             var viewModel = new StudentViewModel
             {
                 Id = (int)student.Id,
@@ -112,14 +112,14 @@ public class StudentsController : BaseController
                 SchoolId = (int)student.SchoolId,
                 SchoolName = student.SchoolName ?? "Sense escola"
             };
-            
+
             var schools = await _schoolsApi.GetAllAsync();
             ViewBag.Schools = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
                 Name = s.Name
             }).ToList();
-            
+
             return View(viewModel);
         }
         catch (NotFoundException ex)
@@ -135,7 +135,7 @@ public class StudentsController : BaseController
             return Redirect("/Students");
         }
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(StudentViewModel model)
@@ -194,7 +194,7 @@ public class StudentsController : BaseController
             return BadRequest(new { error = "Error creant l'alumne. Si us plau, intenta-ho de nou." });
         }
     }
-    
+
     public async Task<IActionResult> Edit(int id)
     {
         try
@@ -205,7 +205,7 @@ public class StudentsController : BaseController
                 SetErrorMessage($"Alumne amb ID {id} no trobat.");
                 return Redirect("/Students");
             }
-            
+
             var viewModel = new StudentViewModel
             {
                 Id = (int)student.Id,
@@ -217,14 +217,14 @@ public class StudentsController : BaseController
                 SchoolId = (int)student.SchoolId,
                 SchoolName = student.SchoolName ?? ""
             };
-            
+
             var schools = await _schoolsApi.GetAllAsync();
             ViewBag.Schools = schools.Select(s => new SchoolViewModel
             {
                 Id = (int)s.Id,
                 Name = s.Name
             }).ToList();
-            
+
             return View(viewModel);
         }
         catch (NotFoundException ex)
@@ -240,7 +240,7 @@ public class StudentsController : BaseController
             return Redirect("/Students");
         }
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(StudentViewModel model)
@@ -267,7 +267,7 @@ public class StudentsController : BaseController
                 model.SchoolId
             );
             await _studentsApi.UpdateAsync(model.Id, dto);
-            
+
             SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} actualitzat correctament.");
             return Redirect("/Students");
         }
@@ -290,14 +290,14 @@ public class StudentsController : BaseController
             return Redirect("/Students");
         }
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Delete(int id)
     {
         try
         {
             await _studentsApi.DeleteAsync(id);
-            
+
             SetSuccessMessage("Alumne esborrat correctament.");
             return Redirect("/Students");
         }

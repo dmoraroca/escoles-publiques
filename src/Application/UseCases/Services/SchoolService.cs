@@ -44,13 +44,13 @@ public class SchoolService : ISchoolService
     {
         _logger.LogInformation("Obtenint escola amb Id: {Id}", id);
         var school = await _schoolRepository.GetByIdAsync(id);
-        
+
         if (school == null)
         {
             _logger.LogWarning("Escola amb Id {Id} no trobada", id);
             throw new NotFoundException("School", id);
         }
-        
+
         return school;
     }
 
@@ -65,7 +65,7 @@ public class SchoolService : ISchoolService
         {
             throw new ValidationException("Code", "El codi de l'escola no pot estar buit");
         }
-        
+
         _logger.LogInformation("Obtenint escola amb codi: {Code}", code);
         return await _schoolRepository.GetByCodeAsync(code);
     }
@@ -76,12 +76,12 @@ public class SchoolService : ISchoolService
         {
             throw new ValidationException("Code", "El codi de l'escola és obligatori");
         }
-        
+
         if (string.IsNullOrWhiteSpace(school.Name))
         {
             throw new ValidationException("Name", "El nom de l'escola és obligatori");
         }
-        
+
         var existingSchool = await _schoolRepository.GetByCodeAsync(school.Code);
         if (existingSchool != null)
         {
@@ -101,7 +101,7 @@ public class SchoolService : ISchoolService
         {
             throw new NotFoundException("School", school.Id);
         }
-        
+
         _logger.LogInformation("Actualitzant escola amb Id: {Id}", school.Id);
         await _schoolRepository.UpdateAsync(school);
     }
@@ -113,7 +113,7 @@ public class SchoolService : ISchoolService
         {
             throw new NotFoundException("School", id);
         }
-        
+
         _logger.LogInformation("Eliminant escola amb Id: {Id}", id);
         await _schoolRepository.DeleteAsync(id);
     }

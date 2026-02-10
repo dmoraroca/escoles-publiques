@@ -50,13 +50,13 @@ public class AnnualFeeService : IAnnualFeeService
     {
         _logger.LogInformation("Obtenint quota amb Id: {Id}", id);
         var annualFee = await _annualFeeRepository.GetByIdAsync(id);
-        
+
         if (annualFee == null)
         {
             _logger.LogWarning("Quota amb Id {Id} no trobada", id);
             throw new NotFoundException("AnnualFee", id);
         }
-        
+
         return annualFee;
     }
 
@@ -72,19 +72,19 @@ public class AnnualFeeService : IAnnualFeeService
         {
             throw new ValidationException("Amount", "L'import ha de ser superior a 0");
         }
-        
+
         if (annualFee.EnrollmentId <= 0)
         {
             throw new ValidationException("EnrollmentId", "L'ID de la inscripció és obligatori");
         }
-        
+
         var enrollment = await _enrollmentRepository.GetByIdAsync(annualFee.EnrollmentId);
         if (enrollment == null)
         {
             throw new NotFoundException("Enrollment", annualFee.EnrollmentId);
         }
 
-        _logger.LogInformation("Creant nova quota per la inscripció {EnrollmentId} - Import: {Amount}", 
+        _logger.LogInformation("Creant nova quota per la inscripció {EnrollmentId} - Import: {Amount}",
             annualFee.EnrollmentId, annualFee.Amount);
         return await _annualFeeRepository.AddAsync(annualFee);
     }
@@ -96,7 +96,7 @@ public class AnnualFeeService : IAnnualFeeService
         {
             throw new NotFoundException("AnnualFee", annualFee.Id);
         }
-        
+
         _logger.LogInformation("Actualitzant quota amb Id: {Id}", annualFee.Id);
         await _annualFeeRepository.UpdateAsync(annualFee);
     }
@@ -108,7 +108,7 @@ public class AnnualFeeService : IAnnualFeeService
         {
             throw new NotFoundException("AnnualFee", id);
         }
-        
+
         _logger.LogInformation("Eliminant quota amb Id: {Id}", id);
         await _annualFeeRepository.DeleteAsync(id);
     }
