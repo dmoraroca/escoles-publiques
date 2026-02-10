@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "El meu Tauler";
-    var user = ViewBag.User as Domain.Entities.User;
-    var student = ViewBag.Student as Domain.Entities.Student;
+    var user = ViewBag.User as Web.Models.UserViewModel;
+    var student = ViewBag.Student as Web.Models.StudentViewModel;
     var enrollments = ViewBag.Enrollments as List<Web.Models.EnrollmentViewModel>;
     var fees = ViewBag.Fees as List<Web.Models.AnnualFeeViewModel>;
 }
@@ -20,9 +20,9 @@
                 <div class="welcome-section">
                     <h1 class="welcome-title">Benvingut, @user?.FirstName!</h1>
                     <p class="welcome-subtitle">
-                        <i class="bi bi-person-badge"></i> @student?.User?.FirstName @student?.User?.LastName
+                        <i class="bi bi-person-badge"></i> @student?.FirstName @student?.LastName
                         <span class="mx-2">|</span>
-                        <i class="bi bi-building"></i> @student?.School?.Name
+                        <i class="bi bi-building"></i> @student?.SchoolName
                     </p>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                                         </span>
                                     </div>
                                     <div class="enrollment-body">
-                                        <p><i class="bi bi-building"></i> <strong>Escola:</strong> @student?.School?.Name ?? "-"</p>
+                                        <p><i class="bi bi-building"></i> <strong>Escola:</strong> @enrollment.SchoolName ?? "-"</p>
                                         <p><i class="bi bi-calendar3"></i> <strong>Any acadèmic:</strong> @(enrollment.AcademicYear ?? "?")</p>
                                         <p><i class="bi bi-clock-history"></i> <strong>Data inscripció:</strong> @(enrollment.EnrolledAt is DateTime dt ? dt.ToString("dd/MM/yyyy") : "?")</p>
                                     </div>

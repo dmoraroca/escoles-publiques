@@ -41,7 +41,7 @@ public partial class HomeController : BaseController
         if (role == "USER")
         {
             // Redirigeix directament al dashboard d'usuari
-            return RedirectToAction("Dashboard", "User");
+            return RedirectToAction("Dashboard", "Dashboard");
         }
 
         return View();

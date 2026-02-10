@@ -35,7 +35,7 @@ public class AuthController : Controller
         if (User.Identity?.IsAuthenticated == true)
         {
             var role = User.FindFirstValue("Role");
-            return role == "ADM" ? RedirectToAction("Index", "Home") : RedirectToAction("Dashboard", "User");
+            return role == "ADM" ? RedirectToAction("Index", "Home") : RedirectToAction("Dashboard", "Dashboard");
         }
 
         return View();
@@ -98,7 +98,7 @@ public class AuthController : Controller
             }
             else
             {
-                return RedirectToAction("Dashboard", "User");
+                return RedirectToAction("Dashboard", "Dashboard");
             }
         }
         catch (Npgsql.NpgsqlException)
