@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accés no autoritzat." xml:space="preserve">
+    <value>Unauthorized access.</value>
+  </data>
+  <data name="Accés no autoritzat. Torna a iniciar sessió." xml:space="preserve">
+    <value>Unauthorized access. Please sign in again.</value>
+  </data>
+  <data name="Alumne amb ID {0} no trobat." xml:space="preserve">
+    <value>Student with ID {0} not found.</value>
+  </data>
+  <data name="Alumne esborrat correctament." xml:space="preserve">
+    <value>Student deleted successfully.</value>
+  </data>
+  <data name="Alumne {0} {1} actualitzat correctament." xml:space="preserve">
+    <value>Student {0} {1} updated successfully.</value>
+  </data>
+  <data name="Alumne {0} {1} creat correctament." xml:space="preserve">
+    <value>Student {0} {1} created successfully.</value>
+  </data>
+  <data name="Error al actualitzar l'alumne. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error updating the student. Please try again.</value>
+  </data>
+  <data name="Error al actualitzar l'escola. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error updating the school. Please try again.</value>
+  </data>
+  <data name="Error al actualitzar la inscripció. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error updating the enrollment. Please try again.</value>
+  </data>
+  <data name="Error al actualitzar la quota. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error updating the fee. Please try again.</value>
+  </data>
+  <data name="Error al corregir les quotes." xml:space="preserve">
+    <value>Error correcting fees.</value>
+  </data>
+  <data name="Error al crear l'escola. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error creating the school. Please try again.</value>
+  </data>
+  <data name="Error al esborrar l'alumne. Pot tenir matrícules associades." xml:space="preserve">
+    <value>Error deleting the student. They may have associated enrollments.</value>
+  </data>
+  <data name="Error al esborrar l'escola. Pot tenir dades relacionades." xml:space="preserve">
+    <value>Error deleting the school. It may have related data.</value>
+  </data>
+  <data name="Error al esborrar la inscripció. Pot tenir quotes associades." xml:space="preserve">
+    <value>Error deleting the enrollment. It may have associated fees.</value>
+  </data>
+  <data name="Error al esborrar la quota." xml:space="preserve">
+    <value>Error deleting the fee.</value>
+  </data>
+  <data name="Error carregant els alumnes. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error loading students. Please try again.</value>
+  </data>
+  <data name="Error carregant els detalls de l'alumne." xml:space="preserve">
+    <value>Error loading student details.</value>
+  </data>
+  <data name="Error carregant els detalls de l'escola." xml:space="preserve">
+    <value>Error loading school details.</value>
+  </data>
+  <data name="Error carregant els detalls de la inscripció." xml:space="preserve">
+    <value>Error loading enrollment details.</value>
+  </data>
+  <data name="Error carregant l'alumne." xml:space="preserve">
+    <value>Error loading the student.</value>
+  </data>
+  <data name="Error carregant l'escola." xml:space="preserve">
+    <value>Error loading the school.</value>
+  </data>
+  <data name="Error carregant la inscripció." xml:space="preserve">
+    <value>Error loading the enrollment.</value>
+  </data>
+  <data name="Error carregant la quota." xml:space="preserve">
+    <value>Error loading the fee.</value>
+  </data>
+  <data name="Error carregant la quota. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error loading the fee. Please try again.</value>
+  </data>
+  <data name="Error carregant les escoles. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error loading schools. Please try again.</value>
+  </data>
+  <data name="Error carregant les inscripcions. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error loading enrollments. Please try again.</value>
+  </data>
+  <data name="Error carregant les quotes. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error loading fees. Please try again.</value>
+  </data>
+  <data name="Error creant l'alumne. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error creating the student. Please try again.</value>
+  </data>
+  <data name="Error creant la inscripció. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error creating the enrollment. Please try again.</value>
+  </data>
+  <data name="Error creant la quota. Si us plau, intenta-ho de nou." xml:space="preserve">
+    <value>Error creating the fee. Please try again.</value>
+  </data>
+  <data name="Error de validació: {0}" xml:space="preserve">
+    <value>Validation error: {0}</value>
+  </data>
+  <data name="Escola '{0}' actualitzada correctament." xml:space="preserve">
+    <value>School '{0}' updated successfully.</value>
+  </data>
+  <data name="Escola '{0}' creada correctament." xml:space="preserve">
+    <value>School '{0}' created successfully.</value>
+  </data>
+  <data name="Escola amb ID {0} no trobada." xml:space="preserve">
+    <value>School with ID {0} not found.</value>
+  </data>
+  <data name="Escola esborrada correctament." xml:space="preserve">
+    <value>School deleted successfully.</value>
+  </data>
+  <data name="Has de seleccionar una escola per a la inscripció." xml:space="preserve">
+    <value>You must select a school for the enrollment.</value>
+  </data>
+  <data name="Hi ha hagut un error. Si us plau, torna-ho a intentar." xml:space="preserve">
+    <value>There was an error. Please try again.</value>
+  </data>
+  <data name="Inscripció actualitzada correctament." xml:space="preserve">
+    <value>Enrollment updated successfully.</value>
+  </data>
+  <data name="Inscripció amb ID {0} no trobada." xml:space="preserve">
+    <value>Enrollment with ID {0} not found.</value>
+  </data>
+  <data name="Inscripció creada correctament." xml:space="preserve">
+    <value>Enrollment created successfully.</value>
+  </data>
+  <data name="Inscripció esborrada correctament." xml:space="preserve">
+    <value>Enrollment deleted successfully.</value>
+  </data>
+  <data name="Ja existeix un usuari amb l'email {0}" xml:space="preserve">
+    <value>A user with email {0} already exists.</value>
+  </data>
+  <data name="Ja existeix una altra escola amb el codi '{0}'." xml:space="preserve">
+    <value>Another school with code '{0}' already exists.</value>
+  </data>
+  <data name="Ja existeix una escola amb el codi '{0}'." xml:space="preserve">
+    <value>A school with code '{0}' already exists.</value>
+  </data>
+  <data name="L'alumne no existeix." xml:space="preserve">
+    <value>The student does not exist.</value>
+  </data>
+  <data name="L'alumne o l'escola no existeixen." xml:space="preserve">
+    <value>The student or the school does not exist.</value>
+  </data>
+  <data name="L'alumne seleccionat no existeix." xml:space="preserve">
+    <value>The selected student does not exist.</value>
+  </data>
+  <data name="L'escola no existeix." xml:space="preserve">
+    <value>The school does not exist.</value>
+  </data>
+  <data name="L'escola seleccionada no existeix." xml:space="preserve">
+    <value>The selected school does not exist.</value>
+  </data>
+  <data name="La inscripció no existeix." xml:space="preserve">
+    <value>The enrollment does not exist.</value>
+  </data>
+  <data name="La inscripció o l'alumne no existeixen." xml:space="preserve">
+    <value>The enrollment or the student does not exist.</value>
+  </data>
+  <data name="La inscripció seleccionada no existeix." xml:space="preserve">
+    <value>The selected enrollment does not exist.</value>
+  </data>
+  <data name="La quota no existeix." xml:space="preserve">
+    <value>The fee does not exist.</value>
+  </data>
+  <data name="La quota o la inscripció no existeixen." xml:space="preserve">
+    <value>The fee or the enrollment does not exist.</value>
+  </data>
+  <data name="No s'ha trobat cap alumne associat al teu usuari" xml:space="preserve">
+    <value>No student associated with your user was found</value>
+  </data>
+  <data name="No s'ha trobat la quota." xml:space="preserve">
+    <value>The fee was not found.</value>
+  </data>
+  <data name="Quota actualitzada correctament." xml:space="preserve">
+    <value>Fee updated successfully.</value>
+  </data>
+  <data name="Quota amb ID {0} no trobada." xml:space="preserve">
+    <value>Fee with ID {0} not found.</value>
+  </data>
+  <data name="Quota creada correctament." xml:space="preserve">
+    <value>Fee created successfully.</value>
+  </data>
+  <data name="Quota esborrada correctament." xml:space="preserve">
+    <value>Fee deleted successfully.</value>
+  </data>
+  <data name="S'ha produït un error carregant el tauler d'usuari." xml:space="preserve">
+    <value>An error occurred loading the user dashboard.</value>
+  </data>
+  <data name="Sense escola" xml:space="preserve">
+    <value>No school</value>
+  </data>
+  <data name="Si us plau, omple tots els camps obligatoris correctament." xml:space="preserve">
+    <value>Please fill in all required fields correctly.</value>
+  </data>
+  <data name="Si us plau, omple tots els camps obligatoris." xml:space="preserve">
+    <value>Please fill in all required fields.</value>
+  </data>
+  <data name="{0} quotes corregides correctament." xml:space="preserve">
+    <value>{0} fees corrected successfully.</value>
+  </data>
+</root>

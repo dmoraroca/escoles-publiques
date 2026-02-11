@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Alumnes" xml:space="preserve">
+    <value>学生</value>
+  </data>
+  <data name="Cognoms" xml:space="preserve">
+    <value>姓氏</value>
+  </data>
+  <data name="Data naixement" xml:space="preserve">
+    <value>出生日期</value>
+  </data>
+  <data name="Detalls" xml:space="preserve">
+    <value>详情</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>邮箱</value>
+  </data>
+  <data name="Esborrar" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>学校</value>
+  </data>
+  <data name="Estàs segur que vols esborrar aquest alumne?" xml:space="preserve">
+    <value>确定要删除此学生吗？</value>
+  </data>
+  <data name="No hi ha alumnes registrats. Crea el primer!" xml:space="preserve">
+    <value>暂无学生记录。创建第一个！</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="Nou Alumne" xml:space="preserve">
+    <value>新学生</value>
+  </data>
+</root>

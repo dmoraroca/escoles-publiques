@@ -1,13 +1,13 @@
 @model Web.Models.StudentViewModel
 
 @{
-    ViewData["Title"] = "Editar Alumne";
+    ViewData["Title"] = Localizer["Editar Alumne"];
     var schools = ViewBag.Schools as IEnumerable<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-pencil"></i> Editar Alumne</h2>
+        <h2><i class="bi bi-pencil"></i> @Localizer["Editar Alumne"]</h2>
     </div>
 
     <div class="card">
@@ -18,36 +18,36 @@
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="FirstName" class="form-label">Nom <span class="text-danger">*</span></label>
-                        <input asp-for="FirstName" class="form-control" placeholder="Nom de l'alumne" maxlength="100" required />
+                        <label asp-for="FirstName" class="form-label">@Localizer["Nom"] <span class="text-danger">*</span></label>
+                        <input asp-for="FirstName" class="form-control" placeholder="@Localizer["Nom de l'alumne"]" maxlength="100" required />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label asp-for="LastName" class="form-label">Cognoms <span class="text-danger">*</span></label>
-                        <input asp-for="LastName" class="form-control" placeholder="Cognoms de l'alumne" maxlength="100" required />
+                        <label asp-for="LastName" class="form-label">@Localizer["Cognoms"] <span class="text-danger">*</span></label>
+                        <input asp-for="LastName" class="form-control" placeholder="@Localizer["Cognoms de l'alumne"]" maxlength="100" required />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Email" class="form-label">Email</label>
-                        <input asp-for="Email" type="email" class="form-control" placeholder="email@exemple.cat" maxlength="150" />
+                        <label asp-for="Email" class="form-label">@Localizer["Email"]</label>
+                        <input asp-for="Email" type="email" class="form-control" placeholder="@Localizer["email@exemple.cat"]" maxlength="150" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label asp-for="BirthDate" class="form-label">Data de Naixement</label>
+                        <label asp-for="BirthDate" class="form-label">@Localizer["Data de Naixement"]</label>
                         <input asp-for="BirthDate" type="date" class="form-control" />
                         <span asp-validation-for="BirthDate" class="text-danger"></span>
                     </div>
                 </div>
                 
                 <div class="mb-3">
-                    <label asp-for="SchoolId" class="form-label">Escola <span class="text-danger">*</span></label>
+                    <label asp-for="SchoolId" class="form-label">@Localizer["Escola"] <span class="text-danger">*</span></label>
                     <select asp-for="SchoolId" class="form-select" required>
-                        <option value="">-- Selecciona una escola --</option>
+                        <option value="">@Localizer["-- Selecciona una escola --"]</option>
                         @foreach (var school in schools)
                         {
                             <option value="@school.Id">@school.Name</option>
@@ -58,21 +58,21 @@
 
                 <div class="d-flex justify-content-between mt-4">
                     <a asp-action="Index" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i> Tornar
+                        <i class="bi bi-arrow-left"></i> @Localizer["Tornar"]
                     </a>
                     @{
                         var opts = new
                         {
-                            submitText = "Guardar",
+                            submitText = Localizer["Guardar"].Value,
                             submitClass = "btn btn-primary",
-                            cancelText = "Cancel·lar",
+                            cancelText = Localizer["Cancel·lar"].Value,
                             cancelClass = "btn btn-secondary",
                             cancelHref = Url.Action("Index"),
                             privacySelector = "#AgreesToPrivacy",
                             disabledByDefault = true
                         };
                     }
-                    @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
+                    @await Html.PartialAsync("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
                 </div>
             </form>
         </div>

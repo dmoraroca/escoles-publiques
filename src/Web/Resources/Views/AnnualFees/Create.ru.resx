@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona un alumne --" xml:space="preserve">
+    <value>-- Выберите ученика --</value>
+  </data>
+  <data name="-- Selecciona una inscripció --" xml:space="preserve">
+    <value>-- Выберите зачисление --</value>
+  </data>
+  <data name="Accepto les" xml:space="preserve">
+    <value>Я принимаю</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>Ученик</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Crear Quota" xml:space="preserve">
+    <value>Создать взнос</value>
+  </data>
+  <data name="Data de venciment" xml:space="preserve">
+    <value>Срок оплаты</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>Школа</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="Inscripció" xml:space="preserve">
+    <value>Зачисление</value>
+  </data>
+  <data name="Marcar com a pagada" xml:space="preserve">
+    <value>Отметить как оплачено</value>
+  </data>
+  <data name="Moneda" xml:space="preserve">
+    <value>Валюта</value>
+  </data>
+  <data name="Nova Quota Anual" xml:space="preserve">
+    <value>Новый ежегодный взнос</value>
+  </data>
+  <data name="Referència de pagament" xml:space="preserve">
+    <value>Платежный референс</value>
+  </data>
+  <data name="Referència o número de transacció" xml:space="preserve">
+    <value>Референс или номер транзакции</value>
+  </data>
+  <data name="condicions de privacitat" xml:space="preserve">
+    <value>условия конфиденциальности</value>
+  </data>
+</root>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona un alumne --" xml:space="preserve">
+    <value>-- Selecciona un alumno --</value>
+  </data>
+  <data name="-- Selecciona un estat --" xml:space="preserve">
+    <value>-- Selecciona un estado --</value>
+  </data>
+  <data name="-- Selecciona una escola --" xml:space="preserve">
+    <value>-- Selecciona una escuela --</value>
+  </data>
+  <data name="1r ESO, 2n Batxillerat, etc." xml:space="preserve">
+    <value>1º ESO, 2º Bachillerato, etc.</value>
+  </data>
+  <data name="2025-2026" xml:space="preserve">
+    <value>2025-2026</value>
+  </data>
+  <data name="Accepto les" xml:space="preserve">
+    <value>Acepto las</value>
+  </data>
+  <data name="Activa" xml:space="preserve">
+    <value>Activa</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>Alumno</value>
+  </data>
+  <data name="Any acadèmic" xml:space="preserve">
+    <value>Año académico</value>
+  </data>
+  <data name="Cancel·lada" xml:space="preserve">
+    <value>Cancelada</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Crear Inscripció" xml:space="preserve">
+    <value>Crear inscripción</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>Escuela</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Nom del curs" xml:space="preserve">
+    <value>Nombre del curso</value>
+  </data>
+  <data name="Nova Inscripció" xml:space="preserve">
+    <value>Nueva inscripción</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>Pendiente</value>
+  </data>
+  <data name="condicions de privacitat" xml:space="preserve">
+    <value>condiciones de privacidad</value>
+  </data>
+</root>

@@ -1,19 +1,19 @@
 @model Web.Models.StudentViewModel
 
 @{
-    ViewData["Title"] = "Detalls de l'Alumne";
+    ViewData["Title"] = Localizer["Detalls de l'Alumne"];
     var schools = ViewBag.Schools as IEnumerable<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-person"></i> Detalls de l'Alumne</h2>
+        <h2><i class="bi bi-person"></i> @Localizer["Detalls de l'Alumne"]</h2>
         <div id="headerButtons">
             <a asp-action="Index" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Tornar
+                <i class="bi bi-arrow-left"></i> @Localizer["Tornar"]
             </a>
             <button id="editButton" type="button" class="btn btn-warning">
-                <i class="bi bi-pencil"></i> Editar
+                <i class="bi bi-pencil"></i> @Localizer["Editar"]
             </button>
         </div>
     </div>
@@ -24,41 +24,48 @@
                 <input type="hidden" asp-for="Id" />
                 
                 <div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage">Si us plau, omple tots els camps obligatoris correctament.</span>
+                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage">@Localizer["Si us plau, omple tots els camps obligatoris correctament."]</span>
                     <button type="button" class="btn-close" onclick="document.getElementById('errorAlert').style.display='none'"></button>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Nom <span class="text-danger edit-only">*</span></label>
+                        <label class="form-label">@Localizer["Nom"] <span class="text-danger edit-only">*</span></label>
                         <input type="text" id="FirstName" name="FirstName" class="form-control" value="@Model.FirstName" readonly required />
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Cognoms <span class="text-danger edit-only">*</span></label>
+                        <label class="form-label">@Localizer["Cognoms"] <span class="text-danger edit-only">*</span></label>
                         <input type="text" id="LastName" name="LastName" class="form-control" value="@Model.LastName" readonly required />
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">@Localizer["Email"]</label>
                         <input type="email" id="Email" name="Email" class="form-control" value="@(Model.Email ?? "")" readonly />
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Data de Naixement</label>
+                        <label class="form-label">@Localizer["Data de Naixement"]</label>
                         <input type="date" id="BirthDate" name="BirthDate" class="form-control" value="@(Model.BirthDate?.ToString("yyyy-MM-dd"))" readonly />
                     </div>
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label">Escola <span class="text-danger edit-only">*</span></label>
+                    <label class="form-label">@Localizer["Escola"] <span class="text-danger edit-only">*</span></label>
                     <select id="SchoolId" name="SchoolId" class="form-select" disabled required>
-                        <option value="">-- Selecciona una escola --</option>
+                        <option value="">@Localizer["-- Selecciona una escola --"]</option>
                         @foreach (var school in schools)
                         {
-                            <!option value="@school.Id" @(school.Id == Model.SchoolId ? "selected" : "")>@school.Name</!option>
+                            if (school.Id == Model.SchoolId)
+                            {
+                                <option value="@school.Id" selected>@school.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@school.Id">@school.Name</option>
+                            }
                         }
                     </select>
                 </div>
@@ -66,8 +73,8 @@
                 @{
                     var options = new
                     {
-                        submitText = "Guardar",
-                        cancelText = "Cancel·lar",
+                        submitText = Localizer["Guardar"].Value,
+                        cancelText = Localizer["Cancel·lar"].Value,
                         cancelAction = "reload",
                         cancelHref = Url.Action("Index"),
                         disabledByDefault = true,
@@ -75,7 +82,7 @@
                     };
                 }
                 <div id="saveCancelWrapper" style="display:none" class="mt-3 d-flex justify-content-end">
-                    @Html.Partial("_SaveCancelButtons", options)
+                    @await Html.PartialAsync("_SaveCancelButtons", options)
                 </div>
             </form>
         </div>

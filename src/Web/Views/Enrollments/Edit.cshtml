@@ -1,7 +1,7 @@
 @model Web.Models.EnrollmentViewModel
 
 @{
-    ViewData["Title"] = "Editar Inscripció";
+    ViewData["Title"] = Localizer["Editar Inscripció"];
     var schools = ViewBag.Schools as IEnumerable<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
 }
 
@@ -9,7 +9,7 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-pencil"></i> Edició de la Inscripció</h2>
+        <h2><i class="bi bi-pencil"></i> @Localizer["Edició de la Inscripció"]</h2>
     </div>
 
     <div class="card">
@@ -22,39 +22,39 @@
                 <input type="hidden" asp-for="SchoolId" />
 
                 <div class="mb-3">
-                    <label class="form-label">Alumne <span class="text-danger">*</span></label>
+                    <label class="form-label">@Localizer["Alumne"] <span class="text-danger">*</span></label>
                     <input type="text" class="form-control bg-secondary bg-opacity-10" asp-for="StudentName" readonly />
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Escola <span class="text-danger">*</span></label>
+                    <label class="form-label">@Localizer["Escola"] <span class="text-danger">*</span></label>
                     <input type="text" class="form-control bg-secondary bg-opacity-10" value="@Model.SchoolName" readonly />
                 </div>
 
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Curs Acadèmic <span class="text-danger">*</span></label>
+                        <label class="form-label">@Localizer["Curs Acadèmic"] <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" asp-for="AcademicYear" required />
                         <span asp-validation-for="AcademicYear" class="text-danger"></span>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label asp-for="CourseName" class="form-label">Nom del Curs</label>
+                        <label asp-for="CourseName" class="form-label">@Localizer["Nom del Curs"]</label>
                         <input type="text" class="form-control" asp-for="CourseName" />
                         <span asp-validation-for="CourseName" class="text-danger"></span>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label asp-for="Status" class="form-label">Estat <span class="text-danger">*</span></label>
+                        <label asp-for="Status" class="form-label">@Localizer["Estat"] <span class="text-danger">*</span></label>
                         <select asp-for="Status" class="form-select" required>
-                            <option value="">-- Selecciona un estat --</option>
-                            <option value="Activa">Activa</option>
-                            <option value="Pendent">Pendent</option>
-                            <option value="Cancel·lada">Cancel·lada</option>
+                            <option value="">@Localizer["-- Selecciona un estat --"]</option>
+                            <option value="Activa">@Localizer["Activa"]</option>
+                            <option value="Pendent">@Localizer["Pendent"]</option>
+                            <option value="Cancel·lada">@Localizer["Cancel·lada"]</option>
                         </select>
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="EnrolledAt" class="form-label">Data d'Inscripció <span class="text-danger">*</span></label>
+                    <label asp-for="EnrolledAt" class="form-label">@Localizer["Data d'Inscripció"] <span class="text-danger">*</span></label>
                     <input asp-for="EnrolledAt" class="form-control" type="datetime-local" value="@Model.EnrolledAt.ToString("yyyy-MM-ddTHH:mm")" required />
                     <span asp-validation-for="EnrolledAt" class="text-danger"></span>
                 </div>
@@ -63,16 +63,16 @@
                     @{
                         var opts = new
                         {
-                            submitText = "Guardar",
+                            submitText = Localizer["Guardar"].Value,
                             submitClass = "btn btn-primary",
-                            cancelText = "Cancel·lar",
+                            cancelText = Localizer["Cancel·lar"].Value,
                             cancelClass = "btn btn-secondary",
                             cancelHref = Url.Action("Details", new { id = Model.Id }),
                             privacySelector = "#AgreesToPrivacy",
                             disabledByDefault = true
                         };
                     }
-                    @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
+                    @await Html.PartialAsync("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
                 </div>
             </form>
         </div>

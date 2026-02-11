@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona un alumne --" xml:space="preserve">
+    <value>-- Selecciona un alumne --</value>
+  </data>
+  <data name="-- Selecciona una inscripció --" xml:space="preserve">
+    <value>-- Selecciona una inscripció --</value>
+  </data>
+  <data name="Accepto les" xml:space="preserve">
+    <value>Accepto les</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>Alumne</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Cancel·lar</value>
+  </data>
+  <data name="Crear Quota" xml:space="preserve">
+    <value>Crear Quota</value>
+  </data>
+  <data name="Data de venciment" xml:space="preserve">
+    <value>Data de venciment</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>Escola</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Inscripció" xml:space="preserve">
+    <value>Inscripció</value>
+  </data>
+  <data name="Marcar com a pagada" xml:space="preserve">
+    <value>Marcar com a pagada</value>
+  </data>
+  <data name="Moneda" xml:space="preserve">
+    <value>Moneda</value>
+  </data>
+  <data name="Nova Quota Anual" xml:space="preserve">
+    <value>Nova Quota Anual</value>
+  </data>
+  <data name="Referència de pagament" xml:space="preserve">
+    <value>Referència de pagament</value>
+  </data>
+  <data name="Referència o número de transacció" xml:space="preserve">
+    <value>Referència o número de transacció</value>
+  </data>
+  <data name="condicions de privacitat" xml:space="preserve">
+    <value>condicions de privacitat</value>
+  </data>
+</root>

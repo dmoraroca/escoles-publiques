@@ -78,7 +78,7 @@ public class EnrollmentsController : BaseController
             var userName = User?.Identity?.IsAuthenticated == true ? User.Identity.Name : "Usuari no autenticat";
             var ip = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "IP desconeguda";
             Logger.LogError(ex, "Error obtenint llista d'inscripcions. Usuari: {UserName}, IP: {IP}", userName, ip);
-            SetErrorMessage("Error carregant les inscripcions. Si us plau, intenta-ho de nou.");
+            SetErrorMessage(Localizer["Error carregant les inscripcions. Si us plau, intenta-ho de nou."].Value);
             return View("~/Views/Shared/ErrorDb.cshtml");
         }
     }
@@ -126,13 +126,13 @@ public class EnrollmentsController : BaseController
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Inscripció amb Id {Id} no trobada", id);
-            SetErrorMessage($"Inscripció amb ID {id} no trobada.");
+            SetErrorMessage(Localizer["Inscripció amb ID {0} no trobada.", id].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error obtenint els detalls de la inscripció amb ID {Id}", id);
-            SetErrorMessage("Error carregant els detalls de la inscripció.");
+            SetErrorMessage(Localizer["Error carregant els detalls de la inscripció."].Value);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -170,13 +170,13 @@ public class EnrollmentsController : BaseController
                 {
                     Logger.LogWarning("ModelState error: {ErrorMessage}", error.ErrorMessage);
                 }
-                SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
+                SetErrorMessage(Localizer["Si us plau, omple tots els camps obligatoris correctament."].Value);
                 return RedirectToAction(nameof(Index));
             }
             if (model.SchoolId == 0)
             {
                 Logger.LogWarning("SchoolId no pot ser zero al crear inscripció");
-                SetErrorMessage("Has de seleccionar una escola per a la inscripció.");
+                SetErrorMessage(Localizer["Has de seleccionar una escola per a la inscripció."].Value);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -200,21 +200,21 @@ public class EnrollmentsController : BaseController
             await _enrollmentsApi.CreateAsync(dto);
             if (IsAjaxRequest())
             {
-                return Ok(new { message = "Inscripció creada correctament." });
+                return Ok(new { message = Localizer["Inscripció creada correctament."].Value });
             }
-            SetSuccessMessage("Inscripció creada correctament.");
+            SetSuccessMessage(Localizer["Inscripció creada correctament."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Alumne no trobat al crear inscripció");
-            SetErrorMessage("L'alumne seleccionat no existeix.");
+            SetErrorMessage(Localizer["L'alumne seleccionat no existeix."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Error de validació al crear inscripció");
-            SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
+            SetErrorMessage(Localizer["Error de validació: {0}", string.Join(", ", ex.Errors.SelectMany(e => e.Value))].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
@@ -222,15 +222,15 @@ public class EnrollmentsController : BaseController
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear inscripció)");
             if (IsAjaxRequest())
             {
-                return Unauthorized(new { error = "Accés no autoritzat. Torna a iniciar sessió." });
+                return Unauthorized(new { error = Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value });
             }
-            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
             return RedirectToAction("Login", "Auth");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error creant inscripció");
-            SetErrorMessage("Error creant la inscripció. Si us plau, intenta-ho de nou.");
+            SetErrorMessage(Localizer["Error creant la inscripció. Si us plau, intenta-ho de nou."].Value);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -242,7 +242,7 @@ public class EnrollmentsController : BaseController
             var enrollment = await _enrollmentsApi.GetByIdAsync(id);
             if (enrollment == null)
             {
-                SetErrorMessage($"Inscripció amb ID {id} no trobada.");
+                SetErrorMessage(Localizer["Inscripció amb ID {0} no trobada.", id].Value);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -284,7 +284,7 @@ public class EnrollmentsController : BaseController
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error carregant inscripció per editar {Id}", id);
-            SetErrorMessage("Error carregant la inscripció.");
+            SetErrorMessage(Localizer["Error carregant la inscripció."].Value);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -297,7 +297,7 @@ public class EnrollmentsController : BaseController
         {
             if (!ModelState.IsValid)
             {
-                SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
+                SetErrorMessage(Localizer["Si us plau, omple tots els camps obligatoris correctament."].Value);
                 var students = await _studentsApi.GetAllAsync();
                 ViewBag.Students = students.Select(s => new StudentViewModel
                 {
@@ -328,25 +328,25 @@ public class EnrollmentsController : BaseController
                 model.SchoolId
             );
             await _enrollmentsApi.UpdateAsync(model.Id, dto);
-            SetSuccessMessage("Inscripció actualitzada correctament.");
+            SetSuccessMessage(Localizer["Inscripció actualitzada correctament."].Value);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Inscripció o alumne no trobats al actualitzar");
-            SetErrorMessage("La inscripció o l'alumne no existeixen.");
+            SetErrorMessage(Localizer["La inscripció o l'alumne no existeixen."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Error de validació al actualitzar inscripció");
-            SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
+            SetErrorMessage(Localizer["Error de validació: {0}", string.Join(", ", ex.Errors.SelectMany(e => e.Value))].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error actualitzant inscripció {Id}", model.Id);
-            SetErrorMessage("Error al actualitzar la inscripció. Si us plau, intenta-ho de nou.");
+            SetErrorMessage(Localizer["Error al actualitzar la inscripció. Si us plau, intenta-ho de nou."].Value);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -358,19 +358,19 @@ public class EnrollmentsController : BaseController
         {
             await _enrollmentsApi.DeleteAsync(id);
 
-            SetSuccessMessage("Inscripció esborrada correctament.");
+            SetSuccessMessage(Localizer["Inscripció esborrada correctament."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Intent d'esborrar inscripció inexistent: {Id}", id);
-            SetErrorMessage("La inscripció no existeix.");
+            SetErrorMessage(Localizer["La inscripció no existeix."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error esborrant inscripció {Id}", id);
-            SetErrorMessage("Error al esborrar la inscripció. Pot tenir quotes associades.");
+            SetErrorMessage(Localizer["Error al esborrar la inscripció. Pot tenir quotes associades."].Value);
             return RedirectToAction(nameof(Index));
         }
     }

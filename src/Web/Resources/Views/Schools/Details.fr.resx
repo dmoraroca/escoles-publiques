@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona un àmbit --" xml:space="preserve">
+    <value>-- Sélectionnez un domaine --</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Ciutat" xml:space="preserve">
+    <value>Ville</value>
+  </data>
+  <data name="Codi" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Data de creació" xml:space="preserve">
+    <value>Date de création</value>
+  </data>
+  <data name="Detalls de l'Escola" xml:space="preserve">
+    <value>Détails de l'école</value>
+  </data>
+  <data name="Editar" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="El codi no es pot modificar" xml:space="preserve">
+    <value>Le code ne peut pas être modifié</value>
+  </data>
+  <data name="Favorita" xml:space="preserve">
+    <value>Favorite</value>
+  </data>
+  <data name="Guardar" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Si us plau, omple tots els camps obligatoris correctament." xml:space="preserve">
+    <value>Veuillez remplir correctement tous les champs obligatoires.</value>
+  </data>
+  <data name="Sí" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="Tornar" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>Domaine</value>
+  </data>
+  <data name="Àmbit és obligatori" xml:space="preserve">
+    <value>Le domaine est obligatoire</value>
+  </data>
+</root>

@@ -3,7 +3,7 @@
 @model IEnumerable<Web.Models.StudentViewModel>
 
 @{
-    ViewData["Title"] = "Alumnes";
+    ViewData["Title"] = Localizer["Alumnes"];
     
     // Obtenir llista d'escoles per al dropdown
     var schools = ViewBag.Schools as IEnumerable<Web.Models.SchoolViewModel> ?? new List<Web.Models.SchoolViewModel>();
@@ -19,27 +19,27 @@
     var tableConfig = new TableViewModel<StudentViewModel>
     {
         Data = Model,
-        EntityName = "Alumnes",
+        EntityName = Localizer["Alumnes"].Value,
         ControllerName = "Students",
-        EmptyMessage = "No hi ha alumnes registrats. Crea el primer!",
+        EmptyMessage = Localizer["No hi ha alumnes registrats. Crea el primer!"].Value,
         Columns = new List<ColumnConfig>
         {
             new ColumnConfig 
             { 
                 PropertyName = "FirstName", 
-                DisplayName = "Nom",
+                DisplayName = Localizer["Nom"].Value,
                 IsSortable = true 
             },
             new ColumnConfig 
             { 
                 PropertyName = "LastName", 
-                DisplayName = "Cognoms",
+                DisplayName = Localizer["Cognoms"].Value,
                 IsSortable = true 
             },
             new ColumnConfig 
             { 
                 PropertyName = "Email", 
-                DisplayName = "Email",
+                DisplayName = Localizer["Email"].Value,
                 IsSortable = true,
                 CustomRender = (item) => 
                 {
@@ -52,7 +52,7 @@
             new ColumnConfig 
             { 
                 PropertyName = "BirthDate", 
-                DisplayName = "Data naixement",
+                DisplayName = Localizer["Data naixement"].Value,
                 Format = "dd/MM/yyyy",
                 IsSortable = true,
                 CustomRender = (item) => 
@@ -64,7 +64,7 @@
             new ColumnConfig 
             { 
                 PropertyName = "SchoolName", 
-                DisplayName = "Escola",
+                DisplayName = Localizer["Escola"].Value,
                 IsSortable = true 
             }
         },
@@ -73,18 +73,18 @@
             new TableAction 
             { 
                 ActionName = "Details", 
-                DisplayText = "Detalls",
+                DisplayText = Localizer["Detalls"].Value,
                 CssClass = "btn-info",
                 Icon = "👁️"
             },
             new TableAction 
             { 
                 ActionName = "Delete", 
-                DisplayText = "Esborrar",
+                DisplayText = Localizer["Esborrar"].Value,
                 CssClass = "btn-danger",
                 Icon = "🗑️",
                 RequiresConfirmation = true,
-                ConfirmationMessage = "Estàs segur que vols esborrar aquest alumne?"
+                ConfirmationMessage = Localizer["Estàs segur que vols esborrar aquest alumne?"].Value
             }
         }
     };
@@ -92,9 +92,9 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Alumnes</h2>
+        <h2>@Localizer["Alumnes"]</h2>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createStudentModal">
-            <i class="bi bi-plus-lg"></i> Nou Alumne
+            <i class="bi bi-plus-lg"></i> @Localizer["Nou Alumne"]
         </button>
     </div>
 
@@ -106,6 +106,3 @@
 </div>
 
 @await Html.PartialAsync("_EntityModal", modalConfig)
-}
-</script>
-}

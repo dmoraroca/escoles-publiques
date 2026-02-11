@@ -43,7 +43,7 @@ public class StudentsController : BaseController
                 Email = s.Email,
                 BirthDate = s.BirthDate.HasValue ? s.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
                 SchoolId = (int)s.SchoolId,
-                SchoolName = s.SchoolName ?? "Sense escola"
+                SchoolName = s.SchoolName ?? Localizer["Sense escola"].Value
             });
 
             var schools = await _schoolsApi.GetAllAsync();
@@ -58,7 +58,7 @@ public class StudentsController : BaseController
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error obtenint llista d'alumnes");
-            SetErrorMessage("Error carregant els alumnes. Si us plau, intenta-ho de nou.");
+            SetErrorMessage(Localizer["Error carregant els alumnes. Si us plau, intenta-ho de nou."].Value);
             return View(new List<StudentViewModel>());
         }
     }
@@ -83,7 +83,7 @@ public class StudentsController : BaseController
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (check email alumne)");
-            return Unauthorized(new { error = "Accés no autoritzat." });
+            return Unauthorized(new { error = Localizer["Accés no autoritzat."].Value });
         }
         catch (Exception ex)
         {
@@ -99,7 +99,7 @@ public class StudentsController : BaseController
             var student = await _studentsApi.GetByIdAsync(id);
             if (student == null)
             {
-                SetErrorMessage($"Alumne amb ID {id} no trobat.");
+                SetErrorMessage(Localizer["Alumne amb ID {0} no trobat.", id].Value);
                 return Redirect("/Students");
             }
 
@@ -112,7 +112,7 @@ public class StudentsController : BaseController
                 Email = student.Email,
                 BirthDate = student.BirthDate.HasValue ? student.BirthDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
                 SchoolId = (int)student.SchoolId,
-                SchoolName = student.SchoolName ?? "Sense escola"
+                SchoolName = student.SchoolName ?? Localizer["Sense escola"].Value
             };
 
             var schools = await _schoolsApi.GetAllAsync();
@@ -127,13 +127,13 @@ public class StudentsController : BaseController
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Alumne amb Id {Id} no trobat", id);
-            SetErrorMessage($"Alumne amb ID {id} no trobat.");
+            SetErrorMessage(Localizer["Alumne amb ID {0} no trobat.", id].Value);
             return Redirect("/Students");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error obtenint detalls de l'alumne {Id}", id);
-            SetErrorMessage("Error carregant els detalls de l'alumne.");
+            SetErrorMessage(Localizer["Error carregant els detalls de l'alumne."].Value);
             return Redirect("/Students");
         }
     }
@@ -146,7 +146,7 @@ public class StudentsController : BaseController
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new { error = "Si us plau, omple tots els camps obligatoris correctament." });
+                return BadRequest(new { error = Localizer["Si us plau, omple tots els camps obligatoris correctament."].Value });
             }
 
             var dto = new ApiStudentIn(
@@ -160,40 +160,40 @@ public class StudentsController : BaseController
 
             if (IsAjaxRequest())
             {
-                return Ok(new { message = $"Alumne {model.FirstName} {model.LastName} creat correctament." });
+                return Ok(new { message = Localizer["Alumne {0} {1} creat correctament.", model.FirstName, model.LastName].Value });
             }
-            SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} creat correctament.");
+            SetSuccessMessage(Localizer["Alumne {0} {1} creat correctament.", model.FirstName, model.LastName].Value);
             return Redirect("/Students");
         }
         catch (DuplicateEntityException ex)
         {
             Logger.LogWarning(ex, "Email duplicat al crear alumne");
-            return BadRequest(new { error = $"Ja existeix un usuari amb l'email {model.Email}" });
+            return BadRequest(new { error = Localizer["Ja existeix un usuari amb l'email {0}", model.Email].Value });
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Escola no trobada al crear alumne");
-            return BadRequest(new { error = "L'escola seleccionada no existeix." });
+            return BadRequest(new { error = Localizer["L'escola seleccionada no existeix."].Value });
         }
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Error de validació al crear alumne");
-            return BadRequest(new { error = $"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}" });
+            return BadRequest(new { error = Localizer["Error de validació: {0}", string.Join(", ", ex.Errors.SelectMany(e => e.Value))].Value });
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear alumne)");
             if (IsAjaxRequest())
             {
-                return Unauthorized(new { error = "Accés no autoritzat. Torna a iniciar sessió." });
+                return Unauthorized(new { error = Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value });
             }
-            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
             return RedirectToAction("Login", "Auth");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error creant alumne");
-            return BadRequest(new { error = "Error creant l'alumne. Si us plau, intenta-ho de nou." });
+            return BadRequest(new { error = Localizer["Error creant l'alumne. Si us plau, intenta-ho de nou."].Value });
         }
     }
 
@@ -204,7 +204,7 @@ public class StudentsController : BaseController
             var student = await _studentsApi.GetByIdAsync(id);
             if (student == null)
             {
-                SetErrorMessage($"Alumne amb ID {id} no trobat.");
+                SetErrorMessage(Localizer["Alumne amb ID {0} no trobat.", id].Value);
                 return Redirect("/Students");
             }
 
@@ -232,13 +232,13 @@ public class StudentsController : BaseController
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Alumne amb Id {Id} no trobat per editar", id);
-            SetErrorMessage($"Alumne amb ID {id} no trobat.");
+            SetErrorMessage(Localizer["Alumne amb ID {0} no trobat.", id].Value);
             return Redirect("/Students");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error carregant alumne per editar {Id}", id);
-            SetErrorMessage("Error carregant l'alumne.");
+            SetErrorMessage(Localizer["Error carregant l'alumne."].Value);
             return Redirect("/Students");
         }
     }
@@ -251,7 +251,7 @@ public class StudentsController : BaseController
         {
             if (!ModelState.IsValid)
             {
-                SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
+                SetErrorMessage(Localizer["Si us plau, omple tots els camps obligatoris correctament."].Value);
                 var schools = await _schoolsApi.GetAllAsync();
                 ViewBag.Schools = schools.Select(s => new SchoolViewModel
                 {
@@ -270,25 +270,25 @@ public class StudentsController : BaseController
             );
             await _studentsApi.UpdateAsync(model.Id, dto);
 
-            SetSuccessMessage($"Alumne {model.FirstName} {model.LastName} actualitzat correctament.");
+            SetSuccessMessage(Localizer["Alumne {0} {1} actualitzat correctament.", model.FirstName, model.LastName].Value);
             return Redirect("/Students");
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Alumne o escola no trobats al actualitzar");
-            SetErrorMessage("L'alumne o l'escola no existeixen.");
+            SetErrorMessage(Localizer["L'alumne o l'escola no existeixen."].Value);
             return Redirect("/Students");
         }
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Error de validació al actualitzar alumne");
-            SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
+            SetErrorMessage(Localizer["Error de validació: {0}", string.Join(", ", ex.Errors.SelectMany(e => e.Value))].Value);
             return Redirect("/Students");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error actualitzant alumne {Id}", model.Id);
-            SetErrorMessage("Error al actualitzar l'alumne. Si us plau, intenta-ho de nou.");
+            SetErrorMessage(Localizer["Error al actualitzar l'alumne. Si us plau, intenta-ho de nou."].Value);
             return Redirect("/Students");
         }
     }
@@ -300,19 +300,19 @@ public class StudentsController : BaseController
         {
             await _studentsApi.DeleteAsync(id);
 
-            SetSuccessMessage("Alumne esborrat correctament.");
+            SetSuccessMessage(Localizer["Alumne esborrat correctament."].Value);
             return Redirect("/Students");
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Intent d'esborrar alumne inexistent: {Id}", id);
-            SetErrorMessage("L'alumne no existeix.");
+            SetErrorMessage(Localizer["L'alumne no existeix."].Value);
             return Redirect("/Students");
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error esborrant alumne {Id}", id);
-            SetErrorMessage("Error al esborrar l'alumne. Pot tenir matrícules associades.");
+            SetErrorMessage(Localizer["Error al esborrar l'alumne. Pot tenir matrícules associades."].Value);
             return Redirect("/Students");
         }
     }

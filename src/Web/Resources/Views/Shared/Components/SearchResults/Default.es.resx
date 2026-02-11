@@ -49,7 +49,7 @@
     <value>Apellidos</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>Email</value>
+    <value>Correo electrónico</value>
   </data>
   <data name="Escola" xml:space="preserve">
     <value>Escuela</value>

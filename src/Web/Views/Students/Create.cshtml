@@ -1,7 +1,7 @@
 @model Web.Models.StudentViewModel
 
 @{
-    ViewData["Title"] = "Nou Alumne";
+    ViewData["Title"] = Localizer["Nou Alumne"];
 }
 
 <div class="container mt-4">
@@ -9,38 +9,38 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="bi bi-person-plus"></i> Nou Alumne</h4>
+                    <h4 class="mb-0"><i class="bi bi-person-plus"></i> @Localizer["Nou Alumne"]</h4>
                 </div>
                 <div class="card-body">
                     <form asp-action="Create" method="post">
                         <div class="mb-3">
-                            <label asp-for="FirstName" class="form-label">Nom <span class="text-danger">*</span></label>
-                            <input asp-for="FirstName" class="form-control" placeholder="Introdueix el nom" />
+                            <label asp-for="FirstName" class="form-label">@Localizer["Nom"] <span class="text-danger">*</span></label>
+                            <input asp-for="FirstName" class="form-control" placeholder="@Localizer["Introdueix el nom"]" />
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="LastName" class="form-label">Cognoms <span class="text-danger">*</span></label>
-                            <input asp-for="LastName" class="form-control" placeholder="Introdueix els cognoms" />
+                            <label asp-for="LastName" class="form-label">@Localizer["Cognoms"] <span class="text-danger">*</span></label>
+                            <input asp-for="LastName" class="form-control" placeholder="@Localizer["Introdueix els cognoms"]" />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Correu electrònic <span class="text-danger">*</span></label>
-                            <input asp-for="Email" type="email" class="form-control" placeholder="exemple@correu.com" />
+                            <label asp-for="Email" class="form-label">@Localizer["Correu electrònic"] <span class="text-danger">*</span></label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="@Localizer["exemple@correu.com"]" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="BirthDate" class="form-label">Data de naixement</label>
+                            <label asp-for="BirthDate" class="form-label">@Localizer["Data de naixement"]</label>
                             <input asp-for="BirthDate" type="date" class="form-control" />
                             <span asp-validation-for="BirthDate" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="SchoolId" class="form-label">Escola <span class="text-danger">*</span></label>
+                            <label asp-for="SchoolId" class="form-label">@Localizer["Escola"] <span class="text-danger">*</span></label>
                             <select asp-for="SchoolId" class="form-select" asp-items="@(new SelectList(ViewBag.Schools, "Id", "Name"))">
-                                <option value="">-- Selecciona una escola --</option>
+                                <option value="">@Localizer["-- Selecciona una escola --"]</option>
                             </select>
                             <span asp-validation-for="SchoolId" class="text-danger"></span>
                         </div>
@@ -48,17 +48,17 @@
                         <div class="mb-3 form-check">
                             <input asp-for="AgreesToPrivacy" class="form-check-input" id="agreesToPrivacy" />
                             <label asp-for="AgreesToPrivacy" class="form-check-label">
-                                Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a> d'aquest entorn de proves.
+                                @Localizer["Accepto les"] <a asp-controller="Home" asp-action="Privacy">@Localizer["condicions de privacitat"]</a> @Localizer["d'aquest entorn de proves."]
                             </label>
                             <span asp-validation-for="AgreesToPrivacy" class="text-danger"></span>
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-x-lg"></i> Cancel·lar
+                                <i class="bi bi-x-lg"></i> @Localizer["Cancel·lar"]
                             </a>
                             <button type="submit" id="createButton" class="btn btn-primary" disabled>
-                                <i class="bi bi-check-circle"></i> Crear Alumne
+                                <i class="bi bi-check-circle"></i> @Localizer["Crear Alumne"]
                             </button>
                         </div>
                     </form>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona una escola --" xml:space="preserve">
+    <value>-- Selecciona una escuela --</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Cognoms" xml:space="preserve">
+    <value>Apellidos</value>
+  </data>
+  <data name="Cognoms de l'alumne" xml:space="preserve">
+    <value>Apellidos del alumno</value>
+  </data>
+  <data name="Data de Naixement" xml:space="preserve">
+    <value>Fecha de nacimiento</value>
+  </data>
+  <data name="Editar Alumne" xml:space="preserve">
+    <value>Editar alumno</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Correo electrónico</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>Escuela</value>
+  </data>
+  <data name="Guardar" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Nom de l'alumne" xml:space="preserve">
+    <value>Nombre del alumno</value>
+  </data>
+  <data name="Tornar" xml:space="preserve">
+    <value>Volver</value>
+  </data>
+  <data name="email@exemple.cat" xml:space="preserve">
+    <value>email@ejemplo.com</value>
+  </data>
+</root>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona un alumne --" xml:space="preserve">
+    <value>-- 选择学生 --</value>
+  </data>
+  <data name="-- Selecciona una inscripció --" xml:space="preserve">
+    <value>-- 选择报名 --</value>
+  </data>
+  <data name="Accepto les" xml:space="preserve">
+    <value>我接受</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>学生</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Crear Quota" xml:space="preserve">
+    <value>创建费用</value>
+  </data>
+  <data name="Data de venciment" xml:space="preserve">
+    <value>到期日期</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>学校</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="Inscripció" xml:space="preserve">
+    <value>报名</value>
+  </data>
+  <data name="Marcar com a pagada" xml:space="preserve">
+    <value>标记为已支付</value>
+  </data>
+  <data name="Moneda" xml:space="preserve">
+    <value>货币</value>
+  </data>
+  <data name="Nova Quota Anual" xml:space="preserve">
+    <value>新年度费用</value>
+  </data>
+  <data name="Referència de pagament" xml:space="preserve">
+    <value>付款参考</value>
+  </data>
+  <data name="Referència o número de transacció" xml:space="preserve">
+    <value>参考号或交易号</value>
+  </data>
+  <data name="condicions de privacitat" xml:space="preserve">
+    <value>隐私条款</value>
+  </data>
+</root>

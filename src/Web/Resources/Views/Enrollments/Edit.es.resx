@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona un estat --" xml:space="preserve">
+    <value>-- Selecciona un estado --</value>
+  </data>
+  <data name="Activa" xml:space="preserve">
+    <value>Activa</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>Alumno</value>
+  </data>
+  <data name="Cancel·lada" xml:space="preserve">
+    <value>Cancelada</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Curs Acadèmic" xml:space="preserve">
+    <value>Año académico</value>
+  </data>
+  <data name="Data d'Inscripció" xml:space="preserve">
+    <value>Fecha de inscripción</value>
+  </data>
+  <data name="Edició de la Inscripció" xml:space="preserve">
+    <value>Edición de la inscripción</value>
+  </data>
+  <data name="Editar Inscripció" xml:space="preserve">
+    <value>Editar inscripción</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>Escuela</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Guardar" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="Nom del Curs" xml:space="preserve">
+    <value>Nombre del curso</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>Pendiente</value>
+  </data>
+</root>

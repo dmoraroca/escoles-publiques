@@ -1,7 +1,7 @@
 @model Web.Models.AnnualFeeViewModel
 
 @{
-    ViewData["Title"] = "Editar Quota Anual";
+    ViewData["Title"] = Localizer["Editar Quota Anual"];
 }
 
 <div class="container mt-4">
@@ -9,7 +9,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-warning text-dark">
-                    <h4 class="mb-0"><i class="bi bi-pencil"></i> Editar Quota Anual</h4>
+                    <h4 class="mb-0"><i class="bi bi-pencil"></i> @Localizer["Editar Quota Anual"]</h4>
                 </div>
                 <div class="card-body">
                     <form asp-action="Edit" method="post" class="needs-validation" novalidate>
@@ -19,19 +19,19 @@
                         <input type="hidden" asp-for="SchoolId" />
                         <div class="row">
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Nom alumne</label>
+                                <label class="form-label">@Localizer["Nom alumne"]</label>
                                 <input type="text" class="form-control" value="@Model.EnrollmentInfo.Split('-')[0].Trim()" readonly />
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Nom inscripció o curs</label>
+                                <label class="form-label">@Localizer["Nom inscripció o curs"]</label>
                                 <input type="text" class="form-control" value="@((Model.EnrollmentInfo.Split('-').Length > 1 ? Model.EnrollmentInfo.Split('-')[1].Trim() : ""))" readonly />
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Any acadèmic</label>
+                                <label class="form-label">@Localizer["Any acadèmic"]</label>
                                 <input type="text" class="form-control" asp-for="AcademicYear" readonly />
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Nom escola</label>
+                                <label class="form-label">@Localizer["Nom escola"]</label>
                                 <input type="text" class="form-control" value="@Model.SchoolName" readonly />
                             </div>
                         </div>
@@ -39,19 +39,19 @@
 
                         <div class="row">
                             <div class="col-md-8 mb-3">
-                                <label asp-for="Amount" class="form-label">Import <span class="text-danger">*</span></label>
+                                <label asp-for="Amount" class="form-label">@Localizer["Import"] <span class="text-danger">*</span></label>
                                 <input asp-for="Amount" type="number" step="0.01" class="form-control" />
                                 <span asp-validation-for="Amount" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label asp-for="Currency" class="form-label">Moneda</label>
+                                <label asp-for="Currency" class="form-label">@Localizer["Moneda"]</label>
                                 <input asp-for="Currency" class="form-control" readonly />
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="DueDate" class="form-label">Data de venciment <span class="text-danger">*</span></label>
+                            <label asp-for="DueDate" class="form-label">@Localizer["Data de venciment"] <span class="text-danger">*</span></label>
                             <input asp-for="DueDate" type="date" class="form-control" />
                             <span asp-validation-for="DueDate" class="text-danger"></span>
                         </div>
@@ -59,12 +59,12 @@
                         <div class="mb-3 form-check">
                             <input asp-for="IsPaid" type="checkbox" class="form-check-input" id="isPaidCheck" />
                             <label class="form-check-label" for="isPaidCheck">
-                                Marcar com a pagada
+                                @Localizer["Marcar com a pagada"]
                             </label>
                         </div>
 
                         <div class="mb-3 @(Model.IsPaid ? "visible" : "")" id="paymentRefGroup">
-                            <label asp-for="PaymentRef" class="form-label">Referència de pagament</label>
+                            <label asp-for="PaymentRef" class="form-label">@Localizer["Referència de pagament"]</label>
                             <input asp-for="PaymentRef" class="form-control" />
                             <span asp-validation-for="PaymentRef" class="text-danger"></span>
                         </div>
@@ -72,27 +72,27 @@
                         @if (Model.PaidAt.HasValue)
                         {
                             <div class="alert alert-info">
-                                <i class="bi bi-info-circle"></i> Pagada el @Model.PaidAt.Value.ToString("dd/MM/yyyy HH:mm")
+                                <i class="bi bi-info-circle"></i> @Localizer["Pagada el"] @Model.PaidAt.Value.ToString("dd/MM/yyyy HH:mm")
                             </div>
                         }
 
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Tornar
+                                <i class="bi bi-arrow-left"></i> @Localizer["Tornar"]
                             </a>
                             @{
                                 var opts = new
                                 {
-                                    submitText = "Guardar",
+                                    submitText = Localizer["Guardar"].Value,
                                     submitClass = "btn btn-warning",
-                                    cancelText = "Cancel·lar",
+                                    cancelText = Localizer["Cancel·lar"].Value,
                                     cancelClass = "btn btn-secondary",
                                     cancelHref = Url.Action("Index"),
                                     privacySelector = "#AgreesToPrivacy",
                                     disabledByDefault = true
                                 };
                             }
-                            @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
+                            @await Html.PartialAsync("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
                         </div>
                     </form>
                 </div>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona una escola --" xml:space="preserve">
+    <value>-- Selecciona una escuela --</value>
+  </data>
+  <data name="Accepto les" xml:space="preserve">
+    <value>Acepto las</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Cognoms" xml:space="preserve">
+    <value>Apellidos</value>
+  </data>
+  <data name="Correu electrònic" xml:space="preserve">
+    <value>Correo electrónico</value>
+  </data>
+  <data name="Crear Alumne" xml:space="preserve">
+    <value>Crear alumno</value>
+  </data>
+  <data name="Data de naixement" xml:space="preserve">
+    <value>Fecha de nacimiento</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>Escuela</value>
+  </data>
+  <data name="Introdueix el nom" xml:space="preserve">
+    <value>Introduce el nombre</value>
+  </data>
+  <data name="Introdueix els cognoms" xml:space="preserve">
+    <value>Introduce los apellidos</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Nou Alumne" xml:space="preserve">
+    <value>Nuevo alumno</value>
+  </data>
+  <data name="condicions de privacitat" xml:space="preserve">
+    <value>condiciones de privacidad</value>
+  </data>
+  <data name="d'aquest entorn de proves." xml:space="preserve">
+    <value>de este entorno de pruebas.</value>
+  </data>
+  <data name="exemple@correu.com" xml:space="preserve">
+    <value>ejemplo@correo.com</value>
+  </data>
+</root>

@@ -84,7 +84,7 @@
                                     disabledByDefault = true
                                 };
                             }
-                            @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
+                            @await Html.PartialAsync("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
                         </div>
                     </form>
                 </div>

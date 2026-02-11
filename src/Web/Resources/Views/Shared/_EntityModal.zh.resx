@@ -33,4 +33,97 @@
   <data name="condicions de privacitat" xml:space="preserve">
     <value>隐私条款</value>
   </data>
+  <data name="Escola" xml:space="preserve">
+    <value>学校</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>学生</value>
+  </data>
+  <data name="Inscripció" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="Quota" xml:space="preserve">
+    <value>费用</value>
+  </data>
+  <data name="Codi" xml:space="preserve">
+    <value>代码</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Ciutat" xml:space="preserve">
+    <value>城市</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>范围</value>
+  </data>
+  <data name="Favorita" xml:space="preserve">
+    <value>收藏</value>
+  </data>
+  <data name="Ex: 08001234" xml:space="preserve">
+    <value>例：08001234</value>
+  </data>
+  <data name="Nom de l'escola" xml:space="preserve">
+    <value>学校名称</value>
+  </data>
+  <data name="Nom de l'alumne" xml:space="preserve">
+    <value>学生名</value>
+  </data>
+  <data name="Cognoms" xml:space="preserve">
+    <value>姓氏</value>
+  </data>
+  <data name="Cognoms de l'alumne" xml:space="preserve">
+    <value>学生姓氏</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>电子邮件</value>
+  </data>
+  <data name="correu@exemple.cat" xml:space="preserve">
+    <value>mail@example.com</value>
+  </data>
+  <data name="Data de naixement" xml:space="preserve">
+    <value>出生日期</value>
+  </data>
+  <data name="Any acadèmic" xml:space="preserve">
+    <value>学年</value>
+  </data>
+  <data name="Ex: 2024-2025" xml:space="preserve">
+    <value>例：2024-2025</value>
+  </data>
+  <data name="Nom del curs" xml:space="preserve">
+    <value>课程名称</value>
+  </data>
+  <data name="Ex: 1r ESO, 2n Batxillerat, etc." xml:space="preserve">
+    <value>例：初中一年级、高中二年级等</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Activa" xml:space="preserve">
+    <value>有效</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>待处理</value>
+  </data>
+  <data name="Cancel·lada" xml:space="preserve">
+    <value>已取消</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="Moneda" xml:space="preserve">
+    <value>货币</value>
+  </data>
+  <data name="Data de venciment" xml:space="preserve">
+    <value>到期日期</value>
+  </data>
+  <data name="Marcar com a pagada" xml:space="preserve">
+    <value>标记为已支付</value>
+  </data>
+  <data name="Referència de pagament" xml:space="preserve">
+    <value>支付参考</value>
+  </data>
+  <data name="Referència o número de transacció" xml:space="preserve">
+    <value>参考号或交易编号</value>
+  </data>
 </root>

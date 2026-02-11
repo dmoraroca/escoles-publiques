@@ -1,13 +1,16 @@
 @model Web.Models.EntityModalConfig
 
-<div class="modal fade" id="@Model.ModalId" data-modal-id="@Model.ModalId" data-entity-name="@Model.EntityName" tabindex="-1" aria-labelledby="@(Model.ModalId)Label" aria-hidden="true">
+@{
+    var localizedEntityName = Localizer[Model.EntityName].Value;
+}
+<div class="modal fade" id="@Model.ModalId" data-modal-id="@Model.ModalId" data-entity-name="@localizedEntityName" tabindex="-1" aria-labelledby="@(Model.ModalId)Label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form asp-controller="@Model.Controller" asp-action="Create" method="post" class="needs-validation" novalidate>
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
                     <h5 class="modal-title" id="@(Model.ModalId)Label">
-                        <i class="bi @Model.IconClass"></i> @Localizer["Crear {0}", Model.EntityName]
+                        <i class="bi @Model.IconClass"></i> @Localizer["Crear {0}", localizedEntityName]
                     </h5>
                 </div>
                 <div class="modal-body">
@@ -21,9 +24,15 @@
                         @foreach (var field in Model.Fields)
                         {
                             <div class="col-md-@field.ColumnSize mb-3">
+                                @{
+                                    var localizedFieldLabel = Localizer[field.Label].Value;
+                                    var localizedPlaceholder = string.IsNullOrWhiteSpace(field.Placeholder)
+                                        ? field.Placeholder
+                                        : Localizer[field.Placeholder].Value;
+                                }
                                 @if (field.Type == "checkbox")
                                 {
-                                    <label class="form-label d-block">@field.Label</label>
+                                    <label class="form-label d-block">@localizedFieldLabel</label>
                                     <div class="form-check">
                                         <input class="form-check-input" 
                                                type="checkbox" 
@@ -31,7 +40,7 @@
                                                name="@field.Name" 
                                                value="true" />
                                         <label class="form-check-label" for="@field.Name">
-                                            @field.Label
+                                            @localizedFieldLabel
                                             @if (field.Name == "IsFavorite")
                                             {
                                                 <span class="star-icon star-filled">★</span>
@@ -42,62 +51,62 @@
                                 else if (field.Type == "select")
                                 {
                                     <label for="@field.Name" class="form-label">
-                                        @field.Label @if (field.Required) { <span class="text-danger">*</span> }
+                                        @localizedFieldLabel @if (field.Required) { <span class="text-danger">*</span> }
                                     </label>
                                     <select class="form-select" 
                                             id="@field.Name" 
                                             name="@field.Name"
                                             @(field.Required ? "required" : "")>
-                                        <option value="">@Localizer["-- Selecciona {0} --", field.Label.ToLower()]</option>
+                                        <option value="">@Localizer["-- Selecciona {0} --", localizedFieldLabel]</option>
                                         @if (field.Options != null)
                                         {
                                             @foreach (var option in field.Options)
                                             {
-                                                <option value="@option.Value">@option.Text</option>
+                                                <option value="@option.Value">@Localizer[option.Text]</option>
                                             }
                                         }
                                     </select>
                                     @if (field.Required)
                                     {
-                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", field.Label]</div>
+                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", localizedFieldLabel]</div>
                                     }
                                 }
                                 else if (field.Type == "date")
                                 {
                                     <label for="@field.Name" class="form-label">
-                                        @field.Label @if (field.Required) { <span class="text-danger">*</span> }
+                                        @localizedFieldLabel @if (field.Required) { <span class="text-danger">*</span> }
                                     </label>
                                     <input type="date" 
                                            class="form-control" 
                                            id="@field.Name" 
                                            name="@field.Name"
                                            @(field.Required ? "required" : "")
-                                           placeholder="@field.Placeholder" />
+                                           placeholder="@localizedPlaceholder" />
                                     @if (field.Required)
                                     {
-                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", field.Label]</div>
+                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", localizedFieldLabel]</div>
                                     }
                                 }
                                 else if (field.Type == "number")
                                 {
                                     <label for="@field.Name" class="form-label">
-                                        @field.Label @if (field.Required) { <span class="text-danger">*</span> }
+                                        @localizedFieldLabel @if (field.Required) { <span class="text-danger">*</span> }
                                     </label>
                                     <input type="number" 
                                            class="form-control" 
                                            id="@field.Name" 
                                            name="@field.Name"
                                            @(field.Required ? "required" : "")
-                                           placeholder="@field.Placeholder" />
+                                           placeholder="@localizedPlaceholder" />
                                     @if (field.Required)
                                     {
-                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", field.Label]</div>
+                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", localizedFieldLabel]</div>
                                     }
                                 }
                                 else
                                 {
                                     <label for="@field.Name" class="form-label">
-                                        @field.Label @if (field.Required) { <span class="text-danger">*</span> }
+                                        @localizedFieldLabel @if (field.Required) { <span class="text-danger">*</span> }
                                     </label>
                                     <input type="@field.Type" 
                                            class="form-control" 
@@ -105,10 +114,10 @@
                                            name="@field.Name"
                                            @(field.Required ? "required" : "")
                                            @(field.MaxLength > 0 ? $"maxlength=\"{field.MaxLength}\"" : "")
-                                           placeholder="@field.Placeholder" />
+                                           placeholder="@localizedPlaceholder" />
                                     @if (field.Required)
                                     {
-                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", field.Label]</div>
+                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", localizedFieldLabel]</div>
                                     }
                                 }
                             </div>
@@ -128,7 +137,7 @@
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-lg"></i> @Localizer["Crear {0}", Model.EntityName]
+                            <i class="bi bi-check-lg"></i> @Localizer["Crear {0}", localizedEntityName]
                         </button>
                     </div>
                 </div>

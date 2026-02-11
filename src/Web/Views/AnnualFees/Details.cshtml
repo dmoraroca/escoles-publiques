@@ -1,18 +1,18 @@
 @model Web.Models.AnnualFeeViewModel
 
 @{
-    ViewData["Title"] = "Detalls de la Quota";
+    ViewData["Title"] = Localizer["Detalls de la Quota"];
     var enrollments = ViewBag.Enrollments as IEnumerable<Web.Models.EnrollmentViewModel> ?? new List<Web.Models.EnrollmentViewModel>();
 }
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-currency-euro"></i> Detalls de la Quota Anual</h2>
+        <h2><i class="bi bi-currency-euro"></i> @Localizer["Detalls de la Quota Anual"]</h2>
         <div id="viewButtons">
             <a asp-action="Index" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Tornar
+                <i class="bi bi-arrow-left"></i> @Localizer["Tornar"]
             </a>
             <button type="button" class="btn btn-warning" data-action="edit">
-                <i class="bi bi-pencil"></i> Editar
+                <i class="bi bi-pencil"></i> @Localizer["Editar"]
             </button>
         </div>
     </div>
@@ -24,7 +24,7 @@
                 <input type="hidden" asp-for="Id" />
                 
                 <div id="errorAlert" class="alert alert-danger alert-dismissible fade show alert-hidden" role="alert">
-                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage">Si us plau, omple tots els camps obligatoris correctament.</span>
+                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage">@Localizer["Si us plau, omple tots els camps obligatoris correctament."]</span>
                     <button type="button" class="btn-close" data-action="close-alert"></button>
                 </div>
                 
@@ -34,26 +34,26 @@
                 
                 <div class="row">
                     <div class="col-md-3 mb-3">
-                        <label class="form-label">Nom alumne</label>
+                        <label class="form-label">@Localizer["Nom alumne"]</label>
                         <input type="text" class="form-control bg-light" value="@Model.EnrollmentInfo.Split('-')[0].Trim()" readonly tabindex="-1" />
                     </div>
                     <div class="col-md-3 mb-3">
-                        <label class="form-label">Nom inscripció o curs</label>
+                        <label class="form-label">@Localizer["Nom inscripció o curs"]</label>
                         <input type="text" class="form-control bg-light" value="@((Model.EnrollmentInfo.Split('-').Length > 2 ? Model.EnrollmentInfo.Split('-')[1].Trim() : ""))" readonly tabindex="-1" />
                     </div>
                     <div class="col-md-3 mb-3">
-                        <label class="form-label">Any acadèmic</label>
+                        <label class="form-label">@Localizer["Any acadèmic"]</label>
                         <input type="text" class="form-control bg-light" value="@((Model.EnrollmentInfo.Split('-').Length > 2 ? Model.EnrollmentInfo.Split('-')[2].Trim() : ""))" readonly tabindex="-1" />
                     </div>
                     <div class="col-md-3 mb-3">
-                        <label class="form-label">Nom escola</label>
+                        <label class="form-label">@Localizer["Nom escola"]</label>
                         <input type="text" class="form-control bg-light" value="@Model.SchoolName" readonly tabindex="-1" />
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Import <span class="text-danger edit-only">*</span></label>
+                        <label class="form-label">@Localizer["Import"] <span class="text-danger edit-only">*</span></label>
                         <div class="input-group">
                             <input type="number" 
                                 step="0.01"
@@ -67,19 +67,19 @@
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Data de Venciment <span class="text-danger edit-only">*</span></label>
+                        <label class="form-label">@Localizer["Data de Venciment"] <span class="text-danger edit-only">*</span></label>
                         <input type="date" id="DueDate" name="DueDate" class="form-control bg-light" value="@Model.DueDate.ToString("yyyy-MM-dd")" readonly tabindex="-1" />
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Data de Pagament</label>
+                        <label class="form-label">@Localizer["Data de Pagament"]</label>
                         <input type="datetime-local" id="PaidAt" name="PaidAt" class="form-control bg-light" value="@(Model.PaidAt.HasValue ? Model.PaidAt.Value.ToString("yyyy-MM-ddTHH:mm") : "")" readonly tabindex="-1" />
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Referència de Pagament</label>
+                        <label class="form-label">@Localizer["Referència de Pagament"]</label>
                         <input type="text" id="PaymentRef" name="PaymentRef" class="form-control bg-light" value="@(Model.PaymentRef ?? "")" readonly tabindex="-1" />
                     </div>
                 </div>
@@ -90,11 +90,12 @@
                     foreach (var opt in options)
                     {
                         var selected = Model.PaymentStatus == opt ? "selected" : "";
-                        html += $"<option value=\"{opt}\" {selected}>{opt}</option>";
+                        var display = Localizer[opt].Value;
+                        html += $"<option value=\"{opt}\" {selected}>{display}</option>";
                     }
                 }
                 <div class="mb-3">
-                    <label class="form-label">Estat</label>
+                    <label class="form-label">@Localizer["Estat"]</label>
                     <select id="Status" name="Status" class="form-select bg-light" disabled tabindex="-1">
                         @Html.Raw(html)
                     </select>
@@ -105,9 +106,9 @@
                     @{
                         var opts = new
                         {
-                            submitText = "Guardar",
+                            submitText = Localizer["Guardar"].Value,
                             submitClass = "btn btn-success",
-                            cancelText = "Cancel·lar",
+                            cancelText = Localizer["Cancel·lar"].Value,
                             cancelClass = "btn btn-secondary",
                             cancelAction = "reload",
                             privacySelector = "#AgreesToPrivacy",
@@ -115,7 +116,7 @@
                         };
                     }
                     <div class="save-cancel-wrapper" style="display:none;">
-                        @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
+                        @await Html.PartialAsync("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
                     </div>
                 </div>
 			</form>

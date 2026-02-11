@@ -110,7 +110,7 @@ namespace Web.Controllers
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error obtenint llista de quotes");
-                SetErrorMessage("Error carregant les quotes. Si us plau, intenta-ho de nou.");
+                SetErrorMessage(Localizer["Error carregant les quotes. Si us plau, intenta-ho de nou."].Value);
                 return View(new List<AnnualFeeViewModel>());
             }
         }
@@ -125,7 +125,7 @@ namespace Web.Controllers
                 var fee = await _annualFeesApi.GetByIdAsync(id);
                 if (fee == null)
                 {
-                    SetErrorMessage("No s'ha trobat la quota.");
+                    SetErrorMessage(Localizer["No s'ha trobat la quota."].Value);
                     return RedirectToAction("Index");
                 }
                 var viewModel = new AnnualFeeViewModel
@@ -154,7 +154,7 @@ namespace Web.Controllers
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error obtenint detalls de la quota");
-                SetErrorMessage("Error carregant la quota. Si us plau, intenta-ho de nou.");
+                SetErrorMessage(Localizer["Error carregant la quota. Si us plau, intenta-ho de nou."].Value);
                 return RedirectToAction("Index");
             }
         }
@@ -170,7 +170,7 @@ namespace Web.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
+                    SetErrorMessage(Localizer["Si us plau, omple tots els camps obligatoris correctament."].Value);
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -186,21 +186,21 @@ namespace Web.Controllers
 
                 if (IsAjaxRequest())
                 {
-                    return Ok(new { message = "Quota creada correctament." });
+                    return Ok(new { message = Localizer["Quota creada correctament."].Value });
                 }
-                SetSuccessMessage("Quota creada correctament.");
+                SetSuccessMessage(Localizer["Quota creada correctament."].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (NotFoundException ex)
             {
                 Logger.LogWarning(ex, "Inscripció no trobada al crear quota");
-                SetErrorMessage("La inscripció seleccionada no existeix.");
+                SetErrorMessage(Localizer["La inscripció seleccionada no existeix."].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (ValidationException ex)
             {
                 Logger.LogWarning(ex, "Error de validació al crear quota");
-                SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
+                SetErrorMessage(Localizer["Error de validació: {0}", string.Join(", ", ex.Errors.SelectMany(e => e.Value))].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (HttpRequestException ex) when (IsUnauthorized(ex))
@@ -208,15 +208,15 @@ namespace Web.Controllers
                 Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear quota)");
                 if (IsAjaxRequest())
                 {
-                    return Unauthorized(new { error = "Accés no autoritzat. Torna a iniciar sessió." });
+                    return Unauthorized(new { error = Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value });
                 }
-                SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+                SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
                 return RedirectToAction("Login", "Auth");
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error creant quota");
-                SetErrorMessage("Error creant la quota. Si us plau, intenta-ho de nou.");
+                SetErrorMessage(Localizer["Error creant la quota. Si us plau, intenta-ho de nou."].Value);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -231,7 +231,7 @@ namespace Web.Controllers
                 var annualFee = await _annualFeesApi.GetByIdAsync(id);
                 if (annualFee == null)
                 {
-                    SetErrorMessage($"Quota amb ID {id} no trobada.");
+                    SetErrorMessage(Localizer["Quota amb ID {0} no trobada.", id].Value);
                     return RedirectToAction(nameof(Index));
                 }
                 var viewModel = new AnnualFeeViewModel
@@ -264,13 +264,13 @@ namespace Web.Controllers
             catch (NotFoundException ex)
             {
                 Logger.LogWarning(ex, "Quota amb Id {Id} no trobada per editar", id);
-                SetErrorMessage($"Quota amb ID {id} no trobada.");
+                SetErrorMessage(Localizer["Quota amb ID {0} no trobada.", id].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error carregant quota per editar {Id}", id);
-                SetErrorMessage("Error carregant la quota.");
+                SetErrorMessage(Localizer["Error carregant la quota."].Value);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -299,7 +299,7 @@ namespace Web.Controllers
                         CourseName = e.CourseName,
                         EnrolledAt = e.EnrolledAt
                     }).ToList();
-                    SetErrorMessage("Si us plau, omple tots els camps obligatoris correctament.");
+                    SetErrorMessage(Localizer["Si us plau, omple tots els camps obligatoris correctament."].Value);
                     return View(model);
                 }
 
@@ -315,25 +315,25 @@ namespace Web.Controllers
 
                 Logger.LogInformation("Quota actualitzada correctament");
 
-                SetSuccessMessage("Quota actualitzada correctament.");
+                SetSuccessMessage(Localizer["Quota actualitzada correctament."].Value);
                 return RedirectToAction(nameof(Details), new { id = model.Id });
             }
             catch (NotFoundException ex)
             {
                 Logger.LogWarning(ex, "Quota o inscripció no trobades al actualitzar");
-                SetErrorMessage("La quota o la inscripció no existeixen.");
+                SetErrorMessage(Localizer["La quota o la inscripció no existeixen."].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (ValidationException ex)
             {
                 Logger.LogWarning(ex, "Error de validació al actualitzar quota");
-                SetErrorMessage($"Error de validació: {string.Join(", ", ex.Errors.SelectMany(e => e.Value))}");
+                SetErrorMessage(Localizer["Error de validació: {0}", string.Join(", ", ex.Errors.SelectMany(e => e.Value))].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error actualitzant quota {Id}", model.Id);
-                SetErrorMessage("Error al actualitzar la quota. Si us plau, intenta-ho de nou.");
+                SetErrorMessage(Localizer["Error al actualitzar la quota. Si us plau, intenta-ho de nou."].Value);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -349,19 +349,19 @@ namespace Web.Controllers
             {
                 await _annualFeesApi.DeleteAsync(id);
 
-                SetSuccessMessage("Quota esborrada correctament.");
+                SetSuccessMessage(Localizer["Quota esborrada correctament."].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (NotFoundException ex)
             {
                 Logger.LogWarning(ex, "Intent d'esborrar quota inexistent: {Id}", id);
-                SetErrorMessage("La quota no existeix.");
+                SetErrorMessage(Localizer["La quota no existeix."].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error esborrant quota {Id}", id);
-                SetErrorMessage("Error al esborrar la quota.");
+                SetErrorMessage(Localizer["Error al esborrar la quota."].Value);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -395,13 +395,13 @@ namespace Web.Controllers
                     }
                 }
 
-                SetSuccessMessage($"{count} quotes corregides correctament.");
+                SetSuccessMessage(Localizer["{0} quotes corregides correctament.", count].Value);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error corregint imports de quotes");
-                SetErrorMessage("Error al corregir les quotes.");
+                SetErrorMessage(Localizer["Error al corregir les quotes."].Value);
                 return RedirectToAction(nameof(Index));
             }
         }

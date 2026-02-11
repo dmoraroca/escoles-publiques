@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Any acadèmic" xml:space="preserve">
+    <value>Academic year</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Data de Pagament" xml:space="preserve">
+    <value>Payment date</value>
+  </data>
+  <data name="Data de Venciment" xml:space="preserve">
+    <value>Due Date</value>
+  </data>
+  <data name="Detalls de la Quota" xml:space="preserve">
+    <value>Fee Details</value>
+  </data>
+  <data name="Detalls de la Quota Anual" xml:space="preserve">
+    <value>Annual Fee Details</value>
+  </data>
+  <data name="Editar" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Guardar" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Nom alumne" xml:space="preserve">
+    <value>Student name</value>
+  </data>
+  <data name="Nom escola" xml:space="preserve">
+    <value>School name</value>
+  </data>
+  <data name="Nom inscripció o curs" xml:space="preserve">
+    <value>Enrollment or course name</value>
+  </data>
+  <data name="Referència de Pagament" xml:space="preserve">
+    <value>Payment Reference</value>
+  </data>
+  <data name="Si us plau, omple tots els camps obligatoris correctament." xml:space="preserve">
+    <value>Please fill in all required fields correctly.</value>
+  </data>
+  <data name="Tornar" xml:space="preserve">
+    <value>Back</value>
+  </data>
+</root>

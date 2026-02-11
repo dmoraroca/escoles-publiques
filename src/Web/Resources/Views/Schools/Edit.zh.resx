@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona un àmbit --" xml:space="preserve">
+    <value>-- 选择范围 --</value>
+  </data>
+  <data name="Ciutat" xml:space="preserve">
+    <value>城市</value>
+  </data>
+  <data name="Codi" xml:space="preserve">
+    <value>代码</value>
+  </data>
+  <data name="Editar Escola" xml:space="preserve">
+    <value>编辑学校</value>
+  </data>
+  <data name="Ex: 08001234" xml:space="preserve">
+    <value>例：08001234</value>
+  </data>
+  <data name="Ex: Barcelona" xml:space="preserve">
+    <value>例：巴塞罗那</value>
+  </data>
+  <data name="Favorita" xml:space="preserve">
+    <value>收藏</value>
+  </data>
+  <data name="Guardar" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="Nom de l'escola" xml:space="preserve">
+    <value>学校名称</value>
+  </data>
+  <data name="Tornar" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>范围</value>
+  </data>
+</root>

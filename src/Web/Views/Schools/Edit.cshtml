@@ -1,14 +1,14 @@
 @model Web.Models.SchoolViewModel
 
 @{
-    ViewData["Title"] = "Editar Escola";
+    ViewData["Title"] = Localizer["Editar Escola"];
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-pencil"></i> Editar Escola</h2>
+        <h2><i class="bi bi-pencil"></i> @Localizer["Editar Escola"]</h2>
         <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Tornar
+            <i class="bi bi-arrow-left"></i> @Localizer["Tornar"]
         </a>
     </div>
 
@@ -20,29 +20,29 @@
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Code" class="form-label">Codi <span class="text-danger">*</span></label>
-                        <input asp-for="Code" class="form-control" placeholder="Ex: 08001234" maxlength="20" required />
+                        <label asp-for="Code" class="form-label">@Localizer["Codi"] <span class="text-danger">*</span></label>
+                        <input asp-for="Code" class="form-control" placeholder="@Localizer["Ex: 08001234"]" maxlength="20" required />
                         <span asp-validation-for="Code" class="text-danger"></span>
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label asp-for="City" class="form-label">Ciutat <span class="text-danger">*</span></label>
-                        <input asp-for="City" class="form-control" placeholder="Ex: Barcelona" maxlength="100" required />
+                        <label asp-for="City" class="form-label">@Localizer["Ciutat"] <span class="text-danger">*</span></label>
+                        <input asp-for="City" class="form-control" placeholder="@Localizer["Ex: Barcelona"]" maxlength="100" required />
                         <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                 </div>
                 
                 <div class="mb-3">
-                    <label asp-for="Name" class="form-label">Nom <span class="text-danger">*</span></label>
-                    <input asp-for="Name" class="form-control" placeholder="Nom de l'escola" maxlength="200" required />
+                    <label asp-for="Name" class="form-label">@Localizer["Nom"] <span class="text-danger">*</span></label>
+                    <input asp-for="Name" class="form-control" placeholder="@Localizer["Nom de l'escola"]" maxlength="200" required />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-8 mb-3">
-                        <label asp-for="ScopeId" class="form-label">Àmbit</label>
+                        <label asp-for="ScopeId" class="form-label">@Localizer["Àmbit"]</label>
                         <select asp-for="ScopeId" class="form-select">
-                            <option value="">-- Selecciona un àmbit --</option>
+                            <option value="">@Localizer["-- Selecciona un àmbit --"]</option>
                             @{
                                 var scopes = ViewBag.Scopes as List<Web.Models.SelectOption> ?? new List<Web.Models.SelectOption>();
                                 foreach (var scope in scopes)
@@ -67,7 +67,7 @@
                         <div class="form-check">
                             <input asp-for="IsFavorite" class="form-check-input" type="checkbox" />
                             <label asp-for="IsFavorite" class="form-check-label">
-                                Favorita <span class="star-icon star-filled">★</span>
+                                @Localizer["Favorita"] <span class="star-icon star-filled">★</span>
                             </label>
                         </div>
                     </div>
@@ -75,20 +75,20 @@
 
                 <div class="d-flex justify-content-between mt-4">
                     <a asp-action="Index" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i> Tornar
+                        <i class="bi bi-arrow-left"></i> @Localizer["Tornar"]
                     </a>
                         @{ 
                             var opts = new {
-                                submitText = "Guardar",
+                                submitText = Localizer["Guardar"].Value,
                                 submitClass = "btn btn-primary",
-                                cancelText = "Tornar",
+                                cancelText = Localizer["Tornar"].Value,
                                 cancelClass = "btn btn-secondary",
                                 cancelHref = Url.Action("Index"),
                                 privacySelector = "#AgreesToPrivacy",
                                 disabledByDefault = true
                             };
                         }
-                        @Html.Partial("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
+                        @await Html.PartialAsync("_SaveCancelButtons", System.Text.Json.JsonSerializer.Serialize(opts))
                 </div>
             </form>
         </div>

@@ -1,7 +1,7 @@
 @model Web.Models.EnrollmentViewModel
 
 @{
-    ViewData["Title"] = "Nova Inscripció";
+    ViewData["Title"] = Localizer["Nova Inscripció"];
 }
 
 <div class="container mt-4">
@@ -9,15 +9,15 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="bi bi-clipboard-plus"></i> Nova Inscripció</h4>
+                    <h4 class="mb-0"><i class="bi bi-clipboard-plus"></i> @Localizer["Nova Inscripció"]</h4>
                 </div>
                 <div class="card-body">
                     <form asp-action="Create" method="post">
 
                         <div class="mb-3">
-                            <label asp-for="StudentId" class="form-label">Alumne <span class="text-danger">*</span></label>
+                            <label asp-for="StudentId" class="form-label">@Localizer["Alumne"] <span class="text-danger">*</span></label>
                             <select asp-for="StudentId" class="form-select">
-                                <option value="">-- Selecciona un alumne --</option>
+                                <option value="">@Localizer["-- Selecciona un alumne --"]</option>
                                 @foreach(var student in ViewBag.Students)
                                 {
                                     <option value="@student.Id">@student.FirstName @student.LastName</option>
@@ -27,9 +27,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="SchoolId" class="form-label">Escola <span class="text-danger">*</span></label>
+                            <label asp-for="SchoolId" class="form-label">@Localizer["Escola"] <span class="text-danger">*</span></label>
                             <select asp-for="SchoolId" class="form-select">
-                                <option value="">-- Selecciona una escola --</option>
+                                <option value="">@Localizer["-- Selecciona una escola --"]</option>
                                 @foreach(var school in ViewBag.Schools)
                                 {
                                     <option value="@school.Id">@school.Name</option>
@@ -39,42 +39,42 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="AcademicYear" class="form-label">Any acadèmic <span class="text-danger">*</span></label>
-                            <input asp-for="AcademicYear" class="form-control" placeholder="2025-2026" />
+                            <label asp-for="AcademicYear" class="form-label">@Localizer["Any acadèmic"] <span class="text-danger">*</span></label>
+                            <input asp-for="AcademicYear" class="form-control" placeholder="@Localizer["2025-2026"]" />
                             <span asp-validation-for="AcademicYear" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="CourseName" class="form-label">Nom del curs</label>
-                            <input asp-for="CourseName" class="form-control" placeholder="1r ESO, 2n Batxillerat, etc." />
+                            <label asp-for="CourseName" class="form-label">@Localizer["Nom del curs"]</label>
+                            <input asp-for="CourseName" class="form-control" placeholder="@Localizer["1r ESO, 2n Batxillerat, etc."]" />
                             <span asp-validation-for="CourseName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Status" class="form-label">Estat <span class="text-danger">*</span></label>
+                            <label asp-for="Status" class="form-label">@Localizer["Estat"] <span class="text-danger">*</span></label>
                             <select asp-for="Status" class="form-select">
-                                <option value="">-- Selecciona un estat --</option>
-                                <option value="Activa">Activa</option>
-                                <option value="Pendent">Pendent</option>
-                                <option value="Cancel·lada">Cancel·lada</option>
+                                <option value="">@Localizer["-- Selecciona un estat --"]</option>
+                                <option value="Activa">@Localizer["Activa"]</option>
+                                <option value="Pendent">@Localizer["Pendent"]</option>
+                                <option value="Cancel·lada">@Localizer["Cancel·lada"]</option>
                             </select>
                             <span asp-validation-for="Status" class="text-danger"></span>
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-x-lg"></i> Cancel·lar
+                                <i class="bi bi-x-lg"></i> @Localizer["Cancel·lar"]
                             </a>
                             <div class="d-flex align-items-center gap-3">
                                 <div class="form-check mb-0">
                                     <input asp-for="AgreesToPrivacy" class="form-check-input" id="agreesToPrivacy" />
                                     <label asp-for="AgreesToPrivacy" class="form-check-label small">
-                                        Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a>
+                                        @Localizer["Accepto les"] <a asp-controller="Home" asp-action="Privacy">@Localizer["condicions de privacitat"]</a>
                                     </label>
                                     <span asp-validation-for="AgreesToPrivacy" class="text-danger d-block"></span>
                                 </div>
                                 <button type="submit" id="createButton" class="btn btn-primary" disabled>
-                                    <i class="bi bi-check-circle"></i> Crear Inscripció
+                                    <i class="bi bi-check-circle"></i> @Localizer["Crear Inscripció"]
                                 </button>
                             </div>
                         </div>

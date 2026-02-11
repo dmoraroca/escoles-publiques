@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="-- Selecciona un àmbit --" xml:space="preserve">
+    <value>-- Bereich auswählen --</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Ciutat" xml:space="preserve">
+    <value>Stadt</value>
+  </data>
+  <data name="Codi" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Data de creació" xml:space="preserve">
+    <value>Erstellungsdatum</value>
+  </data>
+  <data name="Detalls de l'Escola" xml:space="preserve">
+    <value>Schuldetails</value>
+  </data>
+  <data name="Editar" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="El codi no es pot modificar" xml:space="preserve">
+    <value>Der Code kann nicht geändert werden</value>
+  </data>
+  <data name="Favorita" xml:space="preserve">
+    <value>Favorit</value>
+  </data>
+  <data name="Guardar" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Si us plau, omple tots els camps obligatoris correctament." xml:space="preserve">
+    <value>Bitte füllen Sie alle Pflichtfelder korrekt aus.</value>
+  </data>
+  <data name="Sí" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Tornar" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>Bereich</value>
+  </data>
+  <data name="Àmbit és obligatori" xml:space="preserve">
+    <value>Bereich ist erforderlich</value>
+  </data>
+</root>

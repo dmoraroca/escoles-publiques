@@ -6,7 +6,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using Web.Hubs;
 using Web.Models;
-using Web.Services.Api;
 using Microsoft.Extensions.Localization;
 
 using Microsoft.AspNetCore.Authorization;

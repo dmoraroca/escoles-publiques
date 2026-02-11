@@ -30,11 +30,11 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 // Configurar cultura invariant per evitar problemes amb decimals
-var cultureInfo = new CultureInfo("en-US");
+var cultureInfo = new CultureInfo("ca-ES");
 cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
 cultureInfo.NumberFormat.CurrencyDecimalSeparator = ".";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("ca-ES");
 
 // Configurar PostgreSQL per timestamps
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -176,28 +176,27 @@ app.Use(async (context, next) =>
 });
 
 // Forçar cultura invariant per a cada request
+var supportedCultures = new[]
+{
+    new CultureInfo("ca-ES"),
+    new CultureInfo("es-ES"),
+    new CultureInfo("en-US"),
+    new CultureInfo("de-DE"),
+    new CultureInfo("fr-FR"),
+    new CultureInfo("ru-RU"),
+    new CultureInfo("zh-CN")
+};
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
     DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("ca-ES"),
-    SupportedCultures = new[]
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures,
+    // Evita canvis automàtics per Accept-Language del navegador.
+    // La cultura es canvia explícitament via querystring i després es persisteix amb cookie.
+    RequestCultureProviders = new List<IRequestCultureProvider>
     {
-        new CultureInfo("ca-ES"),
-        new CultureInfo("es-ES"),
-        new CultureInfo("en-US"),
-        new CultureInfo("de-DE"),
-        new CultureInfo("fr-FR"),
-        new CultureInfo("ru-RU"),
-        new CultureInfo("zh-CN")
-    },
-    SupportedUICultures = new[]
-    {
-        new CultureInfo("ca-ES"),
-        new CultureInfo("es-ES"),
-        new CultureInfo("en-US"),
-        new CultureInfo("de-DE"),
-        new CultureInfo("fr-FR"),
-        new CultureInfo("ru-RU"),
-        new CultureInfo("zh-CN")
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider()
     }
 });
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Activa" xml:space="preserve">
+    <value>Activa</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>Alumno</value>
+  </data>
+  <data name="Cancel·lada" xml:space="preserve">
+    <value>Cancelada</value>
+  </data>
+  <data name="Curs acadèmic" xml:space="preserve">
+    <value>Año académico</value>
+  </data>
+  <data name="Data inscripció" xml:space="preserve">
+    <value>Fecha de inscripción</value>
+  </data>
+  <data name="Detalls" xml:space="preserve">
+    <value>Detalles</value>
+  </data>
+  <data name="Esborrar" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Estàs segur que vols esborrar aquesta inscripció?" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar esta inscripción?</value>
+  </data>
+  <data name="Inscripcions" xml:space="preserve">
+    <value>Inscripciones</value>
+  </data>
+  <data name="No hi ha inscripcions registrades." xml:space="preserve">
+    <value>No hay inscripciones registradas.</value>
+  </data>
+  <data name="Nom del Curs" xml:space="preserve">
+    <value>Nombre del curso</value>
+  </data>
+  <data name="Nova Inscripció" xml:space="preserve">
+    <value>Nueva inscripción</value>
+  </data>
+</root>

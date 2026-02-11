@@ -1,19 +1,19 @@
 @model Web.Models.EnrollmentViewModel
 
 @{
-    ViewData["Title"] = "Detalls de la Inscripció";
+    ViewData["Title"] = Localizer["Detalls de la Inscripció"];
     var students = ViewBag.Students as IEnumerable<Web.Models.StudentViewModel> ?? new List<Web.Models.StudentViewModel>();
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-journal-text"></i> Detalls de la Inscripció</h2>
+        <h2><i class="bi bi-journal-text"></i> @Localizer["Detalls de la Inscripció"]</h2>
         <div>
             <a asp-action="Index" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Tornar
+                <i class="bi bi-arrow-left"></i> @Localizer["Tornar"]
             </a>
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
-                <i class="bi bi-pencil"></i> Editar
+                <i class="bi bi-pencil"></i> @Localizer["Editar"]
             </a>
         </div>
     </div>
@@ -21,33 +21,32 @@
     <div class="card">
         <div class="card-body">
             <div class="mb-3">
-                <label class="form-label">Alumne <span class="text-danger">*</span></label>
+                <label class="form-label">@Localizer["Alumne"] <span class="text-danger">*</span></label>
                 <div class="form-control" style="background-color: #e9ecef;">@Model.StudentName</div>
             </div>
             <div class="mb-3">
-                <label class="form-label">Escola <span class="text-danger">*</span></label>
+                <label class="form-label">@Localizer["Escola"] <span class="text-danger">*</span></label>
                 <input type="text" class="form-control bg-secondary bg-opacity-10" value="@Model.SchoolName" readonly disabled />
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Curs Acadèmic <span class="text-danger">*</span></label>
+                    <label class="form-label">@Localizer["Curs Acadèmic"] <span class="text-danger">*</span></label>
                     <div class="form-control" style="background-color: #e9ecef;">@Model.AcademicYear</div>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Nom del Curs</label>
+                    <label class="form-label">@Localizer["Nom del Curs"]</label>
                     <div class="form-control" style="background-color: #e9ecef;">@Model.CourseName</div>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Estat <span class="text-danger">*</span></label>
+                    <label class="form-label">@Localizer["Estat"] <span class="text-danger">*</span></label>
                     <div class="form-control" style="background-color: #e9ecef;">@Model.Status</div>
                 </div>
             </div>
             <div class="mb-3">
-                <label class="form-label">Data d'Inscripció</label>
+                <label class="form-label">@Localizer["Data d'Inscripció"]</label>
                 <div class="form-control" style="background-color: #e9ecef;">@Model.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</div>
             </div>
             
         </div>
     </div>
 </div>
-

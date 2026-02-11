@@ -19,7 +19,7 @@
     <value>Aucun utilisateur élève enregistré.</value>
   </data>
   <data name="Nom" xml:space="preserve">
-    <value>Prénom</value>
+    <value>Nom</value>
   </data>
   <data name="Cognoms" xml:space="preserve">
     <value>Nom de famille</value>

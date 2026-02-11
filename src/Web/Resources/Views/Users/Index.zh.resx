@@ -19,7 +19,7 @@
     <value>没有登记的学生用户。</value>
   </data>
   <data name="Nom" xml:space="preserve">
-    <value>名字</value>
+    <value>姓名</value>
   </data>
   <data name="Cognoms" xml:space="preserve">
     <value>姓氏</value>
