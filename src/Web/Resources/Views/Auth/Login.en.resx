@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accés - GICAR" xml:space="preserve">
+    <value>Access - GICAR</value>
+  </data>
+  <data name="Generalitat de Catalunya" xml:space="preserve">
+    <value>Generalitat de Catalunya</value>
+  </data>
+  <data name="Departament d'Educació i Formació Professional" xml:space="preserve">
+    <value>Department of Education and Vocational Training</value>
+  </data>
+  <data name="Accés amb credencials corporatives" xml:space="preserve">
+    <value>Access with corporate credentials</value>
+  </data>
+  <data name="Usuari" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Contrasenya" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Accedeix" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="Tots els drets reservats" xml:space="preserve">
+    <value>All rights reserved</value>
+  </data>
+  <data name="Idioma" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Idioma:" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="CA - Català" xml:space="preserve">
+    <value>CA - Catalan</value>
+  </data>
+  <data name="ES - Espanyol" xml:space="preserve">
+    <value>ES - Spanish</value>
+  </data>
+  <data name="EN - English" xml:space="preserve">
+    <value>EN - English</value>
+  </data>
+  <data name="DE - Deutsch" xml:space="preserve">
+    <value>DE - German</value>
+  </data>
+  <data name="FR - Français" xml:space="preserve">
+    <value>FR - French</value>
+  </data>
+  <data name="RU - Русский" xml:space="preserve">
+    <value>RU - Russian</value>
+  </data>
+</root>

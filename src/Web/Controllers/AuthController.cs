@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using Web.Services.Api;
+using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers;
 
@@ -14,14 +15,16 @@ public class AuthController : Controller
 {
     private readonly IAuthApiClient _authApiClient;
     private readonly ILogger<AuthController> _logger;
+    private readonly IStringLocalizer<AuthController> _localizer;
 
     /// <summary>
     /// Constructor del controlador d'autenticació.
     /// </summary>
-    public AuthController(IAuthApiClient authApiClient, ILogger<AuthController> logger)
+    public AuthController(IAuthApiClient authApiClient, ILogger<AuthController> logger, IStringLocalizer<AuthController> localizer)
     {
         _authApiClient = authApiClient;
         _logger = logger;
+        _localizer = localizer;
     }
 
     /// <summary>
@@ -52,14 +55,14 @@ public class AuthController : Controller
         {
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                TempData["Error"] = "Email i contrasenya són obligatoris";
+                TempData["Error"] = _localizer["Email i contrasenya són obligatoris"].Value;
                 return View();
             }
 
             var token = await _authApiClient.GetTokenAsync(email, password);
             if (string.IsNullOrWhiteSpace(token))
             {
-                TempData["Error"] = "Credencials incorrectes";
+                TempData["Error"] = _localizer["Credencials incorrectes"].Value;
                 return View();
             }
 

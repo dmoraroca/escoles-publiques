@@ -3,6 +3,10 @@
  * Handles modal form logic for creating and editing entities, including validation and error display.
  */
 (function() {
+    function t(key, fallback) {
+        return window.i18n ? window.i18n.t('entity-modal.js', key, fallback) : (fallback || key);
+    }
+
     const modals = document.querySelectorAll('.modal[data-modal-id]');
     
     modals.forEach(modalElement => {
@@ -42,7 +46,7 @@
                     if (!el) {
                         el = document.createElement('div');
                         el.className = 'text-danger small js-email-exists d-none';
-                        el.textContent = "Aquest email ja existeix.";
+                        el.textContent = t('EmailExists', 'Aquest email ja existeix.');
                         emailInput.parentElement?.appendChild(el);
                     }
                     return el;
@@ -51,7 +55,7 @@
                 const setEmailValidity = (exists) => {
                     const msgEl = getMessageEl();
                     if (exists) {
-                        emailInput.setCustomValidity('Email existent');
+                        emailInput.setCustomValidity(t('EmailExistsValidity', 'Email existent'));
                         msgEl.classList.remove('d-none');
                     } else {
                         emailInput.setCustomValidity('');
@@ -102,14 +106,14 @@
             if (form.checkValidity() === false) {
                 form.classList.add('was-validated');
                 errorAlert.classList.remove('d-none');
-                errorMessage.textContent = 'Si us plau, omple tots els camps obligatoris correctament.';
+                errorMessage.textContent = t('ValidationError', 'Si us plau, omple tots els camps obligatoris correctament.');
                 errorAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 return;
             }
             
             try {
                 submitButton.disabled = true;
-                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creant...';
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + t('Creating', 'Creant...');
                 
                 const formData = new FormData(form);
                 const response = await fetch(form.action, {
@@ -123,7 +127,7 @@
                 });
                 
                 if (response.status === 401 || response.status === 403) {
-                    errorMessage.textContent = 'Sessió caducada. Torna a iniciar sessió.';
+                    errorMessage.textContent = t('SessionExpired', 'Sessió caducada. Torna a iniciar sessió.');
                     errorAlert.classList.remove('d-none');
                     window.location.href = '/Auth/Login';
                     return;
@@ -145,7 +149,7 @@
                     const contentType = response.headers.get('content-type');
                     if (contentType && contentType.includes('application/json')) {
                         const json = await response.json();
-                        errorMessage.textContent = json.error || 'Error creant el registre.';
+                        errorMessage.textContent = json.error || t('CreateError', 'Error creant el registre.');
                     } else {
                         const text = await response.text();
                         const parser = new DOMParser();
@@ -155,13 +159,13 @@
                         if (tempDataError) {
                             errorMessage.textContent = tempDataError.textContent.trim();
                         } else {
-                            errorMessage.textContent = 'Error creant el registre. Si us plau, verifica les dades i intenta-ho de nou.';
+                            errorMessage.textContent = t('CreateErrorRetry', 'Error creant el registre. Si us plau, verifica les dades i intenta-ho de nou.');
                         }
                     }
                     errorAlert.classList.remove('d-none');
                     errorAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } else {
-                    let successMessage = 'Operació completada correctament.';
+                    let successMessage = t('OperationSuccess', 'Operació completada correctament.');
                     const contentType = response.headers.get('content-type');
                     if (contentType && contentType.includes('application/json')) {
                         const json = await response.json();
@@ -178,11 +182,11 @@
                 }
             } catch (error) {
                 console.error('Error:', error);
-                errorMessage.textContent = 'Error de connexió. Si us plau, intenta-ho de nou.';
+                errorMessage.textContent = t('ConnectionError', 'Error de connexió. Si us plau, intenta-ho de nou.');
                 errorAlert.classList.remove('d-none');
             } finally {
                 submitButton.disabled = false;
-                submitButton.innerHTML = '<i class="bi bi-check-lg"></i> Crear ' + entityName;
+                submitButton.innerHTML = '<i class="bi bi-check-lg"></i> ' + t('Create', 'Crear') + ' ' + entityName;
             }
         });
     });

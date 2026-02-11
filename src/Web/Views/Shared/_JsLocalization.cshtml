@@ -1,0 +1,54 @@
+@using System.Text.Json
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizerFactory LocalizerFactory
+@{
+    var site = LocalizerFactory.Create("Scripts.site.js", "Web");
+    var entityModal = LocalizerFactory.Create("Scripts.entity-modal.js", "Web");
+    var signalr = LocalizerFactory.Create("Scripts.signalr-connection.js", "Web");
+    var saveCancel = LocalizerFactory.Create("Scripts.save-cancel-buttons.js", "Web");
+
+    var siteJson = JsonSerializer.Serialize(new Dictionary<string, string>
+    {
+        ["Close"] = site["Close"].Value
+    });
+
+    var entityModalJson = JsonSerializer.Serialize(new Dictionary<string, string>
+    {
+        ["EmailExists"] = entityModal["EmailExists"].Value,
+        ["EmailExistsValidity"] = entityModal["EmailExistsValidity"].Value,
+        ["ValidationError"] = entityModal["ValidationError"].Value,
+        ["Creating"] = entityModal["Creating"].Value,
+        ["SessionExpired"] = entityModal["SessionExpired"].Value,
+        ["CreateError"] = entityModal["CreateError"].Value,
+        ["CreateErrorRetry"] = entityModal["CreateErrorRetry"].Value,
+        ["OperationSuccess"] = entityModal["OperationSuccess"].Value,
+        ["ConnectionError"] = entityModal["ConnectionError"].Value,
+        ["Create"] = entityModal["Create"].Value
+    });
+
+    var signalrJson = JsonSerializer.Serialize(new Dictionary<string, string>
+    {
+        ["AutoReload"] = signalr["AutoReload"].Value,
+        ["SchoolCreated"] = signalr["SchoolCreated"].Value,
+        ["SchoolUpdated"] = signalr["SchoolUpdated"].Value,
+        ["SchoolDeleted"] = signalr["SchoolDeleted"].Value,
+        ["SignalRConnected"] = signalr["SignalRConnected"].Value,
+        ["SignalRConnectError"] = signalr["SignalRConnectError"].Value,
+        ["SignalRReconnecting"] = signalr["SignalRReconnecting"].Value,
+        ["SignalRReconnected"] = signalr["SignalRReconnected"].Value,
+        ["SignalRClosed"] = signalr["SignalRClosed"].Value
+    });
+
+    var saveCancelJson = JsonSerializer.Serialize(new Dictionary<string, string>
+    {
+        ["InvalidDataOptions"] = saveCancel["InvalidDataOptions"].Value
+    });
+}
+
+<script>
+window.__i18n = window.__i18n || {};
+window.__i18n["site.js"] = @Html.Raw(siteJson);
+window.__i18n["entity-modal.js"] = @Html.Raw(entityModalJson);
+window.__i18n["signalr-connection.js"] = @Html.Raw(signalrJson);
+window.__i18n["save-cancel-buttons.js"] = @Html.Raw(saveCancelJson);
+</script>

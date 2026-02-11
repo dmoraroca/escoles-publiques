@@ -10,12 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
             sessionStorage.removeItem('flashSuccess');
             const main = document.querySelector('main');
             if (main) {
+                const closeLabel = window.i18n ? window.i18n.t('site.js', 'Close', 'Tancar') : 'Tancar';
                 const alert = document.createElement('div');
                 alert.className = 'alert alert-success alert-dismissible fade show m-3';
                 alert.setAttribute('role', 'alert');
                 alert.innerHTML = '<i class="bi bi-check-circle-fill"></i> ' +
                     flashSuccess +
-                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tancar"></button>';
+                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="' + closeLabel + '"></button>';
                 main.prepend(alert);
             }
         }

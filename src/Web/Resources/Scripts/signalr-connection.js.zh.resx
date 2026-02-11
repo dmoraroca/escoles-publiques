@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AutoReload" xml:space="preserve">
+    <value>🔄 检测到变更，自动刷新...</value>
+  </data>
+  <data name="SchoolCreated" xml:space="preserve">
+    <value>✅ 已创建新学校：</value>
+  </data>
+  <data name="SchoolUpdated" xml:space="preserve">
+    <value>🔄 学校已更新：</value>
+  </data>
+  <data name="SchoolDeleted" xml:space="preserve">
+    <value>🗑️ 已删除学校，ID：</value>
+  </data>
+  <data name="SignalRConnected" xml:space="preserve">
+    <value>✅ SignalR 已成功连接</value>
+  </data>
+  <data name="SignalRConnectError" xml:space="preserve">
+    <value>❌ 连接 SignalR 出错：</value>
+  </data>
+  <data name="SignalRReconnecting" xml:space="preserve">
+    <value>🔄 正在重新连接 SignalR...</value>
+  </data>
+  <data name="SignalRReconnected" xml:space="preserve">
+    <value>✅ SignalR 已重新连接</value>
+  </data>
+  <data name="SignalRClosed" xml:space="preserve">
+    <value>❌ SignalR 连接已关闭</value>
+  </data>
+</root>

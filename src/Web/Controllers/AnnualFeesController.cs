@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Web.Services.Api;
+using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers
 {
@@ -24,7 +25,8 @@ namespace Web.Controllers
             IAnnualFeesApiClient annualFeesApi,
             IEnrollmentsApiClient enrollmentsApi,
             IStudentsApiClient studentsApi,
-            ILogger<AnnualFeesController> logger) : base(logger)
+            ILogger<AnnualFeesController> logger,
+            IStringLocalizer<BaseController> localizer) : base(logger, localizer)
         {
             _annualFeesApi = annualFeesApi;
             _enrollmentsApi = enrollmentsApi;

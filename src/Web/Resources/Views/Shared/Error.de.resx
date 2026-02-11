@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="Error." xml:space="preserve">
+    <value>Fehler.</value>
+  </data>
+  <data name="S'ha produït un error en processar la teva sol·licitud." xml:space="preserve">
+    <value>Beim Verarbeiten Ihrer Anfrage ist ein Fehler aufgetreten.</value>
+  </data>
+  <data name="ID de sol·licitud:" xml:space="preserve">
+    <value>Anforderungs-ID:</value>
+  </data>
+  <data name="Mode de desenvolupament" xml:space="preserve">
+    <value>Entwicklungsmodus</value>
+  </data>
+  <data name="Canviar a l'entorn de" xml:space="preserve">
+    <value>Wechseln zur</value>
+  </data>
+  <data name="Development" xml:space="preserve">
+    <value>Development</value>
+  </data>
+  <data name="mostrarà informació més detallada sobre l'error que s'ha produït." xml:space="preserve">
+    <value>zeigt detailliertere Informationen über den aufgetretenen Fehler an.</value>
+  </data>
+  <data name="L'entorn Development no s'ha d'activar en aplicacions desplegades." xml:space="preserve">
+    <value>Die Development-Umgebung sollte in bereitgestellten Anwendungen nicht aktiviert sein.</value>
+  </data>
+  <data name="Això pot provocar que es mostri informació sensible de les excepcions als usuaris finals." xml:space="preserve">
+    <value>Dies kann dazu führen, dass sensible Informationen aus Ausnahmen für Endbenutzer angezeigt werden.</value>
+  </data>
+  <data name="Per a la depuració local, activa l'entorn" xml:space="preserve">
+    <value>Für lokales Debugging aktivieren Sie die</value>
+  </data>
+  <data name="definint la variable d'entorn" xml:space="preserve">
+    <value>indem Sie die Umgebungsvariable</value>
+  </data>
+  <data name="a" xml:space="preserve">
+    <value>auf</value>
+  </data>
+  <data name="i reinicia l'aplicació." xml:space="preserve">
+    <value>und starten Sie die Anwendung neu.</value>
+  </data>
+</root>

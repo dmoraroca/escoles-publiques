@@ -6,7 +6,7 @@
         <div class="container">
             <div class="results-header fade-in">
                 <h2 class="results-title">
-                    <i class="bi bi-search"></i> Resultats de la cerca
+                    <i class="bi bi-search"></i> @Localizer["Resultats de la cerca"]
                     @if (!string.IsNullOrEmpty(Model.SearchQuery))
                     {
                         <span class="search-term">"@Model.SearchQuery"</span>
@@ -16,8 +16,8 @@
                         <span class="scope-badge">@Model.ScopeName</span>
                     }
                 </h2>
-                <a href="@Url.Action("Index", "Home")" class="btn btn-clear" title="Netejar cerca">
-                    <i class="bi bi-x-circle"></i> Netejar cerca
+                <a href="@Url.Action("Index", "Home")" class="btn btn-clear" title="@Localizer["Netejar cerca"]">
+                    <i class="bi bi-x-circle"></i> @Localizer["Netejar cerca"]
                 </a>
                 <div class="red-divider"></div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="no-results-icon">
                     <i class="bi bi-inbox"></i>
                 </div>
-                <p class="no-results-text">No s'ha trobat cap informació</p>
+                <p class="no-results-text">@Localizer["No s'ha trobat cap informació"]</p>
             </div>
         </div>
     </section>
@@ -37,7 +37,7 @@ else
         <div class="container">
             <div class="results-header fade-in">
                 <h2 class="results-title">
-                    <i class="bi bi-search"></i> Resultats de la cerca
+                    <i class="bi bi-search"></i> @Localizer["Resultats de la cerca"]
                     @if (!string.IsNullOrEmpty(Model.SearchQuery))
                     {
                         <span class="search-term">"@Model.SearchQuery"</span>
@@ -47,8 +47,8 @@ else
                         <span class="scope-badge">@Model.ScopeName</span>
                     }
                 </h2>
-                <a href="@Url.Action("Index", "Home")" class="btn btn-clear" title="Netejar cerca">
-                    <i class="bi bi-x-circle"></i> Netejar cerca
+                <a href="@Url.Action("Index", "Home")" class="btn btn-clear" title="@Localizer["Netejar cerca"]">
+                    <i class="bi bi-x-circle"></i> @Localizer["Netejar cerca"]
                 </a>
                 <div class="red-divider"></div>
             </div>
@@ -61,7 +61,7 @@ else
                         <button class="accordion-header" data-bs-toggle="collapse" data-bs-target="#schoolsCollapse">
                             <div class="header-content">
                                 <i class="bi bi-building"></i>
-                                <span class="header-title">Escoles</span>
+                                <span class="header-title">@Localizer["Escoles"]</span>
                                 <span class="results-count">@Model.Schools.Count</span>
                             </div>
                             <i class="bi bi-chevron-down accordion-icon"></i>
@@ -72,11 +72,11 @@ else
                                     <table class="results-table">
                                         <thead>
                                             <tr>
-                                                <th>Nom</th>
-                                                <th>Codi</th>
-                                                <th>Ciutat</th>
-                                                <th>Àmbit</th>
-                                                <th>Accions</th>
+                                                <th>@Localizer["Nom"]</th>
+                                                <th>@Localizer["Codi"]</th>
+                                                <th>@Localizer["Ciutat"]</th>
+                                                <th>@Localizer["Àmbit"]</th>
+                                                <th>@Localizer["Accions"]</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -89,7 +89,7 @@ else
                                                     <td>@(school.Scope ?? "-")</td>
                                                     <td>
                                                         <a href="@Url.Action("Details", "Schools", new { id = school.Id })" class="btn-view-detail">
-                                                            <i class="bi bi-eye"></i> Veure
+                                                            <i class="bi bi-eye"></i> @Localizer["Veure"]
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -109,7 +109,7 @@ else
                         <button class="accordion-header collapsed" data-bs-toggle="collapse" data-bs-target="#studentsCollapse">
                             <div class="header-content">
                                 <i class="bi bi-person"></i>
-                                <span class="header-title">Alumnes</span>
+                                <span class="header-title">@Localizer["Alumnes"]</span>
                                 <span class="results-count">@Model.Students.Count</span>
                             </div>
                             <i class="bi bi-chevron-down accordion-icon"></i>
@@ -120,11 +120,11 @@ else
                                     <table class="results-table">
                                         <thead>
                                             <tr>
-                                                <th>Nom</th>
-                                                <th>Cognoms</th>
-                                                <th>Email</th>
-                                                <th>Escola</th>
-                                                <th>Accions</th>
+                                                <th>@Localizer["Nom"]</th>
+                                                <th>@Localizer["Cognoms"]</th>
+                                                <th>@Localizer["Email"]</th>
+                                                <th>@Localizer["Escola"]</th>
+                                                <th>@Localizer["Accions"]</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -137,7 +137,7 @@ else
                                                     <td>@(student.SchoolName ?? "-")</td>
                                                     <td>
                                                         <a href="@Url.Action("Details", "Students", new { id = student.Id })" class="btn-view-detail">
-                                                            <i class="bi bi-eye"></i> Veure
+                                                            <i class="bi bi-eye"></i> @Localizer["Veure"]
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -157,7 +157,7 @@ else
                         <button class="accordion-header collapsed" data-bs-toggle="collapse" data-bs-target="#enrollmentsCollapse">
                             <div class="header-content">
                                 <i class="bi bi-calendar-check"></i>
-                                <span class="header-title">Inscripcions</span>
+                                <span class="header-title">@Localizer["Inscripcions"]</span>
                                 <span class="results-count">@Model.Enrollments.Count</span>
                             </div>
                             <i class="bi bi-chevron-down accordion-icon"></i>
@@ -168,11 +168,11 @@ else
                                     <table class="results-table">
                                         <thead>
                                             <tr>
-                                                <th>Alumne</th>
-                                                <th>Escola</th>
-                                                <th>Curs</th>
-                                                <th>Data</th>
-                                                <th>Accions</th>
+                                                <th>@Localizer["Alumne"]</th>
+                                                <th>@Localizer["Escola"]</th>
+                                                <th>@Localizer["Curs"]</th>
+                                                <th>@Localizer["Data"]</th>
+                                                <th>@Localizer["Accions"]</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -185,7 +185,7 @@ else
                                                     <td>@enrollment.EnrollmentDate.ToString("dd/MM/yyyy")</td>
                                                     <td>
                                                         <a href="@Url.Action("Details", "Enrollments", new { id = enrollment.Id })" class="btn-view-detail">
-                                                            <i class="bi bi-eye"></i> Veure
+                                                            <i class="bi bi-eye"></i> @Localizer["Veure"]
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -205,7 +205,7 @@ else
                         <button class="accordion-header collapsed" data-bs-toggle="collapse" data-bs-target="#feesCollapse">
                             <div class="header-content">
                                 <i class="bi bi-cash-coin"></i>
-                                <span class="header-title">Quotes Anuals</span>
+                                <span class="header-title">@Localizer["Quotes Anuals"]</span>
                                 <span class="results-count">@Model.AnnualFees.Count</span>
                             </div>
                             <i class="bi bi-chevron-down accordion-icon"></i>
@@ -216,11 +216,11 @@ else
                                     <table class="results-table">
                                         <thead>
                                             <tr>
-                                                <th>Alumne</th>
-                                                <th>Import</th>
-                                                <th>Venciment</th>
-                                                <th>Estat</th>
-                                                <th>Accions</th>
+                                                <th>@Localizer["Alumne"]</th>
+                                                <th>@Localizer["Import"]</th>
+                                                <th>@Localizer["Venciment"]</th>
+                                                <th>@Localizer["Estat"]</th>
+                                                <th>@Localizer["Accions"]</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -233,16 +233,16 @@ else
                                                     <td>
                                                         @if (fee.IsPaid)
                                                         {
-                                                            <span class="status-badge status-paid">Pagada</span>
+                                                            <span class="status-badge status-paid">@Localizer["Pagada"]</span>
                                                         }
                                                         else
                                                         {
-                                                            <span class="status-badge status-pending">Pendent</span>
+                                                            <span class="status-badge status-pending">@Localizer["Pendent"]</span>
                                                         }
                                                     </td>
                                                     <td>
                                                         <a href="@Url.Action("Details", "AnnualFees", new { id = fee.Id })" class="btn-view-detail">
-                                                            <i class="bi bi-eye"></i> Veure
+                                                            <i class="bi bi-eye"></i> @Localizer["Veure"]
                                                         </a>
                                                     </td>
                                                 </tr>

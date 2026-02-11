@@ -7,27 +7,92 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Accés - GICAR</title>
+    <title>@Localizer["Accés - GICAR"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/login.css" />
 </head>
 <body class="login-body">
     
-    <!-- Header negre amb logo Gencat -->
-    <div class="header-top-black login-header-black">
-        <div class="container login-header-container">
-            <div class="login-header-flex">
-                <div>
-                    <img src="https://educacio.gencat.cat/web/resources/fwkResponsive/fpca_capcalera/img/gencat-nuevo-completo-w.svg" 
-                         alt="Generalitat de Catalunya" 
-                         class="login-header-logo"
-                         onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%2230%22%3E%3Ctext x=%2210%22 y=%2220%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2216%22%3EGeneralitat%3C/text%3E%3C/svg%3E';">
-                </div>
-                <h5 class="login-header-title">
-                    Departament d'Educació i Formació Professional
-                </h5>
+    <!-- Capçalera com la pàgina logada -->
+    <div class="header-top-black py-2">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <img src="https://educacio.gencat.cat/web/resources/fwkResponsive/fpca_capcalera/img/gencat-nuevo-completo-w.svg" 
+                     alt="@Localizer["Generalitat de Catalunya"]" 
+                     height="25"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%2230%22%3E%3Ctext x=%2210%22 y=%2220%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2216%22%3EGeneralitat%3C/text%3E%3C/svg%3E';">
             </div>
+            @{
+                var currentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/";
+                var caUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                {
+                    ["culture"] = "ca-ES",
+                    ["ui-culture"] = "ca-ES"
+                });
+                var esUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                {
+                    ["culture"] = "es-ES",
+                    ["ui-culture"] = "es-ES"
+                });
+                var enUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                {
+                    ["culture"] = "en-US",
+                    ["ui-culture"] = "en-US"
+                });
+                var deUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                {
+                    ["culture"] = "de-DE",
+                    ["ui-culture"] = "de-DE"
+                });
+                var frUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                {
+                    ["culture"] = "fr-FR",
+                    ["ui-culture"] = "fr-FR"
+                });
+                var ruUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                {
+                    ["culture"] = "ru-RU",
+                    ["ui-culture"] = "ru-RU"
+                });
+                var zhUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                {
+                    ["culture"] = "zh-CN",
+                    ["ui-culture"] = "zh-CN"
+                });
+                var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                var currentLanguageLabel = currentCulture.StartsWith("es", System.StringComparison.OrdinalIgnoreCase)
+                    ? Localizer["ES - Espanyol"].Value
+                    : currentCulture.StartsWith("en", System.StringComparison.OrdinalIgnoreCase)
+                        ? Localizer["EN - English"].Value
+                        : currentCulture.StartsWith("de", System.StringComparison.OrdinalIgnoreCase)
+                            ? Localizer["DE - Deutsch"].Value
+                            : currentCulture.StartsWith("fr", System.StringComparison.OrdinalIgnoreCase)
+                                ? Localizer["FR - Français"].Value
+                                : currentCulture.StartsWith("ru", System.StringComparison.OrdinalIgnoreCase)
+                                    ? Localizer["RU - Русский"].Value
+                                    : currentCulture.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase)
+                                        ? Localizer["ZH - 中文"].Value
+                                        : Localizer["CA - Català"].Value;
+            }
+            <div class="d-flex align-items-center gap-3">
+                <select class="form-select form-select-sm d-inline-block w-auto"
+                        aria-label="@Localizer["Idioma"]"
+                        onchange="if(this.value){window.location.href=this.value;}">
+                    <option value="@caUrl" selected="@(currentCulture.StartsWith("ca", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["CA - Català"]</option>
+                    <option value="@esUrl" selected="@(currentCulture.StartsWith("es", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["ES - Espanyol"]</option>
+                    <option value="@enUrl" selected="@(currentCulture.StartsWith("en", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["EN - English"]</option>
+                    <option value="@deUrl" selected="@(currentCulture.StartsWith("de", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["DE - Deutsch"]</option>
+                    <option value="@frUrl" selected="@(currentCulture.StartsWith("fr", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["FR - Français"]</option>
+                    <option value="@ruUrl" selected="@(currentCulture.StartsWith("ru", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["RU - Русский"]</option>
+                    <option value="@zhUrl" selected="@(currentCulture.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["ZH - 中文"]</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="header-dept-bar py-3">
+        <div class="container">
+            <h1 class="h4 mb-0 font-weight-bold text-white">@Localizer["Departament d'Educació i Formació Professional"]</h1>
         </div>
     </div>
 
@@ -37,7 +102,7 @@
         <div class="login-header"></div>
 
         <div class="login-body">
-            <h1>Accés amb credencials corporatives</h1>
+            <h1>@Localizer["Accés amb credencials corporatives"]</h1>
             
             @if (TempData["Error"] != null)
             {
@@ -49,21 +114,21 @@
             <form asp-controller="Auth" asp-action="Login" method="post">
                 <div class="form-group">
                     <label for="email" class="form-label">
-                        Usuari<span class="required">*</span>
+                        @Localizer["Usuari"]<span class="required">*</span>
                     </label>
                     <input type="email" class="form-control" id="email" name="email" required autofocus>
                 </div>
 
                 <div class="form-group">
                     <label for="password" class="form-label">
-                        Password<span class="required">*</span>
+                        @Localizer["Contrasenya"]<span class="required">*</span>
                     </label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
 
                 <button type="submit" class="btn-login">
                     <i class="bi bi-lock-fill"></i>
-                    Accedeix
+                    @Localizer["Accedeix"]
                 </button>
             </form>
         </div>
@@ -74,10 +139,10 @@
 <footer class="login-footer">
     <div class="container text-center login-footer-container">
         <div class="text-muted small login-footer-muted">
-            &copy; 2026 - <strong>Generalitat de Catalunya</strong> - Departament d'Educació i Formació Professional
+            &copy; 2026 - <strong>@Localizer["Generalitat de Catalunya"]</strong> - @Localizer["Departament d'Educació i Formació Professional"]
         </div>
         <div class="text-muted small mt-1 login-footer-muted2">
-            Tots els drets reservats
+            @Localizer["Tots els drets reservats"]
         </div>
     </div>
 </footer>

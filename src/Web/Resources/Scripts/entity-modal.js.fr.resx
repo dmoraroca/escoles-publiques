@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EmailExists" xml:space="preserve">
+    <value>Cet e-mail existe déjà.</value>
+  </data>
+  <data name="EmailExistsValidity" xml:space="preserve">
+    <value>E-mail existant</value>
+  </data>
+  <data name="ValidationError" xml:space="preserve">
+    <value>Veuillez remplir correctement tous les champs obligatoires.</value>
+  </data>
+  <data name="Creating" xml:space="preserve">
+    <value>Création...</value>
+  </data>
+  <data name="SessionExpired" xml:space="preserve">
+    <value>Session expirée. Veuillez vous reconnecter.</value>
+  </data>
+  <data name="CreateError" xml:space="preserve">
+    <value>Erreur lors de la création de l'enregistrement.</value>
+  </data>
+  <data name="CreateErrorRetry" xml:space="preserve">
+    <value>Erreur lors de la création de l'enregistrement. Veuillez vérifier les données et réessayer.</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Opération terminée avec succès.</value>
+  </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>Erreur de connexion. Veuillez réessayer.</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+</root>

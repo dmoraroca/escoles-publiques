@@ -3,22 +3,22 @@
 @model IEnumerable<Web.Models.UserViewModel>
 
 @{
-    ViewData["Title"] = "Usuaris (Alumnes)";
+    ViewData["Title"] = Localizer["Usuaris (Alumnes)"];
 
     var tableConfig = new TableViewModel<UserViewModel>
     {
         Data = Model,
-        EntityName = "Usuaris (Alumnes)",
+        EntityName = Localizer["Usuaris (Alumnes)"].Value,
         ControllerName = "Users",
-        EmptyMessage = "No hi ha usuaris-alumne registrats.",
+        EmptyMessage = Localizer["No hi ha usuaris-alumne registrats."].Value,
         Columns = new List<ColumnConfig>
         {
-            new ColumnConfig { PropertyName = "FirstName", DisplayName = "Nom", IsSortable = true },
-            new ColumnConfig { PropertyName = "LastName", DisplayName = "Cognoms", IsSortable = true },
-            new ColumnConfig { PropertyName = "Email", DisplayName = "Email", IsSortable = true },
+            new ColumnConfig { PropertyName = "FirstName", DisplayName = Localizer["Nom"].Value, IsSortable = true },
+            new ColumnConfig { PropertyName = "LastName", DisplayName = Localizer["Cognoms"].Value, IsSortable = true },
+            new ColumnConfig { PropertyName = "Email", DisplayName = Localizer["Email"].Value, IsSortable = true },
             new ColumnConfig {
                 PropertyName = "BirthDate",
-                DisplayName = "Data naixement",
+                DisplayName = Localizer["Data naixement"].Value,
                 IsSortable = true,
                 CustomRender = (item) => {
                     var u = item as UserViewModel;
@@ -30,7 +30,7 @@
 }
 
 <div class="container mt-4">
-    <h2>Usuaris (Alumnes)</h2>
+    <h2>@Localizer["Usuaris (Alumnes)"]</h2>
     <div class="card mt-3">
         <div class="card-body">
             @await Component.InvokeAsync("GenericTable", tableConfig)

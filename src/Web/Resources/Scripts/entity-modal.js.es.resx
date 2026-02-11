@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EmailExists" xml:space="preserve">
+    <value>Este email ya existe.</value>
+  </data>
+  <data name="EmailExistsValidity" xml:space="preserve">
+    <value>Email existente</value>
+  </data>
+  <data name="ValidationError" xml:space="preserve">
+    <value>Por favor, rellena correctamente todos los campos obligatorios.</value>
+  </data>
+  <data name="Creating" xml:space="preserve">
+    <value>Creando...</value>
+  </data>
+  <data name="SessionExpired" xml:space="preserve">
+    <value>Sesión caducada. Vuelve a iniciar sesión.</value>
+  </data>
+  <data name="CreateError" xml:space="preserve">
+    <value>Error creando el registro.</value>
+  </data>
+  <data name="CreateErrorRetry" xml:space="preserve">
+    <value>Error creando el registro. Por favor, verifica los datos e inténtalo de nuevo.</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operación completada correctamente.</value>
+  </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>Error de conexión. Por favor, inténtalo de nuevo.</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Crear</value>
+  </data>
+</root>

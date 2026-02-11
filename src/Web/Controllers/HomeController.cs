@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 using System.Security.Claims;
+using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers;
 
@@ -21,7 +22,7 @@ public partial class HomeController : BaseController
     /// <summary>
     /// Constructor del controlador Home.
     /// </summary>
-    public HomeController(ILogger<HomeController> logger) : base(logger)
+    public HomeController(ILogger<HomeController> logger, IStringLocalizer<BaseController> localizer) : base(logger, localizer)
     {
     }
 

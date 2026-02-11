@@ -17,6 +17,7 @@ using Web.Services.Search;
 using Application.Interfaces.Search;
 using Application.UseCases.Queries.SearchResults;
 using Web.Services.Search.Adapters;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configuració Serilog: logs per dia a /logs/logYYYYMMDD.log
@@ -58,6 +59,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<SchoolViewModelValidator>();
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -120,7 +123,9 @@ builder.Services.AddControllersWithViews(options =>
         .RequireAuthenticatedUser()
         .Build();
     options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy));
-});
+})
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 
 builder.Services.AddSignalR();
 
@@ -156,12 +161,44 @@ else
 }
 app.UseStaticFiles();
 
+app.Use(async (context, next) =>
+{
+    var culture = context.Request.Query["culture"].ToString();
+    var uiCulture = context.Request.Query["ui-culture"].ToString();
+    if (!string.IsNullOrEmpty(culture))
+    {
+        var requestCulture = new RequestCulture(culture, string.IsNullOrEmpty(uiCulture) ? culture : uiCulture);
+        context.Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(requestCulture));
+    }
+    await next();
+});
+
 // Forçar cultura invariant per a cada request
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
-    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-US"),
-    SupportedCultures = new[] { new CultureInfo("en-US") },
-    SupportedUICultures = new[] { new CultureInfo("en-US") }
+    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("ca-ES"),
+    SupportedCultures = new[]
+    {
+        new CultureInfo("ca-ES"),
+        new CultureInfo("es-ES"),
+        new CultureInfo("en-US"),
+        new CultureInfo("de-DE"),
+        new CultureInfo("fr-FR"),
+        new CultureInfo("ru-RU"),
+        new CultureInfo("zh-CN")
+    },
+    SupportedUICultures = new[]
+    {
+        new CultureInfo("ca-ES"),
+        new CultureInfo("es-ES"),
+        new CultureInfo("en-US"),
+        new CultureInfo("de-DE"),
+        new CultureInfo("fr-FR"),
+        new CultureInfo("ru-RU"),
+        new CultureInfo("zh-CN")
+    }
 });
 
 app.UseRouting();

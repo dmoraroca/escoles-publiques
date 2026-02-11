@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Resultats de la cerca" xml:space="preserve">
+    <value>Результаты поиска</value>
+  </data>
+  <data name="Netejar cerca" xml:space="preserve">
+    <value>Очистить поиск</value>
+  </data>
+  <data name="No s'ha trobat cap informació" xml:space="preserve">
+    <value>Информация не найдена</value>
+  </data>
+  <data name="Escoles" xml:space="preserve">
+    <value>Школы</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Codi" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="Ciutat" xml:space="preserve">
+    <value>Город</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>Область</value>
+  </data>
+  <data name="Accions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="Veure" xml:space="preserve">
+    <value>Просмотр</value>
+  </data>
+  <data name="Alumnes" xml:space="preserve">
+    <value>Ученики</value>
+  </data>
+  <data name="Cognoms" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>Школа</value>
+  </data>
+  <data name="Inscripcions" xml:space="preserve">
+    <value>Зачисления</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>Ученик</value>
+  </data>
+  <data name="Curs" xml:space="preserve">
+    <value>Курс</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Quotes Anuals" xml:space="preserve">
+    <value>Годовые взносы</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="Venciment" xml:space="preserve">
+    <value>Срок</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Pagada" xml:space="preserve">
+    <value>Оплачено</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>Ожидается</value>
+  </data>
+</root>

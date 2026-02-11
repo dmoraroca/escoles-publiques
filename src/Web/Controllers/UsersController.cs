@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
+using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers;
 
@@ -10,7 +11,7 @@ public class UsersController : BaseController
 {
     private readonly IUserRepository _userRepository;
 
-    public UsersController(IUserRepository userRepository, ILogger<UsersController> logger) : base(logger)
+    public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IStringLocalizer<BaseController> localizer) : base(logger, localizer)
     {
         _userRepository = userRepository;
     }

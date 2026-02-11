@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Escoles" xml:space="preserve">
+    <value>Écoles</value>
+  </data>
+  <data name="No hi ha escoles registrades. Crea la primera!" xml:space="preserve">
+    <value>Aucune école enregistrée. Créez la première !</value>
+  </data>
+  <data name="Codi" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>Prénom</value>
+  </data>
+  <data name="Ciutat" xml:space="preserve">
+    <value>Ville</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>Domaine</value>
+  </data>
+  <data name="Favorit" xml:space="preserve">
+    <value>Favori</value>
+  </data>
+  <data name="Escola favorita" xml:space="preserve">
+    <value>École favorite</value>
+  </data>
+  <data name="No és favorita" xml:space="preserve">
+    <value>Pas favorite</value>
+  </data>
+  <data name="Data creació" xml:space="preserve">
+    <value>Date de création</value>
+  </data>
+  <data name="Detalls" xml:space="preserve">
+    <value>Détails</value>
+  </data>
+  <data name="Esborrar" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Estàs segur que vols esborrar aquesta escola?" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer cette école ?</value>
+  </data>
+  <data name="Nova Escola" xml:space="preserve">
+    <value>Nouvelle école</value>
+  </data>
+</root>

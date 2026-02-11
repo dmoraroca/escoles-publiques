@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Departament d'Educació i Formació Professional</title>
+    <title>@ViewData["Title"] - @Localizer["Departament d'Educació i Formació Professional"]</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -23,29 +23,92 @@
                     <img src="https://educacio.gencat.cat/web/resources/fwkResponsive/fpca_capcalera/img/gencat-nuevo-completo-w.svg" alt="gencat" height="25">
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                                            <span class="text-warning small">Rol detectat: @User.FindFirst("Role")?.Value</span>
+                                            <span class="text-warning small">@Localizer["Rol detectat:"] @User.FindFirst("Role")?.Value</span>
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <span class="text-white small">
-                            <i class="bi bi-person-circle"></i> @(User.FindFirst("FullName")?.Value ?? User.Identity.Name ?? "Usuari")
+                            <i class="bi bi-person-circle"></i> @(User.FindFirst("FullName")?.Value ?? User.Identity.Name ?? Localizer["Usuari"].Value)
                         </span>
                         <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
                             <button type="submit" class="btn btn-sm btn-outline-light">
-                                <i class="bi bi-box-arrow-right"></i> Sortir
+                                <i class="bi bi-box-arrow-right"></i> @Localizer["Sortir"]
                             </button>
                         </form>
                     }
                     else
                     {
-                        <span class="small text-white">Contacte | CA | 🔍</span>
+                        <span class="small text-white">@Localizer["Contacte | CA | 🔍"]</span>
                     }
+                    @{
+                        var currentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/";
+                        var caUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                        {
+                            ["culture"] = "ca-ES",
+                            ["ui-culture"] = "ca-ES"
+                        });
+                        var esUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                        {
+                            ["culture"] = "es-ES",
+                            ["ui-culture"] = "es-ES"
+                        });
+                        var enUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                        {
+                            ["culture"] = "en-US",
+                            ["ui-culture"] = "en-US"
+                        });
+                        var deUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                        {
+                            ["culture"] = "de-DE",
+                            ["ui-culture"] = "de-DE"
+                        });
+                        var frUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                        {
+                            ["culture"] = "fr-FR",
+                            ["ui-culture"] = "fr-FR"
+                        });
+                        var ruUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                        {
+                            ["culture"] = "ru-RU",
+                            ["ui-culture"] = "ru-RU"
+                        });
+                        var zhUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                        {
+                            ["culture"] = "zh-CN",
+                            ["ui-culture"] = "zh-CN"
+                        });
+                        var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                        var currentLanguageLabel = currentCulture.StartsWith("es", System.StringComparison.OrdinalIgnoreCase)
+                            ? Localizer["ES - Espanyol"].Value
+                            : currentCulture.StartsWith("en", System.StringComparison.OrdinalIgnoreCase)
+                                ? Localizer["EN - English"].Value
+                                : currentCulture.StartsWith("de", System.StringComparison.OrdinalIgnoreCase)
+                                    ? Localizer["DE - Deutsch"].Value
+                                    : currentCulture.StartsWith("fr", System.StringComparison.OrdinalIgnoreCase)
+                                        ? Localizer["FR - Français"].Value
+                                        : currentCulture.StartsWith("ru", System.StringComparison.OrdinalIgnoreCase)
+                                            ? Localizer["RU - Русский"].Value
+                                            : currentCulture.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase)
+                                                ? Localizer["ZH - 中文"].Value
+                                                : Localizer["CA - Català"].Value;
+                    }
+                    <select class="form-select form-select-sm d-inline-block w-auto ms-2"
+                            aria-label="@Localizer["Idioma"]"
+                            onchange="if(this.value){window.location.href=this.value;}">
+                        <option value="@caUrl" selected="@(currentCulture.StartsWith("ca", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["CA - Català"]</option>
+                        <option value="@esUrl" selected="@(currentCulture.StartsWith("es", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["ES - Espanyol"]</option>
+                        <option value="@enUrl" selected="@(currentCulture.StartsWith("en", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["EN - English"]</option>
+                        <option value="@deUrl" selected="@(currentCulture.StartsWith("de", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["DE - Deutsch"]</option>
+                        <option value="@frUrl" selected="@(currentCulture.StartsWith("fr", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["FR - Français"]</option>
+                        <option value="@ruUrl" selected="@(currentCulture.StartsWith("ru", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["RU - Русский"]</option>
+                        <option value="@zhUrl" selected="@(currentCulture.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["ZH - 中文"]</option>
+                    </select>
                 </div>
             </div>
         </div>
 
         <div class="header-dept-bar py-3">
             <div class="container">
-                <h1 class="h4 mb-0 font-weight-bold text-white">Departament d'Educació i Formació Professional</h1>
+                <h1 class="h4 mb-0 font-weight-bold text-white">@Localizer["Departament d'Educació i Formació Professional"]</h1>
             </div>
         </div>
 
@@ -53,7 +116,7 @@
             <div class="container">
                 @if (User.FindFirst("Role")?.Value == "ADM")
                 {
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="@Localizer["Mostra navegació"]">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse" id="navbarNav">
@@ -62,19 +125,19 @@
                         }
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Home" asp-action="Index">Inici</a>
+                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Home" asp-action="Index">@Localizer["Inici"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Schools", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Schools" asp-action="Index">Escoles</a>
+                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Schools", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Schools" asp-action="Index">@Localizer["Escoles"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Students", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Students" asp-action="Index">Alumnes</a>
+                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Students", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Students" asp-action="Index">@Localizer["Alumnes"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Enrollments", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Enrollments" asp-action="Index">Inscripcions</a>
+                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Enrollments", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Enrollments" asp-action="Index">@Localizer["Inscripcions"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "AnnualFees", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="AnnualFees" asp-action="Index">Quotes</a>
+                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "AnnualFees", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="AnnualFees" asp-action="Index">@Localizer["Quotes"]</a>
                             </li>
                         </ul>
                     </div>
@@ -89,14 +152,14 @@
             {
                 <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
                     <i class="bi bi-check-circle-fill"></i> @TempData["Success"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tancar"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer["Tancar"]"></button>
                 </div>
             }
             @if (TempData["Error"] != null)
             {
                 <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
                     <i class="bi bi-exclamation-triangle-fill"></i> @TempData["Error"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tancar"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer["Tancar"]"></button>
                 </div>
             }
             
@@ -108,21 +171,23 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-muted small">
-                    &copy; 2026 - <strong>Generalitat de Catalunya</strong>
+                    &copy; 2026 - <strong>@Localizer["Generalitat de Catalunya"]</strong>
                 </div>
                 <div class="col-md-6 text-md-end small">
-                    <a href="#" class="text-muted text-decoration-none">Accessibilitat</a> | 
-                    <a href="#" class="text-muted text-decoration-none">Mapa web</a> |
-                    <a asp-controller="Home" asp-action="Privacy" class="text-muted text-decoration-none">Avís de privacitat</a>
-                    <div class="text-muted small mt-1">Entorn de proves — aquesta aplicació és només per a demostracions i no és una versió oficial.</div>
+                    <a href="#" class="text-muted text-decoration-none">@Localizer["Accessibilitat"]</a> | 
+                    <a href="#" class="text-muted text-decoration-none">@Localizer["Mapa web"]</a> |
+                    <a asp-controller="Home" asp-action="Privacy" class="text-muted text-decoration-none">@Localizer["Avís de privacitat"]</a>
+                    <div class="text-muted small mt-1">@Localizer["Entorn de proves — aquesta aplicació és només per a demostracions i no és una versió oficial."]</div>
                 </div>
             </div>
         </div>
     </footer>
 
+    @await Html.PartialAsync("_JsLocalization")
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@@latest/dist/browser/signalr.min.js"></script>
+    <script src="~/js/i18n.js"></script>
     <script src="~/js/signalr-connection.js"></script>
     <script src="~/js/save-cancel-buttons.js"></script>
     <script src="~/js/site.js"></script>

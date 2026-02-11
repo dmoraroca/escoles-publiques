@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Quotes anuals" xml:space="preserve">
+    <value>Годовые взносы</value>
+  </data>
+  <data name="Quotes Anuals" xml:space="preserve">
+    <value>Годовые взносы</value>
+  </data>
+  <data name="No hi ha quotes anuals registrades." xml:space="preserve">
+    <value>Нет зарегистрированных годовых взносов.</value>
+  </data>
+  <data name="Inscripció" xml:space="preserve">
+    <value>Зачисление</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="Data venciment" xml:space="preserve">
+    <value>Срок</value>
+  </data>
+  <data name="Data pagament" xml:space="preserve">
+    <value>Дата оплаты</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>Ожидается</value>
+  </data>
+  <data name="Referència" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="Detalls" xml:space="preserve">
+    <value>Детали</value>
+  </data>
+  <data name="Esborrar" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Estàs segur que vols esborrar aquesta quota?" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить этот взнос?</value>
+  </data>
+  <data name="Nova Quota" xml:space="preserve">
+    <value>Новый взнос</value>
+  </data>
+</root>

@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Departament d'Educació i Formació Professional" xml:space="preserve">
+    <value>教育与职业培训部</value>
+  </data>
+  <data name="Rol detectat:" xml:space="preserve">
+    <value>检测到角色：</value>
+  </data>
+  <data name="Usuari" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="Sortir" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Contacte | CA | 🔍" xml:space="preserve">
+    <value>联系 | ZH | 🔍</value>
+  </data>
+  <data name="Mostra navegació" xml:space="preserve">
+    <value>显示导航</value>
+  </data>
+  <data name="Inici" xml:space="preserve">
+    <value>首页</value>
+  </data>
+  <data name="Escoles" xml:space="preserve">
+    <value>学校</value>
+  </data>
+  <data name="Alumnes" xml:space="preserve">
+    <value>学生</value>
+  </data>
+  <data name="Inscripcions" xml:space="preserve">
+    <value>报名</value>
+  </data>
+  <data name="Quotes" xml:space="preserve">
+    <value>费用</value>
+  </data>
+  <data name="Tancar" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Generalitat de Catalunya" xml:space="preserve">
+    <value>加泰罗尼亚自治区政府</value>
+  </data>
+  <data name="Accessibilitat" xml:space="preserve">
+    <value>无障碍</value>
+  </data>
+  <data name="Mapa web" xml:space="preserve">
+    <value>网站地图</value>
+  </data>
+  <data name="Avís de privacitat" xml:space="preserve">
+    <value>隐私声明</value>
+  </data>
+  <data name="Entorn de proves — aquesta aplicació és només per a demostracions i no és una versió oficial." xml:space="preserve">
+    <value>测试环境——该应用仅用于演示，并非官方版本。</value>
+  </data>
+
+  <data name="Idioma:" xml:space="preserve">
+    <value>语言：</value>
+  </data>
+  <data name="Idioma" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="CA - Català" xml:space="preserve">
+    <value>CA - 加泰罗尼亚语</value>
+  </data>
+  <data name="ES - Espanyol" xml:space="preserve">
+    <value>ES - 西班牙语</value>
+  </data>
+  <data name="EN - English" xml:space="preserve">
+    <value>EN - 英语</value>
+  </data>
+  <data name="DE - Deutsch" xml:space="preserve">
+    <value>DE - 德语</value>
+  </data>
+  <data name="FR - Français" xml:space="preserve">
+    <value>FR - 法语</value>
+  </data>
+  <data name="RU - Русский" xml:space="preserve">
+    <value>RU - 俄语</value>
+  </data>
+  <data name="ZH - 中文" xml:space="preserve">
+    <value>ZH - 中文</value>
+  </data>
+</root>

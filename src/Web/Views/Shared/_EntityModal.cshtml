@@ -7,14 +7,14 @@
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
                     <h5 class="modal-title" id="@(Model.ModalId)Label">
-                        <i class="bi @Model.IconClass"></i> Crear @Model.EntityName
+                        <i class="bi @Model.IconClass"></i> @Localizer["Crear {0}", Model.EntityName]
                     </h5>
                 </div>
                 <div class="modal-body">
                     <!-- Zona d'alertes per errors de validació -->
                     <div class="alert alert-danger d-none" role="alert" id="@(Model.ModalId)-error">
                         <i class="bi bi-exclamation-triangle-fill"></i>
-                        <span id="@(Model.ModalId)-error-message">Si us plau, omple tots els camps obligatoris correctament.</span>
+                        <span id="@(Model.ModalId)-error-message">@Localizer["Si us plau, omple tots els camps obligatoris correctament."]</span>
                     </div>
                     
                     <div class="row"> 
@@ -48,7 +48,7 @@
                                             id="@field.Name" 
                                             name="@field.Name"
                                             @(field.Required ? "required" : "")>
-                                        <option value="">-- Selecciona @field.Label.ToLower() --</option>
+                                        <option value="">@Localizer["-- Selecciona {0} --", field.Label.ToLower()]</option>
                                         @if (field.Options != null)
                                         {
                                             @foreach (var option in field.Options)
@@ -59,7 +59,7 @@
                                     </select>
                                     @if (field.Required)
                                     {
-                                        <div class="invalid-feedback">@field.Label és obligatori</div>
+                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", field.Label]</div>
                                     }
                                 }
                                 else if (field.Type == "date")
@@ -75,7 +75,7 @@
                                            placeholder="@field.Placeholder" />
                                     @if (field.Required)
                                     {
-                                        <div class="invalid-feedback">@field.Label és obligatori</div>
+                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", field.Label]</div>
                                     }
                                 }
                                 else if (field.Type == "number")
@@ -91,7 +91,7 @@
                                            placeholder="@field.Placeholder" />
                                     @if (field.Required)
                                     {
-                                        <div class="invalid-feedback">@field.Label és obligatori</div>
+                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", field.Label]</div>
                                     }
                                 }
                                 else
@@ -108,7 +108,7 @@
                                            placeholder="@field.Placeholder" />
                                     @if (field.Required)
                                     {
-                                        <div class="invalid-feedback">@field.Label és obligatori</div>
+                                        <div class="invalid-feedback">@Localizer["{0} és obligatori", field.Label]</div>
                                     }
                                 }
                             </div>
@@ -118,17 +118,17 @@
                 </div>
                 <div class="modal-footer d-flex justify-content-between align-items-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-lg"></i> Cancel·lar
+                        <i class="bi bi-x-lg"></i> @Localizer["Cancel·lar"]
                     </button>
                     <div class="d-flex align-items-center gap-3">
                         <div class="form-check mb-0">
                             <input class="form-check-input js-privacy-check" type="checkbox" id="@(Model.ModalId)-AgreesToPrivacy" name="AgreesToPrivacy" value="true" />
                             <label class="form-check-label small" for="@(Model.ModalId)-AgreesToPrivacy">
-                                Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a>
+                                @Localizer["Accepto les"] <a asp-controller="Home" asp-action="Privacy">@Localizer["condicions de privacitat"]</a>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-lg"></i> Crear @Model.EntityName
+                            <i class="bi bi-check-lg"></i> @Localizer["Crear {0}", Model.EntityName]
                         </button>
                     </div>
                 </div>

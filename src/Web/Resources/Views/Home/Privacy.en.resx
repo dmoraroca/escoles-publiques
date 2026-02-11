@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Avís de Privacitat - Entorn de Proves" xml:space="preserve">
+    <value>Privacy Notice - Test Environment</value>
+  </data>
+  <data name="Avís de Privacitat i Ús" xml:space="preserve">
+    <value>Privacy and Use Notice</value>
+  </data>
+  <data name="Aquesta aplicació és una demostració i un entorn de proves creat per a entrevistes i avaluacions tècniques. No és una versió oficial de la Generalitat de Catalunya ni d'una entitat pública." xml:space="preserve">
+    <value>This application is a demonstration and a test environment created for interviews and technical evaluations. It is not an official version of the Generalitat de Catalunya or a public entity.</value>
+  </data>
+  <data name="Les dades introduïdes en aquest entorn són fictícies o de prova i s'utilitzen únicament per a finalitats de test, revisió i valoració del treball del desenvolupador. En cap cas s'ha d'utilitzar aquest entorn per a gestió de dades reals o sensibles." xml:space="preserve">
+    <value>The data entered in this environment is fictitious or test data and is used only for testing, review and evaluation of the developer's work. Under no circumstances should this environment be used to manage real or sensitive data.</value>
+  </data>
+  <data name="Durant les proves, les persones entrevistades poden introduir dades; un cop finalitzades les proves aquestes dades seran eliminades de forma periòdica i/o a petició del responsable de la prova." xml:space="preserve">
+    <value>During the tests, interviewees may enter data; once the tests are completed, this data will be periodically deleted and/or at the request of the test owner.</value>
+  </data>
+  <data name="Si tens dubtes o necessites més informació sobre el tractament de dades en aquest entorn de proves, contacta amb el responsable del projecte." xml:space="preserve">
+    <value>If you have questions or need more information about data processing in this test environment, contact the project owner.</value>
+  </data>
+  <data name="Aquesta aplicació pot utilitzar cookies tècniques per garantir el funcionament correcte i la gestió de la sessió." xml:space="preserve">
+    <value>This application may use technical cookies to ensure proper operation and session management.</value>
+  </data>
+</root>

@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Resultats de la cerca" xml:space="preserve">
+    <value>Resultados de la búsqueda</value>
+  </data>
+  <data name="Netejar cerca" xml:space="preserve">
+    <value>Limpiar búsqueda</value>
+  </data>
+  <data name="No s'ha trobat cap informació" xml:space="preserve">
+    <value>No se ha encontrado información</value>
+  </data>
+  <data name="Escoles" xml:space="preserve">
+    <value>Escuelas</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Codi" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="Ciutat" xml:space="preserve">
+    <value>Ciudad</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>Ámbito</value>
+  </data>
+  <data name="Accions" xml:space="preserve">
+    <value>Acciones</value>
+  </data>
+  <data name="Veure" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="Alumnes" xml:space="preserve">
+    <value>Alumnos</value>
+  </data>
+  <data name="Cognoms" xml:space="preserve">
+    <value>Apellidos</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>Escuela</value>
+  </data>
+  <data name="Inscripcions" xml:space="preserve">
+    <value>Inscripciones</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>Alumno</value>
+  </data>
+  <data name="Curs" xml:space="preserve">
+    <value>Curso</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="Quotes Anuals" xml:space="preserve">
+    <value>Cuotas Anuales</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importe</value>
+  </data>
+  <data name="Venciment" xml:space="preserve">
+    <value>Vencimiento</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Pagada" xml:space="preserve">
+    <value>Pagada</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>Pendiente</value>
+  </data>
+</root>

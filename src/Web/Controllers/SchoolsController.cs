@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using Web.Hubs;
 using Web.Models;
 using Web.Services.Api;
+using Microsoft.Extensions.Localization;
 
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
@@ -30,7 +31,12 @@ public class SchoolsController : BaseController
     /// <summary>
     /// Constructor del controlador d'escoles.
     /// </summary>
-    public SchoolsController(ISchoolsApiClient schoolApi, IHubContext<SchoolHub> hubContext, IScopesApiClient scopesApi, ILogger<SchoolsController> logger) : base(logger)
+    public SchoolsController(
+        ISchoolsApiClient schoolApi,
+        IHubContext<SchoolHub> hubContext,
+        IScopesApiClient scopesApi,
+        ILogger<SchoolsController> logger,
+        IStringLocalizer<BaseController> localizer) : base(logger, localizer)
     {
         _schoolApi = schoolApi;
         _hubContext = hubContext;
@@ -72,13 +78,13 @@ public class SchoolsController : BaseController
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (llistat escoles)");
-            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
             return View(new List<SchoolViewModel>());
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error obtenint llista d'escoles");
-            SetErrorMessage("Error carregant les escoles. Si us plau, intenta-ho de nou.");
+            SetErrorMessage(Localizer["Error carregant les escoles. Si us plau, intenta-ho de nou."].Value);
             return View(new List<SchoolViewModel>());
         }
     }
@@ -114,19 +120,19 @@ public class SchoolsController : BaseController
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (detalls escola {Id})", id);
-            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Escola amb Id {Id} no trobada", id);
-            SetErrorMessage($"Escola amb ID {id} no trobada.");
+            SetErrorMessage(Localizer["Escola amb ID {0} no trobada.", id].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error obtenint detalls de l'escola {Id}", id);
-            SetErrorMessage("Error carregant els detalls de l'escola.");
+            SetErrorMessage(Localizer["Error carregant els detalls de l'escola."].Value);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -195,7 +201,7 @@ public class SchoolsController : BaseController
                         Logger.LogWarning("ModelState error on {Field}: {Message}", entry.Key, error.ErrorMessage);
                     }
                 }
-                SetErrorMessage("Si us plau, omple tots els camps obligatoris.");
+                SetErrorMessage(Localizer["Si us plau, omple tots els camps obligatoris."].Value);
                 var scopes = await _scopesApi.GetAllAsync();
                 ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
                 return View(model);
@@ -234,9 +240,9 @@ public class SchoolsController : BaseController
             });
             if (IsAjaxRequest())
             {
-                return Ok(new { message = $"Escola '{school.Name}' creada correctament." });
+                return Ok(new { message = Localizer["Escola '{0}' creada correctament.", school.Name].Value });
             }
-            SetSuccessMessage($"Escola '{school.Name}' creada correctament.");
+            SetSuccessMessage(Localizer["Escola '{0}' creada correctament.", school.Name].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
@@ -244,27 +250,27 @@ public class SchoolsController : BaseController
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (crear escola)");
             if (IsAjaxRequest())
             {
-                return Unauthorized(new { error = "Accés no autoritzat. Torna a iniciar sessió." });
+                return Unauthorized(new { error = Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value });
             }
-            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
             return RedirectToAction("Login", "Auth");
         }
         catch (DuplicateEntityException ex)
         {
             Logger.LogWarning(ex, "Intent de crear escola amb codi duplicat: {Code}", model.Code);
-            SetErrorMessage($"Ja existeix una escola amb el codi '{model.Code}'.");
+            SetErrorMessage(Localizer["Ja existeix una escola amb el codi '{0}'.", model.Code].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Validació fallida al crear escola");
-            SetErrorMessage($"Error de validació: {ex.Message}");
+            SetErrorMessage(Localizer["Error de validació: {0}", ex.Message].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error creant escola");
-            SetErrorMessage("Error al crear l'escola. Si us plau, intenta-ho de nou.");
+            SetErrorMessage(Localizer["Error al crear l'escola. Si us plau, intenta-ho de nou."].Value);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -300,19 +306,19 @@ public class SchoolsController : BaseController
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (editar escola {Id})", id);
-            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Escola amb Id {Id} no trobada per editar", id);
-            SetErrorMessage($"Escola amb ID {id} no trobada.");
+            SetErrorMessage(Localizer["Escola amb ID {0} no trobada.", id].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error carregant escola per editar {Id}", id);
-            SetErrorMessage("Error carregant l'escola.");
+            SetErrorMessage(Localizer["Error carregant l'escola."].Value);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -331,7 +337,7 @@ public class SchoolsController : BaseController
         {
             if (!ModelState.IsValid)
             {
-                SetErrorMessage("Si us plau, omple tots els camps obligatoris.");
+                SetErrorMessage(Localizer["Si us plau, omple tots els camps obligatoris."].Value);
                 var scopes = await _scopesApi.GetAllAsync();
                 ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
                 return View(model);
@@ -365,25 +371,25 @@ public class SchoolsController : BaseController
                 createdAt = school.CreatedAt.ToString("dd/MM/yyyy HH:mm")
             });
 
-            SetSuccessMessage($"Escola '{school.Name}' actualitzada correctament.");
+            SetSuccessMessage(Localizer["Escola '{0}' actualitzada correctament.", school.Name].Value);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (actualitzar escola {Id})", model.Id);
-            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
             return RedirectToAction("Login", "Auth");
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Escola no trobada al actualitzar: {Id}", model.Id);
-            SetErrorMessage("L'escola no existeix.");
+            SetErrorMessage(Localizer["L'escola no existeix."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (DuplicateEntityException ex)
         {
             Logger.LogWarning(ex, "Intent d'actualitzar amb codi duplicat: {Code}", model.Code);
-            SetErrorMessage($"Ja existeix una altra escola amb el codi '{model.Code}'.");
+            SetErrorMessage(Localizer["Ja existeix una altra escola amb el codi '{0}'.", model.Code].Value);
             var scopes = await _scopesApi.GetAllAsync();
             ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(model);
@@ -391,7 +397,7 @@ public class SchoolsController : BaseController
         catch (ValidationException ex)
         {
             Logger.LogWarning(ex, "Validació fallida al actualitzar escola");
-            SetErrorMessage($"Error de validació: {ex.Message}");
+            SetErrorMessage(Localizer["Error de validació: {0}", ex.Message].Value);
             var scopes = await _scopesApi.GetAllAsync();
             ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
             return View(model);
@@ -399,7 +405,7 @@ public class SchoolsController : BaseController
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error actualitzant escola {Id}", model.Id);
-            SetErrorMessage("Error al actualitzar l'escola. Si us plau, intenta-ho de nou.");
+            SetErrorMessage(Localizer["Error al actualitzar l'escola. Si us plau, intenta-ho de nou."].Value);
             return View(model);
         }
     }
@@ -422,25 +428,25 @@ public class SchoolsController : BaseController
 
             await _hubContext.Clients.All.SendAsync("SchoolDeleted", new { id, code });
 
-            SetSuccessMessage("Escola esborrada correctament.");
+            SetSuccessMessage(Localizer["Escola esborrada correctament."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.LogWarning(ex, "Accés no autoritzat a l'API (esborrar escola {Id})", id);
-            SetErrorMessage("Accés no autoritzat. Torna a iniciar sessió.");
+            SetErrorMessage(Localizer["Accés no autoritzat. Torna a iniciar sessió."].Value);
             return RedirectToAction("Login", "Auth");
         }
         catch (NotFoundException ex)
         {
             Logger.LogWarning(ex, "Intent d'esborrar escola inexistent: {Id}", id);
-            SetErrorMessage("L'escola no existeix.");
+            SetErrorMessage(Localizer["L'escola no existeix."].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error esborrant escola {Id}", id);
-            SetErrorMessage("Error al esborrar l'escola. Pot tenir dades relacionades.");
+            SetErrorMessage(Localizer["Error al esborrar l'escola. Pot tenir dades relacionades."].Value);
             return RedirectToAction(nameof(Index));
         }
     }

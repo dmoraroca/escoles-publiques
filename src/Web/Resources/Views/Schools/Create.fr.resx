@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nova Escola" xml:space="preserve">
+    <value>Nouvelle école</value>
+  </data>
+  <data name="Crear Nova Escola" xml:space="preserve">
+    <value>Créer une nouvelle école</value>
+  </data>
+  <data name="Ex: ESC001" xml:space="preserve">
+    <value>Ex. : ESC001</value>
+  </data>
+  <data name="Ex: Barcelona" xml:space="preserve">
+    <value>Ex. : Barcelone</value>
+  </data>
+  <data name="Ex: Institut Joan XXIII" xml:space="preserve">
+    <value>Ex. : Institut Joan XXIII</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>Domaine</value>
+  </data>
+  <data name="-- Selecciona un àmbit --" xml:space="preserve">
+    <value>-- Sélectionner un domaine --</value>
+  </data>
+  <data name="Marcar com a favorita" xml:space="preserve">
+    <value>Marquer comme favorite</value>
+  </data>
+  <data name="Crear Escola" xml:space="preserve">
+    <value>Créer une école</value>
+  </data>
+  <data name="Cancel·lar" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+</root>

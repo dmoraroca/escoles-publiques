@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "El meu Tauler";
+    ViewData["Title"] = Localizer["El meu Tauler"];
     var user = ViewBag.User as Web.Models.UserViewModel;
     var student = ViewBag.Student as Web.Models.StudentViewModel;
     var enrollments = ViewBag.Enrollments as List<Web.Models.EnrollmentViewModel>;
@@ -18,7 +18,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="welcome-section">
-                    <h1 class="welcome-title">Benvingut, @user?.FirstName!</h1>
+                    <h1 class="welcome-title">@Localizer["Benvingut, {0}!", user?.FirstName]</h1>
                     <p class="welcome-subtitle">
                         <i class="bi bi-person-badge"></i> @student?.FirstName @student?.LastName
                         <span class="mx-2">|</span>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="stat-content">
                         <h3 class="stat-number">@enrollments?.Count</h3>
-                        <p class="stat-label">Inscripcions Actives</p>
+                        <p class="stat-label">@Localizer["Inscripcions Actives"]</p>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="stat-content">
                         <h3 class="stat-number">@fees?.Count(f => f.PaidAt.HasValue)</h3>
-                        <p class="stat-label">Quotes Pagades</p>
+                        <p class="stat-label">@Localizer["Quotes Pagades"]</p>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="stat-content">
                         <h3 class="stat-number">@fees?.Count(f => !f.PaidAt.HasValue)</h3>
-                        <p class="stat-label">Quotes Pendents</p>
+                        <p class="stat-label">@Localizer["Quotes Pendents"]</p>
                     </div>
                 </div>
             </div>
@@ -83,14 +83,14 @@
         <!-- Les meves inscripcions -->
         <div class="section-card mb-5">
             <div class="section-header">
-                <h2><i class="bi bi-journal-bookmark"></i> Les meves inscripcions</h2>
+                <h2><i class="bi bi-journal-bookmark"></i> @Localizer["Les meves inscripcions"]</h2>
             </div>
             <div class="section-body">
                 @if (enrollments == null || !enrollments.Any())
                 {
                     <div class="empty-state">
                         <i class="bi bi-inbox"></i>
-                        <p>No tens cap inscripció activa</p>
+                        <p>@Localizer["No tens cap inscripció activa"]</p>
                     </div>
                 }
                 else
@@ -101,15 +101,15 @@
                             <div class="col-md-6 mb-4">
                                 <div class="enrollment-card">
                                     <div class="enrollment-header">
-                                        <h4>@(enrollment.CourseName ?? "Sense curs") - @(enrollment.SchoolName ?? "Sense escola")</h4>
+                                        <h4>@(enrollment.CourseName ?? Localizer["Sense curs"].Value) - @(enrollment.SchoolName ?? Localizer["Sense escola"].Value)</h4>
                                         <span class="badge badge-@(enrollment.Status == "Active" ? "success" : "secondary")">
-                                            @enrollment.Status
+                                            @(string.IsNullOrEmpty(enrollment.Status) ? "-" : Localizer[enrollment.Status].Value)
                                         </span>
                                     </div>
                                     <div class="enrollment-body">
-                                        <p><i class="bi bi-building"></i> <strong>Escola:</strong> @enrollment.SchoolName ?? "-"</p>
-                                        <p><i class="bi bi-calendar3"></i> <strong>Any acadèmic:</strong> @(enrollment.AcademicYear ?? "?")</p>
-                                        <p><i class="bi bi-clock-history"></i> <strong>Data inscripció:</strong> @(enrollment.EnrolledAt is DateTime dt ? dt.ToString("dd/MM/yyyy") : "?")</p>
+                                        <p><i class="bi bi-building"></i> <strong>@Localizer["Escola:"]</strong> @(enrollment.SchoolName ?? "-")</p>
+                                        <p><i class="bi bi-calendar3"></i> <strong>@Localizer["Any acadèmic:"]</strong> @(enrollment.AcademicYear ?? "?")</p>
+                                        <p><i class="bi bi-clock-history"></i> <strong>@Localizer["Data inscripció:"]</strong> @(enrollment.EnrolledAt is DateTime dt ? dt.ToString("dd/MM/yyyy") : "?")</p>
                                     </div>
                                 </div>
                             </div>
@@ -122,14 +122,14 @@
         <!-- Les meves quotes -->
         <div class="section-card">
             <div class="section-header">
-                <h2><i class="bi bi-credit-card"></i> Les meves quotes</h2>
+                <h2><i class="bi bi-credit-card"></i> @Localizer["Les meves quotes"]</h2>
             </div>
             <div class="section-body">
                 @if (fees == null || !fees.Any())
                 {
                     <div class="empty-state">
                         <i class="bi bi-wallet2"></i>
-                        <p>No tens cap quota associada</p>
+                        <p>@Localizer["No tens cap quota associada"]</p>
                     </div>
                 }
                 else
@@ -138,10 +138,10 @@
                         <table class="fees-table">
                             <thead>
                                 <tr>
-                                    <th>Import</th>
-                                    <th>Venciment</th>
-                                    <th>Estat</th>
-                                    <th>Data Pagament</th>
+                                    <th>@Localizer["Import"]</th>
+                                    <th>@Localizer["Venciment"]</th>
+                                    <th>@Localizer["Estat"]</th>
+                                    <th>@Localizer["Data Pagament"]</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,13 +154,13 @@
                                             @if (fee.PaidAt != null)
                                             {
                                                 <span class="status-badge status-paid">
-                                                    <i class="bi bi-check-circle"></i> Pagada
+                                                    <i class="bi bi-check-circle"></i> @Localizer["Pagada"]
                                                 </span>
                                             }
                                             else
                                             {
                                                 <span class="status-badge status-pending">
-                                                    <i class="bi bi-clock"></i> Pendent
+                                                    <i class="bi bi-clock"></i> @Localizer["Pendent"]
                                                 </span>
                                             }
                                         </td>

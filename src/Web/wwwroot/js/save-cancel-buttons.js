@@ -1,11 +1,15 @@
 // save-cancel-buttons.js
 // Minimal wiring for save/cancel partial: do not create DOM, only control behavior.
 (function(document){
+    function t(key, fallback) {
+        return window.i18n ? window.i18n.t('save-cancel-buttons.js', key, fallback) : (fallback || key);
+    }
+
     function initComponent(container){
         if(!container) return;
         var raw = container.getAttribute('data-options') || '{}';
         var opts = {};
-        try { opts = JSON.parse(raw); } catch(e){ console.warn('save-cancel-buttons: invalid data-options', e); }
+        try { opts = JSON.parse(raw); } catch(e){ console.warn(t('InvalidDataOptions', 'save-cancel-buttons: invalid data-options'), e); }
 
         var saveBtn = container.querySelector('.save-btn');
         var cancelBtn = container.querySelector('.cancel-btn');

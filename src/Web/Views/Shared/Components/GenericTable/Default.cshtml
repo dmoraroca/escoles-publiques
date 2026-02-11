@@ -27,7 +27,7 @@
             <input type="text" 
                    class="form-control" 
                    id="tableSearch" 
-                   placeholder="Cercar a @entityName..." 
+                   placeholder="@Localizer["Cercar a {0}...", entityName]" 
                    onkeyup="filterTable(this)">
         </div>
     }
@@ -58,7 +58,7 @@
                         }
                         @if (actions.Any())
                         {
-                            <th class="text-center actions-column">Accions</th>
+                            <th class="text-center actions-column">@Localizer["Accions"]</th>
                         }
                     </tr>
                 </thead>
@@ -123,7 +123,7 @@
 
                             @if (actions.Any())
                             {
-                                <td class="text-center" data-label="Accions">
+                                <td class="text-center" data-label="@Localizer["Accions"]">
                                     <div class="d-flex justify-content-center actions-buttons">
                                         @foreach (var action in actions)
                                         {
@@ -135,7 +135,7 @@
                                                       asp-controller="@targetController" 
                                                       asp-action="@action.ActionName" 
                                                       asp-route-id="@idValue"
-                                                      onsubmit="return confirm('@(action.ConfirmationMessage ?? "Estàs segur?")' )"
+                                                      onsubmit="return confirm('@(action.ConfirmationMessage ?? Localizer["Estàs segur?"].Value)' )"
                                                       class="delete-form">
                                                     @Html.AntiForgeryToken()
                                                     <button type="submit" class="btn btn-sm @action.CssClass">

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EmailExists" xml:space="preserve">
+    <value>该邮箱已存在。</value>
+  </data>
+  <data name="EmailExistsValidity" xml:space="preserve">
+    <value>邮箱已存在</value>
+  </data>
+  <data name="ValidationError" xml:space="preserve">
+    <value>请正确填写所有必填项。</value>
+  </data>
+  <data name="Creating" xml:space="preserve">
+    <value>创建中...</value>
+  </data>
+  <data name="SessionExpired" xml:space="preserve">
+    <value>会话已过期，请重新登录。</value>
+  </data>
+  <data name="CreateError" xml:space="preserve">
+    <value>创建记录时出错。</value>
+  </data>
+  <data name="CreateErrorRetry" xml:space="preserve">
+    <value>创建记录时出错。请检查数据后重试。</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>操作成功完成。</value>
+  </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>连接错误，请重试。</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>创建</value>
+  </data>
+</root>

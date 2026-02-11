@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="El meu Tauler" xml:space="preserve">
+    <value>El meu Tauler</value>
+  </data>
+  <data name="Benvingut, {0}!" xml:space="preserve">
+    <value>Benvingut, {0}!</value>
+  </data>
+  <data name="Inscripcions Actives" xml:space="preserve">
+    <value>Inscripcions Actives</value>
+  </data>
+  <data name="Quotes Pagades" xml:space="preserve">
+    <value>Quotes Pagades</value>
+  </data>
+  <data name="Quotes Pendents" xml:space="preserve">
+    <value>Quotes Pendents</value>
+  </data>
+  <data name="Les meves inscripcions" xml:space="preserve">
+    <value>Les meves inscripcions</value>
+  </data>
+  <data name="No tens cap inscripció activa" xml:space="preserve">
+    <value>No tens cap inscripció activa</value>
+  </data>
+  <data name="Sense curs" xml:space="preserve">
+    <value>Sense curs</value>
+  </data>
+  <data name="Sense escola" xml:space="preserve">
+    <value>Sense escola</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Activa</value>
+  </data>
+  <data name="Escola:" xml:space="preserve">
+    <value>Escola:</value>
+  </data>
+  <data name="Any acadèmic:" xml:space="preserve">
+    <value>Any acadèmic:</value>
+  </data>
+  <data name="Data inscripció:" xml:space="preserve">
+    <value>Data inscripció:</value>
+  </data>
+  <data name="Les meves quotes" xml:space="preserve">
+    <value>Les meves quotes</value>
+  </data>
+  <data name="No tens cap quota associada" xml:space="preserve">
+    <value>No tens cap quota associada</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Venciment" xml:space="preserve">
+    <value>Venciment</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>Estat</value>
+  </data>
+  <data name="Data Pagament" xml:space="preserve">
+    <value>Data Pagament</value>
+  </data>
+  <data name="Pagada" xml:space="preserve">
+    <value>Pagada</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>Pendent</value>
+  </data>
+</root>

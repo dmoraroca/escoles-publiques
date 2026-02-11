@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Departament d'Educació i Formació Professional" xml:space="preserve">
+    <value>Department of Education and Vocational Training</value>
+  </data>
+  <data name="Rol detectat:" xml:space="preserve">
+    <value>Detected role:</value>
+  </data>
+  <data name="Usuari" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Sortir" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="Contacte | CA | 🔍" xml:space="preserve">
+    <value>Contact | EN | 🔍</value>
+  </data>
+  <data name="Mostra navegació" xml:space="preserve">
+    <value>Show navigation</value>
+  </data>
+  <data name="Inici" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Escoles" xml:space="preserve">
+    <value>Schools</value>
+  </data>
+  <data name="Alumnes" xml:space="preserve">
+    <value>Students</value>
+  </data>
+  <data name="Inscripcions" xml:space="preserve">
+    <value>Enrollments</value>
+  </data>
+  <data name="Quotes" xml:space="preserve">
+    <value>Fees</value>
+  </data>
+  <data name="Tancar" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Generalitat de Catalunya" xml:space="preserve">
+    <value>Generalitat de Catalunya</value>
+  </data>
+  <data name="Accessibilitat" xml:space="preserve">
+    <value>Accessibility</value>
+  </data>
+  <data name="Mapa web" xml:space="preserve">
+    <value>Site map</value>
+  </data>
+  <data name="Avís de privacitat" xml:space="preserve">
+    <value>Privacy notice</value>
+  </data>
+  <data name="Entorn de proves — aquesta aplicació és només per a demostracions i no és una versió oficial." xml:space="preserve">
+    <value>Test environment — this application is only for demonstrations and is not an official version.</value>
+  </data>
+
+  <data name="Idioma:" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="Idioma" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="CA - Català" xml:space="preserve">
+    <value>CA - Catalan</value>
+  </data>
+  <data name="ES - Espanyol" xml:space="preserve">
+    <value>ES - Spanish</value>
+  </data>
+  <data name="EN - English" xml:space="preserve">
+    <value>EN - English</value>
+  </data>
+  <data name="DE - Deutsch" xml:space="preserve">
+    <value>DE - German</value>
+  </data>
+  <data name="FR - Français" xml:space="preserve">
+    <value>FR - French</value>
+  </data>
+  <data name="RU - Русский" xml:space="preserve">
+    <value>RU - Russian</value>
+  </data>
+</root>

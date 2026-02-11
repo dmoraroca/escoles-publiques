@@ -3,7 +3,7 @@
 @model IEnumerable<Web.Models.SchoolViewModel>
 
 @{
-    ViewData["Title"] = "Escoles";
+    ViewData["Title"] = Localizer["Escoles"];
     
     // Obtenir scopes del ViewBag per al modal
     var scopeOptions = ViewBag.Scopes as List<Web.Models.SelectOption> ?? new List<Web.Models.SelectOption>();
@@ -13,33 +13,33 @@
     var tableConfig = new TableViewModel<SchoolViewModel>
     {
         Data = Model,
-        EntityName = "Escoles",
+        EntityName = Localizer["Escoles"].Value,
         ControllerName = "Schools",
-        EmptyMessage = "No hi ha escoles registrades. Crea la primera!",
+        EmptyMessage = Localizer["No hi ha escoles registrades. Crea la primera!"].Value,
         Columns = new List<ColumnConfig>
         {
             new ColumnConfig 
             { 
                 PropertyName = "Code", 
-                DisplayName = "Codi",
+                DisplayName = Localizer["Codi"].Value,
                 IsSortable = true 
             },
             new ColumnConfig 
             { 
                 PropertyName = "Name", 
-                DisplayName = "Nom",
+                DisplayName = Localizer["Nom"].Value,
                 IsSortable = true 
             },
             new ColumnConfig 
             { 
                 PropertyName = "City", 
-                DisplayName = "Ciutat",
+                DisplayName = Localizer["Ciutat"].Value,
                 IsSortable = true 
             },
             new ColumnConfig 
             { 
                 PropertyName = "ScopeName", 
-                DisplayName = "Àmbit",
+                DisplayName = Localizer["Àmbit"].Value,
                 IsSortable = true,
                 CustomRender = (item) => 
                 {
@@ -52,20 +52,20 @@
             new ColumnConfig 
             { 
                 PropertyName = "IsFavorite", 
-                DisplayName = "Favorit",
+                DisplayName = Localizer["Favorit"].Value,
                 IsSortable = true,
                 CustomRender = (item) => 
                 {
                     var school = item as SchoolViewModel;
                     if (school?.IsFavorite == true)
-                        return "<span class=\"star-icon star-filled\" title=\"Escola favorita\">★</span>";
-                    return "<span class=\"star-icon star-outline\" title=\"No és favorita\">☆</span>";
+                        return $"<span class=\"star-icon star-filled\" title=\"{Localizer["Escola favorita"].Value}\">★</span>";
+                    return $"<span class=\"star-icon star-outline\" title=\"{Localizer["No és favorita"].Value}\">☆</span>";
                 }
             },
             new ColumnConfig 
             { 
                 PropertyName = "CreatedAt", 
-                DisplayName = "Data creació",
+                DisplayName = Localizer["Data creació"].Value,
                 Format = "dd/MM/yyyy",
                 IsSortable = true 
             }
@@ -75,18 +75,18 @@
             new TableAction 
             { 
                 ActionName = "Details", 
-                DisplayText = "Detalls",
+                DisplayText = Localizer["Detalls"].Value,
                 CssClass = "btn-info",
                 Icon = "👁️"
             },
             new TableAction 
             { 
                 ActionName = "Delete", 
-                DisplayText = "Esborrar",
+                DisplayText = Localizer["Esborrar"].Value,
                 CssClass = "btn-danger",
                 Icon = "🗑️",
                 RequiresConfirmation = true,
-                ConfirmationMessage = "Estàs segur que vols esborrar aquesta escola?"
+                ConfirmationMessage = Localizer["Estàs segur que vols esborrar aquesta escola?"].Value
             }
         }
     };
@@ -94,11 +94,11 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Escoles</h2>
+        <h2>@Localizer["Escoles"]</h2>
         @if ((ViewBag.UserRole as string) == "ADM")
         {
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSchoolModal">
-                <i class="bi bi-plus-lg"></i> Nova Escola
+                <i class="bi bi-plus-lg"></i> @Localizer["Nova Escola"]
             </button>
         }
     </div>

@@ -1,7 +1,7 @@
 @model Web.Models.SchoolViewModel
 
 @{
-    ViewData["Title"] = "Nova Escola";
+    ViewData["Title"] = Localizer["Nova Escola"];
 }
 
 <div class="container mt-4">
@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="mb-0">
-                        <i class="bi bi-building"></i> Crear Nova Escola
+                        <i class="bi bi-building"></i> @Localizer["Crear Nova Escola"]
                     </h3>
                 </div>
                 <div class="card-body">
@@ -20,28 +20,28 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="Code" class="form-label"></label>
-                                <input asp-for="Code" class="form-control" placeholder="Ex: ESC001" />
+                                <input asp-for="Code" class="form-control" placeholder="@Localizer["Ex: ESC001"]" />
                                 <span asp-validation-for="Code" class="text-danger"></span>
                             </div>
                             
                             <div class="col-md-6 mb-3">
                                 <label asp-for="City" class="form-label"></label>
-                                <input asp-for="City" class="form-control" placeholder="Ex: Barcelona" />
+                                <input asp-for="City" class="form-control" placeholder="@Localizer["Ex: Barcelona"]" />
                                 <span asp-validation-for="City" class="text-danger"></span>
                             </div>
                         </div>
                         
                         <div class="mb-3">
                             <label asp-for="Name" class="form-label"></label>
-                            <input asp-for="Name" class="form-control" placeholder="Ex: Institut Joan XXIII" />
+                            <input asp-for="Name" class="form-control" placeholder="@Localizer["Ex: Institut Joan XXIII"]" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         
                         <div class="row">
                             <div class="col-md-8 mb-3">
-                                <label asp-for="ScopeId" class="form-label">Àmbit</label>
+                                <label asp-for="ScopeId" class="form-label">@Localizer["Àmbit"]</label>
                                 <select asp-for="ScopeId" class="form-select">
-                                    <option value="">-- Selecciona un àmbit --</option>
+                                    <option value="">@Localizer["-- Selecciona un àmbit --"]</option>
                                     @{
                                         var scopes = ViewBag.Scopes as List<Web.Models.SelectOption> ?? new List<Web.Models.SelectOption>();
                                         foreach (var scope in scopes)
@@ -66,7 +66,7 @@
                                 <div class="form-check">
                                     <input asp-for="IsFavorite" class="form-check-input" type="checkbox" />
                                     <label asp-for="IsFavorite" class="form-check-label">
-                                        Marcar com a favorita <span class="star-icon star-filled">★</span>
+                                        @Localizer["Marcar com a favorita"] <span class="star-icon star-filled">★</span>
                                     </label>
                                 </div>
                             </div>
@@ -75,9 +75,9 @@
                         <div class="d-flex justify-content-between mt-4">
                             @{ 
                                 var opts = new {
-                                    submitText = "Crear Escola",
+                                    submitText = Localizer["Crear Escola"].Value,
                                     submitClass = "btn btn-primary",
-                                    cancelText = "Cancel·lar",
+                                    cancelText = Localizer["Cancel·lar"].Value,
                                     cancelClass = "btn btn-secondary",
                                     cancelHref = Url.Action("Index"),
                                     privacySelector = "#AgreesToPrivacy",

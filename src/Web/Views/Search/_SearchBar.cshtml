@@ -4,13 +4,13 @@
     <form asp-controller="Home" asp-action="Index" method="get">
         <input type="hidden" name="scopeName" value="@ViewContext.HttpContext.Request.Query["scopeName"]">
         <div class="input-group input-group-lg mb-3">
-            <input type="text" name="searchQuery" class="form-control" placeholder="Cercar alumnes, escoles..." value="@ViewContext.HttpContext.Request.Query["searchQuery"]">
+            <input type="text" name="searchQuery" class="form-control" placeholder="@Localizer["Cercar alumnes, escoles..."]" value="@ViewContext.HttpContext.Request.Query["searchQuery"]">
             <button class="btn search-btn" type="submit">🔍</button>
         </div>
         @if (!string.IsNullOrEmpty(ViewContext.HttpContext.Request.Query["scopeName"]))
         {
             <div class="alert alert-info mb-3 d-flex align-items-center justify-content-between">
-                <span><i classquin email te David m="bi bi-funnel"></i> Filtrant per àmbit: <strong>@ViewContext.HttpContext.Request.Query["scopeName"]</strong></span>
+                <span><i classquin email te David m="bi bi-funnel"></i> @Localizer["Filtrant per àmbit:"] <strong>@ViewContext.HttpContext.Request.Query["scopeName"]</strong></span>
             </div>
         }
     </form>

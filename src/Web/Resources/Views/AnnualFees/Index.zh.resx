@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Quotes anuals" xml:space="preserve">
+    <value>年度费用</value>
+  </data>
+  <data name="Quotes Anuals" xml:space="preserve">
+    <value>年度费用</value>
+  </data>
+  <data name="No hi ha quotes anuals registrades." xml:space="preserve">
+    <value>没有登记的年度费用。</value>
+  </data>
+  <data name="Inscripció" xml:space="preserve">
+    <value>报名</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="Data venciment" xml:space="preserve">
+    <value>到期日</value>
+  </data>
+  <data name="Data pagament" xml:space="preserve">
+    <value>付款日期</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>待处理</value>
+  </data>
+  <data name="Referència" xml:space="preserve">
+    <value>参考号</value>
+  </data>
+  <data name="Detalls" xml:space="preserve">
+    <value>详情</value>
+  </data>
+  <data name="Esborrar" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Estàs segur que vols esborrar aquesta quota?" xml:space="preserve">
+    <value>确定要删除这笔费用吗？</value>
+  </data>
+  <data name="Nova Quota" xml:space="preserve">
+    <value>新费用</value>
+  </data>
+</root>

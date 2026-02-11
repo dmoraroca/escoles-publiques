@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Error." xml:space="preserve">
+    <value>错误。</value>
+  </data>
+  <data name="S'ha produït un error en processar la teva sol·licitud." xml:space="preserve">
+    <value>处理您的请求时发生错误。</value>
+  </data>
+  <data name="ID de sol·licitud:" xml:space="preserve">
+    <value>请求 ID：</value>
+  </data>
+  <data name="Mode de desenvolupament" xml:space="preserve">
+    <value>开发模式</value>
+  </data>
+  <data name="Canviar a l'entorn de" xml:space="preserve">
+    <value>切换到</value>
+  </data>
+  <data name="Development" xml:space="preserve">
+    <value>Development</value>
+  </data>
+  <data name="mostrarà informació més detallada sobre l'error que s'ha produït." xml:space="preserve">
+    <value>将显示更详细的错误信息。</value>
+  </data>
+  <data name="L'entorn Development no s'ha d'activar en aplicacions desplegades." xml:space="preserve">
+    <value>不应在已部署的应用中启用 Development 环境。</value>
+  </data>
+  <data name="Això pot provocar que es mostri informació sensible de les excepcions als usuaris finals." xml:space="preserve">
+    <value>这可能会向最终用户显示异常中的敏感信息。</value>
+  </data>
+  <data name="Per a la depuració local, activa l'entorn" xml:space="preserve">
+    <value>本地调试时，请启用</value>
+  </data>
+  <data name="definint la variable d'entorn" xml:space="preserve">
+    <value>通过设置环境变量</value>
+  </data>
+  <data name="a" xml:space="preserve">
+    <value>为</value>
+  </data>
+  <data name="i reinicia l'aplicació." xml:space="preserve">
+    <value>并重新启动应用。</value>
+  </data>
+</root>

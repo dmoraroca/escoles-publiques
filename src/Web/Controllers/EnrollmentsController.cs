@@ -2,6 +2,7 @@ using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 using Web.Services.Api;
+using Microsoft.Extensions.Localization;
 
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
@@ -20,7 +21,8 @@ public class EnrollmentsController : BaseController
         IEnrollmentsApiClient enrollmentsApi,
         IStudentsApiClient studentsApi,
         ISchoolsApiClient schoolsApi,
-        ILogger<EnrollmentsController> logger) : base(logger ?? throw new ArgumentNullException(nameof(logger), "Logger cannot be null in EnrollmentsController"))
+        ILogger<EnrollmentsController> logger,
+        IStringLocalizer<BaseController> localizer) : base(logger ?? throw new ArgumentNullException(nameof(logger), "Logger cannot be null in EnrollmentsController"), localizer)
     {
         _enrollmentsApi = enrollmentsApi;
         _studentsApi = studentsApi;

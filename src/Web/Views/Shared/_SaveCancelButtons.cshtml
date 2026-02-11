@@ -4,8 +4,8 @@
     var optionsJson = Model is string ? Model : System.Text.Json.JsonSerializer.Serialize(Model);
 
     // Try to read common options server-side for rendering
-    string submitText = "Guardar";
-    string cancelText = "Cancel·lar";
+    string submitText = Localizer["Guardar"].Value;
+    string cancelText = Localizer["Cancel·lar"].Value;
     bool disabledByDefault = true;
     string cancelAction = null;
     string privacySelector = null;
@@ -51,7 +51,7 @@
         <div class="form-check mb-0">
             <input type="hidden" name="AgreesToPrivacy" value="false" />
             <input id="AgreesToPrivacy" name="AgreesToPrivacy" class="form-check-input" type="checkbox" value="true" @(agreesChecked ? "checked" : "") />
-            <label class="form-check-label small" for="AgreesToPrivacy">Accepto les <a asp-controller="Home" asp-action="Privacy">condicions de privacitat</a></label>
+            <label class="form-check-label small" for="AgreesToPrivacy">@Localizer["Accepto les"] <a asp-controller="Home" asp-action="Privacy">@Localizer["condicions de privacitat"]</a></label>
         </div>
 
         <button type="submit" class="btn btn-success save-btn" @(disabledByDefault ? "disabled aria-disabled=\"true\"" : "")>@submitText</button>

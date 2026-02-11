@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error de base de dades" xml:space="preserve">
+    <value>Ошибка базы данных</value>
+  </data>
+  <data name="Hi ha hagut un problema de connexió amb la base de dades." xml:space="preserve">
+    <value>Возникла проблема с подключением к базе данных.</value>
+  </data>
+  <data name="Si us plau, torna-ho a intentar més tard o contacta amb l'administrador." xml:space="preserve">
+    <value>Пожалуйста, попробуйте позже или свяжитесь с администратором.</value>
+  </data>
+</root>

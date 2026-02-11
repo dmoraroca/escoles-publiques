@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Web.Models;
 using Web.Services.Api;
+using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers;
 
@@ -18,7 +19,8 @@ public class StudentsController : BaseController
     public StudentsController(
         IStudentsApiClient studentsApi,
         ISchoolsApiClient schoolsApi,
-        ILogger<StudentsController> logger) : base(logger)
+        ILogger<StudentsController> logger,
+        IStringLocalizer<BaseController> localizer) : base(logger, localizer)
     {
         _studentsApi = studentsApi;
         _schoolsApi = schoolsApi;

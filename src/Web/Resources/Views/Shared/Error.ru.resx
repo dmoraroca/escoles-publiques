@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Error." xml:space="preserve">
+    <value>Ошибка.</value>
+  </data>
+  <data name="S'ha produït un error en processar la teva sol·licitud." xml:space="preserve">
+    <value>Произошла ошибка при обработке вашего запроса.</value>
+  </data>
+  <data name="ID de sol·licitud:" xml:space="preserve">
+    <value>ID запроса:</value>
+  </data>
+  <data name="Mode de desenvolupament" xml:space="preserve">
+    <value>Режим разработки</value>
+  </data>
+  <data name="Canviar a l'entorn de" xml:space="preserve">
+    <value>Переключение в среду</value>
+  </data>
+  <data name="Development" xml:space="preserve">
+    <value>Development</value>
+  </data>
+  <data name="mostrarà informació més detallada sobre l'error que s'ha produït." xml:space="preserve">
+    <value>покажет более подробную информацию об ошибке.</value>
+  </data>
+  <data name="L'entorn Development no s'ha d'activar en aplicacions desplegades." xml:space="preserve">
+    <value>Среду Development не следует включать в развернутых приложениях.</value>
+  </data>
+  <data name="Això pot provocar que es mostri informació sensible de les excepcions als usuaris finals." xml:space="preserve">
+    <value>Это может привести к показу конфиденциальной информации из исключений конечным пользователям.</value>
+  </data>
+  <data name="Per a la depuració local, activa l'entorn" xml:space="preserve">
+    <value>Для локальной отладки включите</value>
+  </data>
+  <data name="definint la variable d'entorn" xml:space="preserve">
+    <value>установив переменную окружения</value>
+  </data>
+  <data name="a" xml:space="preserve">
+    <value>в</value>
+  </data>
+  <data name="i reinicia l'aplicació." xml:space="preserve">
+    <value>и перезапустите приложение.</value>
+  </data>
+</root>

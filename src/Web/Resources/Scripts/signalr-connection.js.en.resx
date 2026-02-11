@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AutoReload" xml:space="preserve">
+    <value>🔄 Auto-reload due to detected changes...</value>
+  </data>
+  <data name="SchoolCreated" xml:space="preserve">
+    <value>✅ New school created:</value>
+  </data>
+  <data name="SchoolUpdated" xml:space="preserve">
+    <value>🔄 School updated:</value>
+  </data>
+  <data name="SchoolDeleted" xml:space="preserve">
+    <value>🗑️ School deleted with ID:</value>
+  </data>
+  <data name="SignalRConnected" xml:space="preserve">
+    <value>✅ SignalR connected successfully</value>
+  </data>
+  <data name="SignalRConnectError" xml:space="preserve">
+    <value>❌ Error connecting SignalR:</value>
+  </data>
+  <data name="SignalRReconnecting" xml:space="preserve">
+    <value>🔄 Reconnecting SignalR...</value>
+  </data>
+  <data name="SignalRReconnected" xml:space="preserve">
+    <value>✅ SignalR reconnected</value>
+  </data>
+  <data name="SignalRClosed" xml:space="preserve">
+    <value>❌ SignalR connection closed</value>
+  </data>
+</root>

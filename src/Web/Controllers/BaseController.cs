@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
@@ -9,13 +9,15 @@ namespace Web.Controllers;
 public abstract class BaseController : Controller
 {
     protected readonly ILogger Logger;
+    protected readonly IStringLocalizer Localizer;
 
     /// <summary>
     /// Constructor de la classe base amb logger.
     /// </summary>
-    protected BaseController(ILogger logger)
+    protected BaseController(ILogger logger, IStringLocalizer localizer)
     {
         Logger = logger;
+        Localizer = localizer;
     }
 
     /// <summary>
@@ -24,7 +26,7 @@ public abstract class BaseController : Controller
     protected IActionResult HandleError(Exception ex, string action)
     {
         Logger.LogError(ex, "Error al executar {Action}", action);
-        TempData["Error"] = "Hi ha hagut un error. Si us plau, torna-ho a intentar.";
+        TempData["Error"] = Localizer["Hi ha hagut un error. Si us plau, torna-ho a intentar."].Value;
         return RedirectToAction("Error", "Home");
     }
 

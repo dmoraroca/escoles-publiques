@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Resultats de la cerca" xml:space="preserve">
+    <value>搜索结果</value>
+  </data>
+  <data name="Netejar cerca" xml:space="preserve">
+    <value>清除搜索</value>
+  </data>
+  <data name="No s'ha trobat cap informació" xml:space="preserve">
+    <value>未找到信息</value>
+  </data>
+  <data name="Escoles" xml:space="preserve">
+    <value>学校</value>
+  </data>
+  <data name="Nom" xml:space="preserve">
+    <value>名字</value>
+  </data>
+  <data name="Codi" xml:space="preserve">
+    <value>代码</value>
+  </data>
+  <data name="Ciutat" xml:space="preserve">
+    <value>城市</value>
+  </data>
+  <data name="Àmbit" xml:space="preserve">
+    <value>领域</value>
+  </data>
+  <data name="Accions" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="Veure" xml:space="preserve">
+    <value>查看</value>
+  </data>
+  <data name="Alumnes" xml:space="preserve">
+    <value>学生</value>
+  </data>
+  <data name="Cognoms" xml:space="preserve">
+    <value>姓氏</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>邮箱</value>
+  </data>
+  <data name="Escola" xml:space="preserve">
+    <value>学校</value>
+  </data>
+  <data name="Inscripcions" xml:space="preserve">
+    <value>报名</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>学生</value>
+  </data>
+  <data name="Curs" xml:space="preserve">
+    <value>课程</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="Quotes Anuals" xml:space="preserve">
+    <value>年度费用</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="Venciment" xml:space="preserve">
+    <value>到期</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Pagada" xml:space="preserve">
+    <value>已支付</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>待处理</value>
+  </data>
+</root>

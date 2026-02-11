@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 using Web.Services.Api;
+using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers;
 
@@ -22,7 +23,8 @@ public class DashboardController : BaseController
         IStudentsApiClient studentsApi,
         IEnrollmentsApiClient enrollmentsApi,
         IAnnualFeesApiClient annualFeesApi,
-        ISchoolsApiClient schoolsApi) : base(logger)
+        ISchoolsApiClient schoolsApi,
+        IStringLocalizer<BaseController> localizer) : base(logger, localizer)
     {
         _studentsApi = studentsApi;
         _enrollmentsApi = enrollmentsApi;
@@ -66,7 +68,7 @@ public class DashboardController : BaseController
             if (student == null)
             {
                 Logger.LogWarning("No student found for user ID: {UserId}", userId);
-                ViewBag.Message = "No s'ha trobat cap alumne associat al teu usuari";
+                ViewBag.Message = Localizer["No s'ha trobat cap alumne associat al teu usuari"].Value;
                 var email = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
                 ViewBag.User = new UserViewModel
                 {
@@ -155,7 +157,7 @@ public class DashboardController : BaseController
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error carregant el dashboard de l'usuari");
-            ViewBag.Message = "S'ha produït un error carregant el tauler d'usuari.";
+            ViewBag.Message = Localizer["S'ha produït un error carregant el tauler d'usuari."].Value;
             ViewBag.User = null;
             ViewBag.Enrollments = new List<dynamic>();
             ViewBag.Fees = new List<dynamic>();

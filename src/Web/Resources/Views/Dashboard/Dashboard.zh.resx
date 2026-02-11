@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="El meu Tauler" xml:space="preserve">
+    <value>我的仪表板</value>
+  </data>
+  <data name="Benvingut, {0}!" xml:space="preserve">
+    <value>欢迎，{0}！</value>
+  </data>
+  <data name="Inscripcions Actives" xml:space="preserve">
+    <value>活跃报名</value>
+  </data>
+  <data name="Quotes Pagades" xml:space="preserve">
+    <value>已付款</value>
+  </data>
+  <data name="Quotes Pendents" xml:space="preserve">
+    <value>待付款</value>
+  </data>
+  <data name="Les meves inscripcions" xml:space="preserve">
+    <value>我的报名</value>
+  </data>
+  <data name="No tens cap inscripció activa" xml:space="preserve">
+    <value>你没有活跃报名</value>
+  </data>
+  <data name="Sense curs" xml:space="preserve">
+    <value>无课程</value>
+  </data>
+  <data name="Sense escola" xml:space="preserve">
+    <value>无学校</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>活跃</value>
+  </data>
+  <data name="Escola:" xml:space="preserve">
+    <value>学校：</value>
+  </data>
+  <data name="Any acadèmic:" xml:space="preserve">
+    <value>学年：</value>
+  </data>
+  <data name="Data inscripció:" xml:space="preserve">
+    <value>报名日期：</value>
+  </data>
+  <data name="Les meves quotes" xml:space="preserve">
+    <value>我的费用</value>
+  </data>
+  <data name="No tens cap quota associada" xml:space="preserve">
+    <value>没有关联费用</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="Venciment" xml:space="preserve">
+    <value>到期</value>
+  </data>
+  <data name="Estat" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Data Pagament" xml:space="preserve">
+    <value>付款日期</value>
+  </data>
+  <data name="Pagada" xml:space="preserve">
+    <value>已支付</value>
+  </data>
+  <data name="Pendent" xml:space="preserve">
+    <value>待处理</value>
+  </data>
+</root>
