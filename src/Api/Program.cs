@@ -58,6 +58,11 @@ builder.Services.AddAuthorization();
 
 // CORS
 var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+if (!builder.Environment.IsDevelopment() && (corsOrigins == null || corsOrigins.Length == 0))
+{
+    throw new InvalidOperationException(
+        "CORS origins are not configured. Set Cors:AllowedOrigins (e.g. Cors__AllowedOrigins__0) for production.");
+}
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DefaultCors", policy =>
@@ -109,6 +114,13 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+// Apply pending EF Core migrations on startup so a fresh database gets tables automatically.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<SchoolDbContext>();
+    db.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {
