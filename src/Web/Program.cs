@@ -18,6 +18,7 @@ using Application.Interfaces.Search;
 using Application.UseCases.Queries.SearchResults;
 using Web.Services.Search.Adapters;
 using Microsoft.AspNetCore.Localization;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configuració Serilog: logs per dia a /logs/logYYYYMMDD.log
@@ -38,6 +39,51 @@ CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("ca-ES");
 
 // Configurar PostgreSQL per timestamps
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+// Render provides PostgreSQL URLs like postgresql://user:pass@host/db which ADO.NET doesn't parse.
+// Normalize to a standard Npgsql connection string.
+static string NormalizePg(string? raw)
+{
+    if (string.IsNullOrWhiteSpace(raw)) return string.Empty;
+    var s = raw.Trim();
+    if (s.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase) ||
+        s.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase))
+    {
+        var uri = new Uri(s);
+        var userInfo = uri.UserInfo.Split(':', 2);
+        var username = userInfo.Length > 0 ? Uri.UnescapeDataString(userInfo[0]) : "";
+        var password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : "";
+        var db = uri.AbsolutePath.TrimStart('/');
+
+        var csb = new NpgsqlConnectionStringBuilder
+        {
+            Host = uri.Host,
+            Port = uri.IsDefaultPort ? 5432 : uri.Port,
+            Database = db,
+            Username = username,
+            Password = password,
+            SslMode = SslMode.Prefer,
+            TrustServerCertificate = true
+        };
+
+        var q = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var sslmode = q.Get("sslmode");
+        if (string.Equals(sslmode, "require", StringComparison.OrdinalIgnoreCase))
+        {
+            csb.SslMode = SslMode.Require;
+        }
+
+        return csb.ConnectionString;
+    }
+
+    return s;
+}
+
+var normalizedCs = NormalizePg(builder.Configuration.GetConnectionString("Default"));
+if (!string.IsNullOrWhiteSpace(normalizedCs))
+{
+    builder.Configuration["ConnectionStrings:Default"] = normalizedCs;
+}
 
 builder.Services.AddDbContext<SchoolDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
