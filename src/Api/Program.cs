@@ -1,12 +1,15 @@
 using Application.Interfaces;
 using Application.UseCases.Services;
+using Domain.Entities;
 using Domain.Interfaces;
+using Api.Services;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Cryptography;
 using System.Text;
 using Npgsql;
 
@@ -168,6 +171,15 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<SchoolDbContext>();
     db.Database.Migrate();
+
+    // Optional one-time seed, meant for first boot on a fresh database.
+    // Enable with env var: Seed__Enabled=true
+    var seedEnabled = builder.Configuration.GetValue("Seed:Enabled", false);
+    if (seedEnabled)
+    {
+        var seeded = DbSeeder.SeedIfEmpty(db, builder.Configuration, app.Logger);
+        if (!seeded) app.Logger.LogInformation("Seed skipped: users table is not empty.");
+    }
 }
 
 var swaggerEnabled = builder.Configuration.GetValue("Swagger:Enabled", app.Environment.IsDevelopment());
