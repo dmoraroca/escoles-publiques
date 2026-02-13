@@ -24,7 +24,7 @@ public class MaintenanceController : ControllerBase
     // POST /api/maintenance/seed
     // Extra safety: requires X-Seed-Key header matching Seed:Key (Seed__Key env var).
     [HttpPost("seed")]
-    public IActionResult Seed()
+    public IActionResult Seed([FromHeader(Name = "X-Seed-Key")] string? seedKey)
     {
         var expectedKey = _config.GetValue<string>("Seed:Key");
         if (string.IsNullOrWhiteSpace(expectedKey))
@@ -32,8 +32,7 @@ public class MaintenanceController : ControllerBase
             return StatusCode(StatusCodes.Status409Conflict, "Seed key not configured. Set Seed__Key to enable seeding.");
         }
 
-        var providedKey = Request.Headers["X-Seed-Key"].ToString();
-        if (!string.Equals(providedKey, expectedKey, StringComparison.Ordinal))
+        if (!string.Equals(seedKey, expectedKey, StringComparison.Ordinal))
         {
             return Unauthorized("Invalid seed key.");
         }
@@ -42,4 +41,3 @@ public class MaintenanceController : ControllerBase
         return Ok(new { seeded });
     }
 }
-
