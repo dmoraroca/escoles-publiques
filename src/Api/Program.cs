@@ -64,7 +64,9 @@ if (!string.IsNullOrWhiteSpace(normalizedCs))
 
 // DbContext
 builder.Services.AddDbContext<SchoolDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+    opt.UseNpgsql(
+        builder.Configuration.GetConnectionString("Default"),
+        npgsql => npgsql.MigrationsAssembly("Infrastructure")));
 
 // Repositories & services (same as Web)
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
