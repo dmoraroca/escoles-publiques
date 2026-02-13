@@ -63,8 +63,8 @@ namespace Infrastructure.Migrations
                     b.ToTable("annual_fees", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Enrollment", b =>
-                {
+	            modelBuilder.Entity("Domain.Entities.Enrollment", b =>
+	                {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
@@ -85,21 +85,27 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("enrolled_at");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("status");
+	                    b.Property<string>("Status")
+	                        .IsRequired()
+	                        .HasColumnType("text")
+	                        .HasColumnName("status");
 
-                    b.Property<long>("StudentId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("student_id");
+	                    b.Property<long>("SchoolId")
+	                        .HasColumnType("bigint")
+	                        .HasColumnName("school_id");
+
+	                    b.Property<long>("StudentId")
+	                        .HasColumnType("bigint")
+	                        .HasColumnName("student_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId");
+	                    b.HasIndex("StudentId");
 
-                    b.ToTable("enrollments", (string)null);
-                });
+	                    b.HasIndex("SchoolId");
+
+	                    b.ToTable("enrollments", (string)null);
+	                });
 
             modelBuilder.Entity("Domain.Entities.School", b =>
                 {
@@ -281,17 +287,26 @@ namespace Infrastructure.Migrations
                     b.Navigation("Enrollment");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Enrollment", b =>
-                {
-                    b.HasOne("Domain.Entities.Student", "Student")
-                        .WithMany("Enrollments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_enrollments_students_student_id");
+	            modelBuilder.Entity("Domain.Entities.Enrollment", b =>
+	                {
+	                    b.HasOne("Domain.Entities.School", "School")
+	                        .WithMany()
+	                        .HasForeignKey("SchoolId")
+	                        .OnDelete(DeleteBehavior.Restrict)
+	                        .IsRequired()
+	                        .HasConstraintName("fk_enrollments_schools_school_id");
 
-                    b.Navigation("Student");
-                });
+	                    b.HasOne("Domain.Entities.Student", "Student")
+	                        .WithMany("Enrollments")
+	                        .HasForeignKey("StudentId")
+	                        .OnDelete(DeleteBehavior.Cascade)
+	                        .IsRequired()
+	                        .HasConstraintName("fk_enrollments_students_student_id");
+
+	                    b.Navigation("School");
+
+	                    b.Navigation("Student");
+	                });
 
             modelBuilder.Entity("Domain.Entities.Student", b =>
                 {

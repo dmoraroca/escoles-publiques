@@ -131,9 +131,15 @@ WHERE NOT EXISTS (
 );
 
 -- Enrollments
-INSERT INTO public.enrollments (student_id, academic_year, course_name, status, enrolled_at)
+INSERT INTO public.enrollments (student_id, academic_year, course_name, status, enrolled_at, school_id)
 SELECT
     (SELECT s.id
+     FROM public.students s
+     JOIN public.users u ON u.id = s.user_id
+     WHERE u.email = 'anna.serra@example.com'
+     LIMIT 1),
+    -- Keep consistent with the student's school_id
+    (SELECT s.school_id
      FROM public.students s
      JOIN public.users u ON u.id = s.user_id
      WHERE u.email = 'anna.serra@example.com'
@@ -151,9 +157,14 @@ WHERE NOT EXISTS (
       AND e.academic_year = '2025-2026'
 );
 
-INSERT INTO public.enrollments (student_id, academic_year, course_name, status, enrolled_at)
+INSERT INTO public.enrollments (student_id, academic_year, course_name, status, enrolled_at, school_id)
 SELECT
     (SELECT s.id
+     FROM public.students s
+     JOIN public.users u ON u.id = s.user_id
+     WHERE u.email = 'marc.vila@example.com'
+     LIMIT 1),
+    (SELECT s.school_id
      FROM public.students s
      JOIN public.users u ON u.id = s.user_id
      WHERE u.email = 'marc.vila@example.com'
