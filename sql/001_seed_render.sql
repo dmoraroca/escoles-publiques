@@ -138,16 +138,16 @@ SELECT
      JOIN public.users u ON u.id = s.user_id
      WHERE u.email = 'anna.serra@example.com'
      LIMIT 1),
+    '2025-2026',
+    '6e Primaria',
+    'Activa',
+    NOW(),
     -- Keep consistent with the student's school_id
     (SELECT s.school_id
      FROM public.students s
      JOIN public.users u ON u.id = s.user_id
      WHERE u.email = 'anna.serra@example.com'
-     LIMIT 1),
-    '2025-2026',
-    '6e Primaria',
-    'Activa',
-    NOW()
+     LIMIT 1)
 WHERE NOT EXISTS (
     SELECT 1
     FROM public.enrollments e
@@ -164,15 +164,15 @@ SELECT
      JOIN public.users u ON u.id = s.user_id
      WHERE u.email = 'marc.vila@example.com'
      LIMIT 1),
+    '2025-2026',
+    '4t ESO',
+    'Activa',
+    NOW(),
     (SELECT s.school_id
      FROM public.students s
      JOIN public.users u ON u.id = s.user_id
      WHERE u.email = 'marc.vila@example.com'
-     LIMIT 1),
-    '2025-2026',
-    '4t ESO',
-    'Activa',
-    NOW()
+     LIMIT 1)
 WHERE NOT EXISTS (
     SELECT 1
     FROM public.enrollments e

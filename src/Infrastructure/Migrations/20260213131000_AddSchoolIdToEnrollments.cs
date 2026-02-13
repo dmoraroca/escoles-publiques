@@ -13,59 +13,49 @@ public partial class AddSchoolIdToEnrollments : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        // 1) Add as nullable so we can backfill existing rows safely.
-        migrationBuilder.AddColumn<long>(
-            name: "school_id",
-            table: "enrollments",
-            type: "bigint",
-            nullable: true);
-
-        // 2) Backfill from the student's school.
+        // Make the migration resilient (safe to run even if the column/constraint already exists).
+        // This also allows an emergency manual SQL fix without breaking future deploys.
         migrationBuilder.Sql(@"
-UPDATE enrollments e
+ALTER TABLE public.enrollments
+    ADD COLUMN IF NOT EXISTS school_id bigint NULL;
+
+UPDATE public.enrollments e
 SET school_id = s.school_id
-FROM students s
+FROM public.students s
 WHERE e.student_id = s.id
   AND e.school_id IS NULL;
+
+ALTER TABLE public.enrollments
+    ALTER COLUMN school_id SET NOT NULL;
+
+CREATE INDEX IF NOT EXISTS ix_enrollments_school_id ON public.enrollments(school_id);
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_enrollments_schools_school_id') THEN
+        ALTER TABLE public.enrollments
+            ADD CONSTRAINT fk_enrollments_schools_school_id
+            FOREIGN KEY (school_id) REFERENCES public.schools(id)
+            ON DELETE RESTRICT;
+    END IF;
+END $$;
 ");
-
-        // 3) Make NOT NULL after backfill.
-        migrationBuilder.AlterColumn<long>(
-            name: "school_id",
-            table: "enrollments",
-            type: "bigint",
-            nullable: false,
-            oldClrType: typeof(long),
-            oldType: "bigint",
-            oldNullable: true);
-
-        migrationBuilder.CreateIndex(
-            name: "IX_enrollments_school_id",
-            table: "enrollments",
-            column: "school_id");
-
-        migrationBuilder.AddForeignKey(
-            name: "fk_enrollments_schools_school_id",
-            table: "enrollments",
-            column: "school_id",
-            principalTable: "schools",
-            principalColumn: "id",
-            onDelete: ReferentialAction.Restrict);
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.DropForeignKey(
-            name: "fk_enrollments_schools_school_id",
-            table: "enrollments");
+        // Best-effort rollback.
+        migrationBuilder.Sql(@"
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_enrollments_schools_school_id') THEN
+        ALTER TABLE public.enrollments DROP CONSTRAINT fk_enrollments_schools_school_id;
+    END IF;
+END $$;
 
-        migrationBuilder.DropIndex(
-            name: "IX_enrollments_school_id",
-            table: "enrollments");
+DROP INDEX IF EXISTS public.ix_enrollments_school_id;
 
-        migrationBuilder.DropColumn(
-            name: "school_id",
-            table: "enrollments");
+ALTER TABLE public.enrollments DROP COLUMN IF EXISTS school_id;
+");
     }
 }
-
