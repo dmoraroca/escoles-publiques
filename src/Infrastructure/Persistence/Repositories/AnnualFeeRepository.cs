@@ -29,8 +29,7 @@ public class AnnualFeeRepository : IAnnualFeeRepository
                 .ThenInclude(e => e.Student)
                     .ThenInclude(s => s.User)
             .Include(af => af.Enrollment)
-                .ThenInclude(e => e.Student)
-                    .ThenInclude(s => s.School)
+                .ThenInclude(e => e.School)
             .OrderByDescending(af => af.DueDate)
             .ToListAsync();
     }
@@ -41,6 +40,8 @@ public class AnnualFeeRepository : IAnnualFeeRepository
             .Include(af => af.Enrollment)
                 .ThenInclude(e => e.Student)
                     .ThenInclude(s => s.User)
+            .Include(af => af.Enrollment)
+                .ThenInclude(e => e.School)
             .FirstOrDefaultAsync(af => af.Id == id);
     }
 
