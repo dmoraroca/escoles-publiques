@@ -8,6 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@Localizer["Accés - GICAR"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/login.css" />
@@ -18,10 +19,9 @@
     <div class="header-top-black py-2">
         <div class="container d-flex justify-content-between align-items-center">
             <div>
-                <img src="https://educacio.gencat.cat/web/resources/fwkResponsive/fpca_capcalera/img/gencat-nuevo-completo-w.svg" 
-                     alt="@Localizer["Generalitat de Catalunya"]" 
-                     height="25"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%2230%22%3E%3Ctext x=%2210%22 y=%2220%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2216%22%3EGeneralitat%3C/text%3E%3C/svg%3E';">
+                <a class="brand-wordmark text-decoration-none" href="/" aria-label="DavidGov">
+                    DavidGov
+                </a>
             </div>
             @{
                 var currentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/";

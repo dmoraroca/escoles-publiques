@@ -13,6 +13,23 @@ body { font-family: 'Open Sans', sans-serif; color: #333; }
 /* Capçalera i Navegació */
 .header-top-black { background-color: var(--gencat-dark); color: white; }
 .header-dept-bar { background-color: #444; color: white; border-bottom: 4px solid var(--gencat-red); }
+
+/* Wordmark (replaces external "gencat" logo) */
+.brand-wordmark {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #fff;
+    font-size: 1.05rem;
+    line-height: 1;
+}
+.brand-wordmark:hover,
+.brand-wordmark:focus {
+    color: #fff;
+    opacity: 0.9;
+    text-decoration: none;
+}
 .nav-link-gencat { 
     font-weight: 600; 
     padding: 15px 25px !important; 

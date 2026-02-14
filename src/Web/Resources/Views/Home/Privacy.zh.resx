@@ -19,7 +19,7 @@
     <value>隐私与使用通知</value>
   </data>
   <data name="Aquesta aplicació és una demostració i un entorn de proves creat per a entrevistes i avaluacions tècniques. No és una versió oficial de la Generalitat de Catalunya ni d'una entitat pública." xml:space="preserve">
-    <value>此应用为演示与测试环境，用于面试和技术评估，并非加泰罗尼亚政府或公共机构的官方版本。</value>
+    <value>此应用为演示与测试环境，用于面试和技术评估，并非任何公共机构的官方版本。测试页面。</value>
   </data>
   <data name="Les dades introduïdes en aquest entorn són fictícies o de prova i s'utilitzen únicament per a finalitats de test, revisió i valoració del treball del desenvolupador. En cap cas s'ha d'utilitzar aquest entorn per a gestió de dades reals o sensibles." xml:space="preserve">
     <value>在此环境中输入的数据为虚构或测试数据，仅用于测试、审查和评估开发者工作。不得用于管理真实或敏感数据。</value>

@@ -19,7 +19,7 @@
     <value>Privacy and Use Notice</value>
   </data>
   <data name="Aquesta aplicació és una demostració i un entorn de proves creat per a entrevistes i avaluacions tècniques. No és una versió oficial de la Generalitat de Catalunya ni d'una entitat pública." xml:space="preserve">
-    <value>This application is a demonstration and a test environment created for interviews and technical evaluations. It is not an official version of the Generalitat de Catalunya or a public entity.</value>
+    <value>This application is a demonstration and a test environment created for interviews and technical evaluations. It is not an official product of any public entity. Test page.</value>
   </data>
   <data name="Les dades introduïdes en aquest entorn són fictícies o de prova i s'utilitzen únicament per a finalitats de test, revisió i valoració del treball del desenvolupador. En cap cas s'ha d'utilitzar aquest entorn per a gestió de dades reals o sensibles." xml:space="preserve">
     <value>The data entered in this environment is fictitious or test data and is used only for testing, review and evaluation of the developer's work. Under no circumstances should this environment be used to manage real or sensitive data.</value>

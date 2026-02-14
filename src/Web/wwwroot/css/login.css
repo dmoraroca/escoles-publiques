@@ -7,6 +7,22 @@
     padding: 8px 0;
 }
 
+.brand-wordmark {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #fff;
+    font-size: 1.05rem;
+    line-height: 1;
+}
+.brand-wordmark:hover,
+.brand-wordmark:focus {
+    color: #fff;
+    opacity: 0.9;
+    text-decoration: none;
+}
+
 .login-container {
     max-width: 490px;
     margin: 60px auto;
