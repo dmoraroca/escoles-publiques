@@ -30,12 +30,10 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 builder.Host.UseSerilog();
 
-// Configurar cultura invariant per evitar problemes amb decimals
+// Cultura per defecte (la localitzacio per cookie/querystring ja la pot sobreescriure)
 var cultureInfo = new CultureInfo("ca-ES");
-cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
-cultureInfo.NumberFormat.CurrencyDecimalSeparator = ".";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("ca-ES");
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Configurar PostgreSQL per timestamps
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -164,6 +162,9 @@ builder.Services.AddScoped<ISearchResultsBuilder, SearchResultsBuilder>();
 
 builder.Services.AddControllersWithViews(options =>
 {
+    // Accepta decimals tant amb ',' com amb '.' en formularis (independentment de la cultura).
+    options.ModelBinderProviders.Insert(0, new Web.ModelBinders.FlexibleDecimalModelBinderProvider());
+
     // Requerir autenticació per defecte a tots els controladors
     var policy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
