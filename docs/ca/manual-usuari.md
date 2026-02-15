@@ -27,7 +27,7 @@ La web permet canviar l'idioma des del selector superior. La selecció es manté
 3. Si l'usuari es vàlid, s'accedeix a la pagina d'inici.
 
 Captures:
-![Login (CA)](../assets/screenshots/admin/01-login-ca.png)
+![Login (CA)](../codex_images_real/ca/login-admin.png)
 
 ## 3. Navegacio (rol ADM)
 Menu principal:
@@ -49,8 +49,8 @@ La pagina d'inici mostra un cercador i accessos rapids per ambit.
 3. Revisa els resultats i entra als detalls.
 
 Captures:
-![Inici (CA)](../assets/screenshots/admin/02-inici-ca.png)
-![Cerca: resultats (CA)](../assets/screenshots/admin/03-cerca-resultats-ca.png)
+![Inici (part superior) (CA)](../codex_images_real/ca/inici-top.png)
+![Inici (part inferior) (CA)](../codex_images_real/ca/inici-down.png)
 
 ## 5. Gestio d'escoles
 ### 5.1 Llistar, cercar i ordenar
@@ -59,7 +59,7 @@ Captures:
 3. Fes clic als encapçalaments (si son ordenables) per ordenar.
 
 Captura:
-![Escoles: llistat (CA)](../assets/screenshots/admin/10-escoles-llistat-ca.png)
+![Escoles: llistat (CA)](../codex_images_real/ca/escoles.png)
 
 ### 5.2 Crear escola
 1. Prem el botó per crear nova escola.
@@ -67,14 +67,14 @@ Captura:
 3. Desa.
 
 Captures:
-![Escoles: nova (modal) (CA)](../assets/screenshots/admin/11-escoles-nova-modal-ca.png)
+![Escoles: nova (modal) (CA)](../codex_images_real/ca/escoles-crear.png)
 
 ### 5.3 Veure detalls
 1. A la columna d'accions, prem `Detalls`.
 2. Revisa la informacio i torna enrere.
 
 Captura:
-![Escoles: detall (CA)](../assets/screenshots/admin/12-escoles-detall-ca.png)
+![Escoles: detall (CA)](../codex_images_real/ca/escoles-detall.png)
 
 ### 5.4 Editar escola
 1. Des de `Detalls`, prem `Editar` (o entra directament a l'edicio si existeix l'accio).
@@ -83,14 +83,14 @@ Captura:
 4. Desa.
 
 Captura:
-![Escoles: editar (CA)](../assets/screenshots/admin/13-escoles-editar-ca.png)
+![Escoles: editar (CA)](../codex_images_real/ca/escoles-edit.png)
 
 ### 5.5 Eliminar escola
 1. A la taula, prem `Esborrar`.
 2. Confirma l'eliminacio al dialeg del navegador.
 
 Captura:
-![Escoles: esborrar (confirmacio) (CA)](../assets/screenshots/admin/14-escoles-esborrar-confirm-ca.png)
+![Escoles: esborrar (confirmacio) (CA)](../codex_images_real/ca/escoles-esborrar.png)
 
 ## 6. Gestio d'alumnes
 ### 6.1 Llistar i cercar
@@ -98,7 +98,7 @@ Captura:
 2. Usa el camp de cerca per filtrar.
 
 Captura:
-![Alumnes: llistat (CA)](../assets/screenshots/admin/20-alumnes-llistat-ca.png)
+![Alumnes: llistat (CA)](../codex_images_real/ca/estudiants.png)
 
 ### 6.2 Crear alumne
 1. Ves a `Alumnes`.
@@ -108,13 +108,13 @@ Nota:
 - si l'email ja existeix com a usuari, el sistema reutilitza l'usuari existent.
 
 Captura:
-![Alumnes: nou (modal) (CA)](../assets/screenshots/admin/21-alumnes-nou-modal-ca.png)
+![Alumnes: nou (modal) (CA)](../codex_images_real/ca/estudiants-crear.png)
 
 ### 6.3 Veure detalls
 1. A la columna d'accions, prem `Detalls`.
 
 Captura:
-![Alumnes: detall (CA)](../assets/screenshots/admin/22-alumnes-detall-ca.png)
+![Alumnes: detall (CA)](../codex_images_real/ca/estudiants-detall.png)
 
 ### 6.4 Editar alumne
 1. Des de `Detalls`, prem `Editar`.
@@ -123,14 +123,14 @@ Captura:
 4. Desa.
 
 Captura:
-![Alumnes: editar (CA)](../assets/screenshots/admin/23-alumnes-editar-ca.png)
+![Alumnes: editar (CA)](../codex_images_real/ca/estudiants-edit.png)
 
 ### 6.5 Eliminar alumne
 1. A la taula, prem `Esborrar`.
 2. Confirma al dialeg del navegador.
 
 Captura:
-![Alumnes: esborrar (confirmacio) (CA)](../assets/screenshots/admin/24-alumnes-esborrar-confirm-ca.png)
+![Alumnes: esborrar (confirmacio) (CA)](../codex_images_real/ca/estudiants-esborrar.png)
 
 ## 7. Inscripcions
 ### 7.1 Llistar i cercar
@@ -138,7 +138,7 @@ Captura:
 2. Usa el camp de cerca per filtrar.
 
 Captura:
-![Inscripcions: llistat (CA)](../assets/screenshots/admin/30-inscripcions-llistat-ca.png)
+![Inscripcions: llistat (CA)](../codex_images_real/ca/inscripcions.png)
 
 ### 7.2 Crear inscripcio
 1. Prem `Nova Inscripcio`.
@@ -147,27 +147,27 @@ Captura:
 4. Accepta les condicions de privacitat si es requerit i desa.
 
 Captura:
-![Inscripcions: nova (modal) (CA)](../assets/screenshots/admin/31-inscripcions-nova-modal-ca.png)
+![Inscripcions: nova (modal) (CA)](../codex_images_real/ca/inscripcions-crear.png)
 
 ### 7.3 Veure detalls
 1. A la taula, prem `Detalls`.
 
 Captura:
-![Inscripcions: detall (CA)](../assets/screenshots/admin/32-inscripcions-detall-ca.png)
+![Inscripcions: detall (CA)](../codex_images_real/ca/inscripcions-detall.png)
 
 ### 7.4 Editar inscripcio
 1. Des de `Detalls`, prem `Editar`.
 2. Modifica els camps necessaris i desa.
 
 Captura:
-![Inscripcions: editar (CA)](../assets/screenshots/admin/33-inscripcions-editar-ca.png)
+![Inscripcions: editar (CA)](../codex_images_real/ca/inscripcions-edit.png)
 
 ### 7.5 Eliminar inscripcio
 1. A la taula, prem `Esborrar`.
 2. Confirma al dialeg del navegador.
 
 Captura:
-![Inscripcions: esborrar (confirmacio) (CA)](../assets/screenshots/admin/34-inscripcions-esborrar-confirm-ca.png)
+![Inscripcions: esborrar (confirmacio) (CA)](../codex_images_real/ca/inscripcions-esborrar.png)
 
 Estats tipics:
 - Activa
@@ -180,7 +180,7 @@ Estats tipics:
 2. Usa el camp de cerca per filtrar.
 
 Captura:
-![Quotes: llistat (CA)](../assets/screenshots/admin/40-quotes-llistat-ca.png)
+![Quotes: llistat (CA)](../codex_images_real/ca/quotes-anuals.png)
 
 ### 8.2 Crear quota anual
 1. Ves a `Quotes`.
@@ -191,13 +191,13 @@ Captura:
 6. Accepta condicions de privacitat i desa.
 
 Captures:
-![Quotes: nova (modal) (CA)](../assets/screenshots/admin/41-quotes-nova-modal-ca.png)
+![Quotes: nova (modal) (CA)](../codex_images_real/ca/quotes-anuals-crear.png)
 
 ### 8.3 Veure detalls
 1. A la taula, prem `Detalls`.
 
 Captura:
-![Quotes: detall (CA)](../assets/screenshots/admin/42-quotes-detall-ca.png)
+![Quotes: detall (CA)](../codex_images_real/ca/quotes-anuals-detall.png)
 
 ### 8.4 Editar quota anual
 1. Des de `Detalls`, prem `Editar`.
@@ -206,14 +206,14 @@ Captura:
 4. Desa.
 
 Captura:
-![Quotes: editar (CA)](../assets/screenshots/admin/43-quotes-editar-ca.png)
+![Quotes: editar (CA)](../codex_images_real/ca/quotes-anuals-edit.png)
 
 ### 8.5 Eliminar quota anual
 1. A la taula, prem `Esborrar`.
 2. Confirma al dialeg del navegador.
 
 Captura:
-![Quotes: esborrar (confirmacio) (CA)](../assets/screenshots/admin/44-quotes-esborrar-confirm-ca.png)
+![Quotes: esborrar (confirmacio) (CA)](../codex_images_real/ca/quotes-anuals-esborrar.png)
 
 ### 8.6 Decimals
 L'import accepta decimals:
@@ -234,7 +234,8 @@ El rol `USER` te un acces limitat i habitualment veu un tauler (dashboard) amb:
 - quotes pròpies
 
 Captura:
-![Dashboard (USER) (CA)](../assets/screenshots/user/02-dashboard-ca.png)
+![Dashboard (part superior) (CA)](../codex_images_real/ca/dashboard-top.png)
+![Dashboard (part inferior) (CA)](../codex_images_real/ca/dashboard-down.png)
 
 ## 10. FAQ / Problemes frequents
 ### No puc iniciar sessio
@@ -252,29 +253,30 @@ Captura:
 Aquest manual assumeix aquesta numeracio d'imatges:
 
 ADM:
-1. `docs/assets/screenshots/admin/01-login-ca.png`
-2. `docs/assets/screenshots/admin/02-inici-ca.png`
-3. `docs/assets/screenshots/admin/03-cerca-resultats-ca.png`
-4. `docs/assets/screenshots/admin/10-escoles-llistat-ca.png`
-5. `docs/assets/screenshots/admin/11-escoles-nova-modal-ca.png`
-6. `docs/assets/screenshots/admin/12-escoles-detall-ca.png`
-7. `docs/assets/screenshots/admin/13-escoles-editar-ca.png`
-8. `docs/assets/screenshots/admin/14-escoles-esborrar-confirm-ca.png`
-9. `docs/assets/screenshots/admin/20-alumnes-llistat-ca.png`
-10. `docs/assets/screenshots/admin/21-alumnes-nou-modal-ca.png`
-11. `docs/assets/screenshots/admin/22-alumnes-detall-ca.png`
-12. `docs/assets/screenshots/admin/23-alumnes-editar-ca.png`
-13. `docs/assets/screenshots/admin/24-alumnes-esborrar-confirm-ca.png`
-14. `docs/assets/screenshots/admin/30-inscripcions-llistat-ca.png`
-15. `docs/assets/screenshots/admin/31-inscripcions-nova-modal-ca.png`
-16. `docs/assets/screenshots/admin/32-inscripcions-detall-ca.png`
-17. `docs/assets/screenshots/admin/33-inscripcions-editar-ca.png`
-18. `docs/assets/screenshots/admin/34-inscripcions-esborrar-confirm-ca.png`
-19. `docs/assets/screenshots/admin/40-quotes-llistat-ca.png`
-20. `docs/assets/screenshots/admin/41-quotes-nova-modal-ca.png`
-21. `docs/assets/screenshots/admin/42-quotes-detall-ca.png`
-22. `docs/assets/screenshots/admin/43-quotes-editar-ca.png`
-23. `docs/assets/screenshots/admin/44-quotes-esborrar-confirm-ca.png`
+1. `docs/codex_images_real/ca/login-admin.png`
+2. `docs/codex_images_real/ca/inici-top.png`
+3. `docs/codex_images_real/ca/inici-down.png`
+4. `docs/codex_images_real/ca/escoles.png`
+5. `docs/codex_images_real/ca/escoles-crear.png`
+6. `docs/codex_images_real/ca/escoles-detall.png`
+7. `docs/codex_images_real/ca/escoles-edit.png`
+8. `docs/codex_images_real/ca/escoles-esborrar.png`
+9. `docs/codex_images_real/ca/estudiants.png`
+10. `docs/codex_images_real/ca/estudiants-crear.png`
+11. `docs/codex_images_real/ca/estudiants-detall.png`
+12. `docs/codex_images_real/ca/estudiants-edit.png`
+13. `docs/codex_images_real/ca/estudiants-esborrar.png`
+14. `docs/codex_images_real/ca/inscripcions.png`
+15. `docs/codex_images_real/ca/inscripcions-crear.png`
+16. `docs/codex_images_real/ca/inscripcions-detall.png`
+17. `docs/codex_images_real/ca/inscripcions-edit.png`
+18. `docs/codex_images_real/ca/inscripcions-esborrar.png`
+19. `docs/codex_images_real/ca/quotes-anuals.png`
+20. `docs/codex_images_real/ca/quotes-anuals-crear.png`
+21. `docs/codex_images_real/ca/quotes-anuals-detall.png`
+22. `docs/codex_images_real/ca/quotes-anuals-edit.png`
+23. `docs/codex_images_real/ca/quotes-anuals-esborrar.png`
 
 USER:
-1. `docs/assets/screenshots/user/02-dashboard-ca.png`
+1. `docs/codex_images_real/ca/dashboard-top.png`
+2. `docs/codex_images_real/ca/dashboard-down.png`

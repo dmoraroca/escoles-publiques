@@ -18,7 +18,7 @@ Zielgruppen:
 3. Anmelden.
 
 Platzhalter:
-![Login (DE)](../assets/screenshots/admin/01-login-de.png)
+![Login (DE)](../codex_images_real/al/login-admin.png)
 
 ## 3. Navigation
 Admin-Menü:
@@ -49,22 +49,23 @@ Dezimal:
 - `1000,25` oder `1000.25`
 
 Screenshots:
-![Gebuehren: Liste (DE)](../assets/screenshots/admin/40-quotes-llistat-de.png)
-![Gebuehren: Neu (Modal) (DE)](../assets/screenshots/admin/41-quotes-nova-modal-de.png)
-![Gebuehren: Bearbeiten (DE)](../assets/screenshots/admin/42-quotes-editar-de.png)
+![Gebuehren: Liste (DE)](../codex_images_real/al/quotes-anuals.png)
+![Gebuehren: Neu (Modal) (DE)](../codex_images_real/al/quotes-anuals-crear.png)
+![Gebuehren: Bearbeiten (DE)](../codex_images_real/al/quotes-anuals-edit.png)
 
 ## Anhang: Screenshot-Index (Reihenfolge)
-1. `docs/assets/screenshots/admin/01-login-de.png`
-2. `docs/assets/screenshots/admin/02-inici-de.png`
-3. `docs/assets/screenshots/admin/10-escoles-llistat-de.png`
-4. `docs/assets/screenshots/admin/11-escoles-nova-modal-de.png`
-5. `docs/assets/screenshots/admin/12-escoles-detall-de.png`
-6. `docs/assets/screenshots/admin/13-escoles-editar-de.png`
-7. `docs/assets/screenshots/admin/20-alumnes-llistat-de.png`
-8. `docs/assets/screenshots/admin/30-inscripcions-llistat-de.png`
-9. `docs/assets/screenshots/admin/40-quotes-llistat-de.png`
-10. `docs/assets/screenshots/admin/41-quotes-nova-modal-de.png`
-11. `docs/assets/screenshots/admin/42-quotes-editar-de.png`
+1. `docs/codex_images_real/al/login-admin.png`
+2. `docs/codex_images_real/al/inici-top.png`
+3. `docs/codex_images_real/al/inici-down.png`
+4. `docs/codex_images_real/al/escoles.png`
+5. `docs/codex_images_real/al/escoles-crear.png`
+6. `docs/codex_images_real/al/escoles-detall.png`
+7. `docs/codex_images_real/al/escoles-edit.png`
+8. `docs/codex_images_real/al/estudiants.png`
+9. `docs/codex_images_real/al/inscripcions.png`
+10. `docs/codex_images_real/al/quotes-anuals.png`
+11. `docs/codex_images_real/al/quotes-anuals-crear.png`
+12. `docs/codex_images_real/al/quotes-anuals-edit.png`
 
 ## 8. FAQ
 - Unauthorized: neu anmelden

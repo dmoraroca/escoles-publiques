@@ -22,7 +22,7 @@ Requirements:
 3. Click "Login".
 
 Screenshots:
-![Login (EN)](../assets/screenshots/admin/01-login-en.png)
+![Login (EN)](../codex_images_real/en/login-admin.png)
 
 ## 3. Navigation
 Admin main menu:
@@ -54,22 +54,23 @@ Decimals:
 - amount supports `1000,25` and `1000.25`
 
 Screenshots:
-![Annual fees: list (EN)](../assets/screenshots/admin/40-quotes-llistat-en.png)
-![Annual fees: new (modal) (EN)](../assets/screenshots/admin/41-quotes-nova-modal-en.png)
-![Annual fees: edit (EN)](../assets/screenshots/admin/42-quotes-editar-en.png)
+![Annual fees: list (EN)](../codex_images_real/en/quotes-anuals.png)
+![Annual fees: new (modal) (EN)](../codex_images_real/en/quotes-anuals-crear.png)
+![Annual fees: edit (EN)](../codex_images_real/en/quotes-anuals-edit.png)
 
 ## Appendix: Screenshot index (order)
-1. `docs/assets/screenshots/admin/01-login-en.png`
-2. `docs/assets/screenshots/admin/02-inici-en.png`
-3. `docs/assets/screenshots/admin/10-escoles-llistat-en.png`
-4. `docs/assets/screenshots/admin/11-escoles-nova-modal-en.png`
-5. `docs/assets/screenshots/admin/12-escoles-detall-en.png`
-6. `docs/assets/screenshots/admin/13-escoles-editar-en.png`
-7. `docs/assets/screenshots/admin/20-alumnes-llistat-en.png`
-8. `docs/assets/screenshots/admin/30-inscripcions-llistat-en.png`
-9. `docs/assets/screenshots/admin/40-quotes-llistat-en.png`
-10. `docs/assets/screenshots/admin/41-quotes-nova-modal-en.png`
-11. `docs/assets/screenshots/admin/42-quotes-editar-en.png`
+1. `docs/codex_images_real/en/login-admin.png`
+2. `docs/codex_images_real/en/inici-top.png`
+3. `docs/codex_images_real/en/inici-down.png`
+4. `docs/codex_images_real/en/escoles.png`
+5. `docs/codex_images_real/en/escoles-crear.png`
+6. `docs/codex_images_real/en/escoles-detall.png`
+7. `docs/codex_images_real/en/escoles-edit.png`
+8. `docs/codex_images_real/en/estudiants.png`
+9. `docs/codex_images_real/en/inscripcions.png`
+10. `docs/codex_images_real/en/quotes-anuals.png`
+11. `docs/codex_images_real/en/quotes-anuals-crear.png`
+12. `docs/codex_images_real/en/quotes-anuals-edit.png`
 
 ## 8. FAQ
 - Unauthorized: session expired, re-login

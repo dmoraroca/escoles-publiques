@@ -18,7 +18,7 @@ Publico:
 3. Pulsa "Acceder".
 
 Capturas:
-![Login (ES)](../assets/screenshots/admin/01-login-es.png)
+![Login (ES)](../codex_images_real/es/login-admin.png)
 
 ## 3. Navegacion
 Menu (ADM):
@@ -50,22 +50,23 @@ Decimales:
 - `1000,25` o `1000.25`
 
 Capturas:
-![Cuotas: listado (ES)](../assets/screenshots/admin/40-quotes-llistat-es.png)
-![Cuotas: nueva (modal) (ES)](../assets/screenshots/admin/41-quotes-nova-modal-es.png)
-![Cuotas: editar (ES)](../assets/screenshots/admin/42-quotes-editar-es.png)
+![Cuotas: listado (ES)](../codex_images_real/es/quotes-anuals.png)
+![Cuotas: nueva (modal) (ES)](../codex_images_real/es/quotes-anuals-crear.png)
+![Cuotas: editar (ES)](../codex_images_real/es/quotes-anuals-edit.png)
 
 ## Anexo: Indice de capturas (orden)
-1. `docs/assets/screenshots/admin/01-login-es.png`
-2. `docs/assets/screenshots/admin/02-inici-es.png`
-3. `docs/assets/screenshots/admin/10-escoles-llistat-es.png`
-4. `docs/assets/screenshots/admin/11-escoles-nova-modal-es.png`
-5. `docs/assets/screenshots/admin/12-escoles-detall-es.png`
-6. `docs/assets/screenshots/admin/13-escoles-editar-es.png`
-7. `docs/assets/screenshots/admin/20-alumnes-llistat-es.png`
-8. `docs/assets/screenshots/admin/30-inscripcions-llistat-es.png`
-9. `docs/assets/screenshots/admin/40-quotes-llistat-es.png`
-10. `docs/assets/screenshots/admin/41-quotes-nova-modal-es.png`
-11. `docs/assets/screenshots/admin/42-quotes-editar-es.png`
+1. `docs/codex_images_real/es/login-admin.png`
+2. `docs/codex_images_real/es/inici-top.png`
+3. `docs/codex_images_real/es/inici-down.png`
+4. `docs/codex_images_real/es/escoles.png`
+5. `docs/codex_images_real/es/escoles-crear.png`
+6. `docs/codex_images_real/es/escoles-detall.png`
+7. `docs/codex_images_real/es/escoles-edit.png`
+8. `docs/codex_images_real/es/estudiants.png`
+9. `docs/codex_images_real/es/inscripcions.png`
+10. `docs/codex_images_real/es/quotes-anuals.png`
+11. `docs/codex_images_real/es/quotes-anuals-crear.png`
+12. `docs/codex_images_real/es/quotes-anuals-edit.png`
 
 ## 8. FAQ
 - No autorizado: la sesion ha expirado, vuelve a iniciar sesion.
