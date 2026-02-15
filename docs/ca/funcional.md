@@ -21,6 +21,28 @@ Fora d'abast (a data d'aquest document):
 - integracions externes (correu, notificacions push, etc.)
 - importacions massives de dades oficials
 
+## 1.1 Diagrames
+### 1.1.1 Context del sistema
+```mermaid
+flowchart LR
+  U[Usuari] -->|Navegador| W[Web (MVC/Razor)]
+  W -->|HTTP + JWT| A[API (REST)]
+  A -->|EF Core| DB[(PostgreSQL)]
+```
+
+### 1.1.2 Flux de login (alt nivell)
+```mermaid
+sequenceDiagram
+  participant U as Usuari
+  participant W as Web
+  participant A as API
+
+  U->>W: Login (email+password)
+  W->>A: POST /api/auth/token
+  A-->>W: JWT
+  W-->>U: Sessio iniciada (cookie) i navegacio
+```
+
 ## 2. Actors i rols
 ### 2.1 Rol `ADM` (administrador)
 Pot accedir a tot el sistema:

@@ -21,7 +21,7 @@
 .results-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--gencat-dark);
+    color: var(--davidgov-dark);
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -31,18 +31,18 @@
 }
 
 .results-title i {
-    color: var(--gencat-red);
+    color: var(--davidgov-red);
     font-size: 2.2rem;
 }
 
 .search-term {
-    color: var(--gencat-red);
+    color: var(--davidgov-red);
     font-style: italic;
     font-weight: 600;
 }
 
 .scope-badge {
-    background: var(--gencat-red);
+    background: var(--davidgov-red);
     color: white;
     padding: 0.5rem 1.5rem;
     border-radius: 50px;
@@ -110,11 +110,11 @@
 
 .accordion-header:hover {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-bottom-color: var(--gencat-red);
+    border-bottom-color: var(--davidgov-red);
 }
 
 .accordion-header[aria-expanded="true"] {
-    background: var(--gencat-red);
+    background: var(--davidgov-red);
     color: white;
 }
 
@@ -132,19 +132,19 @@
 
 .header-content i {
     font-size: 1.8rem;
-    color: var(--gencat-red);
+    color: var(--davidgov-red);
     transition: all 0.3s ease;
 }
 
 .header-title {
     font-size: 1.4rem;
     font-weight: 700;
-    color: var(--gencat-dark);
+    color: var(--davidgov-dark);
     transition: all 0.3s ease;
 }
 
 .results-count {
-    background: var(--gencat-red);
+    background: var(--davidgov-red);
     color: white;
     padding: 0.3rem 0.8rem;
     border-radius: 50px;
@@ -157,13 +157,13 @@
 
 .accordion-header[aria-expanded="true"] .results-count {
     background: white;
-    color: var(--gencat-red);
+    color: var(--davidgov-red);
 }
 
 .accordion-icon {
     font-size: 1.5rem;
     transition: transform 0.3s ease;
-    color: var(--gencat-red);
+    color: var(--davidgov-red);
 }
 
 .accordion-header[aria-expanded="true"] .accordion-icon {
@@ -203,7 +203,7 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 3px solid var(--gencat-red);
+    border-bottom: 3px solid var(--davidgov-red);
 }
 
 .results-table th:first-child {
@@ -236,7 +236,7 @@
 
 .font-weight-bold {
     font-weight: 600;
-    color: var(--gencat-dark);
+    color: var(--davidgov-dark);
 }
 
 /* ===== BADGES & SPECIAL ELEMENTS ===== */
@@ -290,7 +290,7 @@
 }
 
 .btn-view-detail {
-    background: var(--gencat-red);
+    background: var(--davidgov-red);
     color: white;
     padding: 0.5rem 1.2rem;
     border-radius: 8px;

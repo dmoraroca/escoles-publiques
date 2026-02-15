@@ -21,6 +21,28 @@ Out of scope (at the time of writing):
 - external integrations (email/push notifications)
 - massive imports from official datasets
 
+## 1.1 Diagrams
+### 1.1.1 System context
+```mermaid
+flowchart LR
+  U[User] -->|Browser| W[Web (MVC/Razor)]
+  W -->|HTTP + JWT| A[API (REST)]
+  A -->|EF Core| DB[(PostgreSQL)]
+```
+
+### 1.1.2 Login flow (high level)
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant W as Web
+  participant A as API
+
+  U->>W: Login (email+password)
+  W->>A: POST /api/auth/token
+  A-->>W: JWT
+  W-->>U: Session started (cookie) and navigation
+```
+
 ## 2. Actors and roles
 ### 2.1 `ADM` (administrator)
 Full access to management screens and maintenance operations.

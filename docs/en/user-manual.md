@@ -22,7 +22,7 @@ Requirements:
 3. Click "Login".
 
 Screenshots:
-- (pending) Login (CA/ES/EN/DE) with anonymized data.
+![Login (EN)](../assets/screenshots/admin/01-login-en.png)
 
 ## 3. Navigation
 Admin main menu:
@@ -52,6 +52,24 @@ Create:
 
 Decimals:
 - amount supports `1000,25` and `1000.25`
+
+Screenshots:
+![Annual fees: list (EN)](../assets/screenshots/admin/40-quotes-llistat-en.png)
+![Annual fees: new (modal) (EN)](../assets/screenshots/admin/41-quotes-nova-modal-en.png)
+![Annual fees: edit (EN)](../assets/screenshots/admin/42-quotes-editar-en.png)
+
+## Appendix: Screenshot index (order)
+1. `docs/assets/screenshots/admin/01-login-en.png`
+2. `docs/assets/screenshots/admin/02-inici-en.png`
+3. `docs/assets/screenshots/admin/10-escoles-llistat-en.png`
+4. `docs/assets/screenshots/admin/11-escoles-nova-modal-en.png`
+5. `docs/assets/screenshots/admin/12-escoles-detall-en.png`
+6. `docs/assets/screenshots/admin/13-escoles-editar-en.png`
+7. `docs/assets/screenshots/admin/20-alumnes-llistat-en.png`
+8. `docs/assets/screenshots/admin/30-inscripcions-llistat-en.png`
+9. `docs/assets/screenshots/admin/40-quotes-llistat-en.png`
+10. `docs/assets/screenshots/admin/41-quotes-nova-modal-en.png`
+11. `docs/assets/screenshots/admin/42-quotes-editar-en.png`
 
 ## 8. FAQ
 - Unauthorized: session expired, re-login

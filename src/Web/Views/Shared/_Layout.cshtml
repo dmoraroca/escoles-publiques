@@ -10,7 +10,7 @@
     
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     
-    <link rel="stylesheet" href="~/css/gencat-theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/davidgov-theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/details-pages.css" asp-append-version="true" />
     
     @await RenderSectionAsync("Styles", required: false)
@@ -127,19 +127,19 @@
                         }
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Home" asp-action="Index">@Localizer["Inici"]</a>
+                                <a class="nav-link nav-link-davidgov @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Home" asp-action="Index">@Localizer["Inici"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Schools", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Schools" asp-action="Index">@Localizer["Escoles"]</a>
+                                <a class="nav-link nav-link-davidgov @(string.Equals(currentController, "Schools", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Schools" asp-action="Index">@Localizer["Escoles"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Students", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Students" asp-action="Index">@Localizer["Alumnes"]</a>
+                                <a class="nav-link nav-link-davidgov @(string.Equals(currentController, "Students", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Students" asp-action="Index">@Localizer["Alumnes"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "Enrollments", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Enrollments" asp-action="Index">@Localizer["Inscripcions"]</a>
+                                <a class="nav-link nav-link-davidgov @(string.Equals(currentController, "Enrollments", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Enrollments" asp-action="Index">@Localizer["Inscripcions"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-gencat @(string.Equals(currentController, "AnnualFees", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="AnnualFees" asp-action="Index">@Localizer["Quotes"]</a>
+                                <a class="nav-link nav-link-davidgov @(string.Equals(currentController, "AnnualFees", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="AnnualFees" asp-action="Index">@Localizer["Quotes"]</a>
                             </li>
                         </ul>
                     </div>

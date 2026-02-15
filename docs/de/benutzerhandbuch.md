@@ -18,7 +18,7 @@ Zielgruppen:
 3. Anmelden.
 
 Platzhalter:
-- (ausstehend) Login (CA/ES/EN/DE) mit anonymisierten Daten.
+![Login (DE)](../assets/screenshots/admin/01-login-de.png)
 
 ## 3. Navigation
 Admin-Menü:
@@ -47,6 +47,24 @@ Erstellen:
 
 Dezimal:
 - `1000,25` oder `1000.25`
+
+Screenshots:
+![Gebuehren: Liste (DE)](../assets/screenshots/admin/40-quotes-llistat-de.png)
+![Gebuehren: Neu (Modal) (DE)](../assets/screenshots/admin/41-quotes-nova-modal-de.png)
+![Gebuehren: Bearbeiten (DE)](../assets/screenshots/admin/42-quotes-editar-de.png)
+
+## Anhang: Screenshot-Index (Reihenfolge)
+1. `docs/assets/screenshots/admin/01-login-de.png`
+2. `docs/assets/screenshots/admin/02-inici-de.png`
+3. `docs/assets/screenshots/admin/10-escoles-llistat-de.png`
+4. `docs/assets/screenshots/admin/11-escoles-nova-modal-de.png`
+5. `docs/assets/screenshots/admin/12-escoles-detall-de.png`
+6. `docs/assets/screenshots/admin/13-escoles-editar-de.png`
+7. `docs/assets/screenshots/admin/20-alumnes-llistat-de.png`
+8. `docs/assets/screenshots/admin/30-inscripcions-llistat-de.png`
+9. `docs/assets/screenshots/admin/40-quotes-llistat-de.png`
+10. `docs/assets/screenshots/admin/41-quotes-nova-modal-de.png`
+11. `docs/assets/screenshots/admin/42-quotes-editar-de.png`
 
 ## 8. FAQ
 - Unauthorized: neu anmelden

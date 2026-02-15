@@ -82,10 +82,10 @@ grid-template-columns: repeat(4, 1fr);
 ```
 
 ### 🎨 CSS Custom Properties (Variables)
-Mantinguts els colors Gencat originals:
+Mantinguts els colors DavidGov originals:
 ```css
---gencat-red: #C20000;
---gencat-dark: #1a1a1a;
+--davidgov-red: #C20000;
+--davidgov-dark: #1a1a1a;
 ```
 
 ## Proves Recomanades
@@ -123,7 +123,7 @@ Mantinguts els colors Gencat originals:
 ## Fitxers Modificats
 
 ### CSS
-- `wwwroot/css/gencat-theme.css` - Media queries, responsive grid, taules, accessibilitat
+- `wwwroot/css/davidgov-theme.css` - Media queries, responsive grid, taules, accessibilitat
 
 ### Views
 - `Views/Shared/_Layout.cshtml` - Navbar hamburguesa, viewport

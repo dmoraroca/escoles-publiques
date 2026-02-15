@@ -16,6 +16,28 @@ Im Umfang:
 - Authentifizierung und Rollen (`ADM`/`USER`)
 - Mehrsprachigkeit und responsives Design
 
+## 1.1 Diagramme
+### 1.1.1 Systemkontext
+```mermaid
+flowchart LR
+  U[Benutzer] -->|Browser| W[Web (MVC/Razor)]
+  W -->|HTTP + JWT| A[API (REST)]
+  A -->|EF Core| DB[(PostgreSQL)]
+```
+
+### 1.1.2 Login-Flow (High Level)
+```mermaid
+sequenceDiagram
+  participant U as Benutzer
+  participant W as Web
+  participant A as API
+
+  U->>W: Login (E-Mail+Passwort)
+  W->>A: POST /api/auth/token
+  A-->>W: JWT
+  W-->>U: Session gestartet (Cookie) und Navigation
+```
+
 ## 2. Rollen
 - `ADM`: Administrator, voller Zugriff
 - `USER`: Endnutzer, eingeschrankter Zugriff (Dashboard und eigene Daten)
