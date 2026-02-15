@@ -44,7 +44,7 @@
     padding: 30px 25px;
 }
 
-.login-body h1 {
+.login-box .login-body h1 {
     font-size: 18px;
     font-weight: 600;
     color: #333;
