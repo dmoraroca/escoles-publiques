@@ -1,28 +1,57 @@
 # Document funcional (CA)
 
 ## 1. Resum executiu
-L'aplicacio "Escoles Publiques" permet gestionar un conjunt d'entitats relacionades amb escoles i alumnat:
+L'aplicacio "Escoles Publiques" dona suport a la gestio d'un entorn educatiu amb:
 - escoles
 - alumnes
-- inscripcions (per curs/any academic)
-- quotes anuals associades a una inscripcio
-- ambits (scopes): Infantil, Primaria, Secundaria, FP
+- inscripcions (per any academic i curs)
+- quotes anuals (vinculades a una inscripcio)
+- ambits (scopes) per classificar escoles
 
-El sistema es composa d'una web (interficie d'usuari) i una API (serveis). La web consumeix l'API.
+El sistema es composa d'una web (interficie) i una API (serveis). La web consumeix l'API.
 
-Abast:
-- gestio CRUD (crear, editar, eliminar) d'escoles, alumnes, inscripcions i quotes anuals
-- cerca i filtratge per ambit
-- autenticacio i control d'acces per rols
-- multiidioma i disseny responsive
+## 2. Abast
+Inclou:
+- CRUD d'escoles, alumnes, inscripcions i quotes anuals
+- assignacio i filtratge per ambit (scope)
+- cerca a inici (text + ambit)
+- autenticacio i control d'acces per rols (`ADM`/`USER`)
+- selector d'idioma i disseny responsive
+- centre d'ajuda (manual d'usuari, funcional i tecnic)
 
 Fora d'abast (a data d'aquest document):
-- gestio avancada de permisos (mes enlla de `ADM`/`USER`)
-- integracions externes (correu, notificacions push, etc.)
+- model de permisos mes enlla de `ADM`/`USER`
+- integracions externes (correu, notificacions, etc.)
 - importacions massives de dades oficials
 
-## 1.1 Diagrames
-### 1.1.1 Context del sistema
+## 3. Actors i rols
+Actors:
+- `ADM` (administrador)
+- `USER` (usuari final)
+
+Rols:
+- `ADM`: acces complet a la gestio (escoles, alumnes, inscripcions, quotes, ambits)
+- `USER`: acces limitat (dashboard i informacio relacionada)
+
+## 4. Domini (entitats principals)
+Entitats:
+- `School` (Escola)
+- `Student` (Alumne)
+- `Enrollment` (Inscripcio)
+- `AnnualFee` (Quota anual)
+- `Scope` (Ambit)
+- `User` (Usuari)
+
+Relacions (alt nivell):
+- una `School` te 0..N `Student`
+- un `Student` te 0..N `Enrollment`
+- un `Enrollment` te 0..N `AnnualFee`
+- un `Scope` pot classificar 0..N `School`
+- un `User` pot estar vinculat a 0..1 `Student` (relacio opcional 1:1)
+
+## 5. Diagrames
+
+### 5.1 Context del sistema
 ```mermaid
 flowchart LR
   U[Usuari] -->|Navegador| W[Web (MVC/Razor)]
@@ -30,7 +59,39 @@ flowchart LR
   A -->|EF Core| DB[(PostgreSQL)]
 ```
 
-### 1.1.2 Flux de login (alt nivell)
+### 5.2 Casos d'us (UML-style)
+```mermaid
+flowchart LR
+  ADM[[ADM]]
+  USER[[USER]]
+
+  subgraph S[Escoles Publiques]
+    UC01([UC-01 Iniciar sessio])
+    UC02([UC-02 Canviar idioma])
+    UC03([UC-03 Accedir a Ajuda])
+    UC10([UC-10 Gestionar escoles])
+    UC20([UC-20 Gestionar alumnes])
+    UC30([UC-30 Gestionar inscripcions])
+    UC40([UC-40 Gestionar quotes anuals])
+    UC50([UC-50 Cercar i filtrar])
+    UC60([UC-60 Consultar dashboard])
+  end
+
+  ADM --> UC01
+  USER --> UC01
+  ADM --> UC02
+  USER --> UC02
+  ADM --> UC03
+  USER --> UC03
+  ADM --> UC10
+  ADM --> UC20
+  ADM --> UC30
+  ADM --> UC40
+  ADM --> UC50
+  USER --> UC60
+```
+
+### 5.3 Flux de login (alt nivell)
 ```mermaid
 sequenceDiagram
   participant U as Usuari
@@ -43,105 +104,149 @@ sequenceDiagram
   W-->>U: Sessio iniciada (cookie) i navegacio
 ```
 
-## 2. Actors i rols
-### 2.1 Rol `ADM` (administrador)
-Pot accedir a tot el sistema:
-- administracio d'escoles, alumnes, inscripcions i quotes
-- accions de manteniment (p. ex. seeding en entorns controlats)
+### 5.4 Flux: crear quota anual (resum)
+```mermaid
+flowchart TD
+  A[Obrir Quotes] --> B[Premre Nova Quota]
+  B --> C[Seleccionar Inscripcio]
+  C --> D[Introduir import i venciment]
+  D --> E[Acceptar privacitat]
+  E --> F[Guardar]
+  F --> G{Validacio OK?}
+  G -- No --> H[Mostrar errors]
+  G -- Si --> I[Quota creada]
+```
 
-### 2.2 Rol `USER` (usuari)
-Usuari final associat a un alumne. En general:
-- accedeix al seu dashboard i informacio relacionada
-- no te acces a operacions administratives
+## 6. Cataleg de casos d'us
 
-## 3. Fluxos principals (casos d'us)
-### 3.1 Autenticacio
-1. L'usuari entra a la pagina de login.
-2. Introdueix correu i contrasenya.
-3. El sistema valida credencials i inicia sessio.
-4. El rol de l'usuari condiciona la navegacio i funcionalitats visibles.
+### UC-01 Iniciar sessio
+Actors:
+- `ADM`, `USER`
 
-### 3.2 Canvi d'idioma
-1. L'usuari selecciona idioma al selector superior.
+Precondicions:
+- l'usuari disposa de credencials valides
+
+Flux principal:
+1. L'usuari obre la pantalla de login.
+2. Introdueix email i contrasenya.
+3. El sistema valida les credencials.
+4. El sistema inicia sessio i redirigeix segons rol.
+
+Errors habituals:
+- credencials invalides: es mostra missatge d'error
+- token invalid/caducat: el sistema força re-login
+
+Postcondicions:
+- sessio iniciada i menus/funcionalitats ajustades al rol
+
+### UC-02 Canviar idioma
+Actors:
+- `ADM`, `USER`
+
+Flux principal:
+1. L'usuari selecciona un idioma al selector superior.
 2. La pagina es recarrega amb el nou idioma.
-3. La seleccio es persisteix (cookie) per a les seguents navegacions.
+3. La seleccio es persisteix (cookie).
 
-Idiomes disponibles:
-- catala, espanyol, angles, alemany, frances, rus, xines
+Idiomes:
+- actualment documentats: CA, ES, EN, DE
+- previstos: FR, RU, ZH
 
-### 3.3 Gestio d'escoles (ADM)
+### UC-03 Accedir a Ajuda
+Actors:
+- `ADM`, `USER`
+
+Flux principal:
+1. L'usuari prem el boto "Ajuda".
+2. Selecciona un document: manual d'usuari, funcional o tecnic.
+3. El sistema mostra el document en l'idioma actiu.
+
+### UC-10 Gestionar escoles (ADM)
+Actor:
+- `ADM`
+
 Funcions:
-- llistar, cercar i ordenar escoles
-- crear escola
-- editar escola
-- eliminar escola
+- llistar, cercar i ordenar
+- crear, editar, eliminar
 - marcar com a favorita
 - assignar ambit (scope)
 
-Dades principals d'una escola:
-- codi (obligatori)
-- nom (obligatori)
-- ciutat (opcional)
-- favorita (boolea)
-- ambit (opcional)
+Regles:
+- `Code` i `Name` obligatoris
 
-### 3.4 Gestio d'alumnes (ADM)
+### UC-20 Gestionar alumnes (ADM)
+Actor:
+- `ADM`
+
 Funcions:
-- llistar, cercar i ordenar alumnes
-- crear alumne (crea o reutilitza un usuari per email)
-- editar alumne i/o usuari associat
-- eliminar alumne
+- llistar, cercar i ordenar
+- crear, editar, eliminar
+- vincular alumne amb usuari (email)
 
-Relacio alumne <-> usuari:
-- un alumne pot tenir un usuari associat (per login)
-- un usuari pot estar associat a un unic alumne
+Regles:
+- `User.Email` es unic
+- relacio `User` <-> `Student` es 0..1 a 0..1 (opcional)
 
-### 3.5 Inscripcions (ADM)
+### UC-30 Gestionar inscripcions (ADM)
+Actor:
+- `ADM`
+
 Funcions:
-- crear inscripcio per un alumne (any academic, curs opcional, estat, data d'inscripcio)
-- editar inscripcio
-- eliminar inscripcio
+- crear, editar, eliminar
+- definir any academic i estat
 
-### 3.6 Quotes anuals (ADM)
+Regles:
+- una inscripcio pertany a un alumne i a una escola
+
+### UC-40 Gestionar quotes anuals (ADM)
+Actor:
+- `ADM`
+
 Funcions:
-- crear quota anual per una inscripcio
-- editar quota anual
-- eliminar quota anual
-- marcar com a pagada (assigna data de pagament)
+- crear, editar, eliminar
+- marcar com a pagada (data de pagament)
 
-### 3.7 Cerca (ADM)
-Des de l'inici es pot:
-- cercar per text (escoles/alumnes/inscripcions/quotes segons implementacio)
-- filtrar per ambit (scope) clicant a les targetes d'ambit
+Regles:
+- per desar: cal acceptar privacitat (checkbox)
+- decimals: s'accepta `,` i `.`
 
-## 4. Regles de negoci (resum)
-### 4.1 Validacions i obligatorietats
-- Escola: `Code` i `Name` obligatoris
+### UC-50 Cercar i filtrar (ADM)
+Actor:
+- `ADM`
+
+Flux principal:
+1. A inici, l'usuari introdueix text de cerca (opcional).
+2. Selecciona un ambit (opcional).
+3. El sistema mostra resultats segons criteris.
+
+### UC-60 Consultar dashboard (USER)
+Actor:
+- `USER`
+
+Flux principal:
+1. L'usuari accedeix al dashboard.
+2. Consulta informacio relacionada amb el seu alumne (inscripcions/quotes).
+
+## 7. Regles de negoci (resum)
+Validacions i obligatorietats:
+- Escola: `Code`, `Name`
 - Usuari: `Email` unic
-- Inscripcio: `StudentId`, `AcademicYear`, `Status`, `SchoolId` obligatoris
-- Quota anual: `EnrollmentId`, `Amount`, `Currency`, `DueDate` obligatoris
-- Interficie de quotes: cal acceptar condicions de privacitat per enviar formularis (checkbox)
+- Inscripcio: alumne, escola, any academic i estat
+- Quota anual: inscripcio, import i venciment
 
-### 4.2 Regles de pagament
-- Si una quota es marca com a pagada, es guarda la data de pagament (`PaidAt`)
-- La referencia de pagament es opcional
+Privacitat:
+- alguns formularis requereixen acceptacio explicita per enviar dades
 
-### 4.3 Seguretat
-- Totes les pantalles requereixen autenticacio
-- Algunes operacions de manteniment requereixen rol `ADM`
+## 8. Requisits no funcionals (breu)
+- multiidioma
+- responsive (mobil/tablet)
+- logs per suport
+- persistencia: PostgreSQL
 
-## 5. Requisits no funcionals (breu)
-- Multiidioma (CA/ES/EN/DE/FR/RU/ZH)
-- Disseny responsive per mobil i tablet
-- Logs d'operacio (per troubleshooting)
-- Persistencia: PostgreSQL
+## 9. Criteris d'acceptacio (checklist)
+- login admin i usuari funcionen
+- CRUD d'escoles/alumnes/inscripcions/quotes funciona
+- cerca i filtratge per ambit funciona
+- import accepta decimals amb coma o punt
+- idioma es persisteix i l'ajuda segueix l'idioma actiu
 
-## 6. Criteris d'acceptacio (checklist)
-- Login amb usuari admin funciona
-- Llistats: escoles/alumnes/inscripcions/quotes carreguen sense errors
-- CRUD d'escoles funciona
-- CRUD d'alumnes funciona i respecta email unic
-- CRUD d'inscripcions funciona
-- CRUD de quotes anuals funciona i accepta decimals (`1,25` i `1.25`)
-- Selector d'idioma canvia textos correctament
-- Navegacio i taules es veuen be en mobil (sense trencar layout)

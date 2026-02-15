@@ -1,28 +1,57 @@
 # Functional document (EN)
 
 ## 1. Executive summary
-"Escoles Publiques" manages:
+"Escoles Publiques" supports managing:
 - schools
 - students
-- enrollments (by academic year / course)
-- annual fees linked to an enrollment
-- scopes (Infantil, Primaria, Secundaria, FP)
+- enrollments (by academic year and course)
+- annual fees (linked to an enrollment)
+- scopes used to classify schools
 
 The system is split into a Web UI and an API. The Web consumes the API.
 
+## 2. Scope
 In scope:
 - CRUD for schools, students, enrollments and annual fees
-- search and filtering by scope
-- authentication and role-based access (`ADM` / `USER`)
-- multi-language UI and responsive design
+- scope assignment and filtering
+- home search (text + scope)
+- authentication and role-based access (`ADM`/`USER`)
+- language selector and responsive UI
+- help center (user manual, functional, technical)
 
 Out of scope (at the time of writing):
 - advanced permission model beyond `ADM`/`USER`
 - external integrations (email/push notifications)
 - massive imports from official datasets
 
-## 1.1 Diagrams
-### 1.1.1 System context
+## 3. Actors and roles
+Actors:
+- `ADM` (administrator)
+- `USER` (end user)
+
+Roles:
+- `ADM`: full access to management features
+- `USER`: limited access (dashboard and related information)
+
+## 4. Domain (main entities)
+Entities:
+- `School`
+- `Student`
+- `Enrollment`
+- `AnnualFee`
+- `Scope`
+- `User`
+
+High-level relationships:
+- a `School` has 0..N `Student`
+- a `Student` has 0..N `Enrollment`
+- an `Enrollment` has 0..N `AnnualFee`
+- a `Scope` classifies 0..N `School`
+- a `User` can be linked to 0..1 `Student` (optional 1:1)
+
+## 5. Diagrams
+
+### 5.1 System context
 ```mermaid
 flowchart LR
   U[User] -->|Browser| W[Web (MVC/Razor)]
@@ -30,7 +59,39 @@ flowchart LR
   A -->|EF Core| DB[(PostgreSQL)]
 ```
 
-### 1.1.2 Login flow (high level)
+### 5.2 Use cases (UML-style)
+```mermaid
+flowchart LR
+  ADM[[ADM]]
+  USER[[USER]]
+
+  subgraph S[Escoles Publiques]
+    UC01([UC-01 Sign in])
+    UC02([UC-02 Change language])
+    UC03([UC-03 Open help])
+    UC10([UC-10 Manage schools])
+    UC20([UC-20 Manage students])
+    UC30([UC-30 Manage enrollments])
+    UC40([UC-40 Manage annual fees])
+    UC50([UC-50 Search and filter])
+    UC60([UC-60 View dashboard])
+  end
+
+  ADM --> UC01
+  USER --> UC01
+  ADM --> UC02
+  USER --> UC02
+  ADM --> UC03
+  USER --> UC03
+  ADM --> UC10
+  ADM --> UC20
+  ADM --> UC30
+  ADM --> UC40
+  ADM --> UC50
+  USER --> UC60
+```
+
+### 5.3 Login flow (high level)
 ```mermaid
 sequenceDiagram
   participant U as User
@@ -43,62 +104,70 @@ sequenceDiagram
   W-->>U: Session started (cookie) and navigation
 ```
 
-## 2. Actors and roles
-### 2.1 `ADM` (administrator)
-Full access to management screens and maintenance operations.
+## 6. Use case catalog
 
-### 2.2 `USER` (user)
-End-user linked to a student; typically limited access (dashboard and related information).
+### UC-01 Sign in
+Actors:
+- `ADM`, `USER`
 
-## 3. Main user flows (use cases)
-### 3.1 Authentication
+Main flow:
 1. Open login page.
 2. Enter email and password.
-3. System validates credentials and starts a session.
-4. Role determines available menus and actions.
+3. System validates credentials.
+4. Session starts and user is redirected based on role.
 
-### 3.2 Language switch
-Select a language in the top bar; selection is persisted via cookie.
+### UC-02 Change language
+1. Select a language in the top bar.
+2. Page reloads.
+3. Selection is persisted via cookie.
 
-### 3.3 Schools management (ADM)
-- List/search/sort
-- Create/edit/delete
-- Favorites
-- Assign scope
+Languages:
+- documented: CA, ES, EN, DE
+- planned: FR, RU, ZH
 
-### 3.4 Students management (ADM)
-- Create/edit/delete
-- Student can link to an existing user by email
-- User-to-student relationship is one-to-one (optional)
+### UC-03 Open help
+1. Click the "Help" button.
+2. Select a document: user manual, functional or technical.
+3. System shows the document in the active language.
 
-### 3.5 Enrollments (ADM)
-- Create/edit/delete enrollment
-- Status: Active/Pending/Cancelled (depending on configuration)
+### UC-10 Manage schools (ADM)
+Includes: list/search/sort, create/edit/delete, favorites, scope assignment.
 
-### 3.6 Annual fees (ADM)
-- Create/edit/delete annual fee for an enrollment
-- Mark as paid (stores payment date)
+### UC-20 Manage students (ADM)
+Includes: CRUD; reuse user by email; optional 1:1 user<->student link.
 
-### 3.7 Search (ADM)
-Search by text and filter by scope (scope cards on the home page).
+### UC-30 Manage enrollments (ADM)
+Includes: CRUD; academic year and status.
 
-## 4. Business rules (summary)
+### UC-40 Manage annual fees (ADM)
+Includes: CRUD; mark as paid (stores payment date).
+
+Rules:
+- some forms require accepting privacy checkbox
+- amount supports decimals with comma or dot
+
+### UC-50 Search and filter (ADM)
+Text search and scope filtering from the home page.
+
+### UC-60 View dashboard (USER)
+View user-specific information (related enrollments/fees).
+
+## 7. Business rules (summary)
 - School: code and name are required
 - User: email must be unique
-- Enrollment: student, academic year, status, school are required
-- Annual fee: enrollment, amount, currency, due date are required
-- Some forms require accepting the privacy checkbox before submitting
+- Enrollment: student, school, academic year and status
+- Annual fee: enrollment, amount and due date
 
-## 5. Non-functional requirements (brief)
-- i18n (CA/ES/EN/DE/FR/RU/ZH)
-- responsive UI (mobile/tablet)
+## 8. Non-functional requirements (brief)
+- multi-language UI
+- responsive (mobile/tablet)
 - operational logs for troubleshooting
 - persistence: PostgreSQL
 
-## 6. Acceptance checklist
-- Admin login works
-- All lists load (schools/students/enrollments/annual fees)
+## 9. Acceptance criteria (checklist)
+- admin and user login works
 - CRUD works for all entities
-- Amount supports decimals with comma or dot (e.g. `1,25` and `1.25`)
-- Language selector works
-- UI looks correct on mobile (no broken layout)
+- search and scope filter works
+- amounts accept `,` and `.`
+- language is persisted and help follows active language
+
