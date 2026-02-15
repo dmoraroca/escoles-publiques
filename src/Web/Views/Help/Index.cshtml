@@ -1,0 +1,40 @@
+@model Web.Controllers.HelpController.HelpIndexViewModel
+
+@{
+    ViewData["Title"] = "Ajuda";
+}
+
+<div class="container py-4">
+    <h1 class="h3 mb-3">@ViewData["Title"]</h1>
+
+    <div class="row g-3">
+        <div class="col-12 col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h5">Manual d'usuari</h2>
+                    <p class="text-muted mb-3">Guia d'ús de l'aplicació.</p>
+                    <a class="btn btn-outline-primary" href="/ajuda/manual">Obrir</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h5">Document funcional</h2>
+                    <p class="text-muted mb-3">Requisits i funcionalitats.</p>
+                    <a class="btn btn-outline-primary" href="/ajuda/funcional">Obrir</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h5">Document tècnic</h2>
+                    <p class="text-muted mb-3">Arquitectura, stack i deploy.</p>
+                    <a class="btn btn-outline-primary" href="/ajuda/tecnic">Obrir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

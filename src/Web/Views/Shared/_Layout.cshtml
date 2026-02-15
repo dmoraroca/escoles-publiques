@@ -7,6 +7,7 @@
     <title>@ViewData["Title"] - @Localizer["Departament d'Educació i Formació Professional"]</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     
@@ -79,7 +80,17 @@
                             ["ui-culture"] = "zh-CN"
                         });
                         var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-                        var manualUrl = QueryHelpers.AddQueryString("/manual", new Dictionary<string, string?>
+                        var ajudaManualUrl = QueryHelpers.AddQueryString("/ajuda/manual", new Dictionary<string, string?>
+                        {
+                            ["culture"] = currentCulture,
+                            ["ui-culture"] = currentCulture
+                        });
+                        var ajudaFuncionalUrl = QueryHelpers.AddQueryString("/ajuda/funcional", new Dictionary<string, string?>
+                        {
+                            ["culture"] = currentCulture,
+                            ["ui-culture"] = currentCulture
+                        });
+                        var ajudaTecnicUrl = QueryHelpers.AddQueryString("/ajuda/tecnic", new Dictionary<string, string?>
                         {
                             ["culture"] = currentCulture,
                             ["ui-culture"] = currentCulture
@@ -98,7 +109,16 @@
                                                 ? Localizer["ZH - 中文"].Value
                                                 : Localizer["CA - Català"].Value;
                     }
-                    <a class="text-white small text-decoration-none" href="@manualUrl">@Localizer["Manual"]</a>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="helpMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-question-circle"></i> @Localizer["Ajuda"]
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpMenuButton">
+                            <li><a class="dropdown-item" href="@ajudaManualUrl">@Localizer["Manual d'usuari"]</a></li>
+                            <li><a class="dropdown-item" href="@ajudaFuncionalUrl">@Localizer["Document funcional"]</a></li>
+                            <li><a class="dropdown-item" href="@ajudaTecnicUrl">@Localizer["Document tècnic"]</a></li>
+                        </ul>
+                    </div>
                     <select class="form-select form-select-sm d-inline-block w-auto ms-2"
                             aria-label="@Localizer["Idioma"]"
                             onchange="if(this.value){window.location.href=this.value;}">

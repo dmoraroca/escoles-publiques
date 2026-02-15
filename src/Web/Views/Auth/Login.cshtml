@@ -63,7 +63,17 @@
                     ["ui-culture"] = "zh-CN"
                 });
                 var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-                var manualUrl = QueryHelpers.AddQueryString("/manual", new Dictionary<string, string?>
+                var ajudaManualUrl = QueryHelpers.AddQueryString("/ajuda/manual", new Dictionary<string, string?>
+                {
+                    ["culture"] = currentCulture,
+                    ["ui-culture"] = currentCulture
+                });
+                var ajudaFuncionalUrl = QueryHelpers.AddQueryString("/ajuda/funcional", new Dictionary<string, string?>
+                {
+                    ["culture"] = currentCulture,
+                    ["ui-culture"] = currentCulture
+                });
+                var ajudaTecnicUrl = QueryHelpers.AddQueryString("/ajuda/tecnic", new Dictionary<string, string?>
                 {
                     ["culture"] = currentCulture,
                     ["ui-culture"] = currentCulture
@@ -83,7 +93,16 @@
                                         : Localizer["CA - Català"].Value;
             }
             <div class="d-flex align-items-center gap-3">
-                <a class="text-white small text-decoration-none" href="@manualUrl">@Localizer["Manual"]</a>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="helpMenuButtonLogin" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-question-circle"></i> @Localizer["Ajuda"]
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpMenuButtonLogin">
+                        <li><a class="dropdown-item" href="@ajudaManualUrl">@Localizer["Manual d'usuari"]</a></li>
+                        <li><a class="dropdown-item" href="@ajudaFuncionalUrl">@Localizer["Document funcional"]</a></li>
+                        <li><a class="dropdown-item" href="@ajudaTecnicUrl">@Localizer["Document tècnic"]</a></li>
+                    </ul>
+                </div>
                 <select class="form-select form-select-sm d-inline-block w-auto"
                         aria-label="@Localizer["Idioma"]"
                         onchange="if(this.value){window.location.href=this.value;}">

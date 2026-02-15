@@ -1,4 +1,4 @@
-@model Web.Controllers.ManualController.ManualViewModel
+@model Web.Controllers.HelpController.HelpDocViewModel
 
 @{
     ViewData["Title"] = Model.Title;
@@ -7,42 +7,48 @@
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
         <h1 class="h3 mb-0">@Model.Title</h1>
-        <div class="d-flex gap-2">
-            <a class="btn btn-sm btn-outline-secondary" href="/manual/ca">CA</a>
-            <a class="btn btn-sm btn-outline-secondary" href="/manual/es">ES</a>
-            <a class="btn btn-sm btn-outline-secondary" href="/manual/en">EN</a>
-            <a class="btn btn-sm btn-outline-secondary" href="/manual/de">DE</a>
+        <div class="btn-group" role="group" aria-label="Ajuda">
+            <a class="btn btn-sm btn-outline-secondary" href="/ajuda/manual">Manual</a>
+            <a class="btn btn-sm btn-outline-secondary" href="/ajuda/funcional">Funcional</a>
+            <a class="btn btn-sm btn-outline-secondary" href="/ajuda/tecnic">Tècnic</a>
         </div>
     </div>
 
-    <div class="manual-content">
+    <div class="help-doc">
         @Html.Raw(Model.Html)
     </div>
 </div>
 
 <style>
-    .manual-content img {
+    .help-doc img {
         max-width: 100%;
         height: auto;
         display: block;
         margin: 1rem auto;
         border: 1px solid #e5e5e5;
         box-shadow: 0 1px 6px rgba(0,0,0,0.08);
-        border-radius: 6px;
+        border-radius: 8px;
     }
-    .manual-content pre {
+
+    .help-doc h1, .help-doc h2, .help-doc h3 {
+        scroll-margin-top: 110px;
+    }
+
+    .help-doc pre {
         padding: 0.75rem 1rem;
         background: #0b1020;
         color: #e7e7e7;
         border-radius: 8px;
         overflow-x: auto;
     }
-    .manual-content code {
+
+    .help-doc code {
         background: rgba(0,0,0,0.06);
         padding: 0.1rem 0.25rem;
         border-radius: 4px;
     }
-    .manual-content pre code {
+
+    .help-doc pre code {
         background: transparent;
         padding: 0;
     }
