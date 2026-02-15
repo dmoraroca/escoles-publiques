@@ -25,7 +25,7 @@
                     </a>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                                            <span class="text-warning small">@Localizer["Rol detectat:"] @User.FindFirst("Role")?.Value</span>
+                    <span class="text-warning small">@Localizer["Rol detectat:"] @User.FindFirst("Role")?.Value</span>
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <span class="text-white small">
@@ -79,6 +79,11 @@
                             ["ui-culture"] = "zh-CN"
                         });
                         var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                        var manualUrl = QueryHelpers.AddQueryString("/manual", new Dictionary<string, string?>
+                        {
+                            ["culture"] = currentCulture,
+                            ["ui-culture"] = currentCulture
+                        });
                         var currentLanguageLabel = currentCulture.StartsWith("es", System.StringComparison.OrdinalIgnoreCase)
                             ? Localizer["ES - Espanyol"].Value
                             : currentCulture.StartsWith("en", System.StringComparison.OrdinalIgnoreCase)
@@ -93,6 +98,7 @@
                                                 ? Localizer["ZH - 中文"].Value
                                                 : Localizer["CA - Català"].Value;
                     }
+                    <a class="text-white small text-decoration-none" href="@manualUrl">@Localizer["Manual"]</a>
                     <select class="form-select form-select-sm d-inline-block w-auto ms-2"
                             aria-label="@Localizer["Idioma"]"
                             onchange="if(this.value){window.location.href=this.value;}">

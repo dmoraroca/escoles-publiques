@@ -63,6 +63,11 @@
                     ["ui-culture"] = "zh-CN"
                 });
                 var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                var manualUrl = QueryHelpers.AddQueryString("/manual", new Dictionary<string, string?>
+                {
+                    ["culture"] = currentCulture,
+                    ["ui-culture"] = currentCulture
+                });
                 var currentLanguageLabel = currentCulture.StartsWith("es", System.StringComparison.OrdinalIgnoreCase)
                     ? Localizer["ES - Espanyol"].Value
                     : currentCulture.StartsWith("en", System.StringComparison.OrdinalIgnoreCase)
@@ -78,6 +83,7 @@
                                         : Localizer["CA - Català"].Value;
             }
             <div class="d-flex align-items-center gap-3">
+                <a class="text-white small text-decoration-none" href="@manualUrl">@Localizer["Manual"]</a>
                 <select class="form-select form-select-sm d-inline-block w-auto"
                         aria-label="@Localizer["Idioma"]"
                         onchange="if(this.value){window.location.href=this.value;}">

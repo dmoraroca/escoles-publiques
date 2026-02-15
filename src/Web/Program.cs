@@ -212,9 +212,13 @@ app.Use(async (context, next) =>
 {
     var culture = context.Request.Query["culture"].ToString();
     var uiCulture = context.Request.Query["ui-culture"].ToString();
-    if (!string.IsNullOrEmpty(culture))
+    // Persist culture for subsequent requests even if only ui-culture was provided.
+    // (QueryStringRequestCultureProvider accepts both, but cookie needs to be written explicitly.)
+    if (!string.IsNullOrEmpty(culture) || !string.IsNullOrEmpty(uiCulture))
     {
-        var requestCulture = new RequestCulture(culture, string.IsNullOrEmpty(uiCulture) ? culture : uiCulture);
+        var c = string.IsNullOrEmpty(culture) ? uiCulture : culture;
+        var uic = string.IsNullOrEmpty(uiCulture) ? c : uiCulture;
+        var requestCulture = new RequestCulture(c, uic);
         context.Response.Cookies.Append(
             CookieRequestCultureProvider.DefaultCookieName,
             CookieRequestCultureProvider.MakeCookieValue(requestCulture));
