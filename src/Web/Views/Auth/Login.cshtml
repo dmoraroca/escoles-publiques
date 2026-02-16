@@ -26,71 +26,29 @@
                 </a>
             </div>
             @{
-                var currentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/";
-                var caUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
+                var currentPath = $"{Context.Request.PathBase}{Context.Request.Path}";
+                string BuildCultureUrl(string path, string culture) =>
+                    QueryHelpers.AddQueryString(path, new Dictionary<string, string?>
+                    {
+                        ["culture"] = culture,
+                        ["ui-culture"] = culture
+                    });
+
+                var cultures = new (string Code, string Label)[]
                 {
-                    ["culture"] = "ca-ES",
-                    ["ui-culture"] = "ca-ES"
-                });
-                var esUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
-                {
-                    ["culture"] = "es-ES",
-                    ["ui-culture"] = "es-ES"
-                });
-                var enUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
-                {
-                    ["culture"] = "en-US",
-                    ["ui-culture"] = "en-US"
-                });
-                var deUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
-                {
-                    ["culture"] = "de-DE",
-                    ["ui-culture"] = "de-DE"
-                });
-                var frUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
-                {
-                    ["culture"] = "fr-FR",
-                    ["ui-culture"] = "fr-FR"
-                });
-                var ruUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
-                {
-                    ["culture"] = "ru-RU",
-                    ["ui-culture"] = "ru-RU"
-                });
-                var zhUrl = QueryHelpers.AddQueryString(currentPath, new Dictionary<string, string?>
-                {
-                    ["culture"] = "zh-CN",
-                    ["ui-culture"] = "zh-CN"
-                });
+                    ("ca-ES", Localizer["CA - Català"].Value),
+                    ("es-ES", Localizer["ES - Espanyol"].Value),
+                    ("en-US", Localizer["EN - English"].Value),
+                    ("de-DE", Localizer["DE - Deutsch"].Value),
+                    ("fr-FR", Localizer["FR - Français"].Value),
+                    ("ru-RU", Localizer["RU - Русский"].Value),
+                    ("zh-CN", Localizer["ZH - 中文"].Value)
+                };
+
                 var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-                var ajudaManualUrl = QueryHelpers.AddQueryString("/ajuda/manual", new Dictionary<string, string?>
-                {
-                    ["culture"] = currentCulture,
-                    ["ui-culture"] = currentCulture
-                });
-                var ajudaFuncionalUrl = QueryHelpers.AddQueryString("/ajuda/funcional", new Dictionary<string, string?>
-                {
-                    ["culture"] = currentCulture,
-                    ["ui-culture"] = currentCulture
-                });
-                var ajudaTecnicUrl = QueryHelpers.AddQueryString("/ajuda/tecnic", new Dictionary<string, string?>
-                {
-                    ["culture"] = currentCulture,
-                    ["ui-culture"] = currentCulture
-                });
-                var currentLanguageLabel = currentCulture.StartsWith("es", System.StringComparison.OrdinalIgnoreCase)
-                    ? Localizer["ES - Espanyol"].Value
-                    : currentCulture.StartsWith("en", System.StringComparison.OrdinalIgnoreCase)
-                        ? Localizer["EN - English"].Value
-                        : currentCulture.StartsWith("de", System.StringComparison.OrdinalIgnoreCase)
-                            ? Localizer["DE - Deutsch"].Value
-                            : currentCulture.StartsWith("fr", System.StringComparison.OrdinalIgnoreCase)
-                                ? Localizer["FR - Français"].Value
-                                : currentCulture.StartsWith("ru", System.StringComparison.OrdinalIgnoreCase)
-                                    ? Localizer["RU - Русский"].Value
-                                    : currentCulture.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase)
-                                        ? Localizer["ZH - 中文"].Value
-                                        : Localizer["CA - Català"].Value;
+                var ajudaManualUrl = BuildCultureUrl("/ajuda/manual", currentCulture);
+                var ajudaFuncionalUrl = BuildCultureUrl("/ajuda/funcional", currentCulture);
+                var ajudaTecnicUrl = BuildCultureUrl("/ajuda/tecnic", currentCulture);
             }
             <div class="d-flex align-items-center gap-3">
                 <div class="dropdown">
@@ -106,13 +64,13 @@
                 <select class="form-select form-select-sm d-inline-block w-auto"
                         aria-label="@Localizer["Idioma"]"
                         onchange="if(this.value){window.location.href=this.value;}">
-                    <option value="@caUrl" selected="@(currentCulture.StartsWith("ca", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["CA - Català"]</option>
-                    <option value="@esUrl" selected="@(currentCulture.StartsWith("es", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["ES - Espanyol"]</option>
-                    <option value="@enUrl" selected="@(currentCulture.StartsWith("en", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["EN - English"]</option>
-                    <option value="@deUrl" selected="@(currentCulture.StartsWith("de", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["DE - Deutsch"]</option>
-                    <option value="@frUrl" selected="@(currentCulture.StartsWith("fr", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["FR - Français"]</option>
-                    <option value="@ruUrl" selected="@(currentCulture.StartsWith("ru", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["RU - Русский"]</option>
-                    <option value="@zhUrl" selected="@(currentCulture.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">@Localizer["ZH - 中文"]</option>
+                    @foreach (var c in cultures)
+                    {
+                        <option value="@BuildCultureUrl(currentPath, c.Code)"
+                                selected="@(currentCulture.StartsWith(c.Code[..2], System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
+                            @c.Label
+                        </option>
+                    }
                 </select>
             </div>
         </div>
@@ -173,5 +131,6 @@
         </div>
     </div>
 </footer>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
