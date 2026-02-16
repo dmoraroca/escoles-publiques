@@ -1,383 +1,142 @@
-# Document tecnic (CA)
+# 技术文档 (ZH)
 
-## 1. Introduccio
-Aquest document descriu en profunditat com esta construida l'aplicacio **Escoles Publiques** a nivell tecnic.
+## 1. 架构
+高层模块：
+- **Web**（`src/Web`）：ASP.NET Core MVC + Razor Views，负责渲染 UI 并调用 API。
+- **API**（`src/Api`）：ASP.NET Core Web API，提供受 JWT 保护的 endpoints。
+- **DB**：PostgreSQL，使用 EF Core（Npgsql）。
 
-Objectius:
-- explicar arquitectura i estructura DDD
-- documentar com hem muntat Web i API
-- deixar traçabilitat de patrons, llibreries i decisions
-- descriure model de dades, relacions i sistema d'autenticacio
-- explicar utilitats transversals (helpers, JS, CSS)
+主流程：
+1. Web 通过 cookie 对用户进行认证。
+2. Web 向 API 请求 JWT（`POST /api/auth/token`）并存入 session。
+3. Web 调用 API 时附带 `Authorization: Bearer <token>`（handler 为 `ApiAuthTokenHandler`）。
 
-Credencials de prova (entorn demo):
-- usuari: `admin@admin.adm`
-- contrasenya: `admin123`
+分层结构：
+- `src/Domain`（实体）
+- `src/Application`（服务/用例、搜索查询）
+- `src/Infrastructure`（EF Core、仓储、迁移）
+- `src/Api`（controllers、JWT、swagger、CORS、seed）
+- `src/Web`（MVC、视图、静态资源、i18n、API 客户端）
 
-## 2. Esquema general de l'app (Web + API + DDD)
+## 2. 技术栈
+- .NET 8 / ASP.NET Core
+- EF Core 8 + Npgsql
+- API 使用 Swagger/OpenAPI（Swashbuckle）
+- Serilog（Web 日志）
+- Bootstrap 5 + 自定义 CSS
+- Render（Docker 部署）
 
-```mermaid
-flowchart LR
-  U[Usuari] -->|Navegador| W[Web MVC/Razor]
-  W -->|HTTP + JWT| A[API ASP.NET Core]
-  A -->|EF Core| DB[(PostgreSQL)]
+## 3. 仓库结构（关键路径）
+- `docker/render/api.Dockerfile`
+- `docker/render/web.Dockerfile`
+- `docker-compose.yml`（本地）
+- `src/Infrastructure/Migrations/*`
+- `sql/001_seed_render.sql`（可选 SQL seed）
 
-  subgraph DDD[DDD intern]
-    D[Domain]
-    AP[Application]
-    I[Infrastructure]
-  end
+## 4. 认证与安全
+### 4.1 API（JWT）
+- `POST /api/auth/token`
+- claims：`NameIdentifier`、`Role`
+- 配置：
+  - `Jwt__Key`（密钥）
+  - `Jwt__Issuer`
+  - `Jwt__Audience`
 
-  W --> AP
-  A --> AP
-  AP --> D
-  I --> D
-  AP --> I
-```
+### 4.2 Web（cookies + session）
+- cookie 方案：`CookieAuth`
+- API token 保存在 session 键 `ApiToken`
+- `ApiAuthTokenHandler` 负责附加 token；若 401/403，则清空 session 并登出
 
-Flux funcional principal:
-1. Login a Web (`CookieAuth`)
-2. Web demana token a API (`POST /api/auth/token`)
-3. Token JWT es desa a sessio
-4. Web consumeix API amb `Authorization: Bearer <token>`
+## 5. API endpoints（摘要）
+除 Auth 外，均由 `[Authorize]` 保护：
+- `/api/schools`
+- `/api/students`
+- `/api/enrollments`
+- `/api/annualfees`
+- `/api/scopes`
 
-## 3. Estructura DDD (com ho hem organitzat)
+维护接口：
+- `POST /api/maintenance/seed`（要求 `ADM` 角色 + `X-Seed-Key` header）
 
-Projectes i responsabilitats:
-- `src/Domain`
-  - entitats i regles de domini
-  - interfaces de repositori (`I*Repository`)
-  - value objects / excepcions de domini
-- `src/Application`
-  - casos d'us (`*Service`)
-  - contracts d'aplicacio (`I*Service`)
-  - queries (p. ex. cerca agregada)
-- `src/Infrastructure`
-  - persistencia EF Core
-  - implementacions de repositori
-  - migrations
-- `src/Api`
-  - capa d'entrada REST (controllers API)
-  - auth JWT, Swagger, CORS, seed
-- `src/Web`
-  - capa d'entrada MVC/Razor
-  - UI, localitzacio, clients HTTP cap a API
+## 6. Swagger
+启用方式：
+- `Swagger__Enabled=true`
 
-Arbre resum de la solucio (vista tecnica):
-```text
-src/
-├── Domain/          # nucli de domini (entitats, value objects, contracts)
-├── Application/     # casos d'us, serveis d'aplicacio, queries
-├── Infrastructure/  # EF Core, repositories, migrations, persistencia
-├── Api/             # endpoints REST, JWT, Swagger, CORS, seed
-├── Web/             # MVC/Razor, i18n, Help, JS/CSS, clients API
-└── UnitTest/        # tests unitaris i d'integracio
-```
+启用后：
+- UI：`/api`
+- JSON：`/swagger/v1/swagger.json`
 
-Regla clau de dependencies:
-- `Domain` no depen de cap altra capa
-- `Application` depen de `Domain`
-- `Infrastructure` implementa contracts de `Domain`/`Application`
-- `Web` i `Api` orquestren i fan DI
+## 7. CORS（API）
+生产环境需要配置允许来源：
+- `Cors__AllowedOrigins__0=https://<web-domain>`
 
-## 4. Com hem muntat la Web
+## 8. 数据库与迁移
+- API 启动时执行 `db.Database.Migrate()`
+- migrations assembly 固定为 `Infrastructure`
 
-Base tecnica:
-- ASP.NET Core MVC + Razor Views (`src/Web/Views`)
-- autenticacio per cookie (`CookieAuth`)
-- sessio server-side per guardar el JWT de l'API
-- localitzacio per `resx` + selector d'idioma a capcalera
-- clients typed `HttpClient` per consumir API
+Seed 方式：
+- 启动 seed：`Seed__Enabled=true`（当 `users` 为空时一次性执行）
+- 维护接口：`Seed__Key` + `X-Seed-Key`
+- SQL 脚本：`sql/001_seed_render.sql`
 
-Peces destacades:
-- Controllers MVC: `src/Web/Controllers/*`
-- Handler auth API: `src/Web/Services/Api/ApiAuthTokenHandler.cs`
-- Binder decimal flexible: `src/Web/ModelBinders/FlexibleDecimalModelBinder.cs`
-- Ajuda web (manual/funcional/tecnic): `src/Web/Controllers/HelpController.cs`
+## 9. Render 部署
+服务：
+- `escoles-db`（PostgreSQL）
+- `escoles-api`（API）
+- `escoles`（Web）
 
-## 5. Com hem muntat la API (incloent Swagger)
+Dockerfiles：
+- API：`docker/render/api.Dockerfile`
+- Web：`docker/render/web.Dockerfile`
 
-Base tecnica:
-- ASP.NET Core Web API (`src/Api`)
-- autenticacio `JwtBearer`
-- autoritzacio per rol/claims
-- CORS configurable per entorn
-- EF Core amb migrations auto a startup
+推荐环境变量：
+- API：`ConnectionStrings__Default`、`ASPNETCORE_URLS`、`Jwt__*`、`Cors__AllowedOrigins__*`、`Swagger__Enabled`
+- Web：`Api__BaseUrl`、`ASPNETCORE_URLS`
 
-Swagger:
-- paquet `Swashbuckle.AspNetCore`
-- UI a `/api` quan `Swagger__Enabled=true`
-- JSON OpenAPI a `/swagger/v1/swagger.json`
-- esquema `Bearer` configurat per provar endpoints protegits
+## 10. 故障排查
+- 401/403：token 过期或无效，重新登录
+- CORS：检查并配置允许来源
+- 迁移问题：查看启动日志
+- 小数处理：Web 通过 flexible binder 同时支持 `,` 与 `.`
 
-Exemple d'endpoint de login:
-- `POST /api/auth/token` retorna JWT
+## 附录 A：数据库
+### A.1 ER 图
+占位图片：
+- `docs/assets/er-en.png`
 
-## 6. Patrons utilitzats (amb exemples i lectura line-by-line)
+关键关系：
+- `schools (1) -> (N) students`
+- `users (1) -> (0..1) students`
+- `students (1) -> (N) enrollments`
+- `enrollments (1) -> (N) annual_fees`
+- `scope_mnt (1) -> (N) schools`（若使用 `schools.scope_id`）
 
-### 6.1 Repository + Service
-Idea:
-- repositori: accés a dades
-- servei aplicacio: regles i orquestracio
+### A.2 数据表（摘要）
+#### A.2.1 `schools`
+- `id`（PK）、`name`、`code`、`city`、`is_favorite`、`created_at`
+- `scope`（legacy 文本）
+- 可选 `scope_id` 外键到 `scope_mnt.id`
 
-Exemple repositori (`StudentRepository`):
-```csharp
-1  public async Task<IEnumerable<Student>> GetAllAsync()
-2  {
-3      return await _context.Students
-4          .Include(s => s.School)
-5          .Include(s => s.User)
-6          .ToListAsync();
-7  }
-```
-Lectura:
-1. signatura async
-2. bloc mètode
-3. query base d'alumnes
-4. eager-load escola
-5. eager-load usuari
-6. executa a DB
-7. fi mètode
+#### A.2.2 `scope_mnt`
+- `id`（PK）、`name`、`description`、`is_active`、`created_at`、`updated_at`
 
-Exemple servei (`StudentService`):
-```csharp
-1  using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-2  var createdUser = await _userService.CreateUserAsync(user, password);
-3  student.UserId = createdUser.Id;
-4  student.CreatedAt = DateTime.UtcNow;
-5  var createdStudent = await _studentRepository.AddAsync(student);
-6  scope.Complete();
-7  return createdStudent;
-```
-Lectura:
-1. obre transaccio
-2. crea usuari primer
-3. assigna FK a alumne
-4. set timestamp
-5. desa alumne
-6. confirma transaccio
-7. retorna resultat
+#### A.2.3 `users`
+- `id`（PK）、`email`（unique）、`password_hash`、`role`、`is_active`、timestamps
 
-### 6.2 API Gateway intern via `HttpClient` + `DelegatingHandler`
-Exemple (`ApiAuthTokenHandler`):
-```csharp
-1  var token = _httpContextAccessor.HttpContext?.Session.GetString(SessionKeys.ApiToken);
-2  if (!string.IsNullOrWhiteSpace(token) && request.Headers.Authorization == null)
-3      request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-4  var response = await base.SendAsync(request, cancellationToken);
-5  if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
-6  {
-7      ctx.Session.Remove(SessionKeys.ApiToken);
-8      await ctx.SignOutAsync("CookieAuth");
-9      throw new UnauthorizedAccessException(...);
-10 }
-```
-Lectura:
-1. llegeix token de sessio
-2-3. adjunta capcalera auth
-4. continua pipeline HTTP
-5. captura 401/403
-6-9. neteja sessio + logout + excepcio controlada
+#### A.2.4 `students`
+- `id`（PK）、`school_id`（FK）、`user_id`（FK，存在时 unique）、`created_at`
 
-### 6.3 Model Binder personalitzat (resoldre `,` i `.`)
-Exemple (`FlexibleDecimalModelBinder`):
-```csharp
-1  var normalized = Normalize(raw);
-2  if (decimal.TryParse(normalized, NumberStyles.Number, CultureInfo.InvariantCulture, out var value))
-3      bindingContext.Result = ModelBindingResult.Success(value);
-4  else
-5      bindingContext.ModelState.TryAddModelError(...);
-```
-Lectura:
-1. normalitza entrada usuari
-2. parse invariant
-3. model valid
-4-5. error de validacio
+#### A.2.5 `enrollments`
+- `id`（PK）、`student_id`（FK）、`academic_year`、`course_name`、`status`、`enrolled_at`
+- `school_id`（FK），用于查询一致性
 
-### 6.4 Pattern "Fail Fast" en startup
-A API, si no hi ha CORS a produccio -> l'app falla a startup per evitar desplegament insegur.
+#### A.2.6 `annual_fees`
+- `id`（PK）、`enrollment_id`（FK）、`amount`、`currency`、`due_date`、`paid_at`、`payment_ref`
 
-## 7. Llibreries externes usades
+#### A.2.7 `__EFMigrationsHistory`
+EF Core 内部迁移历史表。
 
-### 7.1 API
-- `Microsoft.AspNetCore.Authentication.JwtBearer`
-- `Npgsql.EntityFrameworkCore.PostgreSQL`
-- `Swashbuckle.AspNetCore`
-
-### 7.2 Application
-- `AutoMapper`
-- `AutoMapper.Extensions.Microsoft.DependencyInjection`
-
-### 7.3 Infrastructure
-- `Microsoft.EntityFrameworkCore`
-- `Microsoft.EntityFrameworkCore.Design`
-- `Npgsql.EntityFrameworkCore.PostgreSQL`
-
-### 7.4 Web
-- `FluentValidation.AspNetCore`
-- `Markdig`
-- `DocumentFormat.OpenXml` (export DOCX des d'ajuda)
-- `Serilog.AspNetCore`
-- `Serilog.Sinks.File`
-
-## 8. Base de dades (taules, camps, indexos, constraints)
-
-Motor: PostgreSQL
-
-### 8.1 `schools`
-Camps:
-- `id` bigint PK
-- `name` text NOT NULL
-- `code` text NOT NULL
-- `city` text NULL
-- `is_favorite` boolean NOT NULL
-- `scope` text NULL (legacy)
-- `created_at` timestamp NOT NULL
-
-Indexos:
-- PK sobre `id`
-
-Constraints:
-- PK `PK_schools`
-
-### 8.2 `scope_mnt`
-Camps:
-- `id` bigint PK
-- `name` text NOT NULL
-- `description` text NULL
-- `is_active` boolean NOT NULL
-- `created_at` timestamp NOT NULL
-- `updated_at` timestamp NOT NULL
-
-### 8.3 `users`
-Camps:
-- `id` bigint PK
-- `first_name` text NOT NULL
-- `last_name` text NOT NULL
-- `email` text NOT NULL
-- `password_hash` text NOT NULL
-- `role` text NOT NULL
-- `birth_date` date NULL
-- `is_active` boolean NOT NULL
-- `created_at` timestamp NOT NULL
-- `updated_at` timestamp NOT NULL
-- `last_login_at` timestamp NULL
-
-Indexos:
-- `IX_users_email` UNIQUE
-
-### 8.4 `students`
-Camps:
-- `id` bigint PK
-- `school_id` bigint NOT NULL
-- `user_id` bigint NULL
-- `created_at` timestamp NOT NULL
-
-Indexos:
-- `IX_students_school_id`
-- `IX_students_user_id` UNIQUE
-
-FK:
-- `fk_students_schools_school_id` (`school_id` -> `schools.id`) ON DELETE CASCADE
-- `fk_students_users_user_id` (`user_id` -> `users.id`) sense cascade
-
-### 8.5 `enrollments`
-Camps:
-- `id` bigint PK
-- `student_id` bigint NOT NULL
-- `academic_year` text NOT NULL
-- `course_name` text NULL
-- `status` text NOT NULL
-- `enrolled_at` timestamp NOT NULL
-- `school_id` bigint NOT NULL
-
-Indexos:
-- `IX_enrollments_student_id`
-- `ix_enrollments_school_id`
-
-FK:
-- `fk_enrollments_students_student_id` ON DELETE CASCADE
-- `fk_enrollments_schools_school_id` ON DELETE RESTRICT
-
-### 8.6 `annual_fees`
-Camps:
-- `id` bigint PK
-- `enrollment_id` bigint NOT NULL
-- `amount` numeric NOT NULL
-- `currency` text NOT NULL
-- `due_date` date NOT NULL
-- `paid_at` timestamp NULL
-- `payment_ref` text NULL
-
-Indexos:
-- `IX_annual_fees_enrollment_id`
-
-FK:
-- `fk_annualfees_enrollments_enrollment_id` ON DELETE CASCADE
-
-### 8.7 `__EFMigrationsHistory`
-Taula interna d'EF Core per traçar migrations aplicades.
-
-## 9. Esquema relacional
-
-```mermaid
-erDiagram
-  USERS ||--o| STUDENTS : "user_id"
-  SCHOOLS ||--o{ STUDENTS : "school_id"
-  STUDENTS ||--o{ ENROLLMENTS : "student_id"
-  SCHOOLS ||--o{ ENROLLMENTS : "school_id"
-  ENROLLMENTS ||--o{ ANNUAL_FEES : "enrollment_id"
-```
-
-## 10. Sistema de login utilitzat
-
-A Web:
-- cookie auth (`CookieAuth`)
-- sessio server-side per token API
-- login form a `/Auth/Login`
-
-A API:
-- validacio credencials
-- emissio JWT signat (`Jwt__Key`, `Jwt__Issuer`, `Jwt__Audience`)
-
-Cicle de vida:
-1. usuari fa login a Web
-2. Web demana JWT a API
-3. token guardat en sessio
-4. handler l'inclou a totes les peticions
-5. 401/403 => logout automatic
-
-## 11. Helpers (què fan)
-
-`src/Web/Helpers/ModalConfigFactory.cs`
-- centralitza configuracio de modals CRUD
-- evita duplicacio de configuracio entre controllers/vistes
-
-Helpers transversals no encapsulats en carpeta "Helpers":
-- `NormalizePg(...)` a `Program.cs` (Web i API): adapta URL `postgres://...` a connection string Npgsql valida
-- `ToSnakeCase(...)` a `SchoolDbContext`: convencio global de noms
-
-## 12. JavaScript i CSS (què cobreixen)
-
-### 12.1 JS (`src/Web/wwwroot/js`)
-- `entity-modal.js`: comportament generic de modals
-- `generic-table.js`: cerca/ordenacio/paginacio client-side
-- `signalr-connection.js`: connexio SignalR per actualitzacions
-- `save-cancel-buttons.js`: UX consistent de formularis
-- `i18n.js`: lookup client-side de textos localitzats
-- scripts específics per mòdul (`schools-details.js`, `students-create.js`, etc.)
-
-### 12.2 CSS (`src/Web/wwwroot/css`)
-- `davidgov-theme.css`: layout global, header, navegacio, colors
-- `login.css`: estil pantalla login
-- `search-results.css`: resultats de cerca
-- `generic-table.css`: estil reutilitzable de taules
-- `user-dashboard.css`: estils dashboard rol USER
-
-## 13. Altres punts tecnics rellevants
-
-- Logging: Serilog a fitxer + consola
-- Localitzacio: `Resources/*.resx` per vista
-- Ajuda web: render Markdown->HTML amb Markdig + export DOCX
-- Desplegament: Docker + Render
-- Build: `dotnet build` sobre solucio modular
+### A.3 Seed / 演示数据
+可选方式：
+- 启动 seed（API）：数据库为空时创建 scopes 和管理员用户
+- SQL seed：`sql/001_seed_render.sql`（完整演示数据集）

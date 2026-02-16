@@ -1,80 +1,80 @@
-# Document funcional (CA)
+# Document fonctionnel (FR)
 
-## 1. Resum executiu
-L'aplicacio "Escoles Publiques" dona suport a la gestio d'un entorn educatiu amb:
-- escoles
-- alumnes
-- inscripcions (per any academic i curs)
-- quotes anuals (vinculades a una inscripcio)
-- ambits (scopes) per classificar escoles
+## 1. Résumé exécutif
+« Escoles Publiques » permet de gérer :
+- écoles
+- élèves
+- inscriptions (par année scolaire et cours)
+- frais annuels (liés à une inscription)
+- périmètres (scopes) pour classifier les écoles
 
-El sistema es composa d'una web (interficie) i una API (serveis). La web consumeix l'API.
+Le système est divisé en une interface Web et une API. Le Web consomme l'API.
 
-## 2. Abast
-Inclou:
-- CRUD d'escoles, alumnes, inscripcions i quotes anuals
-- assignacio i filtratge per ambit (scope)
-- cerca a inici (text + ambit)
-- autenticacio i control d'acces per rols (`ADM`/`USER`)
-- selector d'idioma i disseny responsive
-- centre d'ajuda (manual d'usuari, funcional i tecnic)
+## 2. Portée
+Dans le périmètre :
+- CRUD des écoles, élèves, inscriptions et frais annuels
+- attribution et filtrage par périmètre
+- recherche sur l'accueil (texte + périmètre)
+- authentification et accès par rôle (`ADM`/`USER`)
+- sélecteur de langue et interface responsive
+- centre d'aide (manuel utilisateur, fonctionnel, technique)
 
-Fora d'abast (a data d'aquest document):
-- model de permisos mes enlla de `ADM`/`USER`
-- integracions externes (correu, notificacions, etc.)
-- importacions massives de dades oficials
+Hors périmètre (à la date de rédaction) :
+- modèle d'autorisations avancé au-delà de `ADM`/`USER`
+- intégrations externes (e-mail/notifications push)
+- imports massifs depuis des jeux de données officiels
 
-## 3. Actors i rols
-Actors:
-- `ADM` (administrador)
-- `USER` (usuari final)
+## 3. Acteurs et rôles
+Acteurs :
+- `ADM` (administrateur)
+- `USER` (utilisateur final)
 
-Rols:
-- `ADM`: acces complet a la gestio (escoles, alumnes, inscripcions, quotes, ambits)
-- `USER`: acces limitat (dashboard i informacio relacionada)
+Rôles :
+- `ADM` : accès complet aux fonctionnalités de gestion
+- `USER` : accès limité (tableau de bord et informations associées)
 
-## 4. Domini (entitats principals)
-Entitats:
-- `School` (Escola)
-- `Student` (Alumne)
-- `Enrollment` (Inscripcio)
-- `AnnualFee` (Quota anual)
-- `Scope` (Ambit)
-- `User` (Usuari)
+## 4. Domaine (entités principales)
+Entités :
+- `School`
+- `Student`
+- `Enrollment`
+- `AnnualFee`
+- `Scope`
+- `User`
 
-Relacions (alt nivell):
-- una `School` te 0..N `Student`
-- un `Student` te 0..N `Enrollment`
-- un `Enrollment` te 0..N `AnnualFee`
-- un `Scope` pot classificar 0..N `School`
-- un `User` pot estar vinculat a 0..1 `Student` (relacio opcional 1:1)
+Relations de haut niveau :
+- une `School` a 0..N `Student`
+- un `Student` a 0..N `Enrollment`
+- un `Enrollment` a 0..N `AnnualFee`
+- un `Scope` classe 0..N `School`
+- un `User` peut être lié à 0..1 `Student` (1:1 optionnel)
 
-## 5. Diagrames
+## 5. Diagrammes
 
-### 5.1 Context del sistema
+### 5.1 Contexte système
 ```mermaid
 flowchart LR
-  U[Usuari] -->|Navegador| W[Web (MVC/Razor)]
+  U[Utilisateur] -->|Navigateur| W[Web (MVC/Razor)]
   W -->|HTTP + JWT| A[API (REST)]
   A -->|EF Core| DB[(PostgreSQL)]
 ```
 
-### 5.2 Casos d'us (UML-style)
+### 5.2 Cas d'utilisation (style UML)
 ```mermaid
 flowchart LR
   ADM[[ADM]]
   USER[[USER]]
 
   subgraph S[Escoles Publiques]
-    UC01([UC-01 Iniciar sessio])
-    UC02([UC-02 Canviar idioma])
-    UC03([UC-03 Accedir a Ajuda])
-    UC10([UC-10 Gestionar escoles])
-    UC20([UC-20 Gestionar alumnes])
-    UC30([UC-30 Gestionar inscripcions])
-    UC40([UC-40 Gestionar quotes anuals])
-    UC50([UC-50 Cercar i filtrar])
-    UC60([UC-60 Consultar dashboard])
+    UC01([UC-01 Se connecter])
+    UC02([UC-02 Changer la langue])
+    UC03([UC-03 Ouvrir l'aide])
+    UC10([UC-10 Gérer les écoles])
+    UC20([UC-20 Gérer les élèves])
+    UC30([UC-30 Gérer les inscriptions])
+    UC40([UC-40 Gérer les frais annuels])
+    UC50([UC-50 Rechercher et filtrer])
+    UC60([UC-60 Voir le tableau de bord])
   end
 
   ADM --> UC01
@@ -91,162 +91,81 @@ flowchart LR
   USER --> UC60
 ```
 
-### 5.3 Flux de login (alt nivell)
+### 5.3 Flux de connexion (haut niveau)
 ```mermaid
 sequenceDiagram
-  participant U as Usuari
+  participant U as Utilisateur
   participant W as Web
   participant A as API
 
-  U->>W: Login (email+password)
+  U->>W: Connexion (e-mail+mot de passe)
   W->>A: POST /api/auth/token
   A-->>W: JWT
-  W-->>U: Sessio iniciada (cookie) i navegacio
+  W-->>U: Session ouverte (cookie) et navigation
 ```
 
-### 5.4 Flux: crear quota anual (resum)
-```mermaid
-flowchart TD
-  A[Obrir Quotes] --> B[Premre Nova Quota]
-  B --> C[Seleccionar Inscripcio]
-  C --> D[Introduir import i venciment]
-  D --> E[Acceptar privacitat]
-  E --> F[Guardar]
-  F --> G{Validacio OK?}
-  G -- No --> H[Mostrar errors]
-  G -- Si --> I[Quota creada]
-```
+## 6. Catalogue de cas d'utilisation
 
-## 6. Cataleg de casos d'us
-
-### UC-01 Iniciar sessio
-Actors:
+### UC-01 Se connecter
+Acteurs :
 - `ADM`, `USER`
 
-Precondicions:
-- l'usuari disposa de credencials valides
+Flux principal :
+1. Ouvrir la page de connexion.
+2. Saisir e-mail et mot de passe.
+3. Le système valide les identifiants.
+4. La session démarre et l'utilisateur est redirigé selon son rôle.
 
-Flux principal:
-1. L'usuari obre la pantalla de login.
-2. Introdueix email i contrasenya.
-3. El sistema valida les credencials.
-4. El sistema inicia sessio i redirigeix segons rol.
+### UC-02 Changer la langue
+1. Sélectionner une langue dans la barre supérieure.
+2. La page se recharge.
+3. Le choix est persistant via cookie.
 
-Errors habituals:
-- credencials invalides: es mostra missatge d'error
-- token invalid/caducat: el sistema força re-login
+Langues :
+- documentées : CA, ES, EN, DE, FR, RU, ZH
 
-Postcondicions:
-- sessio iniciada i menus/funcionalitats ajustades al rol
+### UC-03 Ouvrir l'aide
+1. Cliquer sur le bouton « Aide ».
+2. Sélectionner un document : manuel utilisateur, fonctionnel ou technique.
+3. Le système affiche le document dans la langue active.
 
-### UC-02 Canviar idioma
-Actors:
-- `ADM`, `USER`
+### UC-10 Gérer les écoles (ADM)
+Inclut : liste/recherche/tri, créer/modifier/supprimer, favoris, attribution de périmètre.
 
-Flux principal:
-1. L'usuari selecciona un idioma al selector superior.
-2. La pagina es recarrega amb el nou idioma.
-3. La seleccio es persisteix (cookie).
+### UC-20 Gérer les élèves (ADM)
+Inclut : CRUD ; réutilisation d'utilisateur par e-mail ; lien optionnel 1:1 user<->student.
 
-Idiomes:
-- actualment documentats: CA, ES, EN, DE
-- previstos: FR, RU, ZH
+### UC-30 Gérer les inscriptions (ADM)
+Inclut : CRUD ; année scolaire et statut.
 
-### UC-03 Accedir a Ajuda
-Actors:
-- `ADM`, `USER`
+### UC-40 Gérer les frais annuels (ADM)
+Inclut : CRUD ; marquer comme payé (enregistre la date de paiement).
 
-Flux principal:
-1. L'usuari prem el boto "Ajuda".
-2. Selecciona un document: manual d'usuari, funcional o tecnic.
-3. El sistema mostra el document en l'idioma actiu.
+Règles :
+- certains formulaires exigent l'acceptation de la confidentialité
+- le montant accepte les décimales avec virgule ou point
 
-### UC-10 Gestionar escoles (ADM)
-Actor:
-- `ADM`
+### UC-50 Rechercher et filtrer (ADM)
+Recherche texte et filtrage par périmètre depuis l'accueil.
 
-Funcions:
-- llistar, cercar i ordenar
-- crear, editar, eliminar
-- marcar com a favorita
-- assignar ambit (scope)
+### UC-60 Voir le tableau de bord (USER)
+Visualiser les informations spécifiques à l'utilisateur (inscriptions/frais liés).
 
-Regles:
-- `Code` i `Name` obligatoris
+## 7. Règles métier (résumé)
+- École : code et nom obligatoires
+- Utilisateur : e-mail unique
+- Inscription : élève, école, année scolaire et statut
+- Frais annuels : inscription, montant et date d'échéance
 
-### UC-20 Gestionar alumnes (ADM)
-Actor:
-- `ADM`
+## 8. Exigences non fonctionnelles (bref)
+- interface multilingue
+- responsive (mobile/tablette)
+- logs opérationnels pour diagnostic
+- persistance : PostgreSQL
 
-Funcions:
-- llistar, cercar i ordenar
-- crear, editar, eliminar
-- vincular alumne amb usuari (email)
-
-Regles:
-- `User.Email` es unic
-- relacio `User` <-> `Student` es 0..1 a 0..1 (opcional)
-
-### UC-30 Gestionar inscripcions (ADM)
-Actor:
-- `ADM`
-
-Funcions:
-- crear, editar, eliminar
-- definir any academic i estat
-
-Regles:
-- una inscripcio pertany a un alumne i a una escola
-
-### UC-40 Gestionar quotes anuals (ADM)
-Actor:
-- `ADM`
-
-Funcions:
-- crear, editar, eliminar
-- marcar com a pagada (data de pagament)
-
-Regles:
-- per desar: cal acceptar privacitat (checkbox)
-- decimals: s'accepta `,` i `.`
-
-### UC-50 Cercar i filtrar (ADM)
-Actor:
-- `ADM`
-
-Flux principal:
-1. A inici, l'usuari introdueix text de cerca (opcional).
-2. Selecciona un ambit (opcional).
-3. El sistema mostra resultats segons criteris.
-
-### UC-60 Consultar dashboard (USER)
-Actor:
-- `USER`
-
-Flux principal:
-1. L'usuari accedeix al dashboard.
-2. Consulta informacio relacionada amb el seu alumne (inscripcions/quotes).
-
-## 7. Regles de negoci (resum)
-Validacions i obligatorietats:
-- Escola: `Code`, `Name`
-- Usuari: `Email` unic
-- Inscripcio: alumne, escola, any academic i estat
-- Quota anual: inscripcio, import i venciment
-
-Privacitat:
-- alguns formularis requereixen acceptacio explicita per enviar dades
-
-## 8. Requisits no funcionals (breu)
-- multiidioma
-- responsive (mobil/tablet)
-- logs per suport
-- persistencia: PostgreSQL
-
-## 9. Criteris d'acceptacio (checklist)
-- login admin i usuari funcionen
-- CRUD d'escoles/alumnes/inscripcions/quotes funciona
-- cerca i filtratge per ambit funciona
-- import accepta decimals amb coma o punt
-- idioma es persisteix i l'ajuda segueix l'idioma actiu
-
+## 9. Critères d'acceptation (checklist)
+- connexion admin et utilisateur fonctionnelle
+- CRUD opérationnel pour toutes les entités
+- recherche et filtre par périmètre fonctionnels
+- montants acceptent `,` et `.`
+- langue persistée et aide alignée sur la langue active
