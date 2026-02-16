@@ -1,9 +1,11 @@
 using Markdig;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
 
 // Public help center: user manual, technical doc, functional doc.
+[AllowAnonymous]
 public sealed class HelpController : Controller
 {
     private readonly IWebHostEnvironment _env;
@@ -137,4 +139,3 @@ public sealed class HelpController : Controller
         public required string Html { get; init; }
     }
 }
-

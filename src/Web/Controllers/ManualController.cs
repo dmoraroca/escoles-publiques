@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
 
+[AllowAnonymous]
 public sealed class ManualController : Controller
 {
     // Kept for backwards compatibility with conventional routing (/Manual/Index).
