@@ -210,10 +210,43 @@ public sealed class HelpController : Controller
             var mainPart = document.AddMainDocumentPart();
             mainPart.Document = new Document(new Body());
             var body = mainPart.Document.Body!;
+            EnsureStyles(mainPart);
+            EnsureSettings(mainPart);
 
-            body.Append(CreateParagraph(title, bold: true, size: "36"));
-            body.Append(CreateParagraph($"Generat: {DateTime.UtcNow:yyyy-MM-dd HH:mm} UTC", italic: true, size: "20"));
-            body.Append(new Paragraph(new Run(new Text(string.Empty))));
+            var headerPart = mainPart.AddNewPart<HeaderPart>();
+            headerPart.Header = new Header(
+                new Paragraph(
+                    new ParagraphProperties(new Justification { Val = JustificationValues.Left }),
+                    new Run(
+                        new RunProperties(new Bold(), new FontSize { Val = "18" }),
+                        new Text($"DavidGov | {title}"))));
+            headerPart.Header.Save();
+
+            var footerPart = mainPart.AddNewPart<FooterPart>();
+            footerPart.Footer = BuildFooter();
+            footerPart.Footer.Save();
+
+            var sectionProps = new SectionProperties(
+                new HeaderReference { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) },
+                new FooterReference { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(footerPart) },
+                new PageSize { Width = 11906, Height = 16838 }, // A4
+                new PageMargin
+                {
+                    Top = 1134,
+                    Bottom = 1134,
+                    Left = 1134,
+                    Right = 1134,
+                    Header = 708,
+                    Footer = 708,
+                    Gutter = 0
+                });
+
+            body.Append(CreateStyledParagraph(title, "Title", bold: true, size: "42"));
+            body.Append(CreateStyledParagraph($"Generated: {DateTime.UtcNow:yyyy-MM-dd HH:mm} UTC", "Subtitle", italic: true, size: "20"));
+            body.Append(CreateStyledParagraph("Table of contents", "Heading1", bold: true, size: "30"));
+            body.Append(CreateTocParagraph());
+            body.Append(CreatePageBreakParagraph());
+            body.Append(CreateStyledParagraph("Document", "Heading1", bold: true, size: "32"));
 
             var lines = markdown.Replace("\r\n", "\n").Split('\n');
             var inCode = false;
@@ -243,40 +276,201 @@ public sealed class HelpController : Controller
                 {
                     var level = heading.Groups[1].Value.Length;
                     var text = heading.Groups[2].Value.Trim();
-                    var size = level switch
-                    {
-                        1 => "32",
-                        2 => "28",
-                        3 => "24",
-                        _ => "22"
-                    };
-                    body.Append(CreateParagraph(text, bold: true, size: size));
+                    body.Append(CreateHeadingParagraph(text, level));
                     continue;
                 }
 
                 if (line.StartsWith("- ", StringComparison.Ordinal))
                 {
-                    body.Append(CreateParagraph("• " + line[2..].Trim(), size: "22"));
+                    body.Append(CreateBulletParagraph(line[2..].Trim()));
                     continue;
                 }
 
                 var numbered = Regex.Match(line, @"^\d+\.\s+(.+)$");
                 if (numbered.Success)
                 {
-                    body.Append(CreateParagraph(line.Trim(), size: "22"));
+                    body.Append(CreateNumberedParagraph(line.Trim()));
                     continue;
                 }
 
-                body.Append(CreateParagraph(line.Trim(), size: "22"));
+                body.Append(CreateBodyParagraph(line.Trim()));
             }
 
+            body.Append(sectionProps);
             mainPart.Document.Save();
         }
 
         return stream.ToArray();
     }
 
-    private static Paragraph CreateParagraph(string text, bool bold = false, bool italic = false, string size = "22")
+    private static void EnsureStyles(MainDocumentPart mainPart)
+    {
+        var stylesPart = mainPart.StyleDefinitionsPart ?? mainPart.AddNewPart<StyleDefinitionsPart>();
+        if (stylesPart.Styles is not null)
+            return;
+
+        stylesPart.Styles = new Styles(
+            new Style(
+                new StyleName { Val = "Normal" },
+                new PrimaryStyle(),
+                new StyleRunProperties(
+                    new RunFonts { Ascii = "Calibri", HighAnsi = "Calibri" },
+                    new FontSize { Val = "22" }))
+            { Type = StyleValues.Paragraph, StyleId = "Normal", Default = true },
+            new Style(
+                new StyleName { Val = "Title" },
+                new BasedOn { Val = "Normal" },
+                new NextParagraphStyle { Val = "Normal" },
+                new StyleRunProperties(
+                    new RunFonts { Ascii = "Calibri", HighAnsi = "Calibri" },
+                    new Bold(),
+                    new FontSize { Val = "42" }))
+            { Type = StyleValues.Paragraph, StyleId = "Title" },
+            new Style(
+                new StyleName { Val = "Subtitle" },
+                new BasedOn { Val = "Normal" },
+                new NextParagraphStyle { Val = "Normal" },
+                new StyleRunProperties(
+                    new RunFonts { Ascii = "Calibri", HighAnsi = "Calibri" },
+                    new Italic(),
+                    new Color { Val = "666666" },
+                    new FontSize { Val = "20" }))
+            { Type = StyleValues.Paragraph, StyleId = "Subtitle" },
+            new Style(
+                new StyleName { Val = "Heading 1" },
+                new BasedOn { Val = "Normal" },
+                new NextParagraphStyle { Val = "Normal" },
+                new StyleParagraphProperties(
+                    new OutlineLevel { Val = 0 }),
+                new StyleRunProperties(
+                    new Bold(),
+                    new Color { Val = "1F2937" },
+                    new FontSize { Val = "32" }))
+            { Type = StyleValues.Paragraph, StyleId = "Heading1" },
+            new Style(
+                new StyleName { Val = "Heading 2" },
+                new BasedOn { Val = "Normal" },
+                new NextParagraphStyle { Val = "Normal" },
+                new StyleParagraphProperties(
+                    new OutlineLevel { Val = 1 }),
+                new StyleRunProperties(
+                    new Bold(),
+                    new Color { Val = "374151" },
+                    new FontSize { Val = "28" }))
+            { Type = StyleValues.Paragraph, StyleId = "Heading2" },
+            new Style(
+                new StyleName { Val = "Heading 3" },
+                new BasedOn { Val = "Normal" },
+                new NextParagraphStyle { Val = "Normal" },
+                new StyleParagraphProperties(
+                    new OutlineLevel { Val = 2 }),
+                new StyleRunProperties(
+                    new Bold(),
+                    new Color { Val = "374151" },
+                    new FontSize { Val = "24" }))
+            { Type = StyleValues.Paragraph, StyleId = "Heading3" });
+        stylesPart.Styles.Save();
+    }
+
+    private static void EnsureSettings(MainDocumentPart mainPart)
+    {
+        var settingsPart = mainPart.DocumentSettingsPart ?? mainPart.AddNewPart<DocumentSettingsPart>();
+        settingsPart.Settings ??= new Settings();
+
+        if (!settingsPart.Settings.Elements<UpdateFieldsOnOpen>().Any())
+            settingsPart.Settings.Append(new UpdateFieldsOnOpen { Val = true });
+
+        settingsPart.Settings.Save();
+    }
+
+    private static Footer BuildFooter()
+    {
+        return new Footer(
+            new Paragraph(
+                new ParagraphProperties(new Justification { Val = JustificationValues.Center }),
+                new Run(new RunProperties(new FontSize { Val = "18" }), new Text("Page ")),
+                CreateSimpleFieldRun(" PAGE "),
+                new Run(new RunProperties(new FontSize { Val = "18" }), new Text(" of ")),
+                CreateSimpleFieldRun(" NUMPAGES ")));
+    }
+
+    private static Run CreateSimpleFieldRun(string code)
+    {
+        return new Run(
+            new FieldChar { FieldCharType = FieldCharValues.Begin },
+            new FieldCode(code),
+            new FieldChar { FieldCharType = FieldCharValues.Separate },
+            new Text("1"),
+            new FieldChar { FieldCharType = FieldCharValues.End });
+    }
+
+    private static Paragraph CreateTocParagraph()
+    {
+        return new Paragraph(
+            new ParagraphProperties(
+                new SpacingBetweenLines { Before = "120", After = "220", Line = "280", LineRule = LineSpacingRuleValues.Auto }),
+            new Run(new FieldChar { FieldCharType = FieldCharValues.Begin }),
+            new Run(new FieldCode(" TOC \\o \"1-3\" \\h \\z \\u ")),
+            new Run(new FieldChar { FieldCharType = FieldCharValues.Separate }),
+            new Run(new Text("Right-click and update field to refresh the index.")),
+            new Run(new FieldChar { FieldCharType = FieldCharValues.End }));
+    }
+
+    private static Paragraph CreatePageBreakParagraph()
+    {
+        return new Paragraph(new Run(new Break { Type = BreakValues.Page }));
+    }
+
+    private static Paragraph CreateBodyParagraph(string text)
+    {
+        return CreateStyledParagraph(text, "Normal", size: "22");
+    }
+
+    private static Paragraph CreateBulletParagraph(string text)
+    {
+        var paragraph = CreateStyledParagraph("• " + text, "Normal", size: "22");
+        paragraph.ParagraphProperties ??= new ParagraphProperties();
+        paragraph.ParagraphProperties.Indentation = new Indentation { Left = "360", Hanging = "180" };
+        return paragraph;
+    }
+
+    private static Paragraph CreateNumberedParagraph(string text)
+    {
+        var paragraph = CreateStyledParagraph(text, "Normal", size: "22");
+        paragraph.ParagraphProperties ??= new ParagraphProperties();
+        paragraph.ParagraphProperties.Indentation = new Indentation { Left = "360", Hanging = "120" };
+        return paragraph;
+    }
+
+    private static Paragraph CreateHeadingParagraph(string text, int level)
+    {
+        var style = level switch
+        {
+            1 => "Heading1",
+            2 => "Heading2",
+            _ => "Heading3"
+        };
+
+        var size = level switch
+        {
+            1 => "32",
+            2 => "28",
+            3 => "24",
+            _ => "22"
+        };
+
+        var paragraph = CreateStyledParagraph(text, style, bold: true, size: size);
+        paragraph.ParagraphProperties ??= new ParagraphProperties();
+        paragraph.ParagraphProperties.OutlineLevel = new OutlineLevel { Val = Math.Min(level - 1, 8) };
+        return paragraph;
+    }
+
+    private static Paragraph CreateStyledParagraph(
+        string text,
+        string styleId,
+        bool bold = false,
+        bool italic = false,
+        string size = "22")
     {
         var runProperties = new RunProperties(new FontSize { Val = size });
         if (bold) runProperties.Append(new Bold());
@@ -285,7 +479,8 @@ public sealed class HelpController : Controller
         var run = new Run(runProperties, new Text(text) { Space = SpaceProcessingModeValues.Preserve });
         var paragraph = new Paragraph(run);
         paragraph.ParagraphProperties = new ParagraphProperties(
-            new SpacingBetweenLines { After = "120", Line = "280", LineRule = LineSpacingRuleValues.Auto });
+            new ParagraphStyleId { Val = styleId },
+            new SpacingBetweenLines { Before = "40", After = "120", Line = "280", LineRule = LineSpacingRuleValues.Auto });
         return paragraph;
     }
 
@@ -299,6 +494,8 @@ public sealed class HelpController : Controller
             new Run(runProps, new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
 
         paragraph.ParagraphProperties = new ParagraphProperties(
+            new ParagraphStyleId { Val = "Normal" },
+            new Indentation { Left = "320", Right = "160" },
             new Shading { Val = ShadingPatternValues.Clear, Color = "auto", Fill = "F3F4F6" },
             new SpacingBetweenLines { After = "60", Line = "260", LineRule = LineSpacingRuleValues.Auto });
         return paragraph;
