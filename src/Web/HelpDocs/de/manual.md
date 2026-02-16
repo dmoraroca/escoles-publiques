@@ -18,7 +18,7 @@ Zielgruppen:
 3. Anmelden.
 
 Platzhalter:
-![Login (DE)](/ajuda/codex_images_real/al/login-admin.png)
+![Login (DE)](../codex_images_real/al/login-admin.png)
 
 ## 3. Navigation
 Admin-Menü:
@@ -49,9 +49,9 @@ Dezimal:
 - `1000,25` oder `1000.25`
 
 Screenshots:
-![Gebuehren: Liste (DE)](/ajuda/codex_images_real/al/quotes-anuals.png)
-![Gebuehren: Neu (Modal) (DE)](/ajuda/codex_images_real/al/quotes-anuals-crear.png)
-![Gebuehren: Bearbeiten (DE)](/ajuda/codex_images_real/al/quotes-anuals-edit.png)
+![Gebuehren: Liste (DE)](../codex_images_real/al/quotes-anuals.png)
+![Gebuehren: Neu (Modal) (DE)](../codex_images_real/al/quotes-anuals-crear.png)
+![Gebuehren: Bearbeiten (DE)](../codex_images_real/al/quotes-anuals-edit.png)
 
 ## Anhang: Screenshot-Index (Reihenfolge)
 1. `docs/codex_images_real/al/login-admin.png`

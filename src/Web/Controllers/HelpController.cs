@@ -96,6 +96,9 @@ public sealed class HelpController : Controller
         if (ui.StartsWith("es", StringComparison.OrdinalIgnoreCase)) return "es";
         if (ui.StartsWith("en", StringComparison.OrdinalIgnoreCase)) return "en";
         if (ui.StartsWith("de", StringComparison.OrdinalIgnoreCase)) return "de";
+        if (ui.StartsWith("fr", StringComparison.OrdinalIgnoreCase)) return "fr";
+        if (ui.StartsWith("ru", StringComparison.OrdinalIgnoreCase)) return "ru";
+        if (ui.StartsWith("zh", StringComparison.OrdinalIgnoreCase)) return "zh";
         return "ca";
     }
 
@@ -122,6 +125,18 @@ public sealed class HelpController : Controller
             ("de", "manual") => ("Benutzerhandbuch", Path.Combine(baseDir, "manual.md")),
             ("de", "funcional") => ("Fachliches Dokument", Path.Combine(baseDir, "fachlich.md")),
             ("de", "tecnic") => ("Technisches Dokument", Path.Combine(baseDir, "technisch.md")),
+
+            ("fr", "manual") => ("Manuel utilisateur", Path.Combine(baseDir, "manual.md")),
+            ("fr", "funcional") => ("Document fonctionnel", Path.Combine(baseDir, "functional.md")),
+            ("fr", "tecnic") => ("Document technique", Path.Combine(baseDir, "technical.md")),
+
+            ("ru", "manual") => ("Руководство пользователя", Path.Combine(baseDir, "manual.md")),
+            ("ru", "funcional") => ("Функциональный документ", Path.Combine(baseDir, "functional.md")),
+            ("ru", "tecnic") => ("Технический документ", Path.Combine(baseDir, "technical.md")),
+
+            ("zh", "manual") => ("用户手册", Path.Combine(baseDir, "manual.md")),
+            ("zh", "funcional") => ("功能文档", Path.Combine(baseDir, "functional.md")),
+            ("zh", "tecnic") => ("技术文档", Path.Combine(baseDir, "technical.md")),
 
             _ => ("", null)
         };

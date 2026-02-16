@@ -1,6 +1,6 @@
 # Documentacio
 
-Aquest projecte manté la documentació en 4 idiomes: català (CA), espanyol (ES), anglès (EN) i alemany (DE).
+Aquest projecte manté la documentació en 7 idiomes: català (CA), espanyol (ES), anglès (EN), alemany (DE), francès (FR), rus (RU) i xinès (ZH).
 
 Per cada idioma hi ha 3 documents:
 1. Funcional
@@ -26,6 +26,21 @@ Per cada idioma hi ha 3 documents:
 - `docs/de/fachlich.md`
 - `docs/de/technisch.md`
 - `docs/de/benutzerhandbuch.md`
+
+## Français (FR)
+- `docs/fr/functional.md`
+- `docs/fr/technical.md`
+- `docs/fr/manual-utilisateur.md`
+
+## Русский (RU)
+- `docs/ru/functional.md`
+- `docs/ru/technical.md`
+- `docs/ru/user-manual.md`
+
+## 中文 (ZH)
+- `docs/zh/functional.md`
+- `docs/zh/technical.md`
+- `docs/zh/user-manual.md`
 
 ## Nota sobre Word/PDF
 - Aquests fitxers son la "font" (Markdown) per versionar-los al repo.

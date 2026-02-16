@@ -18,7 +18,7 @@ Publico:
 3. Pulsa "Acceder".
 
 Capturas:
-![Login (ES)](/ajuda/codex_images_real/es/login-admin.png)
+![Login (ES)](../codex_images_real/es/login-admin.png)
 
 ## 3. Navegacion
 Menu (ADM):
@@ -50,9 +50,9 @@ Decimales:
 - `1000,25` o `1000.25`
 
 Capturas:
-![Cuotas: listado (ES)](/ajuda/codex_images_real/es/quotes-anuals.png)
-![Cuotas: nueva (modal) (ES)](/ajuda/codex_images_real/es/quotes-anuals-crear.png)
-![Cuotas: editar (ES)](/ajuda/codex_images_real/es/quotes-anuals-edit.png)
+![Cuotas: listado (ES)](../codex_images_real/es/quotes-anuals.png)
+![Cuotas: nueva (modal) (ES)](../codex_images_real/es/quotes-anuals-crear.png)
+![Cuotas: editar (ES)](../codex_images_real/es/quotes-anuals-edit.png)
 
 ## Anexo: Indice de capturas (orden)
 1. `docs/codex_images_real/es/login-admin.png`

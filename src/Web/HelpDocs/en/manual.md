@@ -22,7 +22,7 @@ Requirements:
 3. Click "Login".
 
 Screenshots:
-![Login (EN)](/ajuda/codex_images_real/en/login-admin.png)
+![Login (EN)](../codex_images_real/en/login-admin.png)
 
 ## 3. Navigation
 Admin main menu:
@@ -54,9 +54,9 @@ Decimals:
 - amount supports `1000,25` and `1000.25`
 
 Screenshots:
-![Annual fees: list (EN)](/ajuda/codex_images_real/en/quotes-anuals.png)
-![Annual fees: new (modal) (EN)](/ajuda/codex_images_real/en/quotes-anuals-crear.png)
-![Annual fees: edit (EN)](/ajuda/codex_images_real/en/quotes-anuals-edit.png)
+![Annual fees: list (EN)](../codex_images_real/en/quotes-anuals.png)
+![Annual fees: new (modal) (EN)](../codex_images_real/en/quotes-anuals-crear.png)
+![Annual fees: edit (EN)](../codex_images_real/en/quotes-anuals-edit.png)
 
 ## Appendix: Screenshot index (order)
 1. `docs/codex_images_real/en/login-admin.png`
