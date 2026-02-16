@@ -33,4 +33,16 @@
   <data name="condicions de privacitat" xml:space="preserve">
     <value>privacy conditions</value>
   </data>
+  <data name="Escola" xml:space="preserve">
+    <value>School</value>
+  </data>
+  <data name="Alumne" xml:space="preserve">
+    <value>Student</value>
+  </data>
+  <data name="Inscripció" xml:space="preserve">
+    <value>Enrollment</value>
+  </data>
+  <data name="Quota" xml:space="preserve">
+    <value>Fee</value>
+  </data>
 </root>

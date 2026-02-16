@@ -2,6 +2,9 @@ using Markdig;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
@@ -199,7 +202,7 @@ public sealed class HelpController : Controller
         return markdown.Substring(0, cut).TrimEnd() + "\n";
     }
 
-    private static byte[] BuildDocxFromMarkdown(string title, string markdown)
+    private byte[] BuildDocxFromMarkdown(string title, string markdown)
     {
         using var stream = new MemoryStream();
         using (var document = WordprocessingDocument.Create(
@@ -244,7 +247,11 @@ public sealed class HelpController : Controller
             body.Append(CreateStyledParagraph(title, "Title", bold: true, size: "42"));
             body.Append(CreateStyledParagraph($"Generated: {DateTime.UtcNow:yyyy-MM-dd HH:mm} UTC", "Subtitle", italic: true, size: "20"));
             body.Append(CreateStyledParagraph("Table of contents", "Heading1", bold: true, size: "30"));
-            body.Append(CreateTocParagraph());
+            var tocEntries = ExtractMarkdownHeadings(markdown);
+            foreach (var (level, text) in tocEntries)
+            {
+                body.Append(CreateTocEntryParagraph(level, text));
+            }
             body.Append(CreatePageBreakParagraph());
             body.Append(CreateStyledParagraph("Document", "Heading1", bold: true, size: "32"));
 
@@ -291,6 +298,19 @@ public sealed class HelpController : Controller
                 {
                     body.Append(CreateNumberedParagraph(line.Trim()));
                     continue;
+                }
+
+                var image = Regex.Match(line.Trim(), "^!\\[(.*?)\\]\\((.*?)\\)$");
+                if (image.Success)
+                {
+                    var altText = image.Groups[1].Value.Trim();
+                    var imagePath = image.Groups[2].Value.Trim();
+                    var imageParagraph = CreateImageParagraph(mainPart, imagePath, altText);
+                    if (imageParagraph is not null)
+                    {
+                        body.Append(imageParagraph);
+                        continue;
+                    }
                 }
 
                 body.Append(CreateBodyParagraph(line.Trim()));
@@ -404,16 +424,39 @@ public sealed class HelpController : Controller
             new FieldChar { FieldCharType = FieldCharValues.End });
     }
 
-    private static Paragraph CreateTocParagraph()
+    private static List<(int level, string text)> ExtractMarkdownHeadings(string markdown)
     {
-        return new Paragraph(
-            new ParagraphProperties(
-                new SpacingBetweenLines { Before = "120", After = "220", Line = "280", LineRule = LineSpacingRuleValues.Auto }),
-            new Run(new FieldChar { FieldCharType = FieldCharValues.Begin }),
-            new Run(new FieldCode(" TOC \\o \"1-3\" \\h \\z \\u ")),
-            new Run(new FieldChar { FieldCharType = FieldCharValues.Separate }),
-            new Run(new Text("Right-click and update field to refresh the index.")),
-            new Run(new FieldChar { FieldCharType = FieldCharValues.End }));
+        var entries = new List<(int level, string text)>();
+        var lines = markdown.Replace("\r\n", "\n").Split('\n');
+        foreach (var raw in lines)
+        {
+            var line = (raw ?? string.Empty).Trim();
+            var heading = Regex.Match(line, @"^(#{1,3})\s+(.+)$");
+            if (!heading.Success)
+                continue;
+
+            var level = heading.Groups[1].Value.Length;
+            var text = heading.Groups[2].Value.Trim();
+            entries.Add((level, text));
+        }
+
+        return entries;
+    }
+
+    private static Paragraph CreateTocEntryParagraph(int level, string text)
+    {
+        var safeLevel = Math.Max(1, Math.Min(level, 3));
+        var indent = safeLevel switch
+        {
+            1 => "0",
+            2 => "360",
+            _ => "720"
+        };
+
+        var paragraph = CreateStyledParagraph(text, "Normal", size: "22");
+        paragraph.ParagraphProperties ??= new ParagraphProperties();
+        paragraph.ParagraphProperties.Indentation = new Indentation { Left = indent };
+        return paragraph;
     }
 
     private static Paragraph CreatePageBreakParagraph()
@@ -499,6 +542,123 @@ public sealed class HelpController : Controller
             new Shading { Val = ShadingPatternValues.Clear, Color = "auto", Fill = "F3F4F6" },
             new SpacingBetweenLines { After = "60", Line = "260", LineRule = LineSpacingRuleValues.Auto });
         return paragraph;
+    }
+
+    private Paragraph? CreateImageParagraph(MainDocumentPart mainPart, string markdownPath, string altText)
+    {
+        var fullPath = ResolveImagePath(markdownPath);
+        if (fullPath is null || !System.IO.File.Exists(fullPath))
+            return null;
+
+        var extension = Path.GetExtension(fullPath).ToLowerInvariant();
+        var partType = extension switch
+        {
+            ".png" => ImagePartType.Png,
+            ".jpg" => ImagePartType.Jpeg,
+            ".jpeg" => ImagePartType.Jpeg,
+            ".gif" => ImagePartType.Gif,
+            ".bmp" => ImagePartType.Bmp,
+            _ => ImagePartType.Png
+        };
+
+        var imagePart = mainPart.AddImagePart(partType);
+        using (var fs = System.IO.File.OpenRead(fullPath))
+            imagePart.FeedData(fs);
+
+        var relationshipId = mainPart.GetIdOfPart(imagePart);
+        var drawing = CreateInlineImageDrawing(relationshipId, altText);
+        return new Paragraph(
+            new ParagraphProperties(new Justification { Val = JustificationValues.Center }),
+            new Run(drawing));
+    }
+
+    private string? ResolveImagePath(string markdownPath)
+    {
+        if (string.IsNullOrWhiteSpace(markdownPath))
+            return null;
+
+        var path = markdownPath.Trim();
+
+        if (path.StartsWith("/ajuda/", StringComparison.OrdinalIgnoreCase))
+        {
+            var rel = path.TrimStart('/').Replace('/', Path.DirectorySeparatorChar);
+            return Path.Combine(_env.WebRootPath, rel);
+        }
+
+        if (path.StartsWith("../", StringComparison.Ordinal))
+        {
+            var rel = path.Replace('/', Path.DirectorySeparatorChar);
+            var docsBase = Path.Combine(_env.ContentRootPath, "..", "docs");
+            return Path.GetFullPath(Path.Combine(docsBase, rel));
+        }
+
+        if (Path.IsPathRooted(path))
+            return path;
+
+        return Path.Combine(_env.WebRootPath, path.Replace('/', Path.DirectorySeparatorChar));
+    }
+
+    private static Drawing CreateInlineImageDrawing(string relationshipId, string altText)
+    {
+        // ~6.2 x 3.6 inches keeps screenshots readable on A4.
+        const long widthEmu = 5669280L;
+        const long heightEmu = 3291840L;
+        var name = string.IsNullOrWhiteSpace(altText) ? "Screenshot" : altText;
+        var docPropId = (uint)Random.Shared.Next(1000, 900000);
+
+        return new Drawing(
+            new DW.Inline(
+                new DW.Extent { Cx = widthEmu, Cy = heightEmu },
+                new DW.EffectExtent
+                {
+                    LeftEdge = 0L,
+                    TopEdge = 0L,
+                    RightEdge = 0L,
+                    BottomEdge = 0L
+                },
+                new DW.DocProperties
+                {
+                    Id = docPropId,
+                    Name = name
+                },
+                new DW.NonVisualGraphicFrameDrawingProperties(
+                    new A.GraphicFrameLocks { NoChangeAspect = true }),
+                new A.Graphic(
+                    new A.GraphicData(
+                        new PIC.Picture(
+                            new PIC.NonVisualPictureProperties(
+                                new PIC.NonVisualDrawingProperties
+                                {
+                                    Id = 0U,
+                                    Name = name
+                                },
+                                new PIC.NonVisualPictureDrawingProperties()),
+                            new PIC.BlipFill(
+                                new A.Blip
+                                {
+                                    Embed = relationshipId,
+                                    CompressionState = A.BlipCompressionValues.Print
+                                },
+                                new A.Stretch(new A.FillRectangle())),
+                            new PIC.ShapeProperties(
+                                new A.Transform2D(
+                                    new A.Offset { X = 0L, Y = 0L },
+                                    new A.Extents { Cx = widthEmu, Cy = heightEmu }),
+                                new A.PresetGeometry(new A.AdjustValueList())
+                                {
+                                    Preset = A.ShapeTypeValues.Rectangle
+                                }))
+                    )
+                    {
+                        Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture"
+                    }))
+            {
+                DistanceFromTop = 0U,
+                DistanceFromBottom = 0U,
+                DistanceFromLeft = 0U,
+                DistanceFromRight = 0U,
+                EditId = "50D07946"
+            });
     }
 
     public sealed record HelpIndexViewModel(string Lang);
