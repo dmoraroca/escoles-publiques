@@ -1,288 +1,379 @@
 # Document tecnic (CA)
 
-## 1. Arquitectura
-### 1.1 Visio general
-Arquitectura en 3 blocs:
-- **Web** (`src/Web`): ASP.NET Core MVC + Razor Views. Mostra pantalles i consumeix l'API.
-- **API** (`src/Api`): ASP.NET Core Web API. Exposa endpoints protegits amb JWT.
-- **BBDD**: PostgreSQL. Persistencia via EF Core (Npgsql).
+## 1. Introduccio
+Aquest document descriu en profunditat com esta construida l'aplicacio **Escoles Publiques** a nivell tecnic.
 
-Flux principal:
-1. Web autentica usuari (cookie).
-2. Web demana token a l'API (`POST /api/auth/token`) i el desa a sessio.
-3. Web crida l'API amb `Authorization: Bearer <token>` (handler `ApiAuthTokenHandler`).
+Objectius:
+- explicar arquitectura i estructura DDD
+- documentar com hem muntat Web i API
+- deixar traçabilitat de patrons, llibreries i decisions
+- descriure model de dades, relacions i sistema d'autenticacio
+- explicar utilitats transversals (helpers, JS, CSS)
 
-### 1.2 Capes del codi (estructura)
-El repositori esta organitzat en capes:
-- `src/Domain`: entitats del domini (School, Student, Enrollment, AnnualFee, Scope, User)
-- `src/Application`: serveis/casos d'us (interfaces i implementacions) i queries de cerca
-- `src/Infrastructure`: EF Core `DbContext`, repositoris, migrations
-- `src/Api`: controllers API, auth JWT, swagger, seed i CORS
-- `src/Web`: controllers MVC, views, assets, i18n, http clients cap a l'API
+## 2. Esquema general de l'app (Web + API + DDD)
 
-## 2. Stack i dependències
-- .NET 8 / ASP.NET Core
-- EF Core 8 + `Npgsql.EntityFrameworkCore.PostgreSQL`
-- Swagger/OpenAPI (Swashbuckle) a l'API
-- Serilog (web) per logs
-- Bootstrap 5 (web) + CSS propi (`wwwroot/css/*`)
-- Render (deploy) amb Docker
+```mermaid
+flowchart LR
+  U[Usuari] -->|Navegador| W[Web MVC/Razor]
+  W -->|HTTP + JWT| A[API ASP.NET Core]
+  A -->|EF Core| DB[(PostgreSQL)]
 
-## 3. Estructura del repositori
-Fitxers/claus:
-- `docker/render/api.Dockerfile`
-- `docker/render/web.Dockerfile`
-- `docker-compose.yml` (entorn local)
-- `src/Infrastructure/Migrations/*` (migrations EF)
-- `sql/001_seed_render.sql` (seed SQL per entorns)
+  subgraph DDD[DDD intern]
+    D[Domain]
+    AP[Application]
+    I[Infrastructure]
+  end
 
-## 4. Decisions i patrons
-- **MVC (Web)**: controllers + views + viewmodels
-- **API controllers (Api)**: DTOs d'entrada/sortida, errors com `ValidationProblem`
-- **Repositori + servei**: `I*Repository` a Infrastructure i `I*Service` a Application
-- **DTOs**: l'API no exposa directament entitats (retorna `*DtoOut`)
-- **I18n**: `resx` per vista i per components
-- **Responsive**: CSS amb media queries + Bootstrap 5 (fitxers a `src/Web/wwwroot/css/*`)
+  W --> AP
+  A --> AP
+  AP --> D
+  I --> D
+  AP --> I
+```
 
-## 5. Autenticacio i seguretat
-### 5.1 API (JWT)
-- Endpoint: `POST /api/auth/token`
-- Valida credencials via `IAuthService`
-- Retorna `token` (JWT) amb claims:
-  - `NameIdentifier` (id usuari)
-  - `Role` (`ADM`/`USER`)
-- Validacio a `src/Api/Program.cs` (`JwtBearer`)
+Flux funcional principal:
+1. Login a Web (`CookieAuth`)
+2. Web demana token a API (`POST /api/auth/token`)
+3. Token JWT es desa a sessio
+4. Web consumeix API amb `Authorization: Bearer <token>`
 
-Config JWT (produccio):
-- `Jwt__Key` (secret llarg; minim recomanat 32 chars)
-- `Jwt__Issuer`
-- `Jwt__Audience`
+## 3. Estructura DDD (com ho hem organitzat)
 
-### 5.2 Web (Cookies + sessio)
-- Autenticacio per cookie `CookieAuth`
-- Sessio server-side amb `DistributedMemoryCache`
-- Token de l'API desat a sessio (`SessionKeys.ApiToken`)
-- Handler `ApiAuthTokenHandler`:
-  - adjunta token a cada request cap a l'API
-  - si rep 401/403, fa logout i neteja sessio
+Projectes i responsabilitats:
+- `src/Domain`
+  - entitats i regles de domini
+  - interfaces de repositori (`I*Repository`)
+  - value objects / excepcions de domini
+- `src/Application`
+  - casos d'us (`*Service`)
+  - contracts d'aplicacio (`I*Service`)
+  - queries (p. ex. cerca agregada)
+- `src/Infrastructure`
+  - persistencia EF Core
+  - implementacions de repositori
+  - migrations
+- `src/Api`
+  - capa d'entrada REST (controllers API)
+  - auth JWT, Swagger, CORS, seed
+- `src/Web`
+  - capa d'entrada MVC/Razor
+  - UI, localitzacio, clients HTTP cap a API
 
-## 6. Endpoints API (resum)
-Tots protegits amb `[Authorize]` excepte Auth:
-- `POST /api/auth/token`
-- `GET/POST/PUT/DELETE /api/schools`
-- `GET/POST/PUT/DELETE /api/students`
-- `GET/POST/PUT/DELETE /api/enrollments`
-- `GET/POST/PUT/DELETE /api/annualfees`
-- `GET /api/scopes`
+Arbre resum de la solucio (vista tecnica):
+```text
+src/
+├── Domain/          # nucli de domini (entitats, value objects, contracts)
+├── Application/     # casos d'us, serveis d'aplicacio, queries
+├── Infrastructure/  # EF Core, repositories, migrations, persistencia
+├── Api/             # endpoints REST, JWT, Swagger, CORS, seed
+├── Web/             # MVC/Razor, i18n, Help, JS/CSS, clients API
+└── UnitTest/        # tests unitaris i d'integracio
+```
 
-Manteniment:
-- `POST /api/maintenance/seed` (requereix rol `ADM` + header `X-Seed-Key`)
+Regla clau de dependencies:
+- `Domain` no depen de cap altra capa
+- `Application` depen de `Domain`
+- `Infrastructure` implementa contracts de `Domain`/`Application`
+- `Web` i `Api` orquestren i fan DI
 
-## 7. Swagger
-Swagger es pot habilitar amb:
-- `Swagger__Enabled=true`
+## 4. Com hem muntat la Web
 
-Quan esta habilitat:
-- Swagger UI es serveix a `https://<host>/api`
-- Swagger JSON: `/swagger/v1/swagger.json`
+Base tecnica:
+- ASP.NET Core MVC + Razor Views (`src/Web/Views`)
+- autenticacio per cookie (`CookieAuth`)
+- sessio server-side per guardar el JWT de l'API
+- localitzacio per `resx` + selector d'idioma a capcalera
+- clients typed `HttpClient` per consumir API
 
-## 8. CORS (API)
-En produccio l'API requereix llista d'orígens:
-- `Cors__AllowedOrigins__0=https://<domini-web>`
-- `Cors__AllowedOrigins__1=...` (si cal)
+Peces destacades:
+- Controllers MVC: `src/Web/Controllers/*`
+- Handler auth API: `src/Web/Services/Api/ApiAuthTokenHandler.cs`
+- Binder decimal flexible: `src/Web/ModelBinders/FlexibleDecimalModelBinder.cs`
+- Ajuda web (manual/funcional/tecnic): `src/Web/Controllers/HelpController.cs`
 
-Si no esta configurat i no es dev, l'API falla a l'arrencada (per evitar desplegar insegur).
+## 5. Com hem muntat la API (incloent Swagger)
 
-## 9. Base de dades i migrations
-### 9.1 EF Core
-- `SchoolDbContext` a `src/Infrastructure/SchoolDbContext.cs` (namespace `Infrastructure.Persistence`)
-- L'API aplica `db.Database.Migrate()` a l'arrencada (a `src/Api/Program.cs`)
-- L'API forca l'assembly de migrations: `MigrationsAssembly(\"Infrastructure\")`
+Base tecnica:
+- ASP.NET Core Web API (`src/Api`)
+- autenticacio `JwtBearer`
+- autoritzacio per rol/claims
+- CORS configurable per entorn
+- EF Core amb migrations auto a startup
 
-### 9.2 Seed
-Opcio A (arrencada API):
-- `Seed__Enabled=true` activa `DbSeeder.SeedIfEmpty`
-- El seed nomes s'executa si `users` esta buida (one-shot)
+Swagger:
+- paquet `Swashbuckle.AspNetCore`
+- UI a `/api` quan `Swagger__Enabled=true`
+- JSON OpenAPI a `/swagger/v1/swagger.json`
+- esquema `Bearer` configurat per provar endpoints protegits
 
-Opcio B (endpoint):
-- `POST /api/maintenance/seed`
-- Requereix `Seed__Key` i enviar header `X-Seed-Key`
+Exemple d'endpoint de login:
+- `POST /api/auth/token` retorna JWT
 
-Opcio C (SQL manual):
-- `sql/001_seed_render.sql` (idempotent) per entorns Render/proves
+## 6. Patrons utilitzats (amb exemples i lectura line-by-line)
 
-Nota: no posar passwords reals als scripts. Rotar credencials i secrets a produccio.
+### 6.1 Repository + Service
+Idea:
+- repositori: accés a dades
+- servei aplicacio: regles i orquestracio
 
-## 10. Desplegament a Render
-Serveis tipics:
-- `escoles-db` (PostgreSQL)
-- `escoles-api` (Web Service)
-- `escoles` (Web Service)
+Exemple repositori (`StudentRepository`):
+```csharp
+1  public async Task<IEnumerable<Student>> GetAllAsync()
+2  {
+3      return await _context.Students
+4          .Include(s => s.School)
+5          .Include(s => s.User)
+6          .ToListAsync();
+7  }
+```
+Lectura:
+1. signatura async
+2. bloc mètode
+3. query base d'alumnes
+4. eager-load escola
+5. eager-load usuari
+6. executa a DB
+7. fi mètode
 
-Dockerfiles:
-- API: `docker/render/api.Dockerfile` (publica `src/Api`)
-- Web: `docker/render/web.Dockerfile` (publica `src/Web`)
+Exemple servei (`StudentService`):
+```csharp
+1  using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+2  var createdUser = await _userService.CreateUserAsync(user, password);
+3  student.UserId = createdUser.Id;
+4  student.CreatedAt = DateTime.UtcNow;
+5  var createdStudent = await _studentRepository.AddAsync(student);
+6  scope.Complete();
+7  return createdStudent;
+```
+Lectura:
+1. obre transaccio
+2. crea usuari primer
+3. assigna FK a alumne
+4. set timestamp
+5. desa alumne
+6. confirma transaccio
+7. retorna resultat
 
-Variables d'entorn recomanades (Render):
-- API:
-  - `ConnectionStrings__Default` (Internal DB URL o External amb SSL)
-  - `ASPNETCORE_URLS=http://0.0.0.0:$PORT`
-  - `Jwt__Key`, `Jwt__Issuer`, `Jwt__Audience`
-  - `Cors__AllowedOrigins__0=https://<domini-web>`
-  - `Swagger__Enabled=true` (si es vol)
-  - `Seed__Enabled` i `Seed__Key` (nomes per entorns controlats)
-- Web:
-  - `ConnectionStrings__Default` (si la web accedeix a DB directament; si no cal, eliminar)
-  - `Api__BaseUrl=https://<domini-api>`
-  - `ASPNETCORE_URLS=http://0.0.0.0:$PORT`
+### 6.2 API Gateway intern via `HttpClient` + `DelegatingHandler`
+Exemple (`ApiAuthTokenHandler`):
+```csharp
+1  var token = _httpContextAccessor.HttpContext?.Session.GetString(SessionKeys.ApiToken);
+2  if (!string.IsNullOrWhiteSpace(token) && request.Headers.Authorization == null)
+3      request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+4  var response = await base.SendAsync(request, cancellationToken);
+5  if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
+6  {
+7      ctx.Session.Remove(SessionKeys.ApiToken);
+8      await ctx.SignOutAsync("CookieAuth");
+9      throw new UnauthorizedAccessException(...);
+10 }
+```
+Lectura:
+1. llegeix token de sessio
+2-3. adjunta capcalera auth
+4. continua pipeline HTTP
+5. captura 401/403
+6-9. neteja sessio + logout + excepcio controlada
 
-## 11. Troubleshooting (resum)
-- 401/403 des de web: token expirat o invalid -> tornar a login
-- CORS: configurar `Cors__AllowedOrigins__*`
-- Migrations: revisar logs d'arrencada (EF Core)
-- Decimals (web): accepta `,` i `.` via binder flexible
-- Swagger: habilitar `Swagger__Enabled` i usar ruta `/api`
+### 6.3 Model Binder personalitzat (resoldre `,` i `.`)
+Exemple (`FlexibleDecimalModelBinder`):
+```csharp
+1  var normalized = Normalize(raw);
+2  if (decimal.TryParse(normalized, NumberStyles.Number, CultureInfo.InvariantCulture, out var value))
+3      bindingContext.Result = ModelBindingResult.Success(value);
+4  else
+5      bindingContext.ModelState.TryAddModelError(...);
+```
+Lectura:
+1. normalitza entrada usuari
+2. parse invariant
+3. model valid
+4-5. error de validacio
 
-## Annex A: BBDD
-### A.1 Model relacional (ER)
-- Diagrama (inserir imatge)
-- Placeholder: `docs/assets/er-ca.png`
+### 6.4 Pattern "Fail Fast" en startup
+A API, si no hi ha CORS a produccio -> l'app falla a startup per evitar desplegament insegur.
 
-Relacions principals:
-- `schools (1) -> (N) students`
-- `users (1) -> (0..1) students` (un usuari pot estar associat a un unic alumne)
-- `students (1) -> (N) enrollments`
-- `enrollments (1) -> (N) annual_fees`
-- `scope_mnt (1) -> (N) schools` (si s'utilitza `schools.scope_id`)
+## 7. Llibreries externes usades
 
-### A.2 Taules
-Per cada taula s'indica: proposit, camps clau, PK/FK i indexos.
+### 7.1 API
+- `Microsoft.AspNetCore.Authentication.JwtBearer`
+- `Npgsql.EntityFrameworkCore.PostgreSQL`
+- `Swashbuckle.AspNetCore`
 
-Taules esperades:
-- `schools`
-- `scope_mnt`
-- `users`
-- `students`
-- `enrollments`
-- `annual_fees`
+### 7.2 Application
+- `AutoMapper`
+- `AutoMapper.Extensions.Microsoft.DependencyInjection`
 
-#### A.2.1 `schools`
-Proposit: catalog d'escoles.
+### 7.3 Infrastructure
+- `Microsoft.EntityFrameworkCore`
+- `Microsoft.EntityFrameworkCore.Design`
+- `Npgsql.EntityFrameworkCore.PostgreSQL`
 
-Camps (principals):
-- `id` (bigint, PK)
-- `name` (text, NOT NULL)
-- `code` (text, NOT NULL)
-- `city` (text, NULL)
-- `is_favorite` (boolean, NOT NULL)
-- `created_at` (timestamp, NOT NULL)
-- `scope` (text, NULL) (camp historic/legacy)
-- `scope_id` (bigint, NULL) (si s'ha activat model relacional amb `scope_mnt`)
+### 7.4 Web
+- `FluentValidation.AspNetCore`
+- `Markdig`
+- `DocumentFormat.OpenXml` (export DOCX des d'ajuda)
+- `Serilog.AspNetCore`
+- `Serilog.Sinks.File`
 
-FK:
-- (opcional) `scope_id -> scope_mnt.id`
+## 8. Base de dades (taules, camps, indexos, constraints)
+
+Motor: PostgreSQL
+
+### 8.1 `schools`
+Camps:
+- `id` bigint PK
+- `name` text NOT NULL
+- `code` text NOT NULL
+- `city` text NULL
+- `is_favorite` boolean NOT NULL
+- `scope` text NULL (legacy)
+- `created_at` timestamp NOT NULL
 
 Indexos:
-- recomanat: index per `code` (si es vol unicitat per codi)
-- recomanat: index per `scope_id`
+- PK sobre `id`
 
-#### A.2.2 `scope_mnt`
-Proposit: ambits (Infantil/Primaria/Secundaria/FP).
+Constraints:
+- PK `PK_schools`
 
+### 8.2 `scope_mnt`
 Camps:
-- `id` (bigint, PK)
-- `name` (text, NOT NULL)
-- `description` (text, NULL)
-- `is_active` (boolean, NOT NULL)
-- `created_at` (timestamp, NOT NULL)
-- `updated_at` (timestamp, NOT NULL)
+- `id` bigint PK
+- `name` text NOT NULL
+- `description` text NULL
+- `is_active` boolean NOT NULL
+- `created_at` timestamp NOT NULL
+- `updated_at` timestamp NOT NULL
 
-#### A.2.3 `users`
-Proposit: usuaris del sistema (login).
-
+### 8.3 `users`
 Camps:
-- `id` (bigint, PK)
-- `first_name` (text, NOT NULL)
-- `last_name` (text, NOT NULL)
-- `email` (text, NOT NULL, unique)
-- `password_hash` (text, NOT NULL) (hash SHA-256 hex)
-- `role` (text, NOT NULL) (`ADM` o `USER`)
-- `birth_date` (date, NULL)
-- `is_active` (boolean, NOT NULL)
-- `created_at` (timestamp, NOT NULL)
-- `updated_at` (timestamp, NOT NULL)
-- `last_login_at` (timestamp, NULL)
+- `id` bigint PK
+- `first_name` text NOT NULL
+- `last_name` text NOT NULL
+- `email` text NOT NULL
+- `password_hash` text NOT NULL
+- `role` text NOT NULL
+- `birth_date` date NULL
+- `is_active` boolean NOT NULL
+- `created_at` timestamp NOT NULL
+- `updated_at` timestamp NOT NULL
+- `last_login_at` timestamp NULL
 
 Indexos:
-- `IX_users_email` (unique)
+- `IX_users_email` UNIQUE
 
-#### A.2.4 `students`
-Proposit: relacio alumne <-> escola i (opcionalment) alumne <-> usuari.
-
+### 8.4 `students`
 Camps:
-- `id` (bigint, PK)
-- `school_id` (bigint, NOT NULL)
-- `user_id` (bigint, NULL) (unique quan existeix)
-- `created_at` (timestamp, NOT NULL)
-
-FK:
-- `school_id -> schools.id` (ON DELETE CASCADE)
-- `user_id -> users.id` (sense cascade)
+- `id` bigint PK
+- `school_id` bigint NOT NULL
+- `user_id` bigint NULL
+- `created_at` timestamp NOT NULL
 
 Indexos:
 - `IX_students_school_id`
-- `IX_students_user_id` (unique)
-
-#### A.2.5 `enrollments`
-Proposit: inscripcions d'un alumne per any academic/curs.
-
-Camps:
-- `id` (bigint, PK)
-- `student_id` (bigint, NOT NULL)
-- `academic_year` (text, NOT NULL) (p. ex. `2025-2026`)
-- `course_name` (text, NULL) (p. ex. `4t ESO`)
-- `status` (text, NOT NULL) (p. ex. `Activa`, `Pendent`, `Cancel·lada`)
-- `enrolled_at` (timestamp, NOT NULL)
-- `school_id` (bigint, NOT NULL) (afegit posteriorment per consistencia i consultes)
+- `IX_students_user_id` UNIQUE
 
 FK:
-- `student_id -> students.id` (ON DELETE CASCADE)
-- `school_id -> schools.id` (recomanat; implementat via migracio idempotent en alguns entorns)
+- `fk_students_schools_school_id` (`school_id` -> `schools.id`) ON DELETE CASCADE
+- `fk_students_users_user_id` (`user_id` -> `users.id`) sense cascade
+
+### 8.5 `enrollments`
+Camps:
+- `id` bigint PK
+- `student_id` bigint NOT NULL
+- `academic_year` text NOT NULL
+- `course_name` text NULL
+- `status` text NOT NULL
+- `enrolled_at` timestamp NOT NULL
+- `school_id` bigint NOT NULL
 
 Indexos:
 - `IX_enrollments_student_id`
-- (recomanat) `ix_enrollments_school_id`
-
-#### A.2.6 `annual_fees`
-Proposit: quotes anuals associades a una inscripcio.
-
-Camps:
-- `id` (bigint, PK)
-- `enrollment_id` (bigint, NOT NULL)
-- `amount` (numeric/decimal, NOT NULL)
-- `currency` (text, NOT NULL) (p. ex. `EUR`)
-- `due_date` (date, NOT NULL)
-- `paid_at` (timestamp, NULL)
-- `payment_ref` (text, NULL)
+- `ix_enrollments_school_id`
 
 FK:
-- `enrollment_id -> enrollments.id` (ON DELETE CASCADE)
+- `fk_enrollments_students_student_id` ON DELETE CASCADE
+- `fk_enrollments_schools_school_id` ON DELETE RESTRICT
+
+### 8.6 `annual_fees`
+Camps:
+- `id` bigint PK
+- `enrollment_id` bigint NOT NULL
+- `amount` numeric NOT NULL
+- `currency` text NOT NULL
+- `due_date` date NOT NULL
+- `paid_at` timestamp NULL
+- `payment_ref` text NULL
 
 Indexos:
 - `IX_annual_fees_enrollment_id`
 
-#### A.2.7 `__EFMigrationsHistory`
-Proposit: control intern d'EF Core per saber quines migrations s'han aplicat.
+FK:
+- `fk_annualfees_enrollments_enrollment_id` ON DELETE CASCADE
 
-### A.3 Relacions clau
-- Escola -> Alumne
-- Alumne -> Inscripcio
-- Inscripcio -> Quotes anuals
+### 8.7 `__EFMigrationsHistory`
+Taula interna d'EF Core per traçar migrations aplicades.
 
-### A.4 Seed / dades demo
-Opcions de seed:
-- Seed automàtic (API) si `users` esta buida: crea scopes basics + usuari admin (configurable)
-- Script SQL `sql/001_seed_render.sql` (dades demo completes)
+## 9. Esquema relacional
 
-Recomanacio:
-- en produccio, evitar seeds automàtics o protegir-los amb claus (header/secret) i rols.
+```mermaid
+erDiagram
+  USERS ||--o| STUDENTS : "user_id"
+  SCHOOLS ||--o{ STUDENTS : "school_id"
+  STUDENTS ||--o{ ENROLLMENTS : "student_id"
+  SCHOOLS ||--o{ ENROLLMENTS : "school_id"
+  ENROLLMENTS ||--o{ ANNUAL_FEES : "enrollment_id"
+```
+
+## 10. Sistema de login utilitzat
+
+A Web:
+- cookie auth (`CookieAuth`)
+- sessio server-side per token API
+- login form a `/Auth/Login`
+
+A API:
+- validacio credencials
+- emissio JWT signat (`Jwt__Key`, `Jwt__Issuer`, `Jwt__Audience`)
+
+Cicle de vida:
+1. usuari fa login a Web
+2. Web demana JWT a API
+3. token guardat en sessio
+4. handler l'inclou a totes les peticions
+5. 401/403 => logout automatic
+
+## 11. Helpers (què fan)
+
+`src/Web/Helpers/ModalConfigFactory.cs`
+- centralitza configuracio de modals CRUD
+- evita duplicacio de configuracio entre controllers/vistes
+
+Helpers transversals no encapsulats en carpeta "Helpers":
+- `NormalizePg(...)` a `Program.cs` (Web i API): adapta URL `postgres://...` a connection string Npgsql valida
+- `ToSnakeCase(...)` a `SchoolDbContext`: convencio global de noms
+
+## 12. JavaScript i CSS (què cobreixen)
+
+### 12.1 JS (`src/Web/wwwroot/js`)
+- `entity-modal.js`: comportament generic de modals
+- `generic-table.js`: cerca/ordenacio/paginacio client-side
+- `signalr-connection.js`: connexio SignalR per actualitzacions
+- `save-cancel-buttons.js`: UX consistent de formularis
+- `i18n.js`: lookup client-side de textos localitzats
+- scripts específics per mòdul (`schools-details.js`, `students-create.js`, etc.)
+
+### 12.2 CSS (`src/Web/wwwroot/css`)
+- `davidgov-theme.css`: layout global, header, navegacio, colors
+- `login.css`: estil pantalla login
+- `search-results.css`: resultats de cerca
+- `generic-table.css`: estil reutilitzable de taules
+- `user-dashboard.css`: estils dashboard rol USER
+
+## 13. Altres punts tecnics rellevants
+
+- Logging: Serilog a fitxer + consola
+- Localitzacio: `Resources/*.resx` per vista
+- Ajuda web: render Markdown->HTML amb Markdig + export DOCX
+- Desplegament: Docker + Render
+- Build: `dotnet build` sobre solucio modular
