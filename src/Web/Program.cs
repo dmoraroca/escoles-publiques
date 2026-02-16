@@ -275,6 +275,26 @@ app.Use(async (context, next) =>
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
+        name: "help-index",
+        pattern: "ajuda",
+        defaults: new { controller = "Help", action = "Index" });
+
+    endpoints.MapControllerRoute(
+        name: "help-doc",
+        pattern: "ajuda/{doc}",
+        defaults: new { controller = "Help", action = "Doc" });
+
+    endpoints.MapControllerRoute(
+        name: "help-index-en",
+        pattern: "help",
+        defaults: new { controller = "Help", action = "Index" });
+
+    endpoints.MapControllerRoute(
+        name: "help-doc-en",
+        pattern: "help/{doc}",
+        defaults: new { controller = "Help", action = "Doc" });
+
+    endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
