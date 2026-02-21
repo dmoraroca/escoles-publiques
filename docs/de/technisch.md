@@ -1,20 +1,20 @@
-# Document tecnic (CA)
+# Technisches Dokument (DE)
 
-## 1. Introduccio
-Aquest document descriu en profunditat com esta construida l'aplicacio **Escoles Publiques** a nivell tecnic.
+## 1. Einleitung
+Dieses Dokument beschreibt im Detail, wie die Anwendung **Escoles Publiques** technisch aufgebaut ist.
 
-Objectius:
-- explicar arquitectura i estructura DDD
-- documentar com hem muntat Web i API
-- deixar traçabilitat de patrons, llibreries i decisions
-- descriure model de dades, relacions i sistema d'autenticacio
-- explicar utilitats transversals (helpers, JS, CSS)
+Ziele:
+- Architektur und DDD-Struktur erklaeren
+- dokumentieren, wie Web und API aufgebaut wurden
+- Nachvollziehbarkeit von Patterns, Bibliotheken und Entscheidungen sicherstellen
+- Datenmodell, Beziehungen und Authentifizierungssystem beschreiben
+- Querschnittsutilities erklaeren (Helpers, JS, CSS)
 
-Credencials de prova (entorn demo):
-- usuari: `admin@admin.adm`
-- contrasenya: `admin123`
+Testzugang (Demo-Umgebung):
+- Benutzer: `admin@admin.adm`
+- Passwort: `admin123`
 
-## 2. Esquema general de l'app (Web + API + DDD)
+## 2. Allgemeines Schema der App (Web + API + DDD)
 
 ```mermaid
 flowchart LR
@@ -35,35 +35,35 @@ flowchart LR
   AP --> I
 ```
 
-Flux funcional principal:
-1. Login a Web (`CookieAuth`)
-2. Web demana token a API (`POST /api/auth/token`)
-3. Token JWT es desa a sessio
-4. Web consumeix API amb `Authorization: Bearer <token>`
+Hauptablauf:
+1. Login in der Web-App (`CookieAuth`)
+2. Die Web-App fordert ein Token bei der API an (`POST /api/auth/token`)
+3. Das JWT-Token wird in der Session gespeichert
+4. Die Web-App konsumiert die API mit `Authorization: Bearer <token>`
 
-## 3. Estructura DDD (com ho hem organitzat)
+## 3. DDD-Struktur (wie wir es organisiert haben)
 
-Projectes i responsabilitats:
+Projekte und Verantwortlichkeiten:
 - `src/Domain`
-  - entitats i regles de domini
-  - interfaces de repositori (`I*Repository`)
-  - value objects / excepcions de domini
+  - Domain-Entitaeten und Regeln
+  - Repository-Interfaces (`I*Repository`)
+  - Value Objects / Domain-Exceptions
 - `src/Application`
-  - casos d'us (`*Service`)
-  - contracts d'aplicacio (`I*Service`)
-  - queries (p. ex. cerca agregada)
+  - Use Cases (`*Service`)
+  - Application-Contracts (`I*Service`)
+  - Queries (z. B. aggregierte Suche)
 - `src/Infrastructure`
-  - persistencia EF Core
-  - implementacions de repositori
-  - migrations
+  - EF-Core-Persistenz
+  - Repository-Implementierungen
+  - Migrations
 - `src/Api`
-  - capa d'entrada REST (controllers API)
-  - auth JWT, Swagger, CORS, seed
+  - REST-Eingangsschicht (API-Controller)
+  - JWT-Auth, Swagger, CORS, Seed
 - `src/Web`
-  - capa d'entrada MVC/Razor
-  - UI, localitzacio, clients HTTP cap a API
+  - MVC/Razor-Eingangsschicht
+  - UI, Lokalisierung, HTTP-Clients zur API
 
-### 3.1 Arbre ampliat de la solucio (vista tecnica)
+### 3.1 Erweiterter Strukturbaum der Loesung (technische Sicht)
 ```text
 src/
 ├── Api/
@@ -170,458 +170,458 @@ src/
     └── Hubs/
 ```
 
-### 3.2 Explicacio fitxer a fitxer: `src/Domain`
+### 3.2 Datei-fuer-Datei-Erklaerung: `src/Domain`
 
 `src/Domain/Entities/User.cs`
-- Entitat d'usuari de domini.
-- Modela identitat, credencial hash, rol i metadades d'activitat.
+- Domain-User-Entitaet.
+- Modelliert Identitaet, Passwort-Hash, Rolle und Aktivitaetsmetadaten.
 
 `src/Domain/Entities/School.cs`
-- Entitat escola.
-- Defineix camps troncals (`Name`, `Code`, ciutat, favorit, scope).
+- Schul-Entitaet.
+- Definiert Kernfelder (`Name`, `Code`, Stadt, Favorit, Scope).
 
 `src/Domain/Entities/Student.cs`
-- Entitat alumne.
-- Manté relacio amb escola i, opcionalment, amb usuari.
+- Schueler-Entitaet.
+- Haelt die Beziehung zur Schule und optional zum Benutzer.
 
 `src/Domain/Entities/Enrollment.cs`
-- Entitat d'inscripcio.
-- Representa l'estat academic de l'alumne per curs/any.
+- Einschreibungs-Entitaet.
+- Repraesentiert den akademischen Status pro Kurs/Jahr.
 
 `src/Domain/Entities/AnnualFee.cs`
-- Entitat quota anual.
-- Conté import, venciment i estat de pagament.
+- Jahresgebuehr-Entitaet.
+- Enthaelt Betrag, Faelligkeit und Zahlungsstatus.
 
 `src/Domain/Entities/Scope.cs`
-- Entitat de classificacio.
-- Permet categoritzar escoles per ambit.
+- Klassifizierungs-Entitaet.
+- Ermoeglicht die Kategorisierung von Schulen nach Bereich.
 
 `src/Domain/Interfaces/IUserRepository.cs`
-- Contracte de persistencia d'usuaris.
-- Defineix lectura/escriptura sense lligar-ho a EF Core.
+- Persistenzvertrag fuer Benutzer.
+- Definiert Lese/Schreiboperationen ohne Bindung an EF Core.
 
 `src/Domain/Interfaces/ISchoolRepository.cs`
-- Contracte de persistencia d'escoles.
-- Inclou operacions de cerca/llistat i CRUD.
+- Persistenzvertrag fuer Schulen.
+- Enthalten sind Suche/Listen und CRUD.
 
 `src/Domain/Interfaces/IStudentRepository.cs`
-- Contracte de persistencia d'alumnes.
-- Dona suport a consultes amb relacions.
+- Persistenzvertrag fuer Schueler.
+- Unterstuetzt Abfragen mit Beziehungen.
 
 `src/Domain/Interfaces/IEnrollmentRepository.cs`
-- Contracte de persistencia d'inscripcions.
-- Separa regles de domini de detalls de BD.
+- Persistenzvertrag fuer Einschreibungen.
+- Trennt Domain-Regeln von DB-Details.
 
 `src/Domain/Interfaces/IAnnualFeeRepository.cs`
-- Contracte de persistencia de quotes.
-- Proporciona operacions per estat de pagament.
+- Persistenzvertrag fuer Gebuehren.
+- Bietet Operationen nach Zahlungsstatus.
 
 `src/Domain/Interfaces/IScopeRepository.cs`
-- Contracte de persistencia de scopes.
-- Gestiona cataleg d'ambits i activacio.
+- Persistenzvertrag fuer Scopes.
+- Verwaltet Katalog von Bereichen und Aktivierung.
 
 `src/Domain/DomainExceptions/DomainException.cs`
-- Base d'excepcions de domini.
-- Unifica tractament d'errors funcionals.
+- Basis fuer Domain-Exceptions.
+- Vereinheitlicht die Behandlung fachlicher Fehler.
 
 `src/Domain/DomainExceptions/ValidationException.cs`
-- Error de validacio funcional.
-- S'utilitza quan una regla de negoci no es compleix.
+- Fachlicher Validierungsfehler.
+- Wird verwendet, wenn eine Business-Regel verletzt ist.
 
 `src/Domain/DomainExceptions/NotFoundException.cs`
-- Error d'entitat no trobada.
-- Evita retorns silenciosos o inconsistents.
+- Fehler bei nicht gefundener Entitaet.
+- Vermeidet stille oder inkonsistente Rueckgaben.
 
 `src/Domain/DomainExceptions/DuplicateEntityException.cs`
-- Error de duplicat funcional.
-- Especialment util per email/codis unics.
+- Fachlicher Duplikatsfehler.
+- Besonders nuetzlich fuer E-Mail/Unique-Codes.
 
-### 3.3 Explicacio fitxer a fitxer: `src/Application`
+### 3.3 Datei-fuer-Datei-Erklaerung: `src/Application`
 
 `src/Application/Interfaces/IAuthService.cs`
-- Contracte del cas d'us de login.
-- Defineix validacio credencial + emissio de resultat.
+- Vertrag des Login-Use-Case.
+- Definiert Credential-Validierung und Ergebnisemission.
 
 `src/Application/Interfaces/ISchoolService.cs`
-- Contracte de logica d'aplicacio d'escoles.
-- Orquestra validacions i repository calls.
+- Vertrag der Anwendungslogik fuer Schulen.
+- Orchestriert Validierungen und Repository-Aufrufe.
 
 `src/Application/Interfaces/IStudentService.cs`
-- Contracte de logica d'alumnes.
-- Inclou fluxos amb usuari associat.
+- Vertrag der Anwendungslogik fuer Schueler.
+- Enthaelt Flows mit zugeordnetem Benutzer.
 
 `src/Application/Interfaces/IEnrollmentService.cs`
-- Contracte de logica d'inscripcions.
-- Gestiona coherencia alumne-escola-curs.
+- Vertrag der Anwendungslogik fuer Einschreibungen.
+- Verwalten der Konsistenz Schueler-Schule-Jahr.
 
 `src/Application/Interfaces/IAnnualFeeService.cs`
-- Contracte de logica de quotes.
-- Regeix alta, actualitzacio i marcat de pagament.
+- Vertrag der Gebuehrenlogik.
+- Regeln fuer Anlegen, Aktualisieren und Zahlungsstatus.
 
 `src/Application/Interfaces/IUserService.cs`
-- Contracte de logica d'usuaris.
-- Crea, valida i consulta usuaris de sistema.
+- Vertrag der Benutzerlogik.
+- Erstellt, validiert und fragt Systembenutzer ab.
 
 `src/Application/Interfaces/Search/ISearchResultsQuery.cs`
-- Contracte de query transversal de cerca.
-- Retorna resultats agregats per moduls.
+- Vertrag fuer die uebergreifende Such-Query.
+- Liefert aggregierte Ergebnisse pro Modul.
 
 `src/Application/Interfaces/Search/ISearchSources.cs`
-- Contracte de fonts de cerca.
-- Separa origen de dades de la composicio final.
+- Vertrag fuer Suchquellen.
+- Trennt Datenursprung von der finalen Zusammenstellung.
 
 `src/Application/UseCases/Services/AuthService.cs`
-- Implementa login de negoci.
-- Valida usuari, rol i hash de contrasenya.
+- Implementiert fachliches Login.
+- Validiert Benutzer, Rolle und Passwort-Hash.
 
 `src/Application/UseCases/Services/SchoolService.cs`
-- Casos d'us d'escoles.
-- Aplica regles abans de delegar a repositori.
+- Use Cases fuer Schulen.
+- Wendet Regeln an, bevor an Repositories delegiert wird.
 
 `src/Application/UseCases/Services/StudentService.cs`
-- Casos d'us d'alumnes.
-- Gestiona transaccions quan crea usuari + alumne.
+- Use Cases fuer Schueler.
+- Verwalten Transaktionen beim Erstellen von Benutzer + Schueler.
 
 `src/Application/UseCases/Services/EnrollmentService.cs`
-- Casos d'us d'inscripcions.
-- Garantitza relacions valides amb alumne i escola.
+- Use Cases fuer Einschreibungen.
+- Stellt gueltige Beziehungen zwischen Schueler und Schule sicher.
 
 `src/Application/UseCases/Services/AnnualFeeService.cs`
-- Casos d'us de quotes.
-- Centralitza validacio d'import, venciment i estat.
+- Use Cases fuer Jahresgebuehren.
+- Zentralisiert Validierung von Betrag, Faelligkeit und Status.
 
 `src/Application/UseCases/Services/UserService.cs`
-- Casos d'us d'usuaris.
-- Controla unicitat d'email i atributs basics.
+- Use Cases fuer Benutzer.
+- Kontrolliert E-Mail-Eindeutigkeit und Basisattribute.
 
 `src/Application/UseCases/Queries/SearchResults/SearchResultsQuery.cs`
-- Implementa cerca agregada.
-- Uneix resultats de diferents fonts amb format comu.
+- Implementiert aggregierte Suche.
+- Vereint Ergebnisse aus verschiedenen Quellen in einem gemeinsamen Format.
 
 `src/Application/DTOs/SearchResultsDtos.cs`
-- Models de transport de resultats de cerca.
-- Evita exposar entitats de domini directament a UI/API.
+- Transportmodelle fuer Suchergebnisse.
+- Verhindert das direkte Exponieren von Domain-Entitaeten in UI/API.
 
 `src/Application/DTOs/SearchSourcesDtos.cs`
-- Models de transport de fonts de cerca.
-- Facilita composicio incremental de resultats.
+- Transportmodelle fuer Suchquellen.
+- Erleichtert die inkrementelle Ergebniszusammenstellung.
 
-### 3.4 Explicacio fitxer a fitxer: `src/Infrastructure`
+### 3.4 Datei-fuer-Datei-Erklaerung: `src/Infrastructure`
 
 `src/Infrastructure/SchoolDbContext.cs`
-- DbContext principal EF Core.
-- Defineix mapeig de taules i convencions (snake_case).
+- Haupt-DbContext von EF Core.
+- Definiert Tabellenmapping und Konventionen (snake_case).
 
 `src/Infrastructure/Persistence/AppDbContextFactory.cs`
-- Factory per disseny-time (migrations).
-- Permet `dotnet ef` fora de runtime Web/API.
+- Factory fuer Design-Time (Migrations).
+- Ermoeglicht `dotnet ef` ausserhalb von Web/API-Runtime.
 
 `src/Infrastructure/Persistence/Repositories/UserRepository.cs`
-- Implementacio EF de `IUserRepository`.
-- Consulta per email, CRUD i filtres basics.
+- EF-Implementierung von `IUserRepository`.
+- Abfragen nach E-Mail, CRUD und Basisfilter.
 
 `src/Infrastructure/Persistence/Repositories/SchoolRepository.cs`
-- Implementacio EF de `ISchoolRepository`.
-- Gestiona preferits, scopes i consultes de llistat.
+- EF-Implementierung von `ISchoolRepository`.
+- Verwaltet Favoriten, Scopes und Listenabfragen.
 
 `src/Infrastructure/Persistence/Repositories/StudentRepository.cs`
-- Implementacio EF de `IStudentRepository`.
-- Inclou relacions `School` i `User` per lectura rica.
+- EF-Implementierung von `IStudentRepository`.
+- Inklusive Beziehungen `School` und `User` fuer reichhaltige Abfragen.
 
 `src/Infrastructure/Persistence/Repositories/EnrollmentRepository.cs`
-- Implementacio EF de `IEnrollmentRepository`.
-- Inclou navegacions necessaries per vista i API.
+- EF-Implementierung von `IEnrollmentRepository`.
+- Enthaelt benoetigte Navigationen fuer View und API.
 
 `src/Infrastructure/Persistence/Repositories/AnnualFeeRepository.cs`
-- Implementacio EF de `IAnnualFeeRepository`.
-- Resol operacions de quotes i estats de pagament.
+- EF-Implementierung von `IAnnualFeeRepository`.
+- Deckt Operationen fuer Gebuehren und Zahlungsstatus ab.
 
 `src/Infrastructure/Persistence/ScopeRepository.cs`
-- Implementacio de `IScopeRepository`.
-- Dona suport al manteniment de scopes.
+- Implementierung von `IScopeRepository`.
+- Unterstuetzt die Pflege von Scopes.
 
 `src/Infrastructure/Migrations/20260105023406_UpdateStudentUserRelationship.cs`
-- Migracio que ajusta relacio `students.user_id`.
-- Consolida unicitat i comportament de FK.
+- Migration, die die Beziehung `students.user_id` anpasst.
+- Konsolidiert Eindeutigkeit und FK-Verhalten.
 
 `src/Infrastructure/Migrations/20260213131000_AddSchoolIdToEnrollments.cs`
-- Migracio que incorpora `school_id` a `enrollments`.
-- Millora coherencia i consultes directes per escola.
+- Migration, die `school_id` zu `enrollments` hinzufuegt.
+- Verbessert Konsistenz und direkte Abfragen je Schule.
 
 `src/Infrastructure/Migrations/SchoolDbContextModelSnapshot.cs`
-- Snapshot EF del model actual.
-- Referencia base per generar noves migrations.
+- EF-Snapshot des aktuellen Modells.
+- Basisreferenz fuer neue Migrations.
 
-Nota:
-- Existeixen carpetes `Scaffold` i `src/Infrastructure/src/...` d'origen scaffold/legacy.
-- No son el cami principal de l'arquitectura funcional actual, pero cal tenir-les controlades per evitar duplicacions de model.
+Hinweis:
+- Es existieren Ordner `Scaffold` und `src/Infrastructure/src/...` aus Scaffold/Legacy.
+- Sie sind nicht der Hauptpfad der aktuellen funktionalen Architektur, sollten aber im Blick bleiben, um Modell-Duplikate zu vermeiden.
 
-### 3.5 Explicacio fitxer a fitxer: `src/Api`
+### 3.5 Datei-fuer-Datei-Erklaerung: `src/Api`
 
 `src/Api/Program.cs`
-- Composicio principal API.
-- Configura DI, JWT, CORS, Swagger, EF i middleware pipeline.
+- Hauptkomposition der API.
+- Konfiguriert DI, JWT, CORS, Swagger, EF und Middleware-Pipeline.
 
 `src/Api/Controllers/AuthController.cs`
-- Endpoint de token (`POST /api/auth/token`).
-- Valida credencials i retorna JWT.
+- Token-Endpoint (`POST /api/auth/token`).
+- Validiert Credentials und gibt JWT aus.
 
 `src/Api/Controllers/SchoolsController.cs`
-- CRUD REST d'escoles.
-- Aplica `[Authorize]` i retorna codis HTTP consistents.
+- REST-CRUD fuer Schulen.
+- Wendet `[Authorize]` an und gibt konsistente HTTP-Codes zurueck.
 
 `src/Api/Controllers/StudentsController.cs`
-- CRUD REST d'alumnes.
-- Treballa amb serveis d'aplicacio i DTOs.
+- REST-CRUD fuer Schueler.
+- Arbeitet mit Application-Services und DTOs.
 
 `src/Api/Controllers/EnrollmentsController.cs`
-- CRUD REST d'inscripcions.
-- Manté coherencia amb escoles i alumnes.
+- REST-CRUD fuer Einschreibungen.
+- Haelt Konsistenz mit Schulen und Schuelern.
 
 `src/Api/Controllers/AnnualFeesController.cs`
-- CRUD REST de quotes anuals.
-- Inclou fluxos de marcat de pagament.
+- REST-CRUD fuer Jahresgebuehren.
+- Enthaelt Flows zum Markieren von Zahlungen.
 
 `src/Api/Controllers/ScopesController.cs`
-- CRUD/consulta de scopes.
-- Dona suport al filtratge funcional de la web.
+- CRUD/Abfrage von Scopes.
+- Unterstuetzt funktionale Filterung der Web-App.
 
 `src/Api/Controllers/MaintenanceController.cs`
-- Endpoints de manteniment intern (seed controlat).
-- Protegit amb rol i header de seguretat.
+- Interne Maintenance-Endpoints (kontrolliertes Seeding).
+- Geschuetzt durch Rolle und Sicherheits-Header.
 
 `src/Api/Services/DbSeeder.cs`
-- Seed de dades inicials.
-- Crea base minima per entorns demo o bootstrap.
+- Seeding von Initialdaten.
+- Erstellt eine minimale Basis fuer Demo- oder Bootstrap-Umgebungen.
 
 `src/Api/appsettings.json`
-- Configuracio base (JWT, connexio, logging, CORS).
-- Es complementa amb variables d'entorn a deploy.
+- Basiskonfiguration (JWT, Connection, Logging, CORS).
+- Wird beim Deployment durch Umgebungsvariablen ergaenzt.
 
-### 3.6 Explicacio fitxer a fitxer: `src/Web`
+### 3.6 Datei-fuer-Datei-Erklaerung: `src/Web`
 
 `src/Web/Program.cs`
-- Entrada principal de la web MVC.
-- Configura localitzacio, cookie auth, sessio, clients API i rutes.
+- Haupteinstieg der MVC-Webapp.
+- Konfiguriert Lokalisierung, Cookie-Auth, Session, API-Clients und Routen.
 
 `src/Web/Controllers/AuthController.cs`
-- Login/logout web.
-- Desa JWT en sessio i arrenca context autenticat.
+- Web-Login/Logout.
+- Speichert JWT in der Session und startet authentifizierten Kontext.
 
 `src/Web/Controllers/HomeController.cs`
-- Pagina inici, dashboard base i contingut public.
-- Punt d'entrada principal de navegacio.
+- Startseite, Basis-Dashboard und oeffentlicher Inhalt.
+- Haupteinstiegspunkt der Navigation.
 
 `src/Web/Controllers/HomeController.Favorites.cs`
-- Partials d'operacions de favorits separats en partial class.
-- Redueix mida del controller principal.
+- Teilklassen fuer Favoriten-Operationen.
+- Verkleinert den Haupt-Controller.
 
 `src/Web/Controllers/DashboardController.cs`
-- Vista de dashboard per rols.
-- Carrega components agregats de context usuari.
+- Dashboard-Ansicht je Rolle.
+- Laedt aggregierte Komponenten des Benutzerkontexts.
 
 `src/Web/Controllers/SchoolsController.cs`
-- Pantalles MVC d'escoles (llistat, alta, detall, edicio, baixa).
-- Delega a clients API i aplica validacions UI.
+- MVC-Seiten fuer Schulen (Liste, Anlegen, Details, Bearbeiten, Loeschen).
+- Delegiert an API-Clients und wendet UI-Validierungen an.
 
 `src/Web/Controllers/StudentsController.cs`
-- Pantalles MVC d'alumnes.
-- Gestiona vincle opcional amb usuaris.
+- MVC-Seiten fuer Schueler.
+- Verwaltet optionale Verknuepfung mit Benutzern.
 
 `src/Web/Controllers/EnrollmentsController.cs`
-- Pantalles MVC d'inscripcions.
-- Controla seleccio d'alumne, escola, any i estat.
+- MVC-Seiten fuer Einschreibungen.
+- Steuert Auswahl von Schueler, Schule, Jahr und Status.
 
 `src/Web/Controllers/AnnualFeesController.cs`
-- Pantalles MVC de quotes (incloent modal de creacio).
-- Integra binder decimal flexible i validacio visual.
+- MVC-Seiten fuer Gebuehren (inkl. Erstellungs-Modal).
+- Integriert flexiblen Decimal-Binder und visuelle Validierung.
 
 `src/Web/Controllers/ScopesController.cs`
-- Manteniment d'ambits des de UI.
-- Dona servei a filtres i classificacio funcional.
+- Pflege von Bereichen aus der UI.
+- Liefert Daten fuer Filter und funktionale Klassifikation.
 
 `src/Web/Controllers/SearchController.cs`
-- Cerca global.
-- Construeix resultats multi-entitat.
+- Globale Suche.
+- Baut Multi-Entitaet-Ergebnisse.
 
 `src/Web/Controllers/HelpController.cs`
-- Centre d'ajuda (`/ajuda` i `/help`) sense auth.
-- Renderitza Markdown a HTML i exporta DOCX.
+- Help Center (`/ajuda` und `/help`) ohne Auth.
+- Rendert Markdown zu HTML und exportiert DOCX.
 
 `src/Web/Controllers/ManualController.cs`
-- Compatibilitat amb rutes antigues de manual.
-- Redireccio cap al centre d'ajuda unificat.
+- Kompatibilitaet mit alten Manual-Routen.
+- Weiterleitung zum einheitlichen Help Center.
 
 `src/Web/Controllers/BaseController.cs`
-- Utilitats comunes de controllers (localitzacio, feedback, etc.).
-- Evita duplicacio transversal.
+- Gemeinsame Controller-Utilities (Lokalisierung, Feedback, etc.).
+- Vermeidet querschnittliche Duplikation.
 
 `src/Web/Services/Api/ApiAuthTokenHandler.cs`
-- DelegatingHandler que injecta JWT a cada crida API.
-- Si rep 401/403, fa neteja de sessio i logout.
+- DelegatingHandler, der JWT bei jedem API-Call injiziert.
+- Bei 401/403 wird die Session bereinigt und ausgeloggt.
 
 `src/Web/Services/Api/AuthApiClient.cs`
-- Client tipat per login API.
-- Encapsula endpoint de token i tractament de resposta.
+- Typisierter Client fuer API-Login.
+- Kapselt Token-Endpoint und Response-Behandlung.
 
 `src/Web/Services/Api/SchoolsApiClient.cs`
-- Client tipat de CRUD escoles.
-- Aillament de rutes i serialitzacio.
+- Typisierter CRUD-Client fuer Schulen.
+- Kapselt Routen und Serialisierung.
 
 `src/Web/Services/Api/StudentsApiClient.cs`
-- Client tipat de CRUD alumnes.
-- Gestiona payloads i errors HTTP.
+- Typisierter CRUD-Client fuer Schueler.
+- Verwaltet Payloads und HTTP-Fehler.
 
 `src/Web/Services/Api/EnrollmentsApiClient.cs`
-- Client tipat de CRUD inscripcions.
-- Manté contractes coherents amb API.
+- Typisierter CRUD-Client fuer Einschreibungen.
+- Haelt konsistente Vertraege zur API.
 
 `src/Web/Services/Api/AnnualFeesApiClient.cs`
-- Client tipat de quotes anuals.
-- Dona suport a fluxos de pagament.
+- Typisierter Client fuer Jahresgebuehren.
+- Unterstuetzt Zahlungsablaeufe.
 
 `src/Web/Services/Api/ScopesApiClient.cs`
-- Client tipat de scopes.
-- Utilitzat en manteniment i filtres.
+- Typisierter Client fuer Scopes.
+- Verwendet in Pflege und Filtern.
 
 `src/Web/ModelBinders/FlexibleDecimalModelBinder.cs`
-- Binder personalitzat per admetre `,` i `.` en decimals.
-- Evita errors culturals a imports monetaris.
+- Custom Binder, der `,` und `.` in Dezimalen zulaesst.
+- Vermeidet Kulturfehler bei Geldbetraegen.
 
 `src/Web/Helpers/ModalConfigFactory.cs`
-- Fabrica de configuracio de modals.
-- Uniformitza comportament CRUD en diferents pantalles.
+- Factory fuer Modal-Konfigurationen.
+- Vereinheitlicht CRUD-Verhalten ueber Screens hinweg.
 
 `src/Web/Hubs/SchoolHub.cs`
-- Hub SignalR per notificacions/actualitzacions en temps real.
-- Punt de broadcast per canvis de dades.
+- SignalR-Hub fuer Echtzeit-Benachrichtigungen/Updates.
+- Broadcast-Punkt fuer Datenaenderungen.
 
 `src/Web/Views/Shared/_Layout.cshtml`
-- Layout principal (header, idiomes, menu, peu).
-- Integra boto Ajuda i coherencia visual global.
+- Hauptlayout (Header, Sprachen, Menu, Footer).
+- Integriert Help-Button und globale visuelle Konsistenz.
 
 `src/Web/Views/Auth/Login.cshtml`
-- Pantalla de login.
-- Inclou selector idioma i accés a Ajuda sense autenticacio.
+- Login-Screen.
+- Enthaelt Sprachselector und Zugriff auf Help ohne Auth.
 
 `src/Web/Views/Help/Index.cshtml`
-- Vista index del centre d'ajuda.
-- Llista documents disponibles segons idioma actiu.
+- Index-Ansicht des Help Centers.
+- Listet verfuegbare Dokumente nach aktiver Sprache.
 
 `src/Web/Views/Help/Doc.cshtml`
-- Render de document ajuda.
-- Inclou boto de descarrega DOCX.
+- Dokument-Render der Hilfe.
+- Enthaelt Button zum DOCX-Download.
 
 `src/Web/Resources/**/*.resx`
-- Fitxers de localitzacio per vistes/scripts.
-- Clau per suport multiidioma CA/ES/EN/DE/FR/RU/ZH.
+- Lokalisierungsdateien fuer Views/Skripte.
+- Schluessel fuer CA/ES/EN/DE/FR/RU/ZH-Unterstuetzung.
 
 `src/Web/HelpDocs/{lang}/*.md`
-- Fonts Markdown que es mostren al centre d'ajuda.
-- S'alineen amb `docs/{lang}` per mantenir consistencia.
+- Markdown-Quellen fuer das Help Center.
+- Werden mit `docs/{lang}` synchron gehalten.
 
 `src/Web/wwwroot/js/generic-table.js`
-- Motor client-side de taules (filtres, ordenacio, paginacio).
+- Client-seitiger Tabellenmotor (Filter, Sortierung, Pagination).
 
 `src/Web/wwwroot/js/entity-modal.js`
-- Cicle de vida de modals de formulari.
-- Validacio i submit asincron coherent.
+- Lebenszyklus der Formular-Modals.
+- Konsistente Validierung und asynchrones Submit.
 
 `src/Web/wwwroot/js/i18n.js`
-- Utilitats de localitzacio client-side.
-- Lectura de diccionaris injectats per servidor.
+- Client-seitige Lokalisierungs-Utilities.
+- Liest die vom Server injizierten Dictionaries.
 
 `src/Web/wwwroot/js/signalr-connection.js`
-- Gestio de connexio SignalR i reconexio.
+- Verwaltung von SignalR-Verbindung und Reconnect.
 
 `src/Web/wwwroot/css/davidgov-theme.css`
-- Tema visual global (header, navegacio, components base).
+- Globales visuelles Theme (Header, Navigation, Basiskomponenten).
 
 `src/Web/wwwroot/css/login.css`
-- Estils especifics de login.
+- Styles fuer die Login-Seite.
 
 `src/Web/wwwroot/css/generic-table.css`
-- Estils reutilitzables per taules de dades.
+- Wiederverwendbare Styles fuer Datentabellen.
 
 `src/Web/wwwroot/css/user-dashboard.css`
-- Estils especifics de dashboard d'usuari.
+- Styles fuer das User-Dashboard.
 
-### 3.7 Explicacio fitxer a fitxer: `src/UnitTest`
+### 3.7 Datei-fuer-Datei-Erklaerung: `src/UnitTest`
 
 `src/UnitTest/Controllers/*`
-- Cobertura de comportament de controllers web.
-- Validen rutes, respostes, redirects i errors.
+- Abdeckung des Verhaltens der Web-Controller.
+- Validieren Routen, Responses, Redirects und Fehler.
 
 `src/UnitTest/Services/*`
-- Tests de logica d'aplicacio i clients API.
-- Asseguren regles de negoci i control d'excepcions.
+- Tests der Anwendungslogik und API-Clients.
+- Sichern Business-Regeln und Exception-Handling.
 
 `src/UnitTest/Infrastructure/*`
-- Tests de repositoris i integracio EF (in-memory/on test setup).
+- Tests der Repositories und EF-Integration (in-memory/On-Test-Setup).
 
 `src/UnitTest/Validators/*`
-- Tests de validacio de ViewModels.
-- Comprovacio de missatges d'error i casos frontera.
+- Tests der ViewModel-Validierung.
+- Pruefung von Fehlermeldungen und Grenzfaellen.
 
 `src/UnitTest/ViewComponents/*`
-- Tests de components reutilitzables de UI.
+- Tests von wiederverwendbaren UI-Komponenten.
 
 `src/UnitTest/Hubs/*`
-- Tests de comportament de SignalR hubs.
+- Tests des SignalR-Hub-Verhaltens.
 
 `src/UnitTest/Helpers/*`
-- Utilitats de test (handlers fake, factories, mocks).
+- Test-Utilities (Fake-Handler, Factories, Mocks).
 
 `src/UnitTest/UnitTest.csproj`
-- Projecte de test (xUnit + paquets de mocking/assertions).
+- Testprojekt (xUnit + Mocking/Assertion-Pakete).
 
-Regla clau de dependencies:
-- `Domain` no depen de cap altra capa
-- `Application` depen de `Domain`
-- `Infrastructure` implementa contracts de `Domain`/`Application`
-- `Web` i `Api` orquestren i fan DI
+Zentrale Abhaengigkeitsregel:
+- `Domain` haengt von keiner anderen Schicht ab
+- `Application` haengt von `Domain` ab
+- `Infrastructure` implementiert Contracts aus `Domain`/`Application`
+- `Web` und `Api` orchestrieren und fuehren DI aus
 
-## 4. Com hem muntat la Web
+## 4. Wie wir das Web aufgebaut haben
 
-Base tecnica:
+Technische Basis:
 - ASP.NET Core MVC + Razor Views (`src/Web/Views`)
-- autenticacio per cookie (`CookieAuth`)
-- sessio server-side per guardar el JWT de l'API
-- localitzacio per `resx` + selector d'idioma a capcalera
-- clients typed `HttpClient` per consumir API
+- Cookie-Authentifizierung (`CookieAuth`)
+- serverseitige Session fuer das API-JWT
+- Lokalisierung ueber `resx` + Sprachselector im Header
+- typed `HttpClient`-Clients zum Konsum der API
 
-Peces destacades:
-- Controllers MVC: `src/Web/Controllers/*`
-- Handler auth API: `src/Web/Services/Api/ApiAuthTokenHandler.cs`
-- Binder decimal flexible: `src/Web/ModelBinders/FlexibleDecimalModelBinder.cs`
-- Ajuda web (manual/funcional/tecnic): `src/Web/Controllers/HelpController.cs`
+Besonders wichtig:
+- MVC-Controller: `src/Web/Controllers/*`
+- API-Auth-Handler: `src/Web/Services/Api/ApiAuthTokenHandler.cs`
+- Flexibler Decimal-Binder: `src/Web/ModelBinders/FlexibleDecimalModelBinder.cs`
+- Web-Hilfe (Handbuch/Funktional/Technisch): `src/Web/Controllers/HelpController.cs`
 
-## 5. Com hem muntat la API (incloent Swagger)
+## 5. Wie wir die API aufgebaut haben (inkl. Swagger)
 
-Base tecnica:
+Technische Basis:
 - ASP.NET Core Web API (`src/Api`)
-- autenticacio `JwtBearer`
-- autoritzacio per rol/claims
-- CORS configurable per entorn
-- EF Core amb migrations auto a startup
+- `JwtBearer`-Authentifizierung
+- Autorisierung nach Rollen/Claims
+- CORS je Umgebung konfigurierbar
+- EF Core mit automatischen Migrations beim Startup
 
 Swagger:
-- paquet `Swashbuckle.AspNetCore`
-- UI a `/api` quan `Swagger__Enabled=true`
-- JSON OpenAPI a `/swagger/v1/swagger.json`
-- esquema `Bearer` configurat per provar endpoints protegits
+- Paket `Swashbuckle.AspNetCore`
+- UI unter `/api`, wenn `Swagger__Enabled=true`
+- OpenAPI-JSON unter `/swagger/v1/swagger.json`
+- `Bearer`-Schema konfiguriert, um geschuetzte Endpoints zu testen
 
-Exemple d'endpoint de login:
-- `POST /api/auth/token` retorna JWT
+Beispiel fuer Login-Endpoint:
+- `POST /api/auth/token` gibt JWT zurueck
 
-## 6. Patrons utilitzats (amb exemples i lectura line-by-line)
+## 6. Verwendete Patterns (mit Beispielen und Zeile-fuer-Zeile)
 
 ### 6.1 Repository + Service
-Idea:
-- repositori: accés a dades
-- servei aplicacio: regles i orquestracio
+Idee:
+- Repository: Datenzugriff
+- Application-Service: Regeln und Orchestrierung
 
-Exemple repositori (`StudentRepository`):
+Beispiel-Repository (`StudentRepository`):
 ```csharp
 1  public async Task<IEnumerable<Student>> GetAllAsync()
 2  {
@@ -631,16 +631,16 @@ Exemple repositori (`StudentRepository`):
 6          .ToListAsync();
 7  }
 ```
-Lectura:
-1. signatura async
-2. bloc mètode
-3. query base d'alumnes
-4. eager-load escola
-5. eager-load usuari
-6. executa a DB
-7. fi mètode
+Lesung:
+1. async Signatur
+2. Methodenblock
+3. Basisabfrage Schueler
+4. eager-load Schule
+5. eager-load Benutzer
+6. Ausfuehrung in der DB
+7. Ende der Methode
 
-Exemple servei (`StudentService`):
+Beispiel-Service (`StudentService`):
 ```csharp
 1  using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 2  var createdUser = await _userService.CreateUserAsync(user, password);
@@ -650,17 +650,17 @@ Exemple servei (`StudentService`):
 6  scope.Complete();
 7  return createdStudent;
 ```
-Lectura:
-1. obre transaccio
-2. crea usuari primer
-3. assigna FK a alumne
-4. set timestamp
-5. desa alumne
-6. confirma transaccio
-7. retorna resultat
+Lesung:
+1. Transaktion oeffnen
+2. Zuerst Benutzer erstellen
+3. FK dem Schueler zuweisen
+4. Timestamp setzen
+5. Schueler speichern
+6. Transaktion bestaetigen
+7. Ergebnis zurueckgeben
 
-### 6.2 API Gateway intern via `HttpClient` + `DelegatingHandler`
-Exemple (`ApiAuthTokenHandler`):
+### 6.2 Internes API-Gateway via `HttpClient` + `DelegatingHandler`
+Beispiel (`ApiAuthTokenHandler`):
 ```csharp
 1  var token = _httpContextAccessor.HttpContext?.Session.GetString(SessionKeys.ApiToken);
 2  if (!string.IsNullOrWhiteSpace(token) && request.Headers.Authorization == null)
@@ -673,15 +673,15 @@ Exemple (`ApiAuthTokenHandler`):
 9      throw new UnauthorizedAccessException(...);
 10 }
 ```
-Lectura:
-1. llegeix token de sessio
-2-3. adjunta capcalera auth
-4. continua pipeline HTTP
-5. captura 401/403
-6-9. neteja sessio + logout + excepcio controlada
+Lesung:
+1. Token aus der Session lesen
+2-3. Auth-Header anhaengen
+4. HTTP-Pipeline fortsetzen
+5. 401/403 abfangen
+6-9. Session loeschen + Logout + kontrollierte Exception
 
-### 6.3 Model Binder personalitzat (resoldre `,` i `.`)
-Exemple (`FlexibleDecimalModelBinder`):
+### 6.3 Custom Model Binder (`,` und `.` aufloesen)
+Beispiel (`FlexibleDecimalModelBinder`):
 ```csharp
 1  var normalized = Normalize(raw);
 2  if (decimal.TryParse(normalized, NumberStyles.Number, CultureInfo.InvariantCulture, out var value))
@@ -689,16 +689,16 @@ Exemple (`FlexibleDecimalModelBinder`):
 4  else
 5      bindingContext.ModelState.TryAddModelError(...);
 ```
-Lectura:
-1. normalitza entrada usuari
-2. parse invariant
-3. model valid
-4-5. error de validacio
+Lesung:
+1. Benutzereingabe normalisieren
+2. invariant parsen
+3. Model valid
+4-5. Validierungsfehler
 
-### 6.4 Pattern "Fail Fast" en startup
-A API, si no hi ha CORS a produccio -> l'app falla a startup per evitar desplegament insegur.
+### 6.4 Pattern "Fail Fast" beim Startup
+In der API: Wenn es kein CORS in Produktion gibt, faellt die App beim Startup, um einen unsicheren Deploy zu verhindern.
 
-## 7. Llibreries externes usades
+## 7. Verwendete externe Bibliotheken
 
 ### 7.1 API
 - `Microsoft.AspNetCore.Authentication.JwtBearer`
@@ -717,16 +717,16 @@ A API, si no hi ha CORS a produccio -> l'app falla a startup per evitar desplega
 ### 7.4 Web
 - `FluentValidation.AspNetCore`
 - `Markdig`
-- `DocumentFormat.OpenXml` (export DOCX des d'ajuda)
+- `DocumentFormat.OpenXml` (DOCX-Export aus der Hilfe)
 - `Serilog.AspNetCore`
 - `Serilog.Sinks.File`
 
-## 8. Base de dades (taules, camps, indexos, constraints)
+## 8. Datenbank (Tabellen, Felder, Indizes, Constraints)
 
-Motor: PostgreSQL
+Engine: PostgreSQL
 
 ### 8.1 `schools`
-Camps:
+Felder:
 - `id` bigint PK
 - `name` text NOT NULL
 - `code` text NOT NULL
@@ -735,14 +735,14 @@ Camps:
 - `scope` text NULL (legacy)
 - `created_at` timestamp NOT NULL
 
-Indexos:
-- PK sobre `id`
+Indizes:
+- PK auf `id`
 
 Constraints:
 - PK `PK_schools`
 
 ### 8.2 `scope_mnt`
-Camps:
+Felder:
 - `id` bigint PK
 - `name` text NOT NULL
 - `description` text NULL
@@ -751,7 +751,7 @@ Camps:
 - `updated_at` timestamp NOT NULL
 
 ### 8.3 `users`
-Camps:
+Felder:
 - `id` bigint PK
 - `first_name` text NOT NULL
 - `last_name` text NOT NULL
@@ -764,26 +764,26 @@ Camps:
 - `updated_at` timestamp NOT NULL
 - `last_login_at` timestamp NULL
 
-Indexos:
+Indizes:
 - `IX_users_email` UNIQUE
 
 ### 8.4 `students`
-Camps:
+Felder:
 - `id` bigint PK
 - `school_id` bigint NOT NULL
 - `user_id` bigint NULL
 - `created_at` timestamp NOT NULL
 
-Indexos:
+Indizes:
 - `IX_students_school_id`
 - `IX_students_user_id` UNIQUE
 
 FK:
 - `fk_students_schools_school_id` (`school_id` -> `schools.id`) ON DELETE CASCADE
-- `fk_students_users_user_id` (`user_id` -> `users.id`) sense cascade
+- `fk_students_users_user_id` (`user_id` -> `users.id`) ohne cascade
 
 ### 8.5 `enrollments`
-Camps:
+Felder:
 - `id` bigint PK
 - `student_id` bigint NOT NULL
 - `academic_year` text NOT NULL
@@ -792,7 +792,7 @@ Camps:
 - `enrolled_at` timestamp NOT NULL
 - `school_id` bigint NOT NULL
 
-Indexos:
+Indizes:
 - `IX_enrollments_student_id`
 - `ix_enrollments_school_id`
 
@@ -801,7 +801,7 @@ FK:
 - `fk_enrollments_schools_school_id` ON DELETE RESTRICT
 
 ### 8.6 `annual_fees`
-Camps:
+Felder:
 - `id` bigint PK
 - `enrollment_id` bigint NOT NULL
 - `amount` numeric NOT NULL
@@ -810,16 +810,16 @@ Camps:
 - `paid_at` timestamp NULL
 - `payment_ref` text NULL
 
-Indexos:
+Indizes:
 - `IX_annual_fees_enrollment_id`
 
 FK:
 - `fk_annualfees_enrollments_enrollment_id` ON DELETE CASCADE
 
 ### 8.7 `__EFMigrationsHistory`
-Taula interna d'EF Core per traçar migrations aplicades.
+Interne EF-Core-Tabelle zur Nachverfolgung angewandter Migrations.
 
-## 9. Esquema relacional
+## 9. Relationales Schema
 
 ```mermaid
 erDiagram
@@ -830,55 +830,55 @@ erDiagram
   ENROLLMENTS ||--o{ ANNUAL_FEES : "enrollment_id"
 ```
 
-## 10. Sistema de login utilitzat
+## 10. Verwendetes Login-System
 
-A Web:
-- cookie auth (`CookieAuth`)
-- sessio server-side per token API
-- login form a `/Auth/Login`
+In der Web-App:
+- Cookie-Auth (`CookieAuth`)
+- serverseitige Session fuer das API-Token
+- Login-Formular unter `/Auth/Login`
 
-A API:
-- validacio credencials
-- emissio JWT signat (`Jwt__Key`, `Jwt__Issuer`, `Jwt__Audience`)
+In der API:
+- Credential-Validierung
+- signiertes JWT (`Jwt__Key`, `Jwt__Issuer`, `Jwt__Audience`)
 
-Cicle de vida:
-1. usuari fa login a Web
-2. Web demana JWT a API
-3. token guardat en sessio
-4. handler l'inclou a totes les peticions
-5. 401/403 => logout automatic
+Lebenszyklus:
+1. Benutzer loggt sich in der Web-App ein
+2. Web-App fordert JWT von der API an
+3. Token wird in der Session gespeichert
+4. Handler fuegt es allen Requests hinzu
+5. 401/403 => automatischer Logout
 
-## 11. Helpers (què fan)
+## 11. Helpers (was sie tun)
 
 `src/Web/Helpers/ModalConfigFactory.cs`
-- centralitza configuracio de modals CRUD
-- evita duplicacio de configuracio entre controllers/vistes
+- zentralisiert die Konfiguration von CRUD-Modals
+- vermeidet Duplikate zwischen Controllern/Views
 
-Helpers transversals no encapsulats en carpeta "Helpers":
-- `NormalizePg(...)` a `Program.cs` (Web i API): adapta URL `postgres://...` a connection string Npgsql valida
-- `ToSnakeCase(...)` a `SchoolDbContext`: convencio global de noms
+Querschnitts-Helpers ausserhalb des Ordners "Helpers":
+- `NormalizePg(...)` in `Program.cs` (Web und API): passt `postgres://...` an eine gueltige Npgsql-Connection-String an
+- `ToSnakeCase(...)` in `SchoolDbContext`: globale Namenskonvention
 
-## 12. JavaScript i CSS (què cobreixen)
+## 12. JavaScript und CSS (was abgedeckt ist)
 
 ### 12.1 JS (`src/Web/wwwroot/js`)
-- `entity-modal.js`: comportament generic de modals
-- `generic-table.js`: cerca/ordenacio/paginacio client-side
-- `signalr-connection.js`: connexio SignalR per actualitzacions
-- `save-cancel-buttons.js`: UX consistent de formularis
-- `i18n.js`: lookup client-side de textos localitzats
-- scripts específics per mòdul (`schools-details.js`, `students-create.js`, etc.)
+- `entity-modal.js`: generisches Modal-Verhalten
+- `generic-table.js`: client-seitige Suche/Sortierung/Pagination
+- `signalr-connection.js`: SignalR-Verbindung fuer Updates
+- `save-cancel-buttons.js`: konsistentes Formular-UX
+- `i18n.js`: client-seitiger Lookup lokalisierter Texte
+- modulspezifische Scripts (`schools-details.js`, `students-create.js`, etc.)
 
 ### 12.2 CSS (`src/Web/wwwroot/css`)
-- `davidgov-theme.css`: layout global, header, navegacio, colors
-- `login.css`: estil pantalla login
-- `search-results.css`: resultats de cerca
-- `generic-table.css`: estil reutilitzable de taules
-- `user-dashboard.css`: estils dashboard rol USER
+- `davidgov-theme.css`: globales Layout, Header, Navigation, Farben
+- `login.css`: Style der Login-Seite
+- `search-results.css`: Suchergebnisse
+- `generic-table.css`: wiederverwendbare Tabellenstile
+- `user-dashboard.css`: Styles fuer das USER-Dashboard
 
-## 13. Altres punts tecnics rellevants
+## 13. Weitere technische Punkte
 
-- Logging: Serilog a fitxer + consola
-- Localitzacio: `Resources/*.resx` per vista
-- Ajuda web: render Markdown->HTML amb Markdig + export DOCX
-- Desplegament: Docker + Render
-- Build: `dotnet build` sobre solucio modular
+- Logging: Serilog in Datei + Konsole
+- Lokalisierung: `Resources/*.resx` pro View
+- Web-Hilfe: Markdown->HTML Rendering mit Markdig + DOCX-Export
+- Deployment: Docker + Render
+- Build: `dotnet build` ueber modulare Loesung
