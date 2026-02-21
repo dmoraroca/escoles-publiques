@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Ajuda" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Manual d'usuari" xml:space="preserve">
+    <value>用户手册</value>
+  </data>
+  <data name="Guia d'ús de l'aplicació." xml:space="preserve">
+    <value>应用使用指南。</value>
+  </data>
+  <data name="Obrir" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="Document funcional" xml:space="preserve">
+    <value>功能文档</value>
+  </data>
+  <data name="Requisits i funcionalitats." xml:space="preserve">
+    <value>需求与功能。</value>
+  </data>
+  <data name="Document tècnic" xml:space="preserve">
+    <value>技术文档</value>
+  </data>
+  <data name="Arquitectura, stack i deploy." xml:space="preserve">
+    <value>架构、技术栈与部署。</value>
+  </data>
+</root>

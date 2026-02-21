@@ -88,4 +88,19 @@
   <data name="RU - Русский" xml:space="preserve">
     <value>RU - Russisch</value>
   </data>
+  <data name="ZH - 中文" xml:space="preserve">
+    <value>ZH - 中文</value>
+  </data>
+  <data name="Ajuda" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="Manual d'usuari" xml:space="preserve">
+    <value>Benutzerhandbuch</value>
+  </data>
+  <data name="Document funcional" xml:space="preserve">
+    <value>Fachliches Dokument</value>
+  </data>
+  <data name="Document tècnic" xml:space="preserve">
+    <value>Technisches Dokument</value>
+  </data>
 </root>

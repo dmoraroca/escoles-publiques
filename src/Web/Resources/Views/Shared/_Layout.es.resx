@@ -67,4 +67,40 @@
   <data name="Idioma:" xml:space="preserve">
     <value>Idioma:</value>
   </data>
+  <data name="Idioma" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="CA - Català" xml:space="preserve">
+    <value>CA - Catalán</value>
+  </data>
+  <data name="ES - Espanyol" xml:space="preserve">
+    <value>ES - Español</value>
+  </data>
+  <data name="EN - English" xml:space="preserve">
+    <value>EN - Inglés</value>
+  </data>
+  <data name="DE - Deutsch" xml:space="preserve">
+    <value>DE - Alemán</value>
+  </data>
+  <data name="FR - Français" xml:space="preserve">
+    <value>FR - Francés</value>
+  </data>
+  <data name="RU - Русский" xml:space="preserve">
+    <value>RU - Ruso</value>
+  </data>
+  <data name="ZH - 中文" xml:space="preserve">
+    <value>ZH - 中文</value>
+  </data>
+  <data name="Ajuda" xml:space="preserve">
+    <value>Ayuda</value>
+  </data>
+  <data name="Manual d'usuari" xml:space="preserve">
+    <value>Manual de usuario</value>
+  </data>
+  <data name="Document funcional" xml:space="preserve">
+    <value>Documento funcional</value>
+  </data>
+  <data name="Document tècnic" xml:space="preserve">
+    <value>Documento técnico</value>
+  </data>
 </root>

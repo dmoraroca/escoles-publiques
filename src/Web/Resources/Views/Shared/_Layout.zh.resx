@@ -91,4 +91,16 @@
   <data name="ZH - 中文" xml:space="preserve">
     <value>ZH - 中文</value>
   </data>
+  <data name="Ajuda" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Manual d'usuari" xml:space="preserve">
+    <value>用户手册</value>
+  </data>
+  <data name="Document funcional" xml:space="preserve">
+    <value>功能文档</value>
+  </data>
+  <data name="Document tècnic" xml:space="preserve">
+    <value>技术文档</value>
+  </data>
 </root>
