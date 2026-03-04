@@ -43,5 +43,21 @@ namespace UnitTest.Services
 
             Assert.Null(result);
         }
+
+        [Fact]
+        public async Task GetUserByEmailAsync_ReturnsUser_WhenExists()
+        {
+            var userRepoMock = new Mock<IUserRepository>();
+            var authServiceMock = new Mock<IAuthService>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+            userRepoMock.Setup(r => r.GetByEmailAsync("mail@a.com"))
+                .ReturnsAsync(new User { Id = 3, Email = "mail@a.com" });
+            var service = new UserService(userRepoMock.Object, authServiceMock.Object, loggerMock.Object);
+
+            var result = await service.GetUserByEmailAsync("mail@a.com");
+
+            Assert.NotNull(result);
+            Assert.Equal("mail@a.com", result!.Email);
+        }
     }
 }

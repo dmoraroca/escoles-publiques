@@ -1,4 +1,6 @@
-using Application.Interfaces;
+using Application.Interfaces.Cqrs;
+using Application.UseCases.Schools.Commands;
+using Application.UseCases.Schools.Queries;
 using Api.Contracts;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -11,99 +13,72 @@ namespace Api.Controllers;
 [Authorize]
 public class SchoolsController : ControllerBase
 {
-    private const string GenericApiError = "S'ha produït un error inesperat.";
-    private readonly ISchoolService _schoolService;
-    private readonly ILogger<SchoolsController> _logger;
+    private readonly IQueryHandler<GetAllSchoolsQuery, IEnumerable<School>> _getAllSchoolsQuery;
+    private readonly IQueryHandler<GetSchoolByIdQuery, School?> _getSchoolByIdQuery;
+    private readonly ICommandHandler<CreateSchoolCommand, School> _createSchoolCommand;
+    private readonly ICommandHandler<UpdateSchoolCommand, bool> _updateSchoolCommand;
+    private readonly ICommandHandler<DeleteSchoolCommand, bool> _deleteSchoolCommand;
 
-    public SchoolsController(ISchoolService schoolService, ILogger<SchoolsController> logger)
+    public SchoolsController(
+        IQueryHandler<GetAllSchoolsQuery, IEnumerable<School>> getAllSchoolsQuery,
+        IQueryHandler<GetSchoolByIdQuery, School?> getSchoolByIdQuery,
+        ICommandHandler<CreateSchoolCommand, School> createSchoolCommand,
+        ICommandHandler<UpdateSchoolCommand, bool> updateSchoolCommand,
+        ICommandHandler<DeleteSchoolCommand, bool> deleteSchoolCommand)
     {
-        _schoolService = schoolService;
-        _logger = logger;
+        _getAllSchoolsQuery = getAllSchoolsQuery;
+        _getSchoolByIdQuery = getSchoolByIdQuery;
+        _createSchoolCommand = createSchoolCommand;
+        _updateSchoolCommand = updateSchoolCommand;
+        _deleteSchoolCommand = deleteSchoolCommand;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var schools = await _schoolService.GetAllSchoolsAsync();
+        var schools = await _getAllSchoolsQuery.HandleAsync(new GetAllSchoolsQuery());
         return Ok(schools.Select(ToDto));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
-        try
-        {
-            var school = await _schoolService.GetSchoolByIdAsync(id);
-            if (school is null) return NotFound();
-            return Ok(ToDto(school));
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "School not found {Id}", id);
-            return NotFound();
-        }
+        var school = await _getSchoolByIdQuery.HandleAsync(new GetSchoolByIdQuery(id));
+        if (school is null) return NotFound();
+        return Ok(ToDto(school));
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SchoolDto dto)
     {
-        var school = new School
-        {
-            Code = dto.Code,
-            Name = dto.Name,
-            City = dto.City,
-            IsFavorite = dto.IsFavorite,
-            ScopeId = dto.ScopeId
-        };
-
-        try
-        {
-            var created = await _schoolService.CreateSchoolAsync(school);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error creating school");
-            return Problem(detail: GenericApiError);
-        }
+        var created = await _createSchoolCommand.HandleAsync(new CreateSchoolCommand(
+            dto.Code,
+            dto.Name,
+            dto.City,
+            dto.IsFavorite,
+            dto.ScopeId));
+        return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] SchoolDto dto)
     {
-        try
-        {
-            var school = await _schoolService.GetSchoolByIdAsync(id);
-            if (school is null) return NotFound();
-            school.Code = dto.Code;
-            school.Name = dto.Name;
-            school.City = dto.City;
-            school.IsFavorite = dto.IsFavorite;
-            school.ScopeId = dto.ScopeId;
-
-            await _schoolService.UpdateSchoolAsync(school);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error updating school {Id}", id);
-            return Problem(detail: GenericApiError);
-        }
+        var updated = await _updateSchoolCommand.HandleAsync(new UpdateSchoolCommand(
+            id,
+            dto.Code,
+            dto.Name,
+            dto.City,
+            dto.IsFavorite,
+            dto.ScopeId));
+        if (!updated) return NotFound();
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        try
-        {
-            await _schoolService.DeleteSchoolAsync(id);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error deleting school {Id}", id);
-            return Problem(detail: GenericApiError);
-        }
+        await _deleteSchoolCommand.HandleAsync(new DeleteSchoolCommand(id));
+        return NoContent();
     }
 
     private static SchoolDtoOut ToDto(School school)

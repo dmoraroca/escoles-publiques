@@ -26,4 +26,5 @@ jobs:
           APPLICATION_MIN: "80"
           INFRASTRUCTURE_MIN: "15"
           WEB_MIN: "50"
+          API_MIN: "10"
         run: ./scripts/check-coverage-gates.sh

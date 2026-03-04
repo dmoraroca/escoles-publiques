@@ -18,7 +18,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="welcome-section">
-                    <h1 class="welcome-title">@Localizer["Benvingut, {0}!", user?.FirstName]</h1>
+                    <h1 class="welcome-title">@Localizer["Benvingut, {0}!", user?.FirstName ?? string.Empty]</h1>
                     <p class="welcome-subtitle">
                         <i class="bi bi-person-badge"></i> @student?.FirstName @student?.LastName
                         <span class="mx-2">|</span>

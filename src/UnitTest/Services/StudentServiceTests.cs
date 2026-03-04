@@ -64,5 +64,21 @@ namespace UnitTest.Services
                 await service.GetStudentByIdAsync(2);
             });
         }
+
+        [Fact]
+        public async Task GetStudentsBySchoolIdAsync_ReturnsStudents()
+        {
+            var repoMock = new Mock<IStudentRepository>();
+            var schoolRepoMock = new Mock<ISchoolRepository>();
+            var userServiceMock = new Mock<IUserService>();
+            var loggerMock = new Mock<ILogger<StudentService>>();
+            repoMock.Setup(r => r.GetBySchoolIdAsync(10))
+                .ReturnsAsync(new List<Student> { new Student { Id = 3, SchoolId = 10 } });
+            var service = new StudentService(repoMock.Object, schoolRepoMock.Object, userServiceMock.Object, loggerMock.Object);
+
+            var result = await service.GetStudentsBySchoolIdAsync(10);
+
+            Assert.Single(result);
+        }
     }
 }

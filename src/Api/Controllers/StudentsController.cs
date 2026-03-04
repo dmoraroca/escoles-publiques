@@ -1,6 +1,5 @@
 using Application.Interfaces;
 using Api.Contracts;
-using Domain.DomainExceptions;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +12,13 @@ namespace Api.Controllers;
 [Authorize]
 public class StudentsController : ControllerBase
 {
-    private const string GenericApiError = "S'ha produït un error inesperat.";
     private readonly IStudentService _studentService;
     private readonly IUserService _userService;
-    private readonly ILogger<StudentsController> _logger;
 
-    public StudentsController(IStudentService studentService, IUserService userService, ILogger<StudentsController> logger)
+    public StudentsController(IStudentService studentService, IUserService userService)
     {
         _studentService = studentService;
         _userService = userService;
-        _logger = logger;
     }
 
     [HttpGet]
@@ -35,138 +31,80 @@ public class StudentsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
-        try
-        {
-            var student = await _studentService.GetStudentByIdAsync(id);
-            return Ok(ToDto(student!));
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
+        var student = await _studentService.GetStudentByIdAsync(id);
+        return Ok(ToDto(student!));
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] StudentDtoIn dto)
     {
-        try
+        var existingUser = await _userService.GetUserByEmailAsync(dto.Email);
+        if (existingUser != null)
         {
-            var existingUser = await _userService.GetUserByEmailAsync(dto.Email);
-            if (existingUser != null)
+            var student = new Student
             {
-                var student = new Student
-                {
-                    SchoolId = dto.SchoolId,
-                    UserId = existingUser.Id
-                };
-                var created = await _studentService.CreateStudentAsync(student);
-                return CreatedAtAction(nameof(Get), new { id = created.Id }, ToDto(created));
-            }
+                SchoolId = dto.SchoolId,
+                UserId = existingUser.Id
+            };
+            var created = await _studentService.CreateStudentAsync(student);
+            return CreatedAtAction(nameof(Get), new { id = created.Id }, ToDto(created));
+        }
 
-            var user = new Domain.Entities.User
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.Email,
-                BirthDate = dto.BirthDate
-            };
-            var newStudent = new Student
-            {
-                SchoolId = dto.SchoolId
-            };
-            var configuredPassword = Environment.GetEnvironmentVariable("ESCOLES_DEFAULT_STUDENT_PASSWORD");
-            var initialPassword = string.IsNullOrWhiteSpace(configuredPassword)
-                ? Convert.ToHexString(RandomNumberGenerator.GetBytes(24))
-                : configuredPassword;
-            var createdWithUser = await _studentService.CreateStudentWithUserAsync(user, initialPassword, newStudent);
-            return CreatedAtAction(nameof(Get), new { id = createdWithUser.Id }, ToDto(createdWithUser));
-        }
-        catch (DuplicateEntityException ex)
+        var user = new Domain.Entities.User
         {
-            _logger.LogWarning(ex, "Duplicate email on student create");
-            return Conflict(ex.Message);
-        }
-        catch (ValidationException ex)
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Email = dto.Email,
+            BirthDate = dto.BirthDate
+        };
+        var newStudent = new Student
         {
-            var errors = ex.Errors.Count > 0
-                ? ex.Errors
-                : new Dictionary<string, string[]> { { "Validation", new[] { ex.Message } } };
-            return ValidationProblem(new ValidationProblemDetails(errors));
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error creating student");
-            return Problem(detail: GenericApiError);
-        }
+            SchoolId = dto.SchoolId
+        };
+        var configuredPassword = Environment.GetEnvironmentVariable("ESCOLES_DEFAULT_STUDENT_PASSWORD");
+        var initialPassword = string.IsNullOrWhiteSpace(configuredPassword)
+            ? Convert.ToHexString(RandomNumberGenerator.GetBytes(24))
+            : configuredPassword;
+        var createdWithUser = await _studentService.CreateStudentWithUserAsync(user, initialPassword, newStudent);
+        return CreatedAtAction(nameof(Get), new { id = createdWithUser.Id }, ToDto(createdWithUser));
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] StudentDtoIn dto)
     {
-        try
-        {
-            var student = await _studentService.GetStudentByIdAsync(id);
-            if (student == null) return NotFound();
+        var student = await _studentService.GetStudentByIdAsync(id);
+        if (student == null) return NotFound();
 
-            Domain.Entities.User? user = null;
-            if (student.UserId.HasValue)
-            {
-                user = await _userService.GetUserByIdAsync(student.UserId.Value);
-            }
-
-            if (user != null)
-            {
-                user.FirstName = dto.FirstName;
-                user.LastName = dto.LastName;
-                user.Email = dto.Email;
-                user.BirthDate = dto.BirthDate;
-
-                student.SchoolId = dto.SchoolId;
-                await _studentService.UpdateStudentWithUserAsync(student, user);
-            }
-            else
-            {
-                student.SchoolId = dto.SchoolId;
-                await _studentService.UpdateStudentAsync(student);
-            }
-
-            return NoContent();
-        }
-        catch (NotFoundException)
+        Domain.Entities.User? user = null;
+        if (student.UserId.HasValue)
         {
-            return NotFound();
+            user = await _userService.GetUserByIdAsync(student.UserId.Value);
         }
-        catch (ValidationException ex)
+
+        if (user != null)
         {
-            var errors = ex.Errors.Count > 0
-                ? ex.Errors
-                : new Dictionary<string, string[]> { { "Validation", new[] { ex.Message } } };
-            return ValidationProblem(new ValidationProblemDetails(errors));
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.Email = dto.Email;
+            user.BirthDate = dto.BirthDate;
+
+            student.SchoolId = dto.SchoolId;
+            await _studentService.UpdateStudentWithUserAsync(student, user);
         }
-        catch (Exception ex)
+        else
         {
-            _logger.LogError(ex, "Error updating student {Id}", id);
-            return Problem(detail: GenericApiError);
+            student.SchoolId = dto.SchoolId;
+            await _studentService.UpdateStudentAsync(student);
         }
+
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        try
-        {
-            await _studentService.DeleteStudentAsync(id);
-            return NoContent();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error deleting student {Id}", id);
-            return Problem(detail: GenericApiError);
-        }
+        await _studentService.DeleteStudentAsync(id);
+        return NoContent();
     }
 
     private static StudentDtoOut ToDto(Student student)

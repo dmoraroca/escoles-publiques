@@ -72,7 +72,7 @@ namespace UnitTest.Controllers
             }
             catch (System.Exception ex)
             {
-                Assert.True(false, $"Login threw exception: {ex}");
+                Assert.Fail($"Login threw exception: {ex}");
                 return;
             }
 
@@ -91,11 +91,11 @@ namespace UnitTest.Controllers
                 }
 
                 var err = controller.TempData?["Error"]?.ToString() ?? view.ViewName ?? "ViewResult without view name";
-                Assert.True(false, $"Expected RedirectToActionResult but got ViewResult: {err}");
+                Assert.Fail($"Expected RedirectToActionResult but got ViewResult: {err}");
             }
             else
             {
-                Assert.True(false, $"Unexpected result type: {result.GetType()}");
+                Assert.Fail($"Unexpected result type: {result.GetType()}");
             }
         }
     }

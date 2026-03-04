@@ -11,7 +11,7 @@ namespace UnitTest.Controllers
             var logger = new Moq.Mock<Microsoft.Extensions.Logging.ILogger<Web.Controllers.HomeController>>();
             var controller = new Web.Controllers.HomeController(logger.Object);
             var user = new Moq.Mock<System.Security.Claims.ClaimsPrincipal>();
-            user.Setup(u => u.FindFirst(System.Security.Claims.ClaimTypes.Role)).Returns((System.Security.Claims.Claim)null);
+            user.Setup(u => u.FindFirst(System.Security.Claims.ClaimTypes.Role)).Returns((System.Security.Claims.Claim?)null);
             controller.ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext
             {
                 HttpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext { User = user.Object }

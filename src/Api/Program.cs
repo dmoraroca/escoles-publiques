@@ -1,4 +1,7 @@
 using Application.Interfaces;
+using Application.Interfaces.Cqrs;
+using Application.UseCases.Schools.Commands;
+using Application.UseCases.Schools.Queries;
 using Application.UseCases.Services;
 using Api.Validators;
 using Domain.Entities;
@@ -84,6 +87,14 @@ builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<IAnnualFeeService, AnnualFeeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+// CQRS (lightweight) handlers for school aggregate
+builder.Services.AddScoped<IQueryHandler<GetAllSchoolsQuery, IEnumerable<School>>, GetAllSchoolsQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetSchoolByIdQuery, School?>, GetSchoolByIdQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetSchoolByCodeQuery, School?>, GetSchoolByCodeQueryHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateSchoolCommand, School>, CreateSchoolCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateSchoolCommand, bool>, UpdateSchoolCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteSchoolCommand, bool>, DeleteSchoolCommandHandler>();
 
 // Authentication - JWT
 var jwtSection = builder.Configuration.GetSection("Jwt");
@@ -214,6 +225,9 @@ else
     app.UseHsts();
 }
 
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<RequestMetricsMiddleware>();
+app.UseMiddleware<ApiExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
 

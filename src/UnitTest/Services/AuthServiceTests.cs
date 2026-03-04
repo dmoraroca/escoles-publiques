@@ -3,7 +3,6 @@ using Moq;
 using Application.UseCases.Services;
 using Domain.Entities;
 using Domain.Interfaces;
-using Application.Interfaces;
 using System.Threading.Tasks;
 
 namespace UnitTest.Services
@@ -14,20 +13,22 @@ namespace UnitTest.Services
         public async Task AuthenticateAsync_ReturnsSuccess_WhenUserAndPasswordMatch()
         {
             var userRepoMock = new Mock<IUserRepository>();
-            var user = new User { Id = 1, Email = "test@a.com", PasswordHash = "hash", Role = "USER" };
-            userRepoMock.Setup(r => r.GetByEmailAsync("test@a.com")).ReturnsAsync(user);
             var service = new AuthService(userRepoMock.Object);
+            var password = "secret";
+            var user = new User
+            {
+                Id = 1,
+                Email = "test@a.com",
+                PasswordHash = service.HashPassword(password),
+                Role = "USER",
+                IsActive = true
+            };
+            userRepoMock.Setup(r => r.GetByEmailAsync("test@a.com")).ReturnsAsync(user);
+            var result = await service.AuthenticateAsync("test@a.com", password);
 
-            // Simular hash i verificació: el password "hash" sempre és vàlid
-            // (la implementació real de AuthService ha de permetre-ho per defecte)
-            var result = await service.AuthenticateAsync("test@a.com", "hash");
-
-            // Acceptem que pot fallar si la implementació real no permet "hash" com a password vàlid
-            // però el test espera que la validació sigui correcta
-            // Acceptem el comportament real: pot ser false si la contrasenya no coincideix
-            // El test comprova que el servei retorna el rol correcte només si success és true
-            if (result.success)
-                Assert.Equal("USER", result.role);
+            Assert.True(result.success);
+            Assert.Equal("1", result.token);
+            Assert.Equal("USER", result.role);
         }
 
         [Fact]
@@ -41,6 +42,58 @@ namespace UnitTest.Services
 
             Assert.False(result.success);
             Assert.Null(result.token);
+        }
+
+        [Fact]
+        public async Task AuthenticateAsync_ReturnsFail_WhenUserInactive()
+        {
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(r => r.GetByEmailAsync("inactive@a.com"))
+                .ReturnsAsync(new User
+                {
+                    Id = 3,
+                    Email = "inactive@a.com",
+                    PasswordHash = "x",
+                    IsActive = false
+                });
+            var service = new AuthService(userRepoMock.Object);
+
+            var result = await service.AuthenticateAsync("inactive@a.com", "any");
+
+            Assert.False(result.success);
+            Assert.Null(result.token);
+            Assert.Null(result.role);
+        }
+
+        [Fact]
+        public async Task AuthenticateAsync_ReturnsFail_WhenPasswordIsWrong()
+        {
+            var userRepoMock = new Mock<IUserRepository>();
+            var service = new AuthService(userRepoMock.Object);
+            userRepoMock.Setup(r => r.GetByEmailAsync("test@a.com"))
+                .ReturnsAsync(new User
+                {
+                    Id = 2,
+                    Email = "test@a.com",
+                    PasswordHash = service.HashPassword("correct"),
+                    IsActive = true
+                });
+
+            var result = await service.AuthenticateAsync("test@a.com", "wrong");
+
+            Assert.False(result.success);
+            Assert.Null(result.token);
+        }
+
+        [Fact]
+        public void VerifyPassword_ReturnsTrue_WhenHashMatches()
+        {
+            var userRepoMock = new Mock<IUserRepository>();
+            var service = new AuthService(userRepoMock.Object);
+            var hash = service.HashPassword("abc123");
+
+            Assert.True(service.VerifyPassword("abc123", hash));
+            Assert.False(service.VerifyPassword("other", hash));
         }
     }
 }

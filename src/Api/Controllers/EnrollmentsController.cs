@@ -1,6 +1,5 @@
 using Application.Interfaces;
 using Api.Contracts;
-using Domain.DomainExceptions;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +11,11 @@ namespace Api.Controllers;
 [Authorize]
 public class EnrollmentsController : ControllerBase
 {
-    private const string GenericApiError = "S'ha produït un error inesperat.";
     private readonly IEnrollmentService _enrollmentService;
-    private readonly ILogger<EnrollmentsController> _logger;
 
-    public EnrollmentsController(IEnrollmentService enrollmentService, ILogger<EnrollmentsController> logger)
+    public EnrollmentsController(IEnrollmentService enrollmentService)
     {
         _enrollmentService = enrollmentService;
-        _logger = logger;
     }
 
     [HttpGet]
@@ -32,107 +28,50 @@ public class EnrollmentsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
-        try
-        {
-            var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
-            return Ok(ToDto(enrollment!));
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
+        var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
+        return Ok(ToDto(enrollment!));
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] EnrollmentDtoIn dto)
     {
-        try
+        var enrollment = new Enrollment
         {
-            var enrollment = new Enrollment
-            {
-                StudentId = dto.StudentId,
-                AcademicYear = dto.AcademicYear,
-                CourseName = dto.CourseName,
-                Status = dto.Status,
-                SchoolId = dto.SchoolId
-            };
-            var created = await _enrollmentService.CreateEnrollmentAsync(enrollment);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, ToDto(created));
-        }
-        catch (ValidationException ex)
-        {
-            var errors = ex.Errors.Count > 0
-                ? ex.Errors
-                : new Dictionary<string, string[]> { { "Validation", new[] { ex.Message } } };
-            return ValidationProblem(new ValidationProblemDetails(errors));
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error creating enrollment");
-            return Problem(detail: GenericApiError);
-        }
+            StudentId = dto.StudentId,
+            AcademicYear = dto.AcademicYear,
+            CourseName = dto.CourseName,
+            Status = dto.Status,
+            SchoolId = dto.SchoolId
+        };
+        var created = await _enrollmentService.CreateEnrollmentAsync(enrollment);
+        return CreatedAtAction(nameof(Get), new { id = created.Id }, ToDto(created));
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] EnrollmentDtoIn dto)
     {
-        try
-        {
-            var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
-            if (enrollment == null) return NotFound();
+        var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
+        if (enrollment == null) return NotFound();
 
-            enrollment.StudentId = dto.StudentId;
-            enrollment.AcademicYear = dto.AcademicYear;
-            enrollment.CourseName = dto.CourseName;
-            enrollment.Status = dto.Status;
-            enrollment.SchoolId = dto.SchoolId;
-            if (dto.EnrolledAt.HasValue)
-            {
-                enrollment.EnrolledAt = dto.EnrolledAt.Value;
-            }
+        enrollment.StudentId = dto.StudentId;
+        enrollment.AcademicYear = dto.AcademicYear;
+        enrollment.CourseName = dto.CourseName;
+        enrollment.Status = dto.Status;
+        enrollment.SchoolId = dto.SchoolId;
+        if (dto.EnrolledAt.HasValue)
+        {
+            enrollment.EnrolledAt = dto.EnrolledAt.Value;
+        }
 
-            await _enrollmentService.UpdateEnrollmentAsync(enrollment);
-            return NoContent();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-        catch (ValidationException ex)
-        {
-            var errors = ex.Errors.Count > 0
-                ? ex.Errors
-                : new Dictionary<string, string[]> { { "Validation", new[] { ex.Message } } };
-            return ValidationProblem(new ValidationProblemDetails(errors));
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error updating enrollment {Id}", id);
-            return Problem(detail: GenericApiError);
-        }
+        await _enrollmentService.UpdateEnrollmentAsync(enrollment);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        try
-        {
-            await _enrollmentService.DeleteEnrollmentAsync(id);
-            return NoContent();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error deleting enrollment {Id}", id);
-            return Problem(detail: GenericApiError);
-        }
+        await _enrollmentService.DeleteEnrollmentAsync(id);
+        return NoContent();
     }
 
     private static EnrollmentDtoOut ToDto(Enrollment e)

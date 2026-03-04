@@ -15,6 +15,7 @@ DOMAIN_MIN="${DOMAIN_MIN:-80}"
 APPLICATION_MIN="${APPLICATION_MIN:-80}"
 INFRASTRUCTURE_MIN="${INFRASTRUCTURE_MIN:-15}"
 WEB_MIN="${WEB_MIN:-50}"
+API_MIN="${API_MIN:-10}"
 
 if [[ "$SKIP_TEST_RUN" != "1" && -z "$COVERAGE_FILE" ]]; then
   rm -rf "$RESULTS_DIR"
@@ -78,6 +79,7 @@ check_gate "Domain" "$DOMAIN_MIN"
 check_gate "Application" "$APPLICATION_MIN"
 check_gate "Infrastructure" "$INFRASTRUCTURE_MIN"
 check_gate "Web" "$WEB_MIN"
+check_gate "Api" "$API_MIN"
 
 if [[ "$to_fail" -ne 0 ]]; then
   echo

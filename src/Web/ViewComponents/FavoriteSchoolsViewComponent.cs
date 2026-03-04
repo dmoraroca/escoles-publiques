@@ -27,7 +27,7 @@ public class FavoriteSchoolsViewComponent : ViewComponent
                 Id = (int)s.Id,
                 Name = s.Name,
                 Municipality = s.City ?? "Sense ciutat",
-                Url = Url.Action("Details", "Schools", new { id = s.Id })
+                Url = Url.Action("Details", "Schools", new { id = s.Id }) ?? string.Empty
             })
             .ToList();
 

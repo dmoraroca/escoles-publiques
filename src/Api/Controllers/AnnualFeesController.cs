@@ -1,6 +1,5 @@
 using Application.Interfaces;
 using Api.Contracts;
-using Domain.DomainExceptions;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +11,11 @@ namespace Api.Controllers;
 [Authorize]
 public class AnnualFeesController : ControllerBase
 {
-    private const string GenericApiError = "S'ha produït un error inesperat.";
     private readonly IAnnualFeeService _annualFeeService;
-    private readonly ILogger<AnnualFeesController> _logger;
 
-    public AnnualFeesController(IAnnualFeeService annualFeeService, ILogger<AnnualFeesController> logger)
+    public AnnualFeesController(IAnnualFeeService annualFeeService)
     {
         _annualFeeService = annualFeeService;
-        _logger = logger;
     }
 
     [HttpGet]
@@ -32,105 +28,48 @@ public class AnnualFeesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
-        try
-        {
-            var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
-            return Ok(ToDto(fee!));
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
+        var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
+        return Ok(ToDto(fee!));
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AnnualFeeDtoIn dto)
     {
-        try
+        var fee = new AnnualFee
         {
-            var fee = new AnnualFee
-            {
-                EnrollmentId = dto.EnrollmentId,
-                Amount = dto.Amount,
-                Currency = dto.Currency,
-                DueDate = dto.DueDate,
-                PaidAt = dto.IsPaid ? DateTime.UtcNow : null,
-                PaymentRef = dto.PaymentRef
-            };
-            var created = await _annualFeeService.CreateAnnualFeeAsync(fee);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, ToDto(created));
-        }
-        catch (ValidationException ex)
-        {
-            var errors = ex.Errors.Count > 0
-                ? ex.Errors
-                : new Dictionary<string, string[]> { { "Validation", new[] { ex.Message } } };
-            return ValidationProblem(new ValidationProblemDetails(errors));
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error creating annual fee");
-            return Problem(detail: GenericApiError);
-        }
+            EnrollmentId = dto.EnrollmentId,
+            Amount = dto.Amount,
+            Currency = dto.Currency,
+            DueDate = dto.DueDate,
+            PaidAt = dto.IsPaid ? DateTime.UtcNow : null,
+            PaymentRef = dto.PaymentRef
+        };
+        var created = await _annualFeeService.CreateAnnualFeeAsync(fee);
+        return CreatedAtAction(nameof(Get), new { id = created.Id }, ToDto(created));
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] AnnualFeeDtoIn dto)
     {
-        try
-        {
-            var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
-            if (fee == null) return NotFound();
+        var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
+        if (fee == null) return NotFound();
 
-            fee.EnrollmentId = dto.EnrollmentId;
-            fee.Amount = dto.Amount;
-            fee.Currency = dto.Currency;
-            fee.DueDate = dto.DueDate;
-            fee.PaidAt = dto.IsPaid ? DateTime.UtcNow : null;
-            fee.PaymentRef = dto.PaymentRef;
+        fee.EnrollmentId = dto.EnrollmentId;
+        fee.Amount = dto.Amount;
+        fee.Currency = dto.Currency;
+        fee.DueDate = dto.DueDate;
+        fee.PaidAt = dto.IsPaid ? DateTime.UtcNow : null;
+        fee.PaymentRef = dto.PaymentRef;
 
-            await _annualFeeService.UpdateAnnualFeeAsync(fee);
-            return NoContent();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-        catch (ValidationException ex)
-        {
-            var errors = ex.Errors.Count > 0
-                ? ex.Errors
-                : new Dictionary<string, string[]> { { "Validation", new[] { ex.Message } } };
-            return ValidationProblem(new ValidationProblemDetails(errors));
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error updating annual fee {Id}", id);
-            return Problem(detail: GenericApiError);
-        }
+        await _annualFeeService.UpdateAnnualFeeAsync(fee);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        try
-        {
-            await _annualFeeService.DeleteAnnualFeeAsync(id);
-            return NoContent();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error deleting annual fee {Id}", id);
-            return Problem(detail: GenericApiError);
-        }
+        await _annualFeeService.DeleteAnnualFeeAsync(id);
+        return NoContent();
     }
 
     private static AnnualFeeDtoOut ToDto(AnnualFee fee)

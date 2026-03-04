@@ -73,11 +73,31 @@ Llindars per defecte:
 - Application: 80%
 - Infrastructure: 15%
 - Web: 50%
+- Api: 10%
 
 Override de llindars (exemple):
 
-`DOMAIN_MIN=85 APPLICATION_MIN=85 INFRASTRUCTURE_MIN=20 WEB_MIN=55 ./scripts/check-coverage-gates.sh`
+`DOMAIN_MIN=85 APPLICATION_MIN=85 INFRASTRUCTURE_MIN=20 WEB_MIN=55 API_MIN=20 ./scripts/check-coverage-gates.sh`
 
 CI GitHub Actions:
 
 `.github/workflows/coverage-gates.yml`
+
+*** Error contract API (ProblemDetails) ***
+
+Tots els errors controlats de l'API retornen `application/problem+json` amb extensions:
+
+- `errorCode`: codi estable de l'error (`validation_error`, `not_found`, etc.)
+- `traceId`: correlació de petició (`X-Correlation-ID`)
+- `timestamp`: marca temporal UTC
+- `fieldErrors`: només en validació
+
+*** Critical flows (risk-based tests) ***
+
+Execució local de tests crítics:
+
+`./scripts/run-critical-tests.sh`
+
+CI dedicat:
+
+`.github/workflows/critical-flows.yml`

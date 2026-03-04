@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
 using Domain.DomainExceptions;
+using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
@@ -68,10 +69,7 @@ public class AnnualFeeService : IAnnualFeeService
 
     public async Task<AnnualFee> CreateAnnualFeeAsync(AnnualFee annualFee)
     {
-        if (annualFee.Amount <= 0)
-        {
-            throw new ValidationException("Amount", "L'import ha de ser superior a 0");
-        }
+        annualFee.Amount = MoneyAmount.Create(annualFee.Amount).Value;
 
         if (annualFee.EnrollmentId <= 0)
         {
@@ -96,6 +94,8 @@ public class AnnualFeeService : IAnnualFeeService
         {
             throw new NotFoundException("AnnualFee", annualFee.Id);
         }
+
+        annualFee.Amount = MoneyAmount.Create(annualFee.Amount).Value;
 
         _logger.LogInformation("Actualitzant quota amb Id: {Id}", annualFee.Id);
         await _annualFeeRepository.UpdateAsync(annualFee);

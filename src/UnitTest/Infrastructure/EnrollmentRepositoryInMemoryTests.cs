@@ -53,10 +53,10 @@ namespace UnitTest.Infrastructure
                 Assert.NotNull(fetched);
 
                 // update
-                fetched.CourseName = "Math";
+                fetched!.CourseName = "Math";
                 await repo.UpdateAsync(fetched);
                 var updated = await repo.GetByIdAsync(created.Id);
-                Assert.Equal("Math", updated.CourseName);
+                Assert.Equal("Math", updated!.CourseName);
 
                 // delete
                 await repo.DeleteAsync(created.Id);

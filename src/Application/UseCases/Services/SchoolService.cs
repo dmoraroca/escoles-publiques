@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
 using Domain.DomainExceptions;
+using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
@@ -61,32 +62,27 @@ public class SchoolService : ISchoolService
     /// <returns>The school if found; otherwise, null.</returns>
     public async Task<School?> GetSchoolByCodeAsync(string code)
     {
-        if (string.IsNullOrWhiteSpace(code))
-        {
-            throw new ValidationException("Code", "El codi de l'escola no pot estar buit");
-        }
+        var schoolCode = SchoolCode.Create(code);
 
-        _logger.LogInformation("Obtenint escola amb codi: {Code}", code);
-        return await _schoolRepository.GetByCodeAsync(code);
+        _logger.LogInformation("Obtenint escola amb codi: {Code}", schoolCode.Value);
+        return await _schoolRepository.GetByCodeAsync(schoolCode.Value);
     }
 
     public async Task<School> CreateSchoolAsync(School school)
     {
-        if (string.IsNullOrWhiteSpace(school.Code))
-        {
-            throw new ValidationException("Code", "El codi de l'escola és obligatori");
-        }
-
         if (string.IsNullOrWhiteSpace(school.Name))
         {
             throw new ValidationException("Name", "El nom de l'escola és obligatori");
         }
 
-        var existingSchool = await _schoolRepository.GetByCodeAsync(school.Code);
+        var schoolCode = SchoolCode.Create(school.Code);
+        school.Code = schoolCode.Value;
+
+        var existingSchool = await _schoolRepository.GetByCodeAsync(schoolCode.Value);
         if (existingSchool != null)
         {
-            _logger.LogWarning("Intent de crear escola amb codi duplicat: {Code}", school.Code);
-            throw new DuplicateEntityException("School", "Code", school.Code);
+            _logger.LogWarning("Intent de crear escola amb codi duplicat: {Code}", schoolCode.Value);
+            throw new DuplicateEntityException("School", "Code", schoolCode.Value);
         }
 
         school.CreatedAt = DateTime.UtcNow;
@@ -101,6 +97,13 @@ public class SchoolService : ISchoolService
         {
             throw new NotFoundException("School", school.Id);
         }
+
+        if (string.IsNullOrWhiteSpace(school.Name))
+        {
+            throw new ValidationException("Name", "El nom de l'escola és obligatori");
+        }
+
+        school.Code = SchoolCode.Create(school.Code).Value;
 
         _logger.LogInformation("Actualitzant escola amb Id: {Id}", school.Id);
         await _schoolRepository.UpdateAsync(school);

@@ -1,6 +1,7 @@
 using Application.Interfaces;
 using Domain.DomainExceptions;
 using Domain.Interfaces;
+using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
@@ -34,7 +35,8 @@ public class UserService : IUserService
     /// </summary>
     public async Task<Domain.Entities.User?> GetUserByEmailAsync(string email)
     {
-        return await _userRepository.GetByEmailAsync(email);
+        var emailAddress = EmailAddress.Create(email);
+        return await _userRepository.GetByEmailAsync(emailAddress.Value);
     }
 
     /// <summary>
@@ -42,11 +44,14 @@ public class UserService : IUserService
     /// </summary>
     public async Task<Domain.Entities.User> CreateUserAsync(Domain.Entities.User user, string password)
     {
+        var emailAddress = EmailAddress.Create(user.Email);
+        user.Email = emailAddress.Value;
+
         // Validar que no existeixi un usuari amb aquest email
-        var existingUser = await _userRepository.GetByEmailAsync(user.Email);
+        var existingUser = await _userRepository.GetByEmailAsync(emailAddress.Value);
         if (existingUser != null)
         {
-            throw new DuplicateEntityException("User", "Email", user.Email);
+            throw new DuplicateEntityException("User", "Email", emailAddress.Value);
         }
 
         // Hashear password
@@ -55,7 +60,7 @@ public class UserService : IUserService
         user.IsActive = true;
         user.CreatedAt = DateTime.UtcNow;
 
-        _logger.LogInformation("Creant nou usuari: {Email}", user.Email);
+        _logger.LogInformation("Creant nou usuari: {Email}", emailAddress.Value);
         return await _userRepository.AddAsync(user);
     }
 
@@ -69,6 +74,8 @@ public class UserService : IUserService
         {
             throw new NotFoundException("User", user.Id);
         }
+
+        user.Email = EmailAddress.Create(user.Email).Value;
 
         _logger.LogInformation("Actualitzant usuari: {UserId}", user.Id);
         await _userRepository.UpdateAsync(user);

@@ -87,6 +87,10 @@ public class SchoolsController : BaseController
         try
         {
             var school = await _schoolApi.GetByIdAsync(id);
+            if (school == null)
+            {
+                throw new NotFoundException($"Escola amb ID {id} no trobada.");
+            }
 
             var scopes = await _scopesApi.GetAllAsync();
             var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
@@ -273,6 +277,10 @@ public class SchoolsController : BaseController
         try
         {
             var school = await _schoolApi.GetByIdAsync(id);
+            if (school == null)
+            {
+                throw new NotFoundException($"Escola amb ID {id} no trobada.");
+            }
 
             var scopes = await _scopesApi.GetAllAsync();
             var scopeName = school.ScopeId.HasValue ? scopes.FirstOrDefault(sc => sc.Id == school.ScopeId)?.Name : null;
@@ -331,6 +339,10 @@ public class SchoolsController : BaseController
             }
 
             var school = await _schoolApi.GetByIdAsync(model.Id);
+            if (school == null)
+            {
+                throw new NotFoundException($"Escola amb ID {model.Id} no trobada.");
+            }
 
             school.Code = model.Code;
             school.Name = model.Name;

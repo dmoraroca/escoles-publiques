@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Xunit;
 using Web.Helpers;
 using UnitTest.Fakes;
@@ -8,7 +7,7 @@ namespace UnitTest.Integration
     public class ModalConfigFactoryIntegrationTests
     {
         [Fact]
-        public async Task GetStudentModalConfig_Integration_ReturnsConfigWithFakeSchools()
+        public void GetStudentModalConfig_Integration_ReturnsConfigWithFakeSchools()
         {
             // Arrange
             var fakeSchools = FakeData.GetFakeSchoolOptions();

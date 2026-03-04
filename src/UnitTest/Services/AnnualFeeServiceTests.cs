@@ -104,5 +104,49 @@ namespace UnitTest.Services
 
             Assert.Equal(5, result.Id);
         }
+
+        [Fact]
+        public async Task GetAnnualFeesByEnrollmentIdAsync_ReturnsFees()
+        {
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            annualRepo.Setup(r => r.GetByEnrollmentIdAsync(3))
+                .ReturnsAsync(new List<AnnualFee> { new AnnualFee { Id = 1, EnrollmentId = 3 } });
+
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
+            var result = await service.GetAnnualFeesByEnrollmentIdAsync(3);
+
+            Assert.Single(result);
+        }
+
+        [Fact]
+        public async Task UpdateAnnualFeeAsync_Updates_WhenExists()
+        {
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            var fee = new AnnualFee { Id = 9, EnrollmentId = 2, Amount = 50 };
+            annualRepo.Setup(r => r.GetByIdAsync(9)).ReturnsAsync(fee);
+
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
+            await service.UpdateAnnualFeeAsync(fee);
+
+            annualRepo.Verify(r => r.UpdateAsync(fee), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteAnnualFeeAsync_Deletes_WhenExists()
+        {
+            var annualRepo = new Mock<IAnnualFeeRepository>();
+            var enrollmentRepo = new Mock<IEnrollmentRepository>();
+            var logger = new Mock<ILogger<AnnualFeeService>>();
+            annualRepo.Setup(r => r.GetByIdAsync(7)).ReturnsAsync(new AnnualFee { Id = 7, EnrollmentId = 2, Amount = 20 });
+
+            var service = new AnnualFeeService(annualRepo.Object, enrollmentRepo.Object, logger.Object);
+            await service.DeleteAnnualFeeAsync(7);
+
+            annualRepo.Verify(r => r.DeleteAsync(7), Times.Once);
+        }
     }
 }

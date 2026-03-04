@@ -60,5 +60,20 @@ namespace UnitTest.Services
                 await service.GetEnrollmentByIdAsync(2);
             });
         }
+
+        [Fact]
+        public async Task GetEnrollmentsByStudentIdAsync_ReturnsEnrollments()
+        {
+            var repoMock = new Mock<IEnrollmentRepository>();
+            var studentRepoMock = new Mock<IStudentRepository>();
+            var loggerMock = new Mock<ILogger<EnrollmentService>>();
+            repoMock.Setup(r => r.GetByStudentIdAsync(7))
+                .ReturnsAsync(new List<Enrollment> { new Enrollment { Id = 1, StudentId = 7 } });
+            var service = new EnrollmentService(repoMock.Object, studentRepoMock.Object, loggerMock.Object);
+
+            var result = await service.GetEnrollmentsByStudentIdAsync(7);
+
+            Assert.Single(result);
+        }
     }
 }

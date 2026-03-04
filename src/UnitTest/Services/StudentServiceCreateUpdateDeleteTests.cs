@@ -129,5 +129,48 @@ namespace UnitTest.Services
 
             await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteStudentAsync(888));
         }
+
+        [Fact]
+        public async Task CreateStudentWithUserAsync_CreatesUserAndStudent()
+        {
+            var repoMock = new Mock<IStudentRepository>();
+            var schoolRepoMock = new Mock<ISchoolRepository>();
+            var userServiceMock = new Mock<IUserService>();
+            var loggerMock = new Mock<ILogger<StudentService>>();
+
+            userServiceMock.Setup(s => s.CreateUserAsync(It.IsAny<User>(), "pwd"))
+                .ReturnsAsync(new User { Id = 42, Email = "u@x.com" });
+            repoMock.Setup(r => r.AddAsync(It.IsAny<Student>()))
+                .ReturnsAsync((Student s) => { s.Id = 100; return s; });
+
+            var service = new StudentService(repoMock.Object, schoolRepoMock.Object, userServiceMock.Object, loggerMock.Object);
+            var student = new Student { SchoolId = 10 };
+
+            var created = await service.CreateStudentWithUserAsync(new User { Email = "u@x.com" }, "pwd", student);
+
+            Assert.Equal(100, created.Id);
+            Assert.Equal(42, created.UserId);
+        }
+
+        [Fact]
+        public async Task UpdateStudentWithUserAsync_UpdatesBoth_WhenStudentExists()
+        {
+            var repoMock = new Mock<IStudentRepository>();
+            var schoolRepoMock = new Mock<ISchoolRepository>();
+            var userServiceMock = new Mock<IUserService>();
+            var loggerMock = new Mock<ILogger<StudentService>>();
+            var student = new Student { Id = 9, SchoolId = 1, UserId = 5 };
+            var user = new User { Id = 5, Email = "u@x.com" };
+
+            repoMock.Setup(r => r.GetByIdAsync(9)).ReturnsAsync(student);
+            userServiceMock.Setup(s => s.UpdateUserAsync(user)).Returns(Task.CompletedTask);
+            repoMock.Setup(r => r.UpdateAsync(student)).Returns(Task.CompletedTask);
+
+            var service = new StudentService(repoMock.Object, schoolRepoMock.Object, userServiceMock.Object, loggerMock.Object);
+            await service.UpdateStudentWithUserAsync(student, user);
+
+            userServiceMock.Verify(s => s.UpdateUserAsync(user), Times.Once);
+            repoMock.Verify(r => r.UpdateAsync(student), Times.Once);
+        }
     }
 }

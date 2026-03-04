@@ -61,5 +61,23 @@ namespace UnitTest.DomainTests
 
             Assert.True(ex.Errors.ContainsKey("A"));
         }
+
+        [Fact]
+        public void ValidationException_MessageCtor_InitializesEmptyErrors()
+        {
+            var ex = new ValidationException("msg");
+
+            Assert.Equal("msg", ex.Message);
+            Assert.Empty(ex.Errors);
+        }
+
+        [Fact]
+        public void DuplicateEntityException_FormatsMessage()
+        {
+            var ex = new DuplicateEntityException("User", "Email", "a@b.com");
+
+            Assert.Contains("User", ex.Message);
+            Assert.Contains("Email", ex.Message);
+        }
     }
 }

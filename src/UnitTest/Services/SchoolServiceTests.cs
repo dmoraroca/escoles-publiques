@@ -57,5 +57,31 @@ namespace UnitTest.Services
                 await service.GetSchoolByIdAsync(2);
             });
         }
+
+        [Fact]
+        public async Task GetSchoolByCodeAsync_ReturnsSchool_WhenCodeIsValid()
+        {
+            var repoMock = new Mock<ISchoolRepository>();
+            var loggerMock = new Mock<ILogger<SchoolService>>();
+            repoMock.Setup(r => r.GetByCodeAsync("A001"))
+                .ReturnsAsync(new School { Id = 1, Code = "A001", Name = "A" });
+            var service = new SchoolService(repoMock.Object, loggerMock.Object);
+
+            var result = await service.GetSchoolByCodeAsync("A001");
+
+            Assert.NotNull(result);
+            Assert.Equal("A001", result!.Code);
+        }
+
+        [Fact]
+        public async Task GetSchoolByCodeAsync_ThrowsValidationException_WhenCodeEmpty()
+        {
+            var repoMock = new Mock<ISchoolRepository>();
+            var loggerMock = new Mock<ILogger<SchoolService>>();
+            var service = new SchoolService(repoMock.Object, loggerMock.Object);
+
+            await Assert.ThrowsAsync<Domain.DomainExceptions.ValidationException>(() =>
+                service.GetSchoolByCodeAsync(""));
+        }
     }
 }
