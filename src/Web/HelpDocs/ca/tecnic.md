@@ -882,3 +882,12 @@ Helpers transversals no encapsulats en carpeta "Helpers":
 - Ajuda web: render Markdown->HTML amb Markdig + export DOCX
 - Desplegament: Docker + Render
 - Build: `dotnet build` sobre solucio modular
+
+## 14. Complement tecnic 2026
+
+Canvis tecnics rellevants afegits:
+- **Middleware pipeline API**: `CorrelationIdMiddleware` -> `RequestMetricsMiddleware` -> `ApiExceptionHandlingMiddleware`.
+- **Contracte d'errors**: `application/problem+json` amb `errorCode`, `traceId`, `timestamp` i `fieldErrors` (validacio).
+- **CQRS lleuger (Schools)**: separacio de `Commands` i `Queries` amb handlers a `Application/UseCases/Schools`.
+- **Value Objects de domini**: `SchoolCode`, `EmailAddress`, `MoneyAmount` aplicats a serveis per enforce d'invariants.
+- **Qualitat i observabilitat**: metriques de request, logging estructurat i nous tests (`API middleware`, `CQRS handlers`, `integracio real`) + workflows de gates i critical flows.

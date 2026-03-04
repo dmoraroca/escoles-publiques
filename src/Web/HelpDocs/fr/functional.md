@@ -169,3 +169,68 @@ Visualiser les informations spécifiques à l'utilisateur (inscriptions/frais li
 - recherche et filtre par périmètre fonctionnels
 - montants acceptent `,` et `.`
 - langue persistée et aide alignée sur la langue active
+
+## 10. Complément fonctionnel 2026
+
+Améliorations fonctionnelles ajoutées sans changer le périmètre de base :
+- Contrat d'erreur API unifié avec traçabilité (`traceId`) et codes stables (`errorCode`) pour faciliter le support fonctionnel.
+- Validations métier renforcées dans le domaine (invariants) pour éviter les incohérences de code école, email et montants.
+- Fiabilité améliorée sur les flux critiques (authentification et CRUD principal) grâce à des tests orientés risque et des coverage gates.
+- Le centre d'aide conserve la structure existante et intègre ces capacités dans les documents fonctionnel et technique.
+
+## 11. Complément Mermaid 2026
+
+### 11.1 Cycle de requête avec traçabilité
+
+a) Le correlation id est propagé de bout en bout.
+b) L'API renvoie un contrat d'erreur stable en cas d'erreur métier ou de validation.
+
+```mermaid
+sequenceDiagram
+  participant U as Utilisateur
+  participant W as Web
+  participant A as API
+  participant D as Domaine
+
+  U->>W: Envoi d'une action
+  W->>A: Requête HTTP + X-Correlation-ID
+  A->>D: Exécute le cas d'usage
+  alt Erreur de validation ou domaine
+    D-->>A: ValidationException/NotFound/etc.
+    A-->>W: ProblemDetails(errorCode, traceId, fieldErrors)
+    W-->>U: Erreur lisible + trace id
+  else Succès
+    D-->>A: Résultat
+    A-->>W: Réponse 2xx
+    W-->>U: Vue mise à jour
+  end
+```
+
+### 11.2 Séparation fonctionnelle CQRS (Schools)
+
+Les commands modifient l'état, les queries lisent l'état.
+
+```mermaid
+flowchart LR
+  UI[Action utilisateur dans Web] --> C{Intention}
+  C -->|Créer/Mettre à jour/Supprimer| CMD[Command Handler]
+  C -->|Lire/Obtenir/Lister| QRY[Query Handler]
+  CMD --> SVC[Service d'application]
+  QRY --> SVC
+  SVC --> REPO[(Repository)]
+  REPO --> DB[(PostgreSQL)]
+```
+
+### 11.3 Quality gates de publication
+
+Les tests orientés risque et les coverage gates réduisent les régressions.
+
+```mermaid
+flowchart LR
+  DEV[Changements de code] --> TEST[Unit + tests d'intégration]
+  TEST --> CRIT[Tests des flux critiques]
+  CRIT --> COV[Coverage gates]
+  COV -->|Pass| MERGE[Prêt pour merge]
+  COV -->|Fail| FIX[Correction + relance]
+  FIX --> TEST
+```

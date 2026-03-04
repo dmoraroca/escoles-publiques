@@ -171,3 +171,67 @@ View user-specific information (related enrollments/fees).
 - amounts accept `,` and `.`
 - language is persisted and help follows active language
 
+## 10. Functional Complement 2026
+
+Functional improvements added without changing baseline scope:
+- Unified API error contract with traceability (`traceId`) and stable codes (`errorCode`) to simplify functional support.
+- Stronger domain-level business validation (invariants) to prevent inconsistent school codes, emails, and monetary amounts.
+- Improved reliability in critical flows (authentication and core CRUD) using risk-based tests and coverage gates.
+- Help center keeps existing structure and now includes these capabilities in functional and technical docs.
+
+## 11. Mermaid Complement 2026
+
+### 11.1 Request lifecycle with traceability
+
+a) Correlation id is propagated end-to-end.
+b) API returns stable error contract when a business/validation error occurs.
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant W as Web
+  participant A as API
+  participant D as Domain
+
+  U->>W: Submit action
+  W->>A: HTTP request + X-Correlation-ID
+  A->>D: Execute use case
+  alt Validation or domain error
+    D-->>A: ValidationException/NotFound/etc.
+    A-->>W: ProblemDetails(errorCode, traceId, fieldErrors)
+    W-->>U: Friendly error + trace id
+  else Success
+    D-->>A: Result
+    A-->>W: 2xx response
+    W-->>U: Updated view
+  end
+```
+
+### 11.2 CQRS functional split (Schools)
+
+Commands modify state, queries read state.
+
+```mermaid
+flowchart LR
+  UI[User action in Web] --> C{Intent}
+  C -->|Create/Update/Delete| CMD[Command Handler]
+  C -->|Read/Get/List| QRY[Query Handler]
+  CMD --> SVC[Application Service]
+  QRY --> SVC
+  SVC --> REPO[(Repository)]
+  REPO --> DB[(PostgreSQL)]
+```
+
+### 11.3 Quality and release gates
+
+Risk-based tests plus coverage gates reduce regressions.
+
+```mermaid
+flowchart LR
+  DEV[Code changes] --> TEST[Unit + integration tests]
+  TEST --> CRIT[Critical flows tests]
+  CRIT --> COV[Coverage gates]
+  COV -->|Pass| MERGE[Ready to merge]
+  COV -->|Fail| FIX[Fix + re-run]
+  FIX --> TEST
+```

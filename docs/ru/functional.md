@@ -169,3 +169,68 @@ sequenceDiagram
 - работает поиск и фильтр по области
 - суммы принимают `,` и `.`
 - язык сохраняется, помощь соответствует активному языку
+
+## 10. Функциональное дополнение 2026
+
+Функциональные улучшения добавлены без изменения базового объема:
+- Единый контракт ошибок API с трассировкой (`traceId`) и стабильными кодами (`errorCode`) для упрощения поддержки.
+- Усиленная доменная валидация (invariants), чтобы избежать несогласованных кодов школ, email и сумм.
+- Повышена надежность критических потоков (аутентификация и основной CRUD) за счет risk-based тестов и coverage gates.
+- Центр помощи сохраняет текущую структуру и включает эти возможности в функциональные и технические документы.
+
+## 11. Mermaid-дополнение 2026
+
+### 11.1 Жизненный цикл запроса с трассировкой
+
+a) Correlation id распространяется сквозным образом.
+b) API возвращает стабильный контракт ошибок при бизнес- или валидационных ошибках.
+
+```mermaid
+sequenceDiagram
+  participant U as Пользователь
+  participant W as Web
+  participant A as API
+  participant D as Домен
+
+  U->>W: Отправка действия
+  W->>A: HTTP-запрос + X-Correlation-ID
+  A->>D: Выполнение use case
+  alt Ошибка валидации или домена
+    D-->>A: ValidationException/NotFound/etc.
+    A-->>W: ProblemDetails(errorCode, traceId, fieldErrors)
+    W-->>U: Понятная ошибка + trace id
+  else Успех
+    D-->>A: Результат
+    A-->>W: Ответ 2xx
+    W-->>U: Обновленный интерфейс
+  end
+```
+
+### 11.2 Функциональное разделение CQRS (Schools)
+
+Commands изменяют состояние, queries читают состояние.
+
+```mermaid
+flowchart LR
+  UI[Действие пользователя в Web] --> C{Намерение}
+  C -->|Создать/Обновить/Удалить| CMD[Command Handler]
+  C -->|Читать/Получить/Список| QRY[Query Handler]
+  CMD --> SVC[Сервис приложения]
+  QRY --> SVC
+  SVC --> REPO[(Repository)]
+  REPO --> DB[(PostgreSQL)]
+```
+
+### 11.3 Quality gates релиза
+
+Risk-based тесты и coverage gates снижают регрессии.
+
+```mermaid
+flowchart LR
+  DEV[Изменения кода] --> TEST[Unit + интеграционные тесты]
+  TEST --> CRIT[Тесты критических потоков]
+  CRIT --> COV[Coverage gates]
+  COV -->|Pass| MERGE[Готово к merge]
+  COV -->|Fail| FIX[Исправление + повторный запуск]
+  FIX --> TEST
+```

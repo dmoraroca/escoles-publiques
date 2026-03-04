@@ -882,3 +882,12 @@ Querschnitts-Helpers ausserhalb des Ordners "Helpers":
 - Web-Hilfe: Markdown->HTML Rendering mit Markdig + DOCX-Export
 - Deployment: Docker + Render
 - Build: `dotnet build` ueber modulare Loesung
+
+## 14. Technical Complement 2026
+
+Relevant technical changes added:
+- **API middleware pipeline**: `CorrelationIdMiddleware` -> `RequestMetricsMiddleware` -> `ApiExceptionHandlingMiddleware`.
+- **Error contract**: `application/problem+json` with `errorCode`, `traceId`, `timestamp`, and `fieldErrors` (validation).
+- **Lightweight CQRS (Schools)**: explicit split between `Commands` and `Queries` with handlers under `Application/UseCases/Schools`.
+- **Domain Value Objects**: `SchoolCode`, `EmailAddress`, `MoneyAmount` applied in services to enforce invariants.
+- **Quality and observability**: request metrics, structured logging, and new tests (`API middleware`, `CQRS handlers`, `real integration`) plus gates and critical-flow workflows.

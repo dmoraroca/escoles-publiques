@@ -250,3 +250,67 @@ Privacitat:
 - import accepta decimals amb coma o punt
 - idioma es persisteix i l'ajuda segueix l'idioma actiu
 
+## 10. Complement funcional 2026
+
+Millores funcionals incorporades sense canviar l'abast base:
+- Contracte d'errors unificat a API, amb traçabilitat (`traceId`) i codis estables (`errorCode`) per facilitar el suport funcional.
+- Validacions de negoci reforçades al domini (invariants) per evitar dades inconsistents en codi d'escola, correu i imports.
+- Millora de fiabilitat en fluxos crítics (autenticació i CRUD principal) amb proves orientades a risc i gates de cobertura.
+- El centre d'ajuda manté l'estructura existent i incorpora aquestes capacitats als documents funcional i tècnic.
+
+## 11. Complement Mermaid 2026
+
+### 11.1 Cicle de petició amb traçabilitat
+
+a) El correlation id es propaga d'extrem a extrem.
+b) L'API retorna un contracte d'error estable quan hi ha error de negoci o validació.
+
+```mermaid
+sequenceDiagram
+  participant U as Usuari
+  participant W as Web
+  participant A as API
+  participant D as Domini
+
+  U->>W: Envia acció
+  W->>A: Petició HTTP + X-Correlation-ID
+  A->>D: Executa cas d'ús
+  alt Error de validació o domini
+    D-->>A: ValidationException/NotFound/etc.
+    A-->>W: ProblemDetails(errorCode, traceId, fieldErrors)
+    W-->>U: Error amigable + trace id
+  else Èxit
+    D-->>A: Resultat
+    A-->>W: Resposta 2xx
+    W-->>U: Vista actualitzada
+  end
+```
+
+### 11.2 Separació funcional CQRS (Schools)
+
+Els commands modifiquen estat i les queries només llegeixen.
+
+```mermaid
+flowchart LR
+  UI[Acció d'usuari a Web] --> C{Intenció}
+  C -->|Crear/Actualitzar/Eliminar| CMD[Command Handler]
+  C -->|Llegir/Obtenir/Llistar| QRY[Query Handler]
+  CMD --> SVC[Servei d'aplicació]
+  QRY --> SVC
+  SVC --> REPO[(Repositori)]
+  REPO --> DB[(PostgreSQL)]
+```
+
+### 11.3 Quality gates de publicació
+
+Les proves orientades a risc i els coverage gates redueixen regressions.
+
+```mermaid
+flowchart LR
+  DEV[Canvis de codi] --> TEST[Unit + integració]
+  TEST --> CRIT[Tests de fluxos crítics]
+  CRIT --> COV[Coverage gates]
+  COV -->|Passa| MERGE[Preparat per merge]
+  COV -->|Falla| FIX[Correcció + reexecució]
+  FIX --> TEST
+```

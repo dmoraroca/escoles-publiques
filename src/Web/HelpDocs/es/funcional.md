@@ -171,3 +171,67 @@ Consulta de informacion propia (inscripciones/cuotas relacionadas).
 - importes aceptan `,` y `.`
 - idioma se persiste y la ayuda sigue el idioma activo
 
+## 10. Complemento funcional 2026
+
+Mejoras funcionales incorporadas sin cambiar el alcance base:
+- Contrato de errores unificado en API, con trazabilidad (`traceId`) y códigos estables (`errorCode`) para facilitar el soporte funcional.
+- Validaciones de negocio reforzadas en dominio (invariantes) para evitar datos inconsistentes en código de escuela, correo e importes.
+- Mejora de fiabilidad en flujos críticos (autenticación y CRUD principal) con pruebas orientadas a riesgo y gates de cobertura.
+- El centro de ayuda mantiene la estructura existente e incorpora estas capacidades en los documentos funcional y técnico.
+
+## 11. Complemento Mermaid 2026
+
+### 11.1 Ciclo de petición con trazabilidad
+
+a) El correlation id se propaga de extremo a extremo.
+b) La API devuelve un contrato de error estable ante errores de negocio o validación.
+
+```mermaid
+sequenceDiagram
+  participant U as Usuario
+  participant W as Web
+  participant A as API
+  participant D as Dominio
+
+  U->>W: Envía acción
+  W->>A: Petición HTTP + X-Correlation-ID
+  A->>D: Ejecuta caso de uso
+  alt Error de validación o dominio
+    D-->>A: ValidationException/NotFound/etc.
+    A-->>W: ProblemDetails(errorCode, traceId, fieldErrors)
+    W-->>U: Error amigable + trace id
+  else Éxito
+    D-->>A: Resultado
+    A-->>W: Respuesta 2xx
+    W-->>U: Vista actualizada
+  end
+```
+
+### 11.2 Separación funcional CQRS (Schools)
+
+Los commands modifican estado y las queries solo leen.
+
+```mermaid
+flowchart LR
+  UI[Acción de usuario en Web] --> C{Intención}
+  C -->|Crear/Actualizar/Eliminar| CMD[Command Handler]
+  C -->|Leer/Obtener/Listar| QRY[Query Handler]
+  CMD --> SVC[Servicio de aplicación]
+  QRY --> SVC
+  SVC --> REPO[(Repositorio)]
+  REPO --> DB[(PostgreSQL)]
+```
+
+### 11.3 Gates de calidad de publicación
+
+Las pruebas orientadas a riesgo y los coverage gates reducen regresiones.
+
+```mermaid
+flowchart LR
+  DEV[Cambios de código] --> TEST[Unit + integración]
+  TEST --> CRIT[Tests de flujos críticos]
+  CRIT --> COV[Coverage gates]
+  COV -->|Pasa| MERGE[Listo para merge]
+  COV -->|Falla| FIX[Corrección + reejecución]
+  FIX --> TEST
+```

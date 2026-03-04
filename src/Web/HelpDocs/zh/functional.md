@@ -169,3 +169,68 @@ sequenceDiagram
 - 搜索和范围筛选正常
 - 金额支持 `,` 与 `.`
 - 语言可持久化，帮助文档跟随当前语言
+
+## 10. 功能补充 2026
+
+在不改变原始范围的前提下新增功能改进：
+- API 采用统一错误契约，提供可追踪字段（`traceId`）和稳定错误码（`errorCode`），便于功能支持。
+- 在领域层加强业务校验（invariants），避免学校代码、邮箱和金额数据不一致。
+- 通过基于风险的测试和覆盖率门禁，提升关键流程（认证与核心 CRUD）的可靠性。
+- 帮助中心保持原有结构，并将这些能力纳入功能与技术文档。
+
+## 11. Mermaid 补充 2026
+
+### 11.1 带追踪能力的请求生命周期
+
+a) Correlation id 端到端传播。
+b) 发生业务或校验错误时，API 返回稳定错误契约。
+
+```mermaid
+sequenceDiagram
+  participant U as 用户
+  participant W as Web
+  participant A as API
+  participant D as 领域层
+
+  U->>W: 提交操作
+  W->>A: HTTP 请求 + X-Correlation-ID
+  A->>D: 执行业务用例
+  alt 校验或领域错误
+    D-->>A: ValidationException/NotFound/etc.
+    A-->>W: ProblemDetails(errorCode, traceId, fieldErrors)
+    W-->>U: 友好错误提示 + trace id
+  else 成功
+    D-->>A: 返回结果
+    A-->>W: 2xx 响应
+    W-->>U: 页面更新
+  end
+```
+
+### 11.2 CQRS 功能分离（Schools）
+
+Commands 负责改状态，queries 只读数据。
+
+```mermaid
+flowchart LR
+  UI[Web 中的用户操作] --> C{意图}
+  C -->|创建/更新/删除| CMD[Command Handler]
+  C -->|读取/获取/列表| QRY[Query Handler]
+  CMD --> SVC[应用服务]
+  QRY --> SVC
+  SVC --> REPO[(Repository)]
+  REPO --> DB[(PostgreSQL)]
+```
+
+### 11.3 发布质量门禁
+
+基于风险的测试与覆盖率门禁可减少回归。
+
+```mermaid
+flowchart LR
+  DEV[代码变更] --> TEST[单元 + 集成测试]
+  TEST --> CRIT[关键流程测试]
+  CRIT --> COV[Coverage gates]
+  COV -->|Pass| MERGE[可合并]
+  COV -->|Fail| FIX[修复 + 重跑]
+  FIX --> TEST
+```

@@ -107,42 +107,76 @@ public sealed class HelpController : Controller
 
     private (string title, string? path) ResolveDoc(string lang, string docKey)
     {
-        var baseDir = Path.Combine(_env.ContentRootPath, "HelpDocs", lang);
+        var baseDir = ResolveHelpDocsDir(lang);
+        if (baseDir is null)
+        {
+            return ("", null);
+        }
 
         // Map doc keys to per-language filenames.
         return (lang, docKey) switch
         {
-            ("ca", "manual") => ("Manual d'usuari", Path.Combine(baseDir, "manual.md")),
-            ("ca", "funcional") => ("Document funcional", Path.Combine(baseDir, "funcional.md")),
-            ("ca", "tecnic") => ("Document tècnic", Path.Combine(baseDir, "tecnic.md")),
+            ("ca", "manual") => ("Manual d'usuari", ResolveFirstExisting(baseDir, "manual.md", "manual-usuari.md")),
+            ("ca", "funcional") => ("Document funcional", ResolveFirstExisting(baseDir, "funcional.md")),
+            ("ca", "tecnic") => ("Document tècnic", ResolveFirstExisting(baseDir, "tecnic.md")),
 
-            ("es", "manual") => ("Manual de usuario", Path.Combine(baseDir, "manual.md")),
-            ("es", "funcional") => ("Documento funcional", Path.Combine(baseDir, "funcional.md")),
-            ("es", "tecnic") => ("Documento técnico", Path.Combine(baseDir, "tecnic.md")),
+            ("es", "manual") => ("Manual de usuario", ResolveFirstExisting(baseDir, "manual.md", "manual-usuario.md")),
+            ("es", "funcional") => ("Documento funcional", ResolveFirstExisting(baseDir, "funcional.md")),
+            ("es", "tecnic") => ("Documento técnico", ResolveFirstExisting(baseDir, "tecnic.md", "tecnico.md")),
 
-            ("en", "manual") => ("User manual", Path.Combine(baseDir, "manual.md")),
-            ("en", "funcional") => ("Functional document", Path.Combine(baseDir, "functional.md")),
-            ("en", "tecnic") => ("Technical document", Path.Combine(baseDir, "technical.md")),
+            ("en", "manual") => ,
+            ("en", "funcional") => ("Functional document", ResolveFirstExisting(baseDir, "functional.md")),
+("User manual", ResolveFirstExisting(baseDir, "manual.md", "user-manual.md"))            ("en", "tecnic") => ("Technical document", ResolveFirstExisting(baseDir, "technical.md")),
 
             // German filenames in repo are non-standard; keep mapping explicit.
-            ("de", "manual") => ("Benutzerhandbuch", Path.Combine(baseDir, "manual.md")),
-            ("de", "funcional") => ("Fachliches Dokument", Path.Combine(baseDir, "fachlich.md")),
-            ("de", "tecnic") => ("Technisches Dokument", Path.Combine(baseDir, "technisch.md")),
+            ("de", "manual") => ("Benutzerhandbuch", ResolveFirstExisting(baseDir, "manual.md", "benutzerhandbuch.md")),
+            ("de", "funcional") => ("Fachliches Dokument", ResolveFirstExisting(baseDir, "fachlich.md")),
+            ("de", "tecnic") => ("Technisches Dokument", ResolveFirstExisting(baseDir, "technisch.md")),
 
-            ("fr", "manual") => ("Manuel utilisateur", Path.Combine(baseDir, "manual.md")),
-            ("fr", "funcional") => ("Document fonctionnel", Path.Combine(baseDir, "functional.md")),
-            ("fr", "tecnic") => ("Document technique", Path.Combine(baseDir, "technical.md")),
+            ("fr", "manual") => ("Manuel utilisateur", ResolveFirstExisting(baseDir, "manual.md", "manual-utilisateur.md")),
+            ("fr", "funcional") => ("Document fonctionnel", ResolveFirstExisting(baseDir, "functional.md")),
+            ("fr", "tecnic") => ("Document technique", ResolveFirstExisting(baseDir, "technical.md")),
 
-            ("ru", "manual") => ("Руководство пользователя", Path.Combine(baseDir, "manual.md")),
-            ("ru", "funcional") => ("Функциональный документ", Path.Combine(baseDir, "functional.md")),
-            ("ru", "tecnic") => ("Технический документ", Path.Combine(baseDir, "technical.md")),
+            ("ru", "manual") => ("Руководство пользователя", ResolveFirstExisting(baseDir, "manual.md", "user-manual.md")),
+            ("ru", "funcional") => ("Функциональный документ", ResolveFirstExisting(baseDir, "functional.md")),
+            ("ru", "tecnic") => ("Технический документ", ResolveFirstExisting(baseDir, "technical.md")),
 
-            ("zh", "manual") => ("用户手册", Path.Combine(baseDir, "manual.md")),
-            ("zh", "funcional") => ("功能文档", Path.Combine(baseDir, "functional.md")),
-            ("zh", "tecnic") => ("技术文档", Path.Combine(baseDir, "technical.md")),
+            ("zh", "manual") => ("用户手册", ResolveFirstExisting(baseDir, "manual.md", "user-manual.md")),
+            ("zh", "funcional") => ("功能文档", ResolveFirstExisting(baseDir, "functional.md")),
+            ("zh", "tecnic") => ("技术文档", ResolveFirstExisting(baseDir, "technical.md")),
 
             _ => ("", null)
         };
+    }
+
+    private string? ResolveHelpDocsDir(string lang)
+    {
+        IEnumerable<string> Candidates(string root)
+        {
+            yield return Path.Combine(root, "HelpDocs", lang);
+            yield return Path.Combine(root, "src", "Web", "HelpDocs", lang);
+            yield return Path.Combine(root, "docs", lang);
+        }
+
+        var candidates = Candidates(_env.ContentRootPath)
+            .Concat(Candidates(Directory.GetCurrentDirectory()))
+            .Concat(Candidates(AppContext.BaseDirectory));
+
+        return candidates.FirstOrDefault(Directory.Exists);
+    }
+
+    private static string? ResolveFirstExisting(string baseDir, params string[] candidateFiles)
+    {
+        foreach (var file in candidateFiles)
+        {
+            var fullPath = Path.Combine(baseDir, file);
+            if (System.IO.File.Exists(fullPath))
+            {
+                return fullPath;
+            }
+        }
+
+        return null;
     }
 
     private static string NormalizeDocKey(string? doc)

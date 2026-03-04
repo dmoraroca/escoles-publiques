@@ -171,3 +171,67 @@ Anzeige von nutzerspezifischen Informationen (zugehorige Einschreibungen/Gebuhre
 - Betrage akzeptieren `,` und `.`
 - Sprache wird gespeichert und Hilfe folgt der aktiven Sprache
 
+## 10. Fachliche Ergänzung 2026
+
+Fachliche Verbesserungen ohne Änderung des Basisumfangs:
+- Einheitlicher API-Fehlervertrag mit Nachverfolgbarkeit (`traceId`) und stabilen Codes (`errorCode`) für einfacheren Support.
+- Stärkere fachliche Validierung im Domain-Modell (Invarianten), um inkonsistente Schulcodes, E-Mails und Beträge zu vermeiden.
+- Mehr Zuverlässigkeit in kritischen Abläufen (Authentifizierung und zentrales CRUD) durch risikobasierte Tests und Coverage-Gates.
+- Das Hilfezentrum behält die bestehende Struktur und ergänzt diese Funktionen in fachlicher und technischer Doku.
+
+## 11. Mermaid-Ergänzung 2026
+
+### 11.1 Request-Lifecycle mit Nachverfolgbarkeit
+
+a) Die Correlation ID wird Ende-zu-Ende propagiert.
+b) Die API liefert bei Validierungs-/Domänenfehlern einen stabilen Fehlervertrag.
+
+```mermaid
+sequenceDiagram
+  participant U as Benutzer
+  participant W as Web
+  participant A as API
+  participant D as Domäne
+
+  U->>W: Aktion absenden
+  W->>A: HTTP-Request + X-Correlation-ID
+  A->>D: Use Case ausführen
+  alt Validierungs- oder Domänenfehler
+    D-->>A: ValidationException/NotFound/etc.
+    A-->>W: ProblemDetails(errorCode, traceId, fieldErrors)
+    W-->>U: Lesbarer Fehler + trace id
+  else Erfolg
+    D-->>A: Ergebnis
+    A-->>W: 2xx-Antwort
+    W-->>U: Aktualisierte Ansicht
+  end
+```
+
+### 11.2 Funktionale CQRS-Trennung (Schools)
+
+Commands ändern Zustand, Queries lesen Zustand.
+
+```mermaid
+flowchart LR
+  UI[Benutzeraktion im Web] --> C{Absicht}
+  C -->|Erstellen/Aktualisieren/Löschen| CMD[Command Handler]
+  C -->|Lesen/Holen/Liste| QRY[Query Handler]
+  CMD --> SVC[Application Service]
+  QRY --> SVC
+  SVC --> REPO[(Repository)]
+  REPO --> DB[(PostgreSQL)]
+```
+
+### 11.3 Quality Gates für Releases
+
+Risikobasierte Tests plus Coverage-Gates reduzieren Regressionen.
+
+```mermaid
+flowchart LR
+  DEV[Codeänderungen] --> TEST[Unit + Integrationstests]
+  TEST --> CRIT[Tests kritischer Flows]
+  CRIT --> COV[Coverage Gates]
+  COV -->|Pass| MERGE[Merge-bereit]
+  COV -->|Fail| FIX[Fix + Neu-Ausführung]
+  FIX --> TEST
+```

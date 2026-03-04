@@ -43,17 +43,12 @@ public class HelpControllerTests
     }
 
     [Fact]
-    public void Doc_ReturnsNotFound_WhenFileDoesNotExist()
+    public void Doc_ReturnsNotFound_WhenDocDoesNotExist()
     {
         using var scope = new CultureScope("ca-ES");
-        var controller = CreateControllerWithTempRoot(out var root);
-        var docPath = Path.Combine(root, "HelpDocs", "ca", "manual.md");
-        if (File.Exists(docPath))
-        {
-            File.Delete(docPath);
-        }
+        var controller = CreateControllerWithTempRoot(out _);
 
-        var result = controller.Doc("manual");
+        var result = controller.Doc("unknown-doc");
 
         Assert.IsType<NotFoundResult>(result);
     }
@@ -79,12 +74,45 @@ public class HelpControllerTests
     }
 
     [Fact]
-    public void Docx_ReturnsNotFound_WhenFileDoesNotExist()
+    public void Doc_ReturnsDocView_WhenHelpDocsAreUnderSrcWebFolder()
+    {
+        using var scope = new CultureScope("en-US");
+        var controller = CreateControllerWithTempRoot(out var root);
+        WriteDoc(Path.Combine(root, "src", "Web"), "en", "functional.md", "# Functional\\n\\nText");
+
+        var result = controller.Doc("functional");
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.Equal("Doc", view.ViewName);
+        var model = Assert.IsType<HelpController.HelpDocViewModel>(view.Model);
+        Assert.Equal("en", model.Lang);
+        Assert.Equal("funcional", model.Doc);
+    }
+
+    [Fact]
+    public void Doc_ReturnsDocView_WhenDocsFolderIsAtRepoRootStyle()
+    {
+        using var scope = new CultureScope("en-US");
+        var controller = CreateControllerWithTempRoot(out var root);
+        var dir = Path.Combine(root, "docs", "en");
+        Directory.CreateDirectory(dir);
+        File.WriteAllText(Path.Combine(dir, "functional.md"), "# Functional\\n\\nText");
+
+        var result = controller.Doc("functional");
+
+        var view = Assert.IsType<ViewResult>(result);
+        var model = Assert.IsType<HelpController.HelpDocViewModel>(view.Model);
+        Assert.Equal("en", model.Lang);
+        Assert.Equal("funcional", model.Doc);
+    }
+
+    [Fact]
+    public void Docx_ReturnsNotFound_WhenDocDoesNotExist()
     {
         using var scope = new CultureScope("fr-FR");
         var controller = CreateControllerWithTempRoot(out _);
 
-        var result = controller.Docx("manual");
+        var result = controller.Docx("unknown-doc");
 
         Assert.IsType<NotFoundResult>(result);
     }
