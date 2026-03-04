@@ -1,0 +1,29 @@
+name: Coverage Gates
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+
+jobs:
+  test-and-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore EscolesPubliques.sln
+
+      - name: Run coverage gates
+        env:
+          DOMAIN_MIN: "80"
+          APPLICATION_MIN: "80"
+          INFRASTRUCTURE_MIN: "15"
+          WEB_MIN: "50"
+        run: ./scripts/check-coverage-gates.sh

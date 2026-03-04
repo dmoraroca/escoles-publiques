@@ -56,3 +56,28 @@ git push -u origin main
 git remote add origin https://github.com/dmoraroca/escoles-publiques.git
 git branch -M main
 git push -u origin main
+
+*** Coverage gates (DDD) ***
+
+Script local/CI:
+
+`./scripts/check-coverage-gates.sh`
+
+Mode check-only (sense executar tests):
+
+`COVERAGE_FILE=path/to/coverage.cobertura.xml SKIP_TEST_RUN=1 ./scripts/check-coverage-gates.sh`
+
+Llindars per defecte:
+
+- Domain: 80%
+- Application: 80%
+- Infrastructure: 15%
+- Web: 50%
+
+Override de llindars (exemple):
+
+`DOMAIN_MIN=85 APPLICATION_MIN=85 INFRASTRUCTURE_MIN=20 WEB_MIN=55 ./scripts/check-coverage-gates.sh`
+
+CI GitHub Actions:
+
+`.github/workflows/coverage-gates.yml`
