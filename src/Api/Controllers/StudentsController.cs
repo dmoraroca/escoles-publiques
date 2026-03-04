@@ -1,8 +1,10 @@
 using Application.Interfaces;
+using Api.Contracts;
 using Domain.DomainExceptions;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 
 namespace Api.Controllers;
 
@@ -11,6 +13,7 @@ namespace Api.Controllers;
 [Authorize]
 public class StudentsController : ControllerBase
 {
+    private const string GenericApiError = "S'ha produït un error inesperat.";
     private readonly IStudentService _studentService;
     private readonly IUserService _userService;
     private readonly ILogger<StudentsController> _logger;
@@ -46,7 +49,6 @@ public class StudentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] StudentDtoIn dto)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
         try
         {
             var existingUser = await _userService.GetUserByEmailAsync(dto.Email);
@@ -72,7 +74,11 @@ public class StudentsController : ControllerBase
             {
                 SchoolId = dto.SchoolId
             };
-            var createdWithUser = await _studentService.CreateStudentWithUserAsync(user, "user123", newStudent);
+            var configuredPassword = Environment.GetEnvironmentVariable("ESCOLES_DEFAULT_STUDENT_PASSWORD");
+            var initialPassword = string.IsNullOrWhiteSpace(configuredPassword)
+                ? Convert.ToHexString(RandomNumberGenerator.GetBytes(24))
+                : configuredPassword;
+            var createdWithUser = await _studentService.CreateStudentWithUserAsync(user, initialPassword, newStudent);
             return CreatedAtAction(nameof(Get), new { id = createdWithUser.Id }, ToDto(createdWithUser));
         }
         catch (DuplicateEntityException ex)
@@ -90,14 +96,13 @@ public class StudentsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating student");
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] StudentDtoIn dto)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
         try
         {
             var student = await _studentService.GetStudentByIdAsync(id);
@@ -141,7 +146,7 @@ public class StudentsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating student {Id}", id);
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
@@ -160,7 +165,7 @@ public class StudentsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting student {Id}", id);
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
@@ -178,15 +183,3 @@ public class StudentsController : ControllerBase
         );
     }
 }
-
-public record StudentDtoIn(string FirstName, string LastName, string Email, DateOnly? BirthDate, long SchoolId);
-
-public record StudentDtoOut(
-    long Id,
-    long? UserId,
-    string FirstName,
-    string LastName,
-    string Email,
-    DateOnly? BirthDate,
-    long SchoolId,
-    string? SchoolName);

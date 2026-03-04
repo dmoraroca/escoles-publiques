@@ -1,8 +1,11 @@
 using Application.Interfaces;
 using Application.UseCases.Services;
+using Api.Validators;
 using Domain.Entities;
 using Domain.Interfaces;
 using Api.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,8 +41,7 @@ static string NormalizePg(string? raw)
             Username = username,
             Password = password,
             // External hosts on Render require SSL; internal may not, but Prefer is safe.
-            SslMode = SslMode.Prefer,
-            TrustServerCertificate = true
+            SslMode = SslMode.Prefer
         };
 
         // Respect sslmode=require if provided on the URL.
@@ -85,9 +87,13 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 // Authentication - JWT
 var jwtSection = builder.Configuration.GetSection("Jwt");
-var key = jwtSection.GetValue<string>("Key") ?? "dev-secret-key-please-change";
+var key = jwtSection.GetValue<string>("Key");
 var issuer = jwtSection.GetValue<string>("Issuer") ?? "EscolesApi";
 var audience = jwtSection.GetValue<string>("Audience") ?? "EscolesClients";
+if (string.IsNullOrWhiteSpace(key))
+{
+    throw new InvalidOperationException("Missing required configuration: Jwt:Key");
+}
 
 builder.Services.AddAuthentication(options =>
 {
@@ -135,6 +141,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(options =>
 {

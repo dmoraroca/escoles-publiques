@@ -22,7 +22,7 @@ public class EnrollmentsController : BaseController
         IStudentsApiClient studentsApi,
         ISchoolsApiClient schoolsApi,
         ILogger<EnrollmentsController> logger,
-        IStringLocalizer<BaseController> localizer) : base(logger ?? throw new ArgumentNullException(nameof(logger), "Logger cannot be null in EnrollmentsController"), localizer)
+        IStringLocalizer<BaseController>? localizer = null) : base(logger ?? throw new ArgumentNullException(nameof(logger), "Logger cannot be null in EnrollmentsController"), localizer)
     {
         _enrollmentsApi = enrollmentsApi;
         _studentsApi = studentsApi;

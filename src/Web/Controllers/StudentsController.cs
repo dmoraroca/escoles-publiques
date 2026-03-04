@@ -20,7 +20,7 @@ public class StudentsController : BaseController
         IStudentsApiClient studentsApi,
         ISchoolsApiClient schoolsApi,
         ILogger<StudentsController> logger,
-        IStringLocalizer<BaseController> localizer) : base(logger, localizer)
+        IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
         _studentsApi = studentsApi;
         _schoolsApi = schoolsApi;

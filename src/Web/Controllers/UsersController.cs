@@ -11,7 +11,7 @@ public class UsersController : BaseController
 {
     private readonly IUserRepository _userRepository;
 
-    public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IStringLocalizer<BaseController> localizer) : base(logger, localizer)
+    public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
         _userRepository = userRepository;
     }

@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Api.Contracts;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace Api.Controllers;
 [Authorize]
 public class SchoolsController : ControllerBase
 {
+    private const string GenericApiError = "S'ha produït un error inesperat.";
     private readonly ISchoolService _schoolService;
     private readonly ILogger<SchoolsController> _logger;
 
@@ -32,6 +34,7 @@ public class SchoolsController : ControllerBase
         try
         {
             var school = await _schoolService.GetSchoolByIdAsync(id);
+            if (school is null) return NotFound();
             return Ok(ToDto(school));
         }
         catch (Exception ex)
@@ -44,8 +47,6 @@ public class SchoolsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SchoolDto dto)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
         var school = new School
         {
             Code = dto.Code,
@@ -63,18 +64,17 @@ public class SchoolsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating school");
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] SchoolDto dto)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
         try
         {
             var school = await _schoolService.GetSchoolByIdAsync(id);
+            if (school is null) return NotFound();
             school.Code = dto.Code;
             school.Name = dto.Name;
             school.City = dto.City;
@@ -87,7 +87,7 @@ public class SchoolsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating school {Id}", id);
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
@@ -102,7 +102,7 @@ public class SchoolsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting school {Id}", id);
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
@@ -119,24 +119,3 @@ public class SchoolsController : ControllerBase
         );
     }
 }
-
-public record SchoolDto
-(
-    long? Id,
-    string Code,
-    string Name,
-    string? City,
-    bool IsFavorite,
-    long? ScopeId
-);
-
-public record SchoolDtoOut
-(
-    long Id,
-    string Code,
-    string Name,
-    string? City,
-    bool IsFavorite,
-    long? ScopeId,
-    DateTime CreatedAt
-);

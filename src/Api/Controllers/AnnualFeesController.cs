@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Api.Contracts;
 using Domain.DomainExceptions;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ namespace Api.Controllers;
 [Authorize]
 public class AnnualFeesController : ControllerBase
 {
+    private const string GenericApiError = "S'ha produït un error inesperat.";
     private readonly IAnnualFeeService _annualFeeService;
     private readonly ILogger<AnnualFeesController> _logger;
 
@@ -44,7 +46,6 @@ public class AnnualFeesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AnnualFeeDtoIn dto)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
         try
         {
             var fee = new AnnualFee
@@ -73,14 +74,13 @@ public class AnnualFeesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating annual fee");
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] AnnualFeeDtoIn dto)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
         try
         {
             var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
@@ -110,7 +110,7 @@ public class AnnualFeesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating annual fee {Id}", id);
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
@@ -129,7 +129,7 @@ public class AnnualFeesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting annual fee {Id}", id);
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
@@ -164,26 +164,3 @@ public class AnnualFeesController : ControllerBase
         );
     }
 }
-
-public record AnnualFeeDtoIn(
-    long EnrollmentId,
-    decimal Amount,
-    string Currency,
-    DateOnly DueDate,
-    bool IsPaid,
-    string? PaymentRef);
-
-public record AnnualFeeDtoOut(
-    long Id,
-    long EnrollmentId,
-    string EnrollmentInfo,
-    string StudentName,
-    string AcademicYear,
-    string? CourseName,
-    decimal Amount,
-    string Currency,
-    DateOnly DueDate,
-    DateTime? PaidAt,
-    string? PaymentRef,
-    long? SchoolId,
-    string? SchoolName);

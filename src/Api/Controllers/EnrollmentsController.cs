@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Api.Contracts;
 using Domain.DomainExceptions;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ namespace Api.Controllers;
 [Authorize]
 public class EnrollmentsController : ControllerBase
 {
+    private const string GenericApiError = "S'ha produït un error inesperat.";
     private readonly IEnrollmentService _enrollmentService;
     private readonly ILogger<EnrollmentsController> _logger;
 
@@ -44,7 +46,6 @@ public class EnrollmentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] EnrollmentDtoIn dto)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
         try
         {
             var enrollment = new Enrollment
@@ -72,14 +73,13 @@ public class EnrollmentsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating enrollment");
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] EnrollmentDtoIn dto)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
         try
         {
             var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
@@ -112,7 +112,7 @@ public class EnrollmentsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating enrollment {Id}", id);
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
@@ -131,7 +131,7 @@ public class EnrollmentsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting enrollment {Id}", id);
-            return Problem(detail: ex.Message);
+            return Problem(detail: GenericApiError);
         }
     }
 
@@ -156,22 +156,3 @@ public class EnrollmentsController : ControllerBase
         );
     }
 }
-
-public record EnrollmentDtoIn(
-    long StudentId,
-    string AcademicYear,
-    string? CourseName,
-    string Status,
-    DateTime? EnrolledAt,
-    long SchoolId);
-
-public record EnrollmentDtoOut(
-    long Id,
-    long StudentId,
-    string StudentName,
-    string AcademicYear,
-    string? CourseName,
-    string Status,
-    DateTime EnrolledAt,
-    long SchoolId,
-    string SchoolName);

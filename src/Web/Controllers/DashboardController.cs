@@ -24,7 +24,7 @@ public class DashboardController : BaseController
         IEnrollmentsApiClient enrollmentsApi,
         IAnnualFeesApiClient annualFeesApi,
         ISchoolsApiClient schoolsApi,
-        IStringLocalizer<BaseController> localizer) : base(logger, localizer)
+        IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
         _studentsApi = studentsApi;
         _enrollmentsApi = enrollmentsApi;

@@ -16,14 +16,12 @@ public class SearchController : Controller
         return View();
     }
 
-    [HttpGet]
     /// <summary>
     /// Processa la cerca segons el query indicat.
     /// </summary>
     [HttpGet]
     public IActionResult Search(string query)
     {
-        // TODO: Implementar cerca
         return RedirectToAction("Index", "Home");
     }
 }

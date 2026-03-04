@@ -1,5 +1,5 @@
 using System;
-using Infrastructure.src.Domain.Entities;
+using Domain.Entities;
 using Xunit;
 
 namespace UnitTest.Infrastructure
@@ -9,7 +9,7 @@ namespace UnitTest.Infrastructure
         [Fact]
         public void Users_CanSetProperties()
         {
-            var user = new Users
+            var user = new User
             {
                 Id = 1,
                 FirstName = "A",
@@ -30,7 +30,7 @@ namespace UnitTest.Infrastructure
         [Fact]
         public void Students_CanSetProperties()
         {
-            var student = new Students
+            var student = new Student
             {
                 Id = 1,
                 SchoolId = 2,
@@ -44,7 +44,7 @@ namespace UnitTest.Infrastructure
         [Fact]
         public void Schools_CanSetProperties()
         {
-            var school = new Schools
+            var school = new School
             {
                 Id = 1,
                 Name = "School",
@@ -59,13 +59,14 @@ namespace UnitTest.Infrastructure
         [Fact]
         public void Enrollments_CanSetProperties()
         {
-            var enrollment = new Enrollments
+            var enrollment = new Enrollment
             {
                 Id = 1,
                 StudentId = 1,
                 AcademicYear = "2025",
                 Status = "Active",
-                EnrolledAt = DateTime.UtcNow
+                EnrolledAt = DateTime.UtcNow,
+                SchoolId = 2
             };
 
             Assert.Equal("2025", enrollment.AcademicYear);
@@ -74,7 +75,7 @@ namespace UnitTest.Infrastructure
         [Fact]
         public void AnnualFees_CanSetProperties()
         {
-            var fee = new AnnualFees
+            var fee = new AnnualFee
             {
                 Id = 1,
                 EnrollmentId = 1,
@@ -83,9 +84,15 @@ namespace UnitTest.Infrastructure
                 DueDate = new DateOnly(2025, 9, 1),
                 PaidAt = DateTime.UtcNow,
                 PaymentRef = "REF",
-                StudentId = 2,
-                Enrollment = new Enrollments { Id = 1, StudentId = 1, AcademicYear = "2025", Status = "Active", EnrolledAt = DateTime.UtcNow },
-                Student = new Students { Id = 2, SchoolId = 1, CreatedAt = DateTime.UtcNow }
+                Enrollment = new Enrollment
+                {
+                    Id = 1,
+                    StudentId = 1,
+                    AcademicYear = "2025",
+                    Status = "Active",
+                    EnrolledAt = DateTime.UtcNow,
+                    SchoolId = 2
+                }
             };
 
             Assert.Equal(100m, fee.Amount);
@@ -94,7 +101,7 @@ namespace UnitTest.Infrastructure
         [Fact]
         public void ScopeMnt_CanSetProperties()
         {
-            var scope = new ScopeMnt
+            var scope = new Scope
             {
                 Id = 1,
                 Name = "Primary",

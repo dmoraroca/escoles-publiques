@@ -26,7 +26,7 @@ namespace Web.Controllers
             IEnrollmentsApiClient enrollmentsApi,
             IStudentsApiClient studentsApi,
             ILogger<AnnualFeesController> logger,
-            IStringLocalizer<BaseController> localizer) : base(logger, localizer)
+            IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
         {
             _annualFeesApi = annualFeesApi;
             _enrollmentsApi = enrollmentsApi;

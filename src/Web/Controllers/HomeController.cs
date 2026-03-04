@@ -10,25 +10,16 @@ namespace Web.Controllers;
 /// <summary>
 /// Controlador principal de la web. Gestiona la pàgina d'inici, privacitat i errors.
 /// </summary>
-/// <summary>
-/// Controlador principal de la web. Gestiona la pàgina d'inici, privacitat i errors.
-/// </summary>
 [Authorize]
 public partial class HomeController : BaseController
 {
     /// <summary>
     /// Constructor del controlador Home.
     /// </summary>
-    /// <summary>
-    /// Constructor del controlador Home.
-    /// </summary>
-    public HomeController(ILogger<HomeController> logger, IStringLocalizer<BaseController> localizer) : base(logger, localizer)
+    public HomeController(ILogger<HomeController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
     }
 
-    /// <summary>
-    /// Mostra la pàgina principal amb opcions de cerca i filtratge per àmbit.
-    /// </summary>
     /// <summary>
     /// Mostra la pàgina principal amb opcions de cerca i filtratge per àmbit.
     /// </summary>
@@ -51,17 +42,11 @@ public partial class HomeController : BaseController
     /// <summary>
     /// Mostra la pàgina de privacitat.
     /// </summary>
-    /// <summary>
-    /// Mostra la pàgina de privacitat.
-    /// </summary>
     public IActionResult Privacy()
     {
         return View();
     }
 
-    /// <summary>
-    /// Mostra la pàgina d'error amb informació de la petició.
-    /// </summary>
     /// <summary>
     /// Mostra la pàgina d'error amb informació de la petició.
     /// </summary>

@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Api.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -35,9 +36,14 @@ public class AuthController : ControllerBase
             if (!success) return Unauthorized();
 
             var jwtSection = _config.GetSection("Jwt");
-            var key = jwtSection.GetValue<string>("Key") ?? "dev-secret-key-please-change";
+            var key = jwtSection.GetValue<string>("Key");
             var issuer = jwtSection.GetValue<string>("Issuer") ?? "EscolesApi";
             var audience = jwtSection.GetValue<string>("Audience") ?? "EscolesClients";
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                _logger.LogError("JWT key is not configured");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error intern del servidor");
+            }
             _logger.LogDebug("JWT settings. Issuer={Issuer}, Audience={Audience}, KeyLength={KeyLength}",
                 issuer, audience, key.Length);
 
@@ -63,9 +69,6 @@ public class AuthController : ControllerBase
         {
             _logger.LogError(ex, "Error generant token d'autenticació. Email={Email}", dto?.Email ?? "null");
             return StatusCode(StatusCodes.Status500InternalServerError, "Error intern del servidor");
-            throw;
         }
     }
 }
-
-public record LoginDto(string Email, string Password);

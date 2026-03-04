@@ -1,3 +1,4 @@
+using Api.Contracts;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,5 +25,3 @@ public class ScopesController : ControllerBase
         return Ok(result);
     }
 }
-
-public record ScopeDtoOut(long Id, string Name);

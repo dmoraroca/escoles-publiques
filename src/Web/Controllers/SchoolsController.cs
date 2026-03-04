@@ -14,9 +14,6 @@ namespace Web.Controllers;
 /// <summary>
 /// Controlador per gestionar les escoles: llistat, detalls, creació, edició i eliminació.
 /// </summary>
-/// <summary>
-/// Controlador per gestionar les escoles: llistat, detalls, creació, edició i eliminació.
-/// </summary>
 [Authorize]
 public class SchoolsController : BaseController
 {
@@ -27,24 +24,18 @@ public class SchoolsController : BaseController
     /// <summary>
     /// Constructor del controlador d'escoles.
     /// </summary>
-    /// <summary>
-    /// Constructor del controlador d'escoles.
-    /// </summary>
     public SchoolsController(
         ISchoolsApiClient schoolApi,
         IHubContext<SchoolHub> hubContext,
         IScopesApiClient scopesApi,
         ILogger<SchoolsController> logger,
-        IStringLocalizer<BaseController> localizer) : base(logger, localizer)
+        IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
         _schoolApi = schoolApi;
         _hubContext = hubContext;
         _scopesApi = scopesApi;
     }
 
-    /// <summary>
-    /// Mostra el llistat de totes les escoles.
-    /// </summary>
     /// <summary>
     /// Mostra el llistat de totes les escoles.
     /// </summary>
@@ -88,9 +79,6 @@ public class SchoolsController : BaseController
         }
     }
 
-    /// <summary>
-    /// Mostra els detalls d'una escola concreta.
-    /// </summary>
     /// <summary>
     /// Mostra els detalls d'una escola concreta.
     /// </summary>

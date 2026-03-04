@@ -15,12 +15,15 @@ public class AuthController : Controller
 {
     private readonly IAuthApiClient _authApiClient;
     private readonly ILogger<AuthController> _logger;
-    private readonly IStringLocalizer<AuthController> _localizer;
+    private readonly IStringLocalizer<AuthController>? _localizer;
 
     /// <summary>
     /// Constructor del controlador d'autenticació.
     /// </summary>
-    public AuthController(IAuthApiClient authApiClient, ILogger<AuthController> logger, IStringLocalizer<AuthController> localizer)
+    public AuthController(
+        IAuthApiClient authApiClient,
+        ILogger<AuthController> logger,
+        IStringLocalizer<AuthController>? localizer = null)
     {
         _authApiClient = authApiClient;
         _logger = logger;
@@ -55,14 +58,14 @@ public class AuthController : Controller
         {
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                TempData["Error"] = _localizer["Email i contrasenya són obligatoris"].Value;
+                TempData["Error"] = L("Email i contrasenya són obligatoris");
                 return View();
             }
 
             var token = await _authApiClient.GetTokenAsync(email, password);
             if (string.IsNullOrWhiteSpace(token))
             {
-                TempData["Error"] = _localizer["Credencials incorrectes"].Value;
+                TempData["Error"] = L("Credencials incorrectes");
                 return View();
             }
 
@@ -123,4 +126,6 @@ public class AuthController : Controller
         HttpContext.Session.Remove(SessionKeys.ApiToken);
         return RedirectToAction("Login");
     }
+
+    private string L(string text) => _localizer?[text].Value ?? text;
 }

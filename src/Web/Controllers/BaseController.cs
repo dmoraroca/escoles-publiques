@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 namespace Web.Controllers;
 
 /// <summary>
@@ -14,10 +15,10 @@ public abstract class BaseController : Controller
     /// <summary>
     /// Constructor de la classe base amb logger.
     /// </summary>
-    protected BaseController(ILogger logger, IStringLocalizer localizer)
+    protected BaseController(ILogger logger, IStringLocalizer? localizer = null)
     {
         Logger = logger;
-        Localizer = localizer;
+        Localizer = localizer ?? new PassthroughStringLocalizer();
     }
 
     /// <summary>
@@ -73,5 +74,16 @@ public abstract class BaseController : Controller
         }
         var accept = Request.Headers["Accept"].ToString();
         return accept.Contains("application/json", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private sealed class PassthroughStringLocalizer : IStringLocalizer
+    {
+        public LocalizedString this[string name] => new(name, name, resourceNotFound: true);
+
+        public LocalizedString this[string name, params object[] arguments]
+            => new(name, string.Format(CultureInfo.CurrentCulture, name, arguments), resourceNotFound: true);
+
+        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+            => Enumerable.Empty<LocalizedString>();
     }
 }
