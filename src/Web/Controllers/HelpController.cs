@@ -124,9 +124,9 @@ public sealed class HelpController : Controller
             ("es", "funcional") => ("Documento funcional", ResolveFirstExisting(baseDir, "funcional.md")),
             ("es", "tecnic") => ("Documento técnico", ResolveFirstExisting(baseDir, "tecnic.md", "tecnico.md")),
 
-            ("en", "manual") => ,
+            ("en", "manual") => ("User manual", ResolveFirstExisting(baseDir, "manual.md", "user-manual.md")),
             ("en", "funcional") => ("Functional document", ResolveFirstExisting(baseDir, "functional.md")),
-("User manual", ResolveFirstExisting(baseDir, "manual.md", "user-manual.md"))            ("en", "tecnic") => ("Technical document", ResolveFirstExisting(baseDir, "technical.md")),
+            ("en", "tecnic") => ("Technical document", ResolveFirstExisting(baseDir, "technical.md")),
 
             // German filenames in repo are non-standard; keep mapping explicit.
             ("de", "manual") => ("Benutzerhandbuch", ResolveFirstExisting(baseDir, "manual.md", "benutzerhandbuch.md")),
