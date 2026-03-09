@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per gestionar les dades d'un alumne.
+/// Encapsulates the functional responsibility of student view model within the application architecture.
 /// </summary>
 public class StudentViewModel
 {

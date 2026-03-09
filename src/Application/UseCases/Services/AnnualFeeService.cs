@@ -6,9 +6,8 @@ using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
-
 /// <summary>
-/// Service for managing annual fees, including retrieval, creation, update, and deletion of annual fee records.
+/// Implements application logic for annual fee operations.
 /// </summary>
 public class AnnualFeeService : IAnnualFeeService
 {
@@ -16,13 +15,7 @@ public class AnnualFeeService : IAnnualFeeService
     private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly ILogger<AnnualFeeService> _logger;
 
-    /// <summary>
-    /// Initializes a new instance of the AnnualFeeService class.
-    /// </summary>
-    /// <param name="annualFeeRepository">Repository for annual fee data access.</param>
-    /// <param name="enrollmentRepository">Repository for enrollment data access.</param>
-    /// <param name="logger">Logger instance.</param>
-    public AnnualFeeService(
+        public AnnualFeeService(
         IAnnualFeeRepository annualFeeRepository,
         IEnrollmentRepository enrollmentRepository,
         ILogger<AnnualFeeService> logger)
@@ -31,23 +24,18 @@ public class AnnualFeeService : IAnnualFeeService
         _enrollmentRepository = enrollmentRepository;
         _logger = logger;
     }
-
-    /// <summary>
-    /// Retrieves all annual fees asynchronously.
-    /// </summary>
-    /// <returns>Enumerable of all annual fees.</returns>
-    public async Task<IEnumerable<AnnualFee>> GetAllAnnualFeesAsync()
+        /// <summary>
+        /// Retrieves all annual fees async and returns it to the caller.
+        /// </summary>
+        public async Task<IEnumerable<AnnualFee>> GetAllAnnualFeesAsync()
     {
         _logger.LogInformation("Obtenint totes les quotes");
         return await _annualFeeRepository.GetAllAsync();
     }
-
-    /// <summary>
-    /// Retrieves an annual fee by its unique identifier asynchronously.
-    /// </summary>
-    /// <param name="id">Annual fee identifier.</param>
-    /// <returns>The annual fee if found; otherwise, throws NotFoundException.</returns>
-    public async Task<AnnualFee?> GetAnnualFeeByIdAsync(long id)
+        /// <summary>
+        /// Retrieves annual fee by id async and returns it to the caller.
+        /// </summary>
+        public async Task<AnnualFee?> GetAnnualFeeByIdAsync(long id)
     {
         _logger.LogInformation("Obtenint quota amb Id: {Id}", id);
         var annualFee = await _annualFeeRepository.GetByIdAsync(id);
@@ -60,14 +48,18 @@ public class AnnualFeeService : IAnnualFeeService
 
         return annualFee;
     }
-
-    public async Task<IEnumerable<AnnualFee>> GetAnnualFeesByEnrollmentIdAsync(long enrollmentId)
+        /// <summary>
+        /// Retrieves annual fees by enrollment id async and returns it to the caller.
+        /// </summary>
+        public async Task<IEnumerable<AnnualFee>> GetAnnualFeesByEnrollmentIdAsync(long enrollmentId)
     {
         _logger.LogInformation("Obtenint quotes de la inscripció amb Id: {EnrollmentId}", enrollmentId);
         return await _annualFeeRepository.GetByEnrollmentIdAsync(enrollmentId);
     }
-
-    public async Task<AnnualFee> CreateAnnualFeeAsync(AnnualFee annualFee)
+        /// <summary>
+        /// Creates annual fee async by applying the required business rules.
+        /// </summary>
+        public async Task<AnnualFee> CreateAnnualFeeAsync(AnnualFee annualFee)
     {
         annualFee.Amount = MoneyAmount.Create(annualFee.Amount).Value;
 
@@ -86,8 +78,10 @@ public class AnnualFeeService : IAnnualFeeService
             annualFee.EnrollmentId, annualFee.Amount);
         return await _annualFeeRepository.AddAsync(annualFee);
     }
-
-    public async Task UpdateAnnualFeeAsync(AnnualFee annualFee)
+        /// <summary>
+        /// Updates annual fee async with the data received in the request.
+        /// </summary>
+        public async Task UpdateAnnualFeeAsync(AnnualFee annualFee)
     {
         var existingFee = await _annualFeeRepository.GetByIdAsync(annualFee.Id);
         if (existingFee == null)
@@ -100,8 +94,10 @@ public class AnnualFeeService : IAnnualFeeService
         _logger.LogInformation("Actualitzant quota amb Id: {Id}", annualFee.Id);
         await _annualFeeRepository.UpdateAsync(annualFee);
     }
-
-    public async Task DeleteAnnualFeeAsync(long id)
+        /// <summary>
+        /// Deletes annual fee async from the system in a controlled manner.
+        /// </summary>
+        public async Task DeleteAnnualFeeAsync(long id)
     {
         var annualFee = await _annualFeeRepository.GetByIdAsync(id);
         if (annualFee == null)

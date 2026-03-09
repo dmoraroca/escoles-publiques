@@ -3,17 +3,23 @@ using Application.Interfaces.Search;
 using Web.Services.Api;
 
 namespace Web.Services.Search.Adapters;
-
+/// <summary>
+/// Encapsulates the functional responsibility of student search source within the application architecture.
+/// </summary>
 public class StudentSearchSource : IStudentSearchSource
 {
     private readonly IStudentsApiClient _studentsApi;
-
-    public StudentSearchSource(IStudentsApiClient studentsApi)
+            /// <summary>
+            /// Initializes a new instance of the StudentSearchSource class with its required dependencies.
+            /// </summary>
+            public StudentSearchSource(IStudentsApiClient studentsApi)
     {
         _studentsApi = studentsApi;
     }
-
-    public async Task<IEnumerable<StudentSearchDto>> GetAllAsync()
+            /// <summary>
+            /// Retrieves all async and returns it to the caller.
+            /// </summary>
+            public async Task<IEnumerable<StudentSearchDto>> GetAllAsync()
     {
         var students = await _studentsApi.GetAllAsync();
         return students.Select(s => new StudentSearchDto(

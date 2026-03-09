@@ -2,10 +2,15 @@ using Api.Contracts;
 using FluentValidation;
 
 namespace Api.Validators;
-
+/// <summary>
+/// Validates incoming data for school dto.
+/// </summary>
 public class SchoolDtoValidator : AbstractValidator<SchoolDto>
 {
-    public SchoolDtoValidator()
+            /// <summary>
+            /// Initializes a new instance of the SchoolDtoValidator class with its required dependencies.
+            /// </summary>
+            public SchoolDtoValidator()
     {
         RuleFor(x => x.Code)
             .NotEmpty().WithMessage("El codi és obligatori.")

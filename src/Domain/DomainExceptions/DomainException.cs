@@ -1,11 +1,13 @@
 namespace Domain.DomainExceptions;
-
 /// <summary>
-/// Base exception for all domain-specific exceptions
+/// Encapsulates the functional responsibility of domain exception within the application architecture.
 /// </summary>
 public abstract class DomainException : Exception
 {
-    protected DomainException(string message) : base(message)
+            /// <summary>
+            /// Initializes a new instance of the DomainException class with its required dependencies.
+            /// </summary>
+            protected DomainException(string message) : base(message)
     {
     }
 

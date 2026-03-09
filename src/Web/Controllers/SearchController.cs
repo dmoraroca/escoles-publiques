@@ -2,24 +2,22 @@ using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
-
 /// <summary>
-/// Controlador per gestionar la cerca global a la web.
+/// Exposes HTTP endpoints to manage search workflows.
 /// </summary>
 public class SearchController : Controller
 {
-    /// <summary>
-    /// Mostra la pàgina principal de cerca.
-    /// </summary>
-    public IActionResult Index()
+            /// <summary>
+            /// Executes the index operation as part of this component.
+            /// </summary>
+            public IActionResult Index()
     {
         return View();
     }
-
     /// <summary>
-    /// Processa la cerca segons el query indicat.
+    /// Executes the search operation as part of this component.
     /// </summary>
-    [HttpGet]
+            [HttpGet]
     public IActionResult Search(string query)
     {
         return RedirectToAction("Index", "Home");

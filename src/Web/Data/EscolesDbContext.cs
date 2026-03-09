@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Web.Models.Scaffold;
 
 namespace Web.Data;
-
+/// <summary>
+/// Encapsulates the functional responsibility of escoles db context within the application architecture.
+/// </summary>
 public partial class EscolesDbContext : DbContext
 {
     public EscolesDbContext(DbContextOptions<EscolesDbContext> options)
@@ -23,8 +25,10 @@ public partial class EscolesDbContext : DbContext
     public virtual DbSet<student> students { get; set; }
 
     public virtual DbSet<user> users { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+            /// <summary>
+            /// Executes the on model creating operation as part of this component.
+            /// </summary>
+            protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresExtension("pgcrypto");
 

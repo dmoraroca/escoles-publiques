@@ -2,20 +2,26 @@ using System.Text;
 using System.Text.Json;
 
 namespace Web.Services.Api;
-
+/// <summary>
+/// Encapsulates the functional responsibility of auth api client within the application architecture.
+/// </summary>
 public class AuthApiClient : IAuthApiClient
 {
     private readonly HttpClient _http;
     private readonly ILogger<AuthApiClient> _logger;
     private readonly JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };
-
-    public AuthApiClient(HttpClient http, ILogger<AuthApiClient> logger)
+            /// <summary>
+            /// Initializes a new instance of the AuthApiClient class with its required dependencies.
+            /// </summary>
+            public AuthApiClient(HttpClient http, ILogger<AuthApiClient> logger)
     {
         _http = http;
         _logger = logger;
     }
-
-    public async Task<string?> GetTokenAsync(string email, string password)
+            /// <summary>
+            /// Retrieves token async and returns it to the caller.
+            /// </summary>
+            public async Task<string?> GetTokenAsync(string email, string password)
     {
         var json = JsonSerializer.Serialize(new { email, password });
         var res = await _http.PostAsync("api/auth/token", new StringContent(json, Encoding.UTF8, "application/json"));
@@ -54,6 +60,8 @@ public class AuthApiClient : IAuthApiClient
             body.Length);
         return null;
     }
-
-    private sealed record TokenResponse(string Token);
+            /// <summary>
+            /// Represents values and data structure for token response.
+            /// </summary>
+            private sealed record TokenResponse(string Token);
 }

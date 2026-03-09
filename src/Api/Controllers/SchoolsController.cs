@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+/// <summary>
+/// Exposes HTTP endpoints to manage schools workflows.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
@@ -32,23 +35,29 @@ public class SchoolsController : ControllerBase
         _updateSchoolCommand = updateSchoolCommand;
         _deleteSchoolCommand = deleteSchoolCommand;
     }
-
-    [HttpGet]
+    /// <summary>
+    /// Retrieves all and returns it to the caller.
+    /// </summary>
+            [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var schools = await _getAllSchoolsQuery.HandleAsync(new GetAllSchoolsQuery());
         return Ok(schools.Select(ToDto));
     }
-
-    [HttpGet("{id}")]
+    /// <summary>
+    /// Retrieves the requested data and returns it to the caller.
+    /// </summary>
+            [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
         var school = await _getSchoolByIdQuery.HandleAsync(new GetSchoolByIdQuery(id));
         if (school is null) return NotFound();
         return Ok(ToDto(school));
     }
-
-    [HttpPost]
+    /// <summary>
+    /// Creates a new resource by applying the required business rules.
+    /// </summary>
+            [HttpPost]
     public async Task<IActionResult> Create([FromBody] SchoolDto dto)
     {
         var created = await _createSchoolCommand.HandleAsync(new CreateSchoolCommand(
@@ -59,8 +68,10 @@ public class SchoolsController : ControllerBase
             dto.ScopeId));
         return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
     }
-
-    [HttpPut("{id}")]
+    /// <summary>
+    /// Updates the target resource with the data received in the request.
+    /// </summary>
+            [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] SchoolDto dto)
     {
         var updated = await _updateSchoolCommand.HandleAsync(new UpdateSchoolCommand(
@@ -73,15 +84,19 @@ public class SchoolsController : ControllerBase
         if (!updated) return NotFound();
         return NoContent();
     }
-
-    [HttpDelete("{id}")]
+    /// <summary>
+    /// Deletes the target resource from the system in a controlled manner.
+    /// </summary>
+            [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         await _deleteSchoolCommand.HandleAsync(new DeleteSchoolCommand(id));
         return NoContent();
     }
-
-    private static SchoolDtoOut ToDto(School school)
+            /// <summary>
+            /// Maps data for to dto between application layers.
+            /// </summary>
+            private static SchoolDtoOut ToDto(School school)
     {
         return new SchoolDtoOut(
             school.Id,

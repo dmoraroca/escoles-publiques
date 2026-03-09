@@ -1,5 +1,7 @@
 namespace Api.Contracts;
-
+/// <summary>
+/// Represents values and data structure for school dto.
+/// </summary>
 public record SchoolDto(
     long? Id,
     string Code,
@@ -7,7 +9,9 @@ public record SchoolDto(
     string? City,
     bool IsFavorite,
     long? ScopeId);
-
+/// <summary>
+/// Represents values and data structure for school dto out.
+/// </summary>
 public record SchoolDtoOut(
     long Id,
     string Code,

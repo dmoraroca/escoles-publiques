@@ -11,12 +11,17 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
+            /// <summary>
+            /// Encapsulates the functional responsibility of update student user relationship within the application architecture.
+            /// </summary>
     [DbContext(typeof(SchoolDbContext))]
     [Migration("20260105023406_UpdateStudentUserRelationship")]
-    partial class UpdateStudentUserRelationship
+            partial class UpdateStudentUserRelationship
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+                        /// <summary>
+                        /// Executes the build target model operation as part of this component.
+                        /// </summary>
+                        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

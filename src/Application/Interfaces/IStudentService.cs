@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Application.Interfaces;
-
 /// <summary>
-/// Interfície de servei per gestionar alumnes a l'aplicació.
+/// Implements application logic for i student operations.
 /// </summary>
 public interface IStudentService
 {

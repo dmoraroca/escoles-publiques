@@ -19,6 +19,9 @@ function filterTable(input) {
     }
 }
 
+/**
+ * Executes the sort table logic for this JavaScript module.
+ */
 function sortTable(header) {
     const table = document.getElementById('genericTable');
     const tbody = table.getElementsByTagName('tbody')[0];

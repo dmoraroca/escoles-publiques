@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per mostrar els resultats d'una cerca global.
+/// Encapsulates the functional responsibility of search results view model within the application architecture.
 /// </summary>
 public class SearchResultsViewModel
 {
@@ -14,9 +13,8 @@ public class SearchResultsViewModel
 
     public bool HasResults => Schools.Any() || Students.Any() || Enrollments.Any() || AnnualFees.Any();
 }
-
 /// <summary>
-/// Resultat d'escola en la cerca.
+/// Encapsulates the functional responsibility of school result view model within the application architecture.
 /// </summary>
 public class SchoolResultViewModel
 {
@@ -29,9 +27,8 @@ public class SchoolResultViewModel
     public long? ScopeId { get; set; }
     public string? ScopeName { get; set; }
 }
-
 /// <summary>
-/// Resultat d'alumne en la cerca.
+/// Encapsulates the functional responsibility of student result view model within the application architecture.
 /// </summary>
 public class StudentResultViewModel
 {
@@ -41,9 +38,8 @@ public class StudentResultViewModel
     public string Email { get; set; } = string.Empty;
     public string? SchoolName { get; set; }
 }
-
 /// <summary>
-/// Resultat d'inscripció en la cerca.
+/// Encapsulates the functional responsibility of enrollment result view model within the application architecture.
 /// </summary>
 public class EnrollmentResultViewModel
 {
@@ -53,7 +49,9 @@ public class EnrollmentResultViewModel
     public string AcademicYear { get; set; } = string.Empty;
     public DateTime EnrollmentDate { get; set; }
 }
-
+/// <summary>
+/// Encapsulates the functional responsibility of annual fee result view model within the application architecture.
+/// </summary>
 public class AnnualFeeResultViewModel
 {
     public long Id { get; set; }

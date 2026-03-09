@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Domain.Interfaces;
-
 /// <summary>
-/// Interfície de repositori per gestionar escoles al domini.
+/// Centralizes persistent data access for i school.
 /// </summary>
 public interface ISchoolRepository
 {

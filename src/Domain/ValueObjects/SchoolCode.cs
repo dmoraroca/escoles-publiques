@@ -8,13 +8,17 @@ public readonly record struct SchoolCode
     private static readonly Regex AllowedPattern = new("^[A-Za-z0-9_-]{2,20}$", RegexOptions.Compiled);
 
     public string Value { get; }
-
-    private SchoolCode(string value)
+        /// <summary>
+        /// Initializes a new instance of the SchoolCode class with its required dependencies.
+        /// </summary>
+        private SchoolCode(string value)
     {
         Value = value;
     }
-
-    public static SchoolCode Create(string? raw)
+        /// <summary>
+        /// Creates a new resource by applying the required business rules.
+        /// </summary>
+        public static SchoolCode Create(string? raw)
     {
         var normalized = (raw ?? string.Empty).Trim().ToUpperInvariant();
 
@@ -31,5 +35,5 @@ public readonly record struct SchoolCode
         return new SchoolCode(normalized);
     }
 
-    public override string ToString() => Value;
+        public override string ToString() => Value;
 }

@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per mostrar una escola favorita.
+/// Encapsulates the functional responsibility of favorite school view model within the application architecture.
 /// </summary>
 public class FavoriteSchoolViewModel
 {

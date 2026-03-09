@@ -2,13 +2,15 @@ using FluentValidation;
 using Web.Models;
 
 namespace Web.Validators;
-
 /// <summary>
-/// Validador FluentValidation per la vista d'escola. Comprova codi, nom i ciutat.
+/// Validates incoming data for school view model.
 /// </summary>
 public class SchoolViewModelValidator : AbstractValidator<SchoolViewModel>
 {
-    public SchoolViewModelValidator()
+            /// <summary>
+            /// Initializes a new instance of the SchoolViewModelValidator class with its required dependencies.
+            /// </summary>
+            public SchoolViewModelValidator()
     {
         RuleFor(x => x.Code)
             .NotEmpty()

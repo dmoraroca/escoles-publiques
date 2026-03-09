@@ -11,22 +11,28 @@ using System.Text.RegularExpressions;
 
 namespace Web.Controllers;
 
-// Public help center: user manual, technical doc, functional doc.
-[AllowAnonymous]
+// Public help center: user manual, technical doc, functional doc.[AllowAnonymous]
+/// <summary>
+/// Exposes HTTP endpoints to manage help workflows.
+/// </summary>
 public sealed class HelpController : Controller
 {
     private readonly IWebHostEnvironment _env;
     private static readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder()
         .UseAdvancedExtensions()
         .Build();
-
-    public HelpController(IWebHostEnvironment env)
+        /// <summary>
+        /// Initializes a new instance of the HelpController class with its required dependencies.
+        /// </summary>
+        public HelpController(IWebHostEnvironment env)
     {
         _env = env;
     }
 
-    // Aliases
-    [HttpGet("/help")]
+    // Aliases        [HttpGet("/help")]
+    /// <summary>
+    /// Executes the index operation as part of this component.
+    /// </summary>
     [HttpGet("/ajuda")]
     public IActionResult Index()
     {
@@ -34,8 +40,10 @@ public sealed class HelpController : Controller
         return View(new HelpIndexViewModel(lang));
     }
 
-    // Docs
-    [HttpGet("/help/{doc}")]
+    // Docs        [HttpGet("/help/{doc}")]
+    /// <summary>
+    /// Executes the doc operation as part of this component.
+    /// </summary>
     [HttpGet("/ajuda/{doc}")]
     public IActionResult Doc(string doc)
     {
@@ -62,8 +70,10 @@ public sealed class HelpController : Controller
             DocxUrl = BuildCultureUrl($"/ajuda/{docKey}/docx")
         });
     }
-
-    [HttpGet("/help/{doc}/docx")]
+    /// <summary>
+    /// Executes the docx operation as part of this component.
+    /// </summary>
+        [HttpGet("/help/{doc}/docx")]
     [HttpGet("/ajuda/{doc}/docx")]
     public IActionResult Docx(string doc)
     {
@@ -84,15 +94,19 @@ public sealed class HelpController : Controller
             fileName);
     }
 
-    // Backwards-compat: old /manual route now goes through /ajuda/manual.
-    [HttpGet("/manual")]
+    // Backwards-compat: old /manual route now goes through /ajuda/manual.        [HttpGet("/manual")]
+    /// <summary>
+    /// Executes the manual alias operation as part of this component.
+    /// </summary>
     [HttpGet("/manual/{lang}")]
     public IActionResult ManualAlias()
     {
         return Redirect("/ajuda/manual");
     }
-
-    private string CurrentLang()
+        /// <summary>
+        /// Executes the current lang operation as part of this component.
+        /// </summary>
+        private string CurrentLang()
     {
         // Align with localization config: culture is persisted in cookie and used as CurrentUICulture.
         var ui = System.Globalization.CultureInfo.CurrentUICulture.Name;
@@ -105,7 +119,7 @@ public sealed class HelpController : Controller
         return "ca";
     }
 
-    private (string title, string? path) ResolveDoc(string lang, string docKey)
+        private (string title, string? path) ResolveDoc(string lang, string docKey)
     {
         var baseDir = ResolveHelpDocsDir(lang);
         if (baseDir is null)
@@ -128,8 +142,7 @@ public sealed class HelpController : Controller
             ("en", "funcional") => ("Functional document", ResolveFirstExisting(baseDir, "functional.md")),
             ("en", "tecnic") => ("Technical document", ResolveFirstExisting(baseDir, "technical.md")),
 
-            // German filenames in repo are non-standard; keep mapping explicit.
-            ("de", "manual") => ("Benutzerhandbuch", ResolveFirstExisting(baseDir, "manual.md", "benutzerhandbuch.md")),
+            // German filenames in repo are non-standard; keep mapping explicit.            ("de", "manual") => ("Benutzerhandbuch", ResolveFirstExisting(baseDir, "manual.md", "benutzerhandbuch.md")),
             ("de", "funcional") => ("Fachliches Dokument", ResolveFirstExisting(baseDir, "fachlich.md")),
             ("de", "tecnic") => ("Technisches Dokument", ResolveFirstExisting(baseDir, "technisch.md")),
 
@@ -148,8 +161,10 @@ public sealed class HelpController : Controller
             _ => ("", null)
         };
     }
-
-    private string? ResolveHelpDocsDir(string lang)
+        /// <summary>
+        /// Executes the resolve help docs dir operation as part of this component.
+        /// </summary>
+        private string? ResolveHelpDocsDir(string lang)
     {
         IEnumerable<string> Candidates(string root)
         {
@@ -164,8 +179,10 @@ public sealed class HelpController : Controller
 
         return candidates.FirstOrDefault(Directory.Exists);
     }
-
-    private static string? ResolveFirstExisting(string baseDir, params string[] candidateFiles)
+        /// <summary>
+        /// Executes the resolve first existing operation as part of this component.
+        /// </summary>
+        private static string? ResolveFirstExisting(string baseDir, params string[] candidateFiles)
     {
         foreach (var file in candidateFiles)
         {
@@ -178,8 +195,10 @@ public sealed class HelpController : Controller
 
         return null;
     }
-
-    private static string NormalizeDocKey(string? doc)
+        /// <summary>
+        /// Executes the normalize doc key operation as part of this component.
+        /// </summary>
+        private static string NormalizeDocKey(string? doc)
     {
         var d = (doc ?? string.Empty).Trim().ToLowerInvariant();
         return d switch
@@ -195,8 +214,10 @@ public sealed class HelpController : Controller
             _ => d
         };
     }
-
-    private string BuildCultureUrl(string basePath)
+        /// <summary>
+        /// Executes the build culture url operation as part of this component.
+        /// </summary>
+        private string BuildCultureUrl(string basePath)
     {
         var culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
         return Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(
@@ -207,11 +228,12 @@ public sealed class HelpController : Controller
                 ["ui-culture"] = culture
             });
     }
-
-    private static string StripTrailingScreenshotIndex(string markdown)
+        /// <summary>
+        /// Executes the strip trailing screenshot index operation as part of this component.
+        /// </summary>
+        private static string StripTrailingScreenshotIndex(string markdown)
     {
-        // Manuals contain an appendix/index with raw file paths that looks bad on the web.
-        // Remove it to keep the page presentable (images are already embedded above).
+        // Manuals contain an appendix/index with raw file paths that looks bad on the web.        // Remove it to keep the page presentable (images are already embedded above).
         var markers = new[]
         {
             "\n## Appendix:",
@@ -235,8 +257,10 @@ public sealed class HelpController : Controller
 
         return markdown.Substring(0, cut).TrimEnd() + "\n";
     }
-
-    private byte[] BuildDocxFromMarkdown(string title, string markdown)
+        /// <summary>
+        /// Executes the build docx from markdown operation as part of this component.
+        /// </summary>
+        private byte[] BuildDocxFromMarkdown(string title, string markdown)
     {
         using var stream = new MemoryStream();
         using (var document = WordprocessingDocument.Create(
@@ -356,8 +380,10 @@ public sealed class HelpController : Controller
 
         return stream.ToArray();
     }
-
-    private static void EnsureStyles(MainDocumentPart mainPart)
+        /// <summary>
+        /// Executes the ensure styles operation as part of this component.
+        /// </summary>
+        private static void EnsureStyles(MainDocumentPart mainPart)
     {
         var stylesPart = mainPart.StyleDefinitionsPart ?? mainPart.AddNewPart<StyleDefinitionsPart>();
         if (stylesPart.Styles is not null)
@@ -425,8 +451,10 @@ public sealed class HelpController : Controller
             { Type = StyleValues.Paragraph, StyleId = "Heading3" });
         stylesPart.Styles.Save();
     }
-
-    private static void EnsureSettings(MainDocumentPart mainPart)
+        /// <summary>
+        /// Executes the ensure settings operation as part of this component.
+        /// </summary>
+        private static void EnsureSettings(MainDocumentPart mainPart)
     {
         var settingsPart = mainPart.DocumentSettingsPart ?? mainPart.AddNewPart<DocumentSettingsPart>();
         settingsPart.Settings ??= new Settings();
@@ -436,8 +464,10 @@ public sealed class HelpController : Controller
 
         settingsPart.Settings.Save();
     }
-
-    private static Footer BuildFooter()
+        /// <summary>
+        /// Executes the build footer operation as part of this component.
+        /// </summary>
+        private static Footer BuildFooter()
     {
         return new Footer(
             new Paragraph(
@@ -447,8 +477,10 @@ public sealed class HelpController : Controller
                 new Run(new RunProperties(new FontSize { Val = "18" }), new Text(" of ")),
                 CreateSimpleFieldRun(" NUMPAGES ")));
     }
-
-    private static Run CreateSimpleFieldRun(string code)
+        /// <summary>
+        /// Creates simple field run by applying the required business rules.
+        /// </summary>
+        private static Run CreateSimpleFieldRun(string code)
     {
         return new Run(
             new FieldChar { FieldCharType = FieldCharValues.Begin },
@@ -458,7 +490,7 @@ public sealed class HelpController : Controller
             new FieldChar { FieldCharType = FieldCharValues.End });
     }
 
-    private static List<(int level, string text)> ExtractMarkdownHeadings(string markdown)
+        private static List<(int level, string text)> ExtractMarkdownHeadings(string markdown)
     {
         var entries = new List<(int level, string text)>();
         var lines = markdown.Replace("\r\n", "\n").Split('\n');
@@ -476,8 +508,10 @@ public sealed class HelpController : Controller
 
         return entries;
     }
-
-    private static Paragraph CreateTocEntryParagraph(int level, string text)
+        /// <summary>
+        /// Creates toc entry paragraph by applying the required business rules.
+        /// </summary>
+        private static Paragraph CreateTocEntryParagraph(int level, string text)
     {
         var safeLevel = Math.Max(1, Math.Min(level, 3));
         var indent = safeLevel switch
@@ -492,34 +526,44 @@ public sealed class HelpController : Controller
         paragraph.ParagraphProperties.Indentation = new Indentation { Left = indent };
         return paragraph;
     }
-
-    private static Paragraph CreatePageBreakParagraph()
+        /// <summary>
+        /// Creates page break paragraph by applying the required business rules.
+        /// </summary>
+        private static Paragraph CreatePageBreakParagraph()
     {
         return new Paragraph(new Run(new Break { Type = BreakValues.Page }));
     }
-
-    private static Paragraph CreateBodyParagraph(string text)
+        /// <summary>
+        /// Creates body paragraph by applying the required business rules.
+        /// </summary>
+        private static Paragraph CreateBodyParagraph(string text)
     {
         return CreateStyledParagraph(text, "Normal", size: "22");
     }
-
-    private static Paragraph CreateBulletParagraph(string text)
+        /// <summary>
+        /// Creates bullet paragraph by applying the required business rules.
+        /// </summary>
+        private static Paragraph CreateBulletParagraph(string text)
     {
         var paragraph = CreateStyledParagraph("• " + text, "Normal", size: "22");
         paragraph.ParagraphProperties ??= new ParagraphProperties();
         paragraph.ParagraphProperties.Indentation = new Indentation { Left = "360", Hanging = "180" };
         return paragraph;
     }
-
-    private static Paragraph CreateNumberedParagraph(string text)
+        /// <summary>
+        /// Creates numbered paragraph by applying the required business rules.
+        /// </summary>
+        private static Paragraph CreateNumberedParagraph(string text)
     {
         var paragraph = CreateStyledParagraph(text, "Normal", size: "22");
         paragraph.ParagraphProperties ??= new ParagraphProperties();
         paragraph.ParagraphProperties.Indentation = new Indentation { Left = "360", Hanging = "120" };
         return paragraph;
     }
-
-    private static Paragraph CreateHeadingParagraph(string text, int level)
+        /// <summary>
+        /// Creates heading paragraph by applying the required business rules.
+        /// </summary>
+        private static Paragraph CreateHeadingParagraph(string text, int level)
     {
         var style = level switch
         {
@@ -560,8 +604,10 @@ public sealed class HelpController : Controller
             new SpacingBetweenLines { Before = "40", After = "120", Line = "280", LineRule = LineSpacingRuleValues.Auto });
         return paragraph;
     }
-
-    private static Paragraph CreateCodeParagraph(string text)
+        /// <summary>
+        /// Creates code paragraph by applying the required business rules.
+        /// </summary>
+        private static Paragraph CreateCodeParagraph(string text)
     {
         var runProps = new RunProperties(
             new RunFonts { Ascii = "Consolas", HighAnsi = "Consolas" },
@@ -577,8 +623,10 @@ public sealed class HelpController : Controller
             new SpacingBetweenLines { After = "60", Line = "260", LineRule = LineSpacingRuleValues.Auto });
         return paragraph;
     }
-
-    private Paragraph? CreateImageParagraph(MainDocumentPart mainPart, string markdownPath, string altText)
+        /// <summary>
+        /// Creates image paragraph by applying the required business rules.
+        /// </summary>
+        private Paragraph? CreateImageParagraph(MainDocumentPart mainPart, string markdownPath, string altText)
     {
         var fullPath = ResolveImagePath(markdownPath);
         if (fullPath is null || !System.IO.File.Exists(fullPath))
@@ -605,8 +653,10 @@ public sealed class HelpController : Controller
             new ParagraphProperties(new Justification { Val = JustificationValues.Center }),
             new Run(drawing));
     }
-
-    private string? ResolveImagePath(string markdownPath)
+        /// <summary>
+        /// Executes the resolve image path operation as part of this component.
+        /// </summary>
+        private string? ResolveImagePath(string markdownPath)
     {
         if (string.IsNullOrWhiteSpace(markdownPath))
             return null;
@@ -631,8 +681,10 @@ public sealed class HelpController : Controller
 
         return Path.Combine(_env.WebRootPath, path.Replace('/', Path.DirectorySeparatorChar));
     }
-
-    private static Drawing CreateInlineImageDrawing(string relationshipId, string altText)
+        /// <summary>
+        /// Creates inline image drawing by applying the required business rules.
+        /// </summary>
+        private static Drawing CreateInlineImageDrawing(string relationshipId, string altText)
     {
         // ~6.2 x 3.6 inches keeps screenshots readable on A4.
         const long widthEmu = 5669280L;
@@ -694,10 +746,14 @@ public sealed class HelpController : Controller
                 EditId = "50D07946"
             });
     }
-
-    public sealed record HelpIndexViewModel(string Lang);
-
-    public sealed class HelpDocViewModel
+        /// <summary>
+        /// Represents values and data structure for help index view model.
+        /// </summary>
+        public sealed record HelpIndexViewModel(string Lang);
+        /// <summary>
+        /// Encapsulates the functional responsibility of help doc view model within the application architecture.
+        /// </summary>
+        public sealed class HelpDocViewModel
     {
         public required string Lang { get; init; }
         public required string Doc { get; init; }

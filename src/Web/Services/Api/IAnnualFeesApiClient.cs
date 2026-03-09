@@ -1,5 +1,7 @@
 namespace Web.Services.Api;
-
+/// <summary>
+/// Defines the contract required by i annual fees api client components.
+/// </summary>
 public interface IAnnualFeesApiClient
 {
     Task<IEnumerable<ApiAnnualFee>> GetAllAsync();

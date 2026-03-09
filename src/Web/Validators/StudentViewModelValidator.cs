@@ -2,13 +2,15 @@ using FluentValidation;
 using Web.Models;
 
 namespace Web.Validators;
-
 /// <summary>
-/// Validador FluentValidation per la vista d'alumne. Comprova nom, cognoms, email i escola.
+/// Validates incoming data for student view model.
 /// </summary>
 public class StudentViewModelValidator : AbstractValidator<StudentViewModel>
 {
-    public StudentViewModelValidator()
+            /// <summary>
+            /// Initializes a new instance of the StudentViewModelValidator class with its required dependencies.
+            /// </summary>
+            public StudentViewModelValidator()
     {
         RuleFor(x => x.FirstName)
             .NotEmpty()

@@ -6,13 +6,17 @@ namespace Domain.ValueObjects;
 public readonly record struct EmailAddress
 {
     public string Value { get; }
-
-    private EmailAddress(string value)
+        /// <summary>
+        /// Initializes a new instance of the EmailAddress class with its required dependencies.
+        /// </summary>
+        private EmailAddress(string value)
     {
         Value = value;
     }
-
-    public static EmailAddress Create(string? raw)
+        /// <summary>
+        /// Creates a new resource by applying the required business rules.
+        /// </summary>
+        public static EmailAddress Create(string? raw)
     {
         var normalized = (raw ?? string.Empty).Trim().ToLowerInvariant();
 
@@ -37,5 +41,5 @@ public readonly record struct EmailAddress
         return new EmailAddress(normalized);
     }
 
-    public override string ToString() => Value;
+        public override string ToString() => Value;
 }

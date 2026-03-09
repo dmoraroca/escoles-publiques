@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Configuració per a un modal d'entitat (formulari dinàmic).
+/// Encapsulates the functional responsibility of entity modal config within the application architecture.
 /// </summary>
 public class EntityModalConfig
 {
@@ -12,9 +11,8 @@ public class EntityModalConfig
     public string IconClass { get; set; } = "bi-folder";
     public List<ModalField> Fields { get; set; } = new();
 }
-
 /// <summary>
-/// Camp d'un formulari modal.
+/// Encapsulates the functional responsibility of modal field within the application architecture.
 /// </summary>
 public class ModalField
 {
@@ -27,9 +25,8 @@ public class ModalField
     public int ColumnSize { get; set; } = 12; // Bootstrap col-md-X
     public List<SelectOption>? Options { get; set; } // Per selects
 }
-
 /// <summary>
-/// Opció per a camps select en formularis.
+/// Encapsulates the functional responsibility of select option within the application architecture.
 /// </summary>
 public class SelectOption
 {

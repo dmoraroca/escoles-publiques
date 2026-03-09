@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+/**
+ * Executes the enable edit mode logic for this JavaScript module.
+ */
 function enableEditMode() {
     document.getElementById('viewButtons').style.display = 'none';
     document.getElementById('editButtons').style.display = 'block';
@@ -69,6 +72,9 @@ function enableEditMode() {
     });
 }
 
+/**
+ * Executes the cancel edit logic for this JavaScript module.
+ */
 function cancelEdit() {
     document.getElementById('editButtons').style.display = 'none';
     document.getElementById('viewButtons').style.display = 'block';
@@ -94,6 +100,9 @@ function cancelEdit() {
     location.reload();
 }
 
+/**
+ * Executes the submit form logic for this JavaScript module.
+ */
 function submitForm() {
     const form = document.getElementById('editForm');
     
@@ -112,6 +121,9 @@ function submitForm() {
     form.submit();
 }
 
+/**
+ * Executes the close alert logic for this JavaScript module.
+ */
 function closeAlert() {
     document.getElementById('errorAlert').style.display = 'none';
 }

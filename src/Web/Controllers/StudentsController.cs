@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 namespace Web.Controllers;
 
 /// <summary>
-/// Controlador per gestionar els alumnes del sistema.
+/// Exposes HTTP endpoints to manage students workflows.
 /// </summary>
 [Authorize]
 public class StudentsController : BaseController
@@ -25,11 +25,10 @@ public class StudentsController : BaseController
         _studentsApi = studentsApi;
         _schoolsApi = schoolsApi;
     }
-
-    /// <summary>
-    /// Mostra el llistat de tots els alumnes.
-    /// </summary>
-    public async Task<IActionResult> Index()
+            /// <summary>
+            /// Executes the index operation as part of this component.
+            /// </summary>
+            public async Task<IActionResult> Index()
     {
         try
         {
@@ -62,8 +61,10 @@ public class StudentsController : BaseController
             return View(new List<StudentViewModel>());
         }
     }
-
-    [HttpGet]
+    /// <summary>
+    /// Executes the check email operation as part of this component.
+    /// </summary>
+            [HttpGet]
     public async Task<IActionResult> CheckEmail(string email)
     {
         try
@@ -91,8 +92,10 @@ public class StudentsController : BaseController
             return Ok(new { exists = false });
         }
     }
-
-    public async Task<IActionResult> Details(int id)
+            /// <summary>
+            /// Executes the details operation as part of this component.
+            /// </summary>
+            public async Task<IActionResult> Details(int id)
     {
         try
         {
@@ -137,8 +140,10 @@ public class StudentsController : BaseController
             return Redirect("/Students");
         }
     }
-
-    [HttpPost]
+    /// <summary>
+    /// Creates a new resource by applying the required business rules.
+    /// </summary>
+            [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(StudentViewModel model)
     {
@@ -196,8 +201,10 @@ public class StudentsController : BaseController
             return BadRequest(new { error = Localizer["Error creant l'alumne. Si us plau, intenta-ho de nou."].Value });
         }
     }
-
-    public async Task<IActionResult> Edit(int id)
+            /// <summary>
+            /// Executes the edit operation as part of this component.
+            /// </summary>
+            public async Task<IActionResult> Edit(int id)
     {
         try
         {
@@ -242,8 +249,10 @@ public class StudentsController : BaseController
             return Redirect("/Students");
         }
     }
-
-    [HttpPost]
+    /// <summary>
+    /// Executes the edit operation as part of this component.
+    /// </summary>
+            [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(StudentViewModel model)
     {
@@ -292,8 +301,10 @@ public class StudentsController : BaseController
             return Redirect("/Students");
         }
     }
-
-    [HttpPost]
+    /// <summary>
+    /// Deletes the target resource from the system in a controlled manner.
+    /// </summary>
+            [HttpPost]
     public async Task<IActionResult> Delete(int id)
     {
         try

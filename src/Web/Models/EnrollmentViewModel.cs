@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per gestionar les inscripcions d'alumnes.
+/// Encapsulates the functional responsibility of enrollment view model within the application architecture.
 /// </summary>
 public class EnrollmentViewModel
 {

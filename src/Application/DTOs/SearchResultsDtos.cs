@@ -1,5 +1,7 @@
 namespace Application.DTOs;
-
+/// <summary>
+/// Encapsulates the functional responsibility of search results dto within the application architecture.
+/// </summary>
 public class SearchResultsDto
 {
     public string? SearchQuery { get; set; }
@@ -11,7 +13,9 @@ public class SearchResultsDto
 
     public bool HasResults => Schools.Any() || Students.Any() || Enrollments.Any() || AnnualFees.Any();
 }
-
+/// <summary>
+/// Encapsulates the functional responsibility of school result dto within the application architecture.
+/// </summary>
 public class SchoolResultDto
 {
     public string? Scope { get; set; }
@@ -22,7 +26,9 @@ public class SchoolResultDto
     public long? ScopeId { get; set; }
     public string? ScopeName { get; set; }
 }
-
+/// <summary>
+/// Encapsulates the functional responsibility of student result dto within the application architecture.
+/// </summary>
 public class StudentResultDto
 {
     public long Id { get; set; }
@@ -31,7 +37,9 @@ public class StudentResultDto
     public string? Email { get; set; }
     public string? SchoolName { get; set; }
 }
-
+/// <summary>
+/// Encapsulates the functional responsibility of enrollment result dto within the application architecture.
+/// </summary>
 public class EnrollmentResultDto
 {
     public long Id { get; set; }
@@ -40,7 +48,9 @@ public class EnrollmentResultDto
     public string AcademicYear { get; set; } = string.Empty;
     public DateTime EnrollmentDate { get; set; }
 }
-
+/// <summary>
+/// Encapsulates the functional responsibility of annual fee result dto within the application architecture.
+/// </summary>
 public class AnnualFeeResultDto
 {
     public long Id { get; set; }

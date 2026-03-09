@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (internalCancel) internalCancel.style.display = 'none';
     if (internalPrivacy) internalPrivacy.closest('.form-check').style.display = 'none';
 
+    /**
+     * Executes the enable edit mode logic for this JavaScript module.
+     */
     function enableEditMode() {
         var header = document.getElementById('headerButtons');
         if (header) header.style.display = 'none';

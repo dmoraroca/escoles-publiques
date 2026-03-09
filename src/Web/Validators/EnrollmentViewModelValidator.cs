@@ -2,13 +2,15 @@ using FluentValidation;
 using Web.Models;
 
 namespace Web.Validators;
-
 /// <summary>
-/// Validador FluentValidation per la vista d'inscripció. Comprova alumne, any acadèmic i estat.
+/// Validates incoming data for enrollment view model.
 /// </summary>
 public class EnrollmentViewModelValidator : AbstractValidator<EnrollmentViewModel>
 {
-    public EnrollmentViewModelValidator()
+            /// <summary>
+            /// Initializes a new instance of the EnrollmentViewModelValidator class with its required dependencies.
+            /// </summary>
+            public EnrollmentViewModelValidator()
     {
         RuleFor(x => x.StudentId)
             .GreaterThan(0)

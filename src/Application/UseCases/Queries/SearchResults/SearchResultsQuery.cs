@@ -3,7 +3,9 @@ using Application.DTOs;
 using Application.Interfaces.Search;
 
 namespace Application.UseCases.Queries.SearchResults;
-
+/// <summary>
+/// Encapsulates the functional responsibility of search results query within the application architecture.
+/// </summary>
 public class SearchResultsQuery : ISearchResultsQuery
 {
     private readonly ISchoolSearchSource _schoolSource;
@@ -25,8 +27,10 @@ public class SearchResultsQuery : ISearchResultsQuery
         _enrollmentSource = enrollmentSource;
         _annualFeeSource = annualFeeSource;
     }
-
-    public async Task<SearchResultsDto> ExecuteAsync(string? searchQuery, string? scopeName)
+            /// <summary>
+            /// Executes the execute async operation as part of this component.
+            /// </summary>
+            public async Task<SearchResultsDto> ExecuteAsync(string? searchQuery, string? scopeName)
     {
         var model = new SearchResultsDto
         {
@@ -141,8 +145,10 @@ public class SearchResultsQuery : ISearchResultsQuery
 
         return model;
     }
-
-    private static List<string> ParseSearchTerms(string? searchQuery)
+            /// <summary>
+            /// Executes the parse search terms operation as part of this component.
+            /// </summary>
+            private static List<string> ParseSearchTerms(string? searchQuery)
     {
         return string.IsNullOrWhiteSpace(searchQuery)
             ? new List<string>()
@@ -152,8 +158,10 @@ public class SearchResultsQuery : ISearchResultsQuery
                 .Where(t => !string.IsNullOrWhiteSpace(t))
                 .ToList();
     }
-
-    private static string NormalizeKey(string? value)
+            /// <summary>
+            /// Executes the normalize key operation as part of this component.
+            /// </summary>
+            private static string NormalizeKey(string? value)
     {
         if (string.IsNullOrWhiteSpace(value)) return string.Empty;
         var sb = new StringBuilder(value.Length);

@@ -2,19 +2,25 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
 
 namespace Web.Services.Api;
-
+/// <summary>
+/// Encapsulates the functional responsibility of api auth token handler within the application architecture.
+/// </summary>
 public class ApiAuthTokenHandler : DelegatingHandler
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ApiAuthTokenHandler> _logger;
-
-    public ApiAuthTokenHandler(IHttpContextAccessor httpContextAccessor, ILogger<ApiAuthTokenHandler> logger)
+            /// <summary>
+            /// Initializes a new instance of the ApiAuthTokenHandler class with its required dependencies.
+            /// </summary>
+            public ApiAuthTokenHandler(IHttpContextAccessor httpContextAccessor, ILogger<ApiAuthTokenHandler> logger)
     {
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
     }
-
-    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            /// <summary>
+            /// Executes the send async operation as part of this component.
+            /// </summary>
+            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var token = _httpContextAccessor.HttpContext?.Session.GetString(SessionKeys.ApiToken);
         if (!string.IsNullOrWhiteSpace(token) && request.Headers.Authorization == null)
@@ -43,7 +49,9 @@ public class ApiAuthTokenHandler : DelegatingHandler
         return response;
     }
 }
-
+/// <summary>
+/// Encapsulates the functional responsibility of session keys within the application architecture.
+/// </summary>
 public static class SessionKeys
 {
     public const string ApiToken = "ApiToken";

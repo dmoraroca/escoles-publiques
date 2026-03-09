@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 namespace Web.Controllers;
 
 /// <summary>
-/// Controlador per gestionar la informació i el dashboard de l'usuari.
+/// Exposes HTTP endpoints to manage dashboard workflows.
 /// </summary>
 [Authorize]
 public class DashboardController : BaseController
@@ -31,11 +31,10 @@ public class DashboardController : BaseController
         _annualFeesApi = annualFeesApi;
         _schoolsApi = schoolsApi;
     }
-
-    /// <summary>
-    /// Mostra el dashboard personalitzat de l'usuari amb inscripcions i quotes.
-    /// </summary>
-    public async Task<IActionResult> Dashboard()
+            /// <summary>
+            /// Executes the dashboard operation as part of this component.
+            /// </summary>
+            public async Task<IActionResult> Dashboard()
     {
         try
         {

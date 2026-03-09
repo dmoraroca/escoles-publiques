@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Web.Services.Search;
 
 namespace Web.ViewComponents;
-
 /// <summary>
-/// ViewComponent for displaying search results in the UI.
+/// Encapsulates the functional responsibility of search results view component within the application architecture.
 /// </summary>
 public class SearchResultsViewComponent : ViewComponent
 {
@@ -15,8 +14,10 @@ public class SearchResultsViewComponent : ViewComponent
     {
         _searchResultsBuilder = searchResultsBuilder;
     }
-
-    public async Task<IViewComponentResult> InvokeAsync(string? searchQuery, string? scopeName)
+            /// <summary>
+            /// Executes middleware logic for the current HTTP request.
+            /// </summary>
+            public async Task<IViewComponentResult> InvokeAsync(string? searchQuery, string? scopeName)
     {
         if (string.IsNullOrWhiteSpace(searchQuery) && string.IsNullOrWhiteSpace(scopeName))
         {

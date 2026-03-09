@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 namespace Web.Models.Scaffold;
-
+/// <summary>
+/// Encapsulates the functional responsibility of enrollment within the application architecture.
+/// </summary>
 public partial class enrollment
 {
     public long id { get; set; }

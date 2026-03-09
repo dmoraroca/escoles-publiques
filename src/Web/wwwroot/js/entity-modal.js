@@ -3,6 +3,9 @@
  * Handles modal form logic for creating and editing entities, including validation and error display.
  */
 (function() {
+    /**
+     * Executes the t logic for this JavaScript module.
+     */
     function t(key, fallback) {
         return window.i18n ? window.i18n.t('entity-modal.js', key, fallback) : (fallback || key);
     }
@@ -19,6 +22,9 @@
         const submitButton = form.querySelector('button[type="submit"]');
         const privacyCheck = form.querySelector('.js-privacy-check');
 
+        /**
+         * Updates submit state using the latest data.
+         */
         function updateSubmitState() {
             if (!privacyCheck || !submitButton) return;
             submitButton.disabled = !privacyCheck.checked;
@@ -41,6 +47,9 @@
             if (emailInput) {
                 let checkTimer = null;
                 let lastValue = '';
+                /**
+                 * Obtains message el for the current UI flow.
+                 */
                 const getMessageEl = () => {
                     let el = emailInput.parentElement?.querySelector('.js-email-exists');
                     if (!el) {
@@ -52,6 +61,9 @@
                     return el;
                 };
 
+                /**
+                 * Sets email validity in the current state.
+                 */
                 const setEmailValidity = (exists) => {
                     const msgEl = getMessageEl();
                     if (exists) {
@@ -63,6 +75,9 @@
                     }
                 };
 
+                /**
+                 * Executes the check email logic for this JavaScript module.
+                 */
                 const checkEmail = async (value) => {
                     const trimmed = value.trim();
                     if (!trimmed) {
@@ -84,6 +99,9 @@
                     }
                 };
 
+                /**
+                 * Executes the schedule check logic for this JavaScript module.
+                 */
                 const scheduleCheck = () => {
                     const value = emailInput.value;
                     if (value === lastValue) return;

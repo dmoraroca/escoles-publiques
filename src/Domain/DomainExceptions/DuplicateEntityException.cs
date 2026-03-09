@@ -1,7 +1,6 @@
 namespace Domain.DomainExceptions;
-
 /// <summary>
-/// Exception thrown when attempting to create a duplicate entity
+/// Encapsulates the functional responsibility of duplicate entity exception within the application architecture.
 /// </summary>
 public class DuplicateEntityException : DomainException
 {
@@ -9,8 +8,10 @@ public class DuplicateEntityException : DomainException
         : base($"{entityName} with {propertyName} '{value}' already exists")
     {
     }
-
-    public DuplicateEntityException(string message) : base(message)
+            /// <summary>
+            /// Initializes a new instance of the DuplicateEntityException class with its required dependencies.
+            /// </summary>
+            public DuplicateEntityException(string message) : base(message)
     {
     }
 }

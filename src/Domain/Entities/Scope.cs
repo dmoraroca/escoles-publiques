@@ -1,7 +1,6 @@
 namespace Domain.Entities;
-
 /// <summary>
-/// Entitat que representa un àmbit funcional dins el sistema.
+/// Encapsulates the functional responsibility of scope within the application architecture.
 /// </summary>
 public class Scope
 {

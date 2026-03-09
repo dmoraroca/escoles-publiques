@@ -1,7 +1,6 @@
 namespace Domain.DomainExceptions;
-
 /// <summary>
-/// Exception thrown when an entity is not found
+/// Encapsulates the functional responsibility of not found exception within the application architecture.
 /// </summary>
 public class NotFoundException : DomainException
 {
@@ -9,8 +8,10 @@ public class NotFoundException : DomainException
         : base($"{entityName} with key '{key}' was not found")
     {
     }
-
-    public NotFoundException(string message) : base(message)
+            /// <summary>
+            /// Initializes a new instance of the NotFoundException class with its required dependencies.
+            /// </summary>
+            public NotFoundException(string message) : base(message)
     {
     }
 }

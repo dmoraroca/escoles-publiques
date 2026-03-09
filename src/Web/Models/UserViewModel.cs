@@ -1,5 +1,7 @@
 namespace Web.Models;
-
+/// <summary>
+/// Encapsulates the functional responsibility of user view model within the application architecture.
+/// </summary>
 public class UserViewModel
 {
     public int Id { get; set; }

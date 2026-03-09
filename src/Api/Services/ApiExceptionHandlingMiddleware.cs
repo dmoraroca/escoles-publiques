@@ -3,9 +3,8 @@ using Domain.DomainExceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Services;
-
 /// <summary>
-/// Converts domain/application exceptions into a consistent ProblemDetails HTTP response.
+/// Intercepts the HTTP pipeline to apply api exception handling behavior.
 /// </summary>
 public sealed class ApiExceptionHandlingMiddleware
 {
@@ -21,8 +20,10 @@ public sealed class ApiExceptionHandlingMiddleware
         _next = next;
         _logger = logger;
     }
-
-    public async Task Invoke(HttpContext context)
+            /// <summary>
+            /// Executes middleware logic for the current HTTP request.
+            /// </summary>
+            public async Task Invoke(HttpContext context)
     {
         try
         {
@@ -105,8 +106,10 @@ public sealed class ApiExceptionHandlingMiddleware
             await WriteProblem(context, details.Status!.Value, details);
         }
     }
-
-    private static ProblemDetails CreateProblem(int status, string title, string detail, HttpContext context, string errorCode)
+            /// <summary>
+            /// Creates problem by applying the required business rules.
+            /// </summary>
+            private static ProblemDetails CreateProblem(int status, string title, string detail, HttpContext context, string errorCode)
     {
         var details = new ProblemDetails
         {
@@ -118,16 +121,20 @@ public sealed class ApiExceptionHandlingMiddleware
         EnrichProblem(details, context, errorCode);
         return details;
     }
-
-    private static void EnrichProblem(ProblemDetails details, HttpContext context, string errorCode)
+            /// <summary>
+            /// Executes the enrich problem operation as part of this component.
+            /// </summary>
+            private static void EnrichProblem(ProblemDetails details, HttpContext context, string errorCode)
     {
         details.Instance = context.Request.Path;
         details.Extensions["errorCode"] = errorCode;
         details.Extensions["traceId"] = context.TraceIdentifier;
         details.Extensions["timestamp"] = DateTimeOffset.UtcNow;
     }
-
-    private static async Task WriteProblem(HttpContext context, int status, ProblemDetails details)
+            /// <summary>
+            /// Executes the write problem operation as part of this component.
+            /// </summary>
+            private static async Task WriteProblem(HttpContext context, int status, ProblemDetails details)
     {
         if (context.Response.HasStarted)
         {

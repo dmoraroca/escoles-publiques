@@ -1,7 +1,6 @@
 namespace Domain.Entities;
-
 /// <summary>
-/// Entitat que representa una inscripció d'alumne a un curs.
+/// Encapsulates the functional responsibility of enrollment within the application architecture.
 /// </summary>
 public class Enrollment
 {

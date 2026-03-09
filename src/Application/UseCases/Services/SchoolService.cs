@@ -6,42 +6,33 @@ using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Services;
-
 /// <summary>
-/// Service for managing schools, including retrieval, creation, update, and deletion of school records.
+/// Implements application logic for school operations.
 /// </summary>
 public class SchoolService : ISchoolService
 {
     private readonly ISchoolRepository _schoolRepository;
     private readonly ILogger<SchoolService> _logger;
-
-    /// <summary>
-    /// Initializes a new instance of the SchoolService class.
-    /// </summary>
-    /// <param name="schoolRepository">Repository for school data access.</param>
-    /// <param name="logger">Logger instance.</param>
-    public SchoolService(ISchoolRepository schoolRepository, ILogger<SchoolService> logger)
+            /// <summary>
+            /// Initializes a new instance of the SchoolService class with its required dependencies.
+            /// </summary>
+            public SchoolService(ISchoolRepository schoolRepository, ILogger<SchoolService> logger)
     {
         _schoolRepository = schoolRepository;
         _logger = logger;
     }
-
-    /// <summary>
-    /// Retrieves all schools asynchronously.
-    /// </summary>
-    /// <returns>Enumerable of all schools.</returns>
-    public async Task<IEnumerable<School>> GetAllSchoolsAsync()
+            /// <summary>
+            /// Retrieves all schools async and returns it to the caller.
+            /// </summary>
+            public async Task<IEnumerable<School>> GetAllSchoolsAsync()
     {
         _logger.LogInformation("Obtenint totes les escoles");
         return await _schoolRepository.GetAllAsync();
     }
-
-    /// <summary>
-    /// Retrieves a school by its unique identifier asynchronously.
-    /// </summary>
-    /// <param name="id">School identifier.</param>
-    /// <returns>The school if found; otherwise, throws NotFoundException.</returns>
-    public async Task<School?> GetSchoolByIdAsync(long id)
+            /// <summary>
+            /// Retrieves school by id async and returns it to the caller.
+            /// </summary>
+            public async Task<School?> GetSchoolByIdAsync(long id)
     {
         _logger.LogInformation("Obtenint escola amb Id: {Id}", id);
         var school = await _schoolRepository.GetByIdAsync(id);
@@ -54,21 +45,20 @@ public class SchoolService : ISchoolService
 
         return school;
     }
-
-    /// <summary>
-    /// Retrieves a school by its code asynchronously.
-    /// </summary>
-    /// <param name="code">School code.</param>
-    /// <returns>The school if found; otherwise, null.</returns>
-    public async Task<School?> GetSchoolByCodeAsync(string code)
+            /// <summary>
+            /// Retrieves school by code async and returns it to the caller.
+            /// </summary>
+            public async Task<School?> GetSchoolByCodeAsync(string code)
     {
         var schoolCode = SchoolCode.Create(code);
 
         _logger.LogInformation("Obtenint escola amb codi: {Code}", schoolCode.Value);
         return await _schoolRepository.GetByCodeAsync(schoolCode.Value);
     }
-
-    public async Task<School> CreateSchoolAsync(School school)
+            /// <summary>
+            /// Creates school async by applying the required business rules.
+            /// </summary>
+            public async Task<School> CreateSchoolAsync(School school)
     {
         if (string.IsNullOrWhiteSpace(school.Name))
         {
@@ -89,8 +79,10 @@ public class SchoolService : ISchoolService
         _logger.LogInformation("Creant nova escola: {Name} ({Code})", school.Name, school.Code);
         return await _schoolRepository.AddAsync(school);
     }
-
-    public async Task UpdateSchoolAsync(School school)
+            /// <summary>
+            /// Updates school async with the data received in the request.
+            /// </summary>
+            public async Task UpdateSchoolAsync(School school)
     {
         var existingSchool = await _schoolRepository.GetByIdAsync(school.Id);
         if (existingSchool == null)
@@ -108,8 +100,10 @@ public class SchoolService : ISchoolService
         _logger.LogInformation("Actualitzant escola amb Id: {Id}", school.Id);
         await _schoolRepository.UpdateAsync(school);
     }
-
-    public async Task DeleteSchoolAsync(long id)
+            /// <summary>
+            /// Deletes school async from the system in a controlled manner.
+            /// </summary>
+            public async Task DeleteSchoolAsync(long id)
     {
         var school = await _schoolRepository.GetByIdAsync(id);
         if (school == null)

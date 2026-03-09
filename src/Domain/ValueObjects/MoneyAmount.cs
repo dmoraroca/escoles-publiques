@@ -5,13 +5,17 @@ namespace Domain.ValueObjects;
 public readonly record struct MoneyAmount
 {
     public decimal Value { get; }
-
-    private MoneyAmount(decimal value)
+        /// <summary>
+        /// Initializes a new instance of the MoneyAmount class with its required dependencies.
+        /// </summary>
+        private MoneyAmount(decimal value)
     {
         Value = value;
     }
-
-    public static MoneyAmount Create(decimal amount, string propertyName = "Amount")
+        /// <summary>
+        /// Creates a new resource by applying the required business rules.
+        /// </summary>
+        public static MoneyAmount Create(decimal amount, string propertyName = "Amount")
     {
         if (amount <= 0)
         {
@@ -21,5 +25,5 @@ public readonly record struct MoneyAmount
         return new MoneyAmount(decimal.Round(amount, 2, MidpointRounding.AwayFromZero));
     }
 
-    public override string ToString() => Value.ToString("0.00");
+        public override string ToString() => Value.ToString("0.00");
 }

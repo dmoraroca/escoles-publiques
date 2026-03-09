@@ -2,18 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
 namespace Web.ViewComponents;
-
 /// <summary>
-/// ViewComponent for rendering generic tables with dynamic data. Supports sorting, searching, pagination, custom actions, and responsive design.
+/// Encapsulates the functional responsibility of generic table view component within the application architecture.
 /// </summary>
 public class GenericTableViewComponent : ViewComponent
 {
-    /// <summary>
-    /// Invokes the view component to render a table using the provided model.
-    /// </summary>
-    /// <param name="model">A TableViewModel&lt;T&gt; instance containing table data.</param>
-    /// <returns>The rendered table view.</returns>
-    public IViewComponentResult Invoke(object model)
+            /// <summary>
+            /// Executes middleware logic for the current HTTP request.
+            /// </summary>
+            public IViewComponentResult Invoke(object model)
     {
         if (model == null)
         {

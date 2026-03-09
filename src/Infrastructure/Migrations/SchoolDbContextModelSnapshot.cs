@@ -10,10 +10,16 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
+            /// <summary>
+            /// Encapsulates the functional responsibility of school db context model snapshot within the application architecture.
+            /// </summary>
     [DbContext(typeof(SchoolDbContext))]
-    partial class SchoolDbContextModelSnapshot : ModelSnapshot
+            partial class SchoolDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+                        /// <summary>
+                        /// Executes the build model operation as part of this component.
+                        /// </summary>
+                        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

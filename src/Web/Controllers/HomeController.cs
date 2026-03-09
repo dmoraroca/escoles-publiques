@@ -8,22 +8,21 @@ using Microsoft.Extensions.Localization;
 namespace Web.Controllers;
 
 /// <summary>
-/// Controlador principal de la web. Gestiona la pàgina d'inici, privacitat i errors.
+/// Exposes HTTP endpoints to manage home workflows.
 /// </summary>
 [Authorize]
 public partial class HomeController : BaseController
 {
-    /// <summary>
-    /// Constructor del controlador Home.
-    /// </summary>
-    public HomeController(ILogger<HomeController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
+            /// <summary>
+            /// Initializes a new instance of the HomeController class with its required dependencies.
+            /// </summary>
+            public HomeController(ILogger<HomeController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
     }
-
-    /// <summary>
-    /// Mostra la pàgina principal amb opcions de cerca i filtratge per àmbit.
-    /// </summary>
-    public IActionResult Index(string? searchQuery, string? scopeName)
+            /// <summary>
+            /// Executes the index operation as part of this component.
+            /// </summary>
+            public IActionResult Index(string? searchQuery, string? scopeName)
     {
         ViewBag.SearchQuery = searchQuery?.Trim();
         ViewBag.ScopeName = scopeName?.Trim();
@@ -38,19 +37,17 @@ public partial class HomeController : BaseController
 
         return View();
     }
-
-    /// <summary>
-    /// Mostra la pàgina de privacitat.
-    /// </summary>
-    public IActionResult Privacy()
+            /// <summary>
+            /// Executes the privacy operation as part of this component.
+            /// </summary>
+            public IActionResult Privacy()
     {
         return View();
     }
-
     /// <summary>
-    /// Mostra la pàgina d'error amb informació de la petició.
+    /// Executes the error operation as part of this component.
     /// </summary>
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+            [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

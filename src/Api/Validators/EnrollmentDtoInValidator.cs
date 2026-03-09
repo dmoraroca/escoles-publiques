@@ -2,10 +2,15 @@ using Api.Contracts;
 using FluentValidation;
 
 namespace Api.Validators;
-
+/// <summary>
+/// Validates incoming data for enrollment dto in.
+/// </summary>
 public class EnrollmentDtoInValidator : AbstractValidator<EnrollmentDtoIn>
 {
-    public EnrollmentDtoInValidator()
+            /// <summary>
+            /// Initializes a new instance of the EnrollmentDtoInValidator class with its required dependencies.
+            /// </summary>
+            public EnrollmentDtoInValidator()
     {
         RuleFor(x => x.StudentId)
             .GreaterThan(0).WithMessage("StudentId ha de ser major que 0.");

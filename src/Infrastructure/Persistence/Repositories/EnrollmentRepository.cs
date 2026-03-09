@@ -3,26 +3,23 @@ using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
-
 /// <summary>
-/// Repositori per gestionar inscripcions a la base de dades.
+/// Centralizes persistent data access for enrollment.
 /// </summary>
 public class EnrollmentRepository : IEnrollmentRepository
 {
     private readonly SchoolDbContext _context;
-
-    /// <summary>
-    /// Constructor del repositori d'inscripcions.
-    /// </summary>
-    public EnrollmentRepository(SchoolDbContext context)
+            /// <summary>
+            /// Initializes a new instance of the EnrollmentRepository class with its required dependencies.
+            /// </summary>
+            public EnrollmentRepository(SchoolDbContext context)
     {
         _context = context;
     }
-
-    /// <summary>
-    /// Retorna totes les inscripcions amb alumnes i quotes.
-    /// </summary>
-    public async Task<IEnumerable<Enrollment>> GetAllAsync()
+            /// <summary>
+            /// Retrieves all async and returns it to the caller.
+            /// </summary>
+            public async Task<IEnumerable<Enrollment>> GetAllAsync()
     {
         return await _context.Enrollments
             .Include(e => e.Student)
@@ -31,8 +28,10 @@ public class EnrollmentRepository : IEnrollmentRepository
             .OrderByDescending(e => e.EnrolledAt)
             .ToListAsync();
     }
-
-    public async Task<Enrollment?> GetByIdAsync(long id)
+            /// <summary>
+            /// Retrieves by id async and returns it to the caller.
+            /// </summary>
+            public async Task<Enrollment?> GetByIdAsync(long id)
     {
         return await _context.Enrollments
             .Include(e => e.Student)
@@ -40,29 +39,37 @@ public class EnrollmentRepository : IEnrollmentRepository
             .Include(e => e.AnnualFees)
             .FirstOrDefaultAsync(e => e.Id == id);
     }
-
-    public async Task<IEnumerable<Enrollment>> GetByStudentIdAsync(long studentId)
+            /// <summary>
+            /// Retrieves by student id async and returns it to the caller.
+            /// </summary>
+            public async Task<IEnumerable<Enrollment>> GetByStudentIdAsync(long studentId)
     {
         return await _context.Enrollments
             .Where(e => e.StudentId == studentId)
             .OrderByDescending(e => e.EnrolledAt)
             .ToListAsync();
     }
-
-    public async Task<Enrollment> AddAsync(Enrollment enrollment)
+            /// <summary>
+            /// Executes the add async operation as part of this component.
+            /// </summary>
+            public async Task<Enrollment> AddAsync(Enrollment enrollment)
     {
         _context.Enrollments.Add(enrollment);
         await _context.SaveChangesAsync();
         return enrollment;
     }
-
-    public async Task UpdateAsync(Enrollment enrollment)
+            /// <summary>
+            /// Updates async with the data received in the request.
+            /// </summary>
+            public async Task UpdateAsync(Enrollment enrollment)
     {
         _context.Enrollments.Update(enrollment);
         await _context.SaveChangesAsync();
     }
-
-    public async Task DeleteAsync(long id)
+            /// <summary>
+            /// Deletes async from the system in a controlled manner.
+            /// </summary>
+            public async Task DeleteAsync(long id)
     {
         var enrollment = await _context.Enrollments.FindAsync(id);
         if (enrollment != null)

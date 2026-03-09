@@ -6,18 +6,26 @@ using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers;
 
+/// <summary>
+/// Exposes HTTP endpoints to manage users workflows.
+/// </summary>
 [Authorize]
 public class UsersController : BaseController
 {
     private readonly IUserRepository _userRepository;
-
-    public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
+            /// <summary>
+            /// Initializes a new instance of the UsersController class with its required dependencies.
+            /// </summary>
+            public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
         _userRepository = userRepository;
     }
 
     // Llista només els usuaris que tenen relació 1:1 amb Student
-    public async Task<IActionResult> Index()
+            /// <summary>
+            /// Executes the index operation as part of this component.
+            /// </summary>
+            public async Task<IActionResult> Index()
     {
         try
         {

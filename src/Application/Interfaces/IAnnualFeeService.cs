@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Application.Interfaces;
-
 /// <summary>
-/// Interfície de servei per gestionar quotes anuals a l'aplicació.
+/// Implements application logic for i annual fee operations.
 /// </summary>
 public interface IAnnualFeeService
 {

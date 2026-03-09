@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Domain.Interfaces;
-
 /// <summary>
-/// Interfície de repositori per gestionar usuaris al domini.
+/// Centralizes persistent data access for i user.
 /// </summary>
 public interface IUserRepository
 {

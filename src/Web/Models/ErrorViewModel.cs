@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per mostrar errors i l'identificador de la petició.
+/// Encapsulates the functional responsibility of error view model within the application architecture.
 /// </summary>
 public class ErrorViewModel
 {

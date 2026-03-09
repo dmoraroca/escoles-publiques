@@ -1,6 +1,9 @@
 // annualfees-create-form.js
 // Handles privacy checkbox and enrollment/student filtering on annual fee create.
 (function() {
+    /**
+     * Initializes privacy toggle when the page loads.
+     */
     function initPrivacyToggle() {
         var checkbox = document.getElementById('agreesToPrivacy');
         var createBtn = document.getElementById('createButton');
@@ -13,11 +16,17 @@
         });
     }
 
+    /**
+     * Initializes enrollment filters when the page loads.
+     */
     function initEnrollmentFilters() {
         var enrollmentSelect = document.getElementById('enrollmentSelect');
         var studentSelect = document.getElementById('studentSelect');
         var schoolInput = document.getElementById('schoolReadonly');
 
+        /**
+         * Executes the filter enrollments by student logic for this JavaScript module.
+         */
         function filterEnrollmentsByStudent() {
             if (!enrollmentSelect || !studentSelect) return;
             var selectedStudentId = studentSelect.value;
@@ -35,6 +44,9 @@
             }
         }
 
+        /**
+         * Updates school field using the latest data.
+         */
         function updateSchoolField() {
             if (!enrollmentSelect || !studentSelect || !schoolInput) return;
             var enrollmentSelected = enrollmentSelect.value !== '';

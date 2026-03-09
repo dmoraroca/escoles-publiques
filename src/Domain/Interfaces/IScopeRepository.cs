@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Domain.Interfaces;
-
 /// <summary>
-/// Interfície de repositori per gestionar àmbits funcionals al domini.
+/// Centralizes persistent data access for i scope.
 /// </summary>
 public interface IScopeRepository
 {

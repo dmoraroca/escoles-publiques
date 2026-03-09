@@ -2,7 +2,9 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 
 namespace Api.Services;
-
+/// <summary>
+/// Intercepts the HTTP pipeline to apply request metrics behavior.
+/// </summary>
 public sealed class RequestMetricsMiddleware
 {
     private static readonly Meter Meter = new("Api.Requests", "1.0.0");
@@ -10,13 +12,17 @@ public sealed class RequestMetricsMiddleware
     private static readonly Histogram<double> RequestDurationMs = Meter.CreateHistogram<double>("api_request_duration_ms");
 
     private readonly RequestDelegate _next;
-
-    public RequestMetricsMiddleware(RequestDelegate next)
+            /// <summary>
+            /// Initializes a new instance of the RequestMetricsMiddleware class with its required dependencies.
+            /// </summary>
+            public RequestMetricsMiddleware(RequestDelegate next)
     {
         _next = next;
     }
-
-    public async Task Invoke(HttpContext context)
+            /// <summary>
+            /// Executes middleware logic for the current HTTP request.
+            /// </summary>
+            public async Task Invoke(HttpContext context)
     {
         var sw = Stopwatch.StartNew();
 

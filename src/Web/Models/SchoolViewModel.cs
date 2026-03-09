@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per gestionar les dades d'una escola.
+/// Encapsulates the functional responsibility of school view model within the application architecture.
 /// </summary>
 public class SchoolViewModel
 {

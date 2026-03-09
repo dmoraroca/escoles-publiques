@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 namespace Infrastructure.Persistence.Scaffold;
-
+/// <summary>
+/// Encapsulates the functional responsibility of school within the application architecture.
+/// </summary>
 public partial class School
 {
     public long Id { get; set; }
@@ -15,10 +17,7 @@ public partial class School
 
     public DateTime CreatedAt { get; set; }
 
-    /// <summary>
-    /// Indica si l&apos;escola és marcada com a favorita
-    /// </summary>
-    public bool IsFavorite { get; set; }
+            public bool IsFavorite { get; set; }
 
     public long? ScopeId { get; set; }
 

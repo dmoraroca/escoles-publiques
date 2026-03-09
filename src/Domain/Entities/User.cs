@@ -1,7 +1,6 @@
 namespace Domain.Entities;
-
 /// <summary>
-/// Entitat que representa un usuari del sistema (administrador o usuari normal).
+/// Encapsulates the functional responsibility of user within the application architecture.
 /// </summary>
 public class User
 {
@@ -20,6 +19,6 @@ public class User
     // Navigation property
     public Student? Student { get; set; }
 
-    public bool IsAdmin() => Role == "ADM";
-    public bool IsUser() => Role == "USER";
+        public bool IsAdmin() => Role == "ADM";
+        public bool IsUser() => Role == "USER";
 }

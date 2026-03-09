@@ -1,8 +1,7 @@
 using Domain.Entities;
 namespace Domain.Entities;
-
 /// <summary>
-/// Entitat que representa una quota anual associada a una inscripció.
+/// Encapsulates the functional responsibility of annual fee within the application architecture.
 /// </summary>
 public class AnnualFee
 {

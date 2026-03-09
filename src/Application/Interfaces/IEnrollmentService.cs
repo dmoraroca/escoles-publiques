@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Application.Interfaces;
-
 /// <summary>
-/// Interfície de servei per gestionar inscripcions a l'aplicació.
+/// Implements application logic for i enrollment operations.
 /// </summary>
 public interface IEnrollmentService
 {

@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Domain.Interfaces;
-
 /// <summary>
-/// Interfície de repositori per gestionar quotes anuals al domini.
+/// Centralizes persistent data access for i annual fee.
 /// </summary>
 public interface IAnnualFeeRepository
 {

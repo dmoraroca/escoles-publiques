@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per la pàgina principal (escoles favorites i àmbits).
+/// Encapsulates the functional responsibility of index view model within the application architecture.
 /// </summary>
 public class IndexViewModel
 {

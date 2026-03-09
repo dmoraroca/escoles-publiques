@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.ViewComponents;
-
 /// <summary>
-/// ViewComponent for rendering the main navigation menu in the application.
+/// Encapsulates the functional responsibility of main menu view component within the application architecture.
 /// </summary>
 public class MainMenuViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke()
+            /// <summary>
+            /// Executes middleware logic for the current HTTP request.
+            /// </summary>
+            public IViewComponentResult Invoke()
     {
         var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
         ViewBag.CurrentController = currentController;

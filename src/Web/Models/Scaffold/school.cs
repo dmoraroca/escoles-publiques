@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 namespace Web.Models.Scaffold;
-
+/// <summary>
+/// Encapsulates the functional responsibility of school within the application architecture.
+/// </summary>
 public partial class school
 {
     public long id { get; set; }

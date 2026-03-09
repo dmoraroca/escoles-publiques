@@ -1,7 +1,9 @@
 using Application.Interfaces.Cqrs;
 
 namespace Application.UseCases.Schools.Commands;
-
+/// <summary>
+/// Represents values and data structure for update school command.
+/// </summary>
 public sealed record UpdateSchoolCommand(
     long Id,
     string Code,

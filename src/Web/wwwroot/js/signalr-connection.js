@@ -7,10 +7,16 @@ const connection = new signalR.HubConnectionBuilder()
     .withAutomaticReconnect()
     .build();
 
+/**
+ * Executes the t logic for this JavaScript module.
+ */
 function t(key, fallback) {
     return window.i18n ? window.i18n.t('signalr-connection.js', key, fallback) : (fallback || key);
 }
 
+/**
+ * Executes the reload current page logic for this JavaScript module.
+ */
 function reloadCurrentPage() {
     console.log(t('AutoReload', '🔄 Recàrrega automàtica per canvis detectats...'));
     setTimeout(() => location.reload(), 1000);

@@ -2,14 +2,15 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Web.ModelBinders;
-
 /// <summary>
-/// Parses decimals from form input accepting both ',' and '.' as decimal separators,
-/// and handling common thousand-separator formats (e.g. 1.234,56 or 1,234.56).
+/// Encapsulates the functional responsibility of flexible decimal model binder within the application architecture.
 /// </summary>
 public sealed class FlexibleDecimalModelBinder : IModelBinder
 {
-    public Task BindModelAsync(ModelBindingContext bindingContext)
+            /// <summary>
+            /// Executes the bind model async operation as part of this component.
+            /// </summary>
+            public Task BindModelAsync(ModelBindingContext bindingContext)
     {
         if (bindingContext == null) throw new ArgumentNullException(nameof(bindingContext));
 
@@ -44,8 +45,10 @@ public sealed class FlexibleDecimalModelBinder : IModelBinder
             $"Valor decimal invalid: '{raw}'.");
         return Task.CompletedTask;
     }
-
-    private static string Normalize(string input)
+            /// <summary>
+            /// Executes the normalize operation as part of this component.
+            /// </summary>
+            private static string Normalize(string input)
     {
         var s = input.Trim();
         s = s.Replace(" ", "").Replace("\u00A0", ""); // spaces + non-breaking spaces
@@ -80,10 +83,15 @@ public sealed class FlexibleDecimalModelBinder : IModelBinder
         return s;
     }
 }
-
+/// <summary>
+/// Encapsulates the functional responsibility of flexible decimal model binder provider within the application architecture.
+/// </summary>
 public sealed class FlexibleDecimalModelBinderProvider : IModelBinderProvider
 {
-    public IModelBinder? GetBinder(ModelBinderProviderContext context)
+            /// <summary>
+            /// Retrieves binder and returns it to the caller.
+            /// </summary>
+            public IModelBinder? GetBinder(ModelBinderProviderContext context)
     {
         if (context == null) throw new ArgumentNullException(nameof(context));
 

@@ -1,7 +1,11 @@
 namespace Web.Services.Api;
-
+/// <summary>
+/// Represents values and data structure for api scope.
+/// </summary>
 public record ApiScope(long Id, string Name);
-
+/// <summary>
+/// Represents values and data structure for api student.
+/// </summary>
 public record ApiStudent(
     long Id,
     long? UserId,
@@ -11,14 +15,18 @@ public record ApiStudent(
     DateOnly? BirthDate,
     long SchoolId,
     string? SchoolName);
-
+/// <summary>
+/// Represents values and data structure for api student in.
+/// </summary>
 public record ApiStudentIn(
     string FirstName,
     string LastName,
     string Email,
     DateOnly? BirthDate,
     long SchoolId);
-
+/// <summary>
+/// Represents values and data structure for api enrollment.
+/// </summary>
 public record ApiEnrollment(
     long Id,
     long StudentId,
@@ -29,7 +37,9 @@ public record ApiEnrollment(
     DateTime EnrolledAt,
     long SchoolId,
     string SchoolName);
-
+/// <summary>
+/// Represents values and data structure for api enrollment in.
+/// </summary>
 public record ApiEnrollmentIn(
     long StudentId,
     string AcademicYear,
@@ -37,7 +47,9 @@ public record ApiEnrollmentIn(
     string Status,
     DateTime? EnrolledAt,
     long SchoolId);
-
+/// <summary>
+/// Represents values and data structure for api annual fee.
+/// </summary>
 public record ApiAnnualFee(
     long Id,
     long EnrollmentId,
@@ -52,7 +64,9 @@ public record ApiAnnualFee(
     string? PaymentRef,
     long? SchoolId,
     string? SchoolName);
-
+/// <summary>
+/// Represents values and data structure for api annual fee in.
+/// </summary>
 public record ApiAnnualFeeIn(
     long EnrollmentId,
     decimal Amount,

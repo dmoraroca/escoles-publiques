@@ -1,10 +1,16 @@
 // save-cancel-buttons.js
 // Minimal wiring for save/cancel partial: do not create DOM, only control behavior.
 (function(document){
+    /**
+     * Executes the t logic for this JavaScript module.
+     */
     function t(key, fallback) {
         return window.i18n ? window.i18n.t('save-cancel-buttons.js', key, fallback) : (fallback || key);
     }
 
+    /**
+     * Initializes component when the page loads.
+     */
     function initComponent(container){
         if(!container) return;
         var raw = container.getAttribute('data-options') || '{}';
@@ -22,6 +28,9 @@
             privacy = container.querySelector('input[type=checkbox]');
         }
 
+        /**
+         * Updates save state using the latest data.
+         */
         function updateSaveState(){
             if(!saveBtn) return;
             var enabled = true;
@@ -95,6 +104,9 @@
         }
     }
 
+    /**
+     * Initializes all when the page loads.
+     */
     function initAll(){
         document.querySelectorAll('.save-cancel-component').forEach(initComponent);
     }

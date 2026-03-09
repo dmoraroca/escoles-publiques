@@ -2,10 +2,15 @@ using Api.Contracts;
 using FluentValidation;
 
 namespace Api.Validators;
-
+/// <summary>
+/// Validates incoming data for student dto in.
+/// </summary>
 public class StudentDtoInValidator : AbstractValidator<StudentDtoIn>
 {
-    public StudentDtoInValidator()
+            /// <summary>
+            /// Initializes a new instance of the StudentDtoInValidator class with its required dependencies.
+            /// </summary>
+            public StudentDtoInValidator()
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("El nom és obligatori.")

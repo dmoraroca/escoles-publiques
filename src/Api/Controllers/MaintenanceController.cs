@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+/// <summary>
+/// Exposes HTTP endpoints to manage maintenance workflows.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = "ADM")]
@@ -13,8 +16,10 @@ public class MaintenanceController : ControllerBase
     private readonly SchoolDbContext _db;
     private readonly IConfiguration _config;
     private readonly ILogger<MaintenanceController> _logger;
-
-    public MaintenanceController(SchoolDbContext db, IConfiguration config, ILogger<MaintenanceController> logger)
+            /// <summary>
+            /// Initializes a new instance of the MaintenanceController class with its required dependencies.
+            /// </summary>
+            public MaintenanceController(SchoolDbContext db, IConfiguration config, ILogger<MaintenanceController> logger)
     {
         _db = db;
         _config = config;
@@ -23,7 +28,10 @@ public class MaintenanceController : ControllerBase
 
     // POST /api/maintenance/seed
     // Extra safety: requires X-Seed-Key header matching Seed:Key (Seed__Key env var).
-    [HttpPost("seed")]
+    /// <summary>
+    /// Seeds the minimum data required to bootstrap the application.
+    /// </summary>
+            [HttpPost("seed")]
     public IActionResult Seed([FromHeader(Name = "X-Seed-Key")] string? seedKey)
     {
         var expectedKey = _config.GetValue<string>("Seed:Key");

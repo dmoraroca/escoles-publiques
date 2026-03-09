@@ -7,6 +7,9 @@ using System.Security.Cryptography;
 
 namespace Api.Controllers;
 
+/// <summary>
+/// Exposes HTTP endpoints to manage students workflows.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
@@ -14,28 +17,36 @@ public class StudentsController : ControllerBase
 {
     private readonly IStudentService _studentService;
     private readonly IUserService _userService;
-
-    public StudentsController(IStudentService studentService, IUserService userService)
+            /// <summary>
+            /// Initializes a new instance of the StudentsController class with its required dependencies.
+            /// </summary>
+            public StudentsController(IStudentService studentService, IUserService userService)
     {
         _studentService = studentService;
         _userService = userService;
     }
-
-    [HttpGet]
+    /// <summary>
+    /// Retrieves all and returns it to the caller.
+    /// </summary>
+            [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var students = await _studentService.GetAllStudentsAsync();
         return Ok(students.Select(ToDto));
     }
-
-    [HttpGet("{id}")]
+    /// <summary>
+    /// Retrieves the requested data and returns it to the caller.
+    /// </summary>
+            [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
         var student = await _studentService.GetStudentByIdAsync(id);
         return Ok(ToDto(student!));
     }
-
-    [HttpPost]
+    /// <summary>
+    /// Creates a new resource by applying the required business rules.
+    /// </summary>
+            [HttpPost]
     public async Task<IActionResult> Create([FromBody] StudentDtoIn dto)
     {
         var existingUser = await _userService.GetUserByEmailAsync(dto.Email);
@@ -68,8 +79,10 @@ public class StudentsController : ControllerBase
         var createdWithUser = await _studentService.CreateStudentWithUserAsync(user, initialPassword, newStudent);
         return CreatedAtAction(nameof(Get), new { id = createdWithUser.Id }, ToDto(createdWithUser));
     }
-
-    [HttpPut("{id}")]
+    /// <summary>
+    /// Updates the target resource with the data received in the request.
+    /// </summary>
+            [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] StudentDtoIn dto)
     {
         var student = await _studentService.GetStudentByIdAsync(id);
@@ -99,15 +112,19 @@ public class StudentsController : ControllerBase
 
         return NoContent();
     }
-
-    [HttpDelete("{id}")]
+    /// <summary>
+    /// Deletes the target resource from the system in a controlled manner.
+    /// </summary>
+            [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         await _studentService.DeleteStudentAsync(id);
         return NoContent();
     }
-
-    private static StudentDtoOut ToDto(Student student)
+            /// <summary>
+            /// Maps data for to dto between application layers.
+            /// </summary>
+            private static StudentDtoOut ToDto(Student student)
     {
         return new StudentDtoOut(
             student.Id,

@@ -1,8 +1,7 @@
 using Domain.Entities;
 namespace Domain.Entities;
-
 /// <summary>
-/// Entitat que representa un alumne dins el domini.
+/// Encapsulates the functional responsibility of student within the application architecture.
 /// </summary>
 public class Student
 {

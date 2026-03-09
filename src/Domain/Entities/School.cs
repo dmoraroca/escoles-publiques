@@ -1,7 +1,6 @@
 namespace Domain.Entities;
-
 /// <summary>
-/// Entitat que representa una escola dins el domini.
+/// Represents a school entity with identity, metadata, and related students.
 /// </summary>
 public class School
 {

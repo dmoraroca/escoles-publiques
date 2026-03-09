@@ -7,6 +7,9 @@ using System.Security.Claims;
 using System.Text;
 namespace Api.Controllers;
 
+/// <summary>
+/// Exposes HTTP endpoints to manage auth workflows.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
@@ -14,16 +17,20 @@ public class AuthController : ControllerBase
     private readonly IAuthService _authService;
     private readonly ILogger<AuthController> _logger;
     private readonly IConfiguration _config;
-
-    public AuthController(ILogger<AuthController> logger, IAuthService authService, IConfiguration config)
+            /// <summary>
+            /// Initializes a new instance of the AuthController class with its required dependencies.
+            /// </summary>
+            public AuthController(ILogger<AuthController> logger, IAuthService authService, IConfiguration config)
     {
         _authService = authService;
         _config = config;
         _logger = logger;
 
     }
-
-    [HttpPost("token")]
+    /// <summary>
+    /// Maps data for token between application layers.
+    /// </summary>
+            [HttpPost("token")]
     public async Task<IActionResult> Token([FromBody] LoginDto dto)
     {
         _logger.LogInformation("Auth token request received. Email={Email}", dto.Email);

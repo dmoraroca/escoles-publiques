@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Domain.Interfaces;
-
 /// <summary>
-/// Interfície de repositori per gestionar inscripcions al domini.
+/// Centralizes persistent data access for i enrollment.
 /// </summary>
 public interface IEnrollmentRepository
 {

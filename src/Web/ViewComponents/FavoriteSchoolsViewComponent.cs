@@ -3,20 +3,23 @@ using Web.Models;
 using Web.Services.Api;
 
 namespace Web.ViewComponents;
-
 /// <summary>
-/// ViewComponent for displaying a user's favorite schools in the UI.
+/// Encapsulates the functional responsibility of favorite schools view component within the application architecture.
 /// </summary>
 public class FavoriteSchoolsViewComponent : ViewComponent
 {
     private readonly ISchoolsApiClient _schoolApi;
-
-    public FavoriteSchoolsViewComponent(ISchoolsApiClient schoolApi)
+            /// <summary>
+            /// Initializes a new instance of the FavoriteSchoolsViewComponent class with its required dependencies.
+            /// </summary>
+            public FavoriteSchoolsViewComponent(ISchoolsApiClient schoolApi)
     {
         _schoolApi = schoolApi;
     }
-
-    public async Task<IViewComponentResult> InvokeAsync()
+            /// <summary>
+            /// Executes middleware logic for the current HTTP request.
+            /// </summary>
+            public async Task<IViewComponentResult> InvokeAsync()
     {
         var schools = await _schoolApi.GetAllAsync();
         var favoriteSchools = schools

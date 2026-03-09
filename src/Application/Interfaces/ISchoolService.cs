@@ -1,9 +1,8 @@
 using Domain.Entities;
 
 namespace Application.Interfaces;
-
 /// <summary>
-/// Interfície de servei per gestionar escoles a l'aplicació.
+/// Implements application logic for i school operations.
 /// </summary>
 public interface ISchoolService
 {

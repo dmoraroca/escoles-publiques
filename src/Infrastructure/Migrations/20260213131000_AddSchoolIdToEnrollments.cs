@@ -5,13 +5,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations;
 
 /// <summary>
-/// Adds the missing enrollments.school_id column expected by the domain model and API.
-/// This fixes production 500s when querying /api/enrollments.
+/// Encapsulates the functional responsibility of add school id to enrollments within the application architecture.
 /// </summary>
 [Migration("20260213131000_AddSchoolIdToEnrollments")]
 public partial class AddSchoolIdToEnrollments : Migration
 {
-    protected override void Up(MigrationBuilder migrationBuilder)
+            /// <summary>
+            /// Executes the up operation as part of this component.
+            /// </summary>
+            protected override void Up(MigrationBuilder migrationBuilder)
     {
         // Make the migration resilient (safe to run even if the column/constraint already exists).
         // This also allows an emergency manual SQL fix without breaking future deploys.
@@ -41,8 +43,10 @@ BEGIN
 END $$;
 ");
     }
-
-    protected override void Down(MigrationBuilder migrationBuilder)
+            /// <summary>
+            /// Executes the down operation as part of this component.
+            /// </summary>
+            protected override void Down(MigrationBuilder migrationBuilder)
     {
         // Best-effort rollback.
         migrationBuilder.Sql(@"

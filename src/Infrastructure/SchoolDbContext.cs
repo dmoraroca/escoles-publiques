@@ -1,78 +1,78 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
 /// <summary>
-/// Entity Framework Core database context for the school management system. Manages entity sets and configures schema mappings for PostgreSQL.
+/// Encapsulates the Entity Framework DbContext used by the persistence layer.
 /// </summary>
 public class SchoolDbContext : DbContext
 {
     /// <summary>
-    /// Initializes a new instance of the SchoolDbContext class with the specified options.
+    /// Initializes a new instance of the <see cref="SchoolDbContext"/> class.
     /// </summary>
-    /// <param name="options">The options to be used by the DbContext.</param>
+    /// <param name="options">Configuration options for the DbContext instance.</param>
     public SchoolDbContext(DbContextOptions<SchoolDbContext> options)
         : base(options)
     {
     }
 
     /// <summary>
-    /// Gets the set of schools.
+    /// Gets the schools set.
     /// </summary>
     public DbSet<School> Schools => Set<School>();
+
     /// <summary>
-    /// Gets the set of students.
+    /// Gets the students set.
     /// </summary>
     public DbSet<Student> Students => Set<Student>();
+
     /// <summary>
-    /// Gets the set of enrollments.
+    /// Gets the enrollments set.
     /// </summary>
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+
     /// <summary>
-    /// Gets the set of annual fees.
+    /// Gets the annual fees set.
     /// </summary>
     public DbSet<AnnualFee> AnnualFees => Set<AnnualFee>();
+
     /// <summary>
-    /// Gets the set of scopes.
+    /// Gets the scopes set.
     /// </summary>
     public DbSet<Scope> Scopes => Set<Scope>();
+
     /// <summary>
-    /// Gets the set of users.
+    /// Gets the users set.
     /// </summary>
     public DbSet<User> Users => Set<User>();
 
     /// <summary>
-    /// Configures the entity mappings and schema for the database, including table and column naming conventions and specific table configurations.
+    /// Configures entity mappings and naming conventions for PostgreSQL.
     /// </summary>
-    /// <param name="modelBuilder">The builder used to construct the model for the context.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configurar PostgreSQL per usar timestamps sense timezone
+        // Configure PostgreSQL to use timestamps without timezone.
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-        // Configuració global: PostgreSQL utilitza snake_case
+        // Apply global snake_case conventions for tables, columns, and foreign keys.
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {
-            // Convertir noms de taules a snake_case
             entity.SetTableName(entity.GetTableName()?.ToLowerInvariant());
 
-            // Convertir noms de columnes a snake_case
             foreach (var property in entity.GetProperties())
             {
                 property.SetColumnName(ToSnakeCase(property.Name));
             }
 
-            // Convertir noms de claus foranes a snake_case
             foreach (var key in entity.GetForeignKeys())
             {
                 key.SetConstraintName(key.GetConstraintName()?.ToLowerInvariant());
             }
         }
 
-        // Configuració específica de taules
         modelBuilder.Entity<School>(entity =>
         {
             entity.ToTable("schools");
@@ -97,24 +97,26 @@ public class SchoolDbContext : DbContext
         {
             entity.ToTable("scope_mnt");
         });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("users");
             entity.HasIndex(e => e.Email).IsUnique();
         });
-        // Aplica totes les configuracions Fluent API
+
+        // Apply all Fluent API configurations found in this assembly.
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SchoolDbContext).Assembly);
     }
 
     /// <summary>
-    /// Converts a string from PascalCase or camelCase to snake_case.
+    /// Converts a PascalCase identifier to snake_case.
     /// </summary>
-    /// <param name="name">The string to convert.</param>
-    /// <returns>The converted snake_case string.</returns>
     private static string ToSnakeCase(string name)
     {
         if (string.IsNullOrEmpty(name))
+        {
             return name;
+        }
 
         var result = new System.Text.StringBuilder();
         result.Append(char.ToLowerInvariant(name[0]));

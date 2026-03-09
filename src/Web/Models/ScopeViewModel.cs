@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per mostrar un àmbit d'escola.
+/// Encapsulates the functional responsibility of scope view model within the application architecture.
 /// </summary>
 public class ScopeViewModel
 {

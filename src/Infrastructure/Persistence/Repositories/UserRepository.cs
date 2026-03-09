@@ -4,40 +4,41 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
-
 /// <summary>
-/// Repositori per gestionar usuaris a la base de dades.
+/// Centralizes persistent data access for user.
 /// </summary>
 public class UserRepository : IUserRepository
 {
     private readonly SchoolDbContext _context;
-
-    /// <summary>
-    /// Constructor del repositori d'usuaris.
-    /// </summary>
-    public UserRepository(SchoolDbContext context)
+            /// <summary>
+            /// Initializes a new instance of the UserRepository class with its required dependencies.
+            /// </summary>
+            public UserRepository(SchoolDbContext context)
     {
         _context = context;
     }
-
-    /// <summary>
-    /// Retorna un usuari pel seu identificador, incloent l'alumne.
-    /// </summary>
-    public async Task<User?> GetByIdAsync(long id)
+            /// <summary>
+            /// Retrieves by id async and returns it to the caller.
+            /// </summary>
+            public async Task<User?> GetByIdAsync(long id)
     {
         return await _context.Users
             .Include(u => u.Student)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
-
-    public async Task<User?> GetByEmailAsync(string email)
+            /// <summary>
+            /// Retrieves by email async and returns it to the caller.
+            /// </summary>
+            public async Task<User?> GetByEmailAsync(string email)
     {
         return await _context.Users
             .Include(u => u.Student)
             .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
     }
-
-    public async Task<IEnumerable<User>> GetAllAsync()
+            /// <summary>
+            /// Retrieves all async and returns it to the caller.
+            /// </summary>
+            public async Task<IEnumerable<User>> GetAllAsync()
     {
         return await _context.Users
             .Include(u => u.Student)
@@ -45,22 +46,28 @@ public class UserRepository : IUserRepository
             .ThenBy(u => u.FirstName)
             .ToListAsync();
     }
-
-    public async Task<User> AddAsync(User user)
+            /// <summary>
+            /// Executes the add async operation as part of this component.
+            /// </summary>
+            public async Task<User> AddAsync(User user)
     {
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return user;
     }
-
-    public async Task UpdateAsync(User user)
+            /// <summary>
+            /// Updates async with the data received in the request.
+            /// </summary>
+            public async Task UpdateAsync(User user)
     {
         user.UpdatedAt = DateTime.UtcNow;
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }
-
-    public async Task DeleteAsync(long id)
+            /// <summary>
+            /// Deletes async from the system in a controlled manner.
+            /// </summary>
+            public async Task DeleteAsync(long id)
     {
         var user = await _context.Users.FindAsync(id);
         if (user != null)
@@ -69,8 +76,10 @@ public class UserRepository : IUserRepository
             await _context.SaveChangesAsync();
         }
     }
-
-    public async Task<bool> EmailExistsAsync(string email)
+            /// <summary>
+            /// Executes the email exists async operation as part of this component.
+            /// </summary>
+            public async Task<bool> EmailExistsAsync(string email)
     {
         return await _context.Users
             .AnyAsync(u => u.Email.ToLower() == email.ToLower());

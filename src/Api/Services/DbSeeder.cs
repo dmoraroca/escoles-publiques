@@ -6,9 +6,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Api.Services;
-
+/// <summary>
+/// Seeds the database with default scope entries and an administrator user when the database is empty.
+/// </summary>
 public static class DbSeeder
 {
+    /// <summary>
+    /// Seeds initial records only when no users exist, and returns whether seeding was performed.
+    /// </summary>
     public static bool SeedIfEmpty(SchoolDbContext db, IConfiguration config, ILogger logger)
     {
         // "Empty" check: if there is any user, assume the DB has already been initialized.
@@ -56,4 +61,3 @@ public static class DbSeeder
         return true;
     }
 }
-

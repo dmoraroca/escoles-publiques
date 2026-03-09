@@ -3,34 +3,33 @@ using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
-
 /// <summary>
-/// Repositori per gestionar els alumnes a la base de dades.
+/// Centralizes persistent data access for student.
 /// </summary>
 public class StudentRepository : IStudentRepository
 {
     private readonly SchoolDbContext _context;
-
-    /// <summary>
-    /// Constructor del repositori d'alumnes.
-    /// </summary>
-    public StudentRepository(SchoolDbContext context)
+            /// <summary>
+            /// Initializes a new instance of the StudentRepository class with its required dependencies.
+            /// </summary>
+            public StudentRepository(SchoolDbContext context)
     {
         _context = context;
     }
-
-    /// <summary>
-    /// Retorna tots els alumnes amb escola i usuari.
-    /// </summary>
-    public async Task<IEnumerable<Student>> GetAllAsync()
+            /// <summary>
+            /// Retrieves all async and returns it to the caller.
+            /// </summary>
+            public async Task<IEnumerable<Student>> GetAllAsync()
     {
         return await _context.Students
             .Include(s => s.School)
             .Include(s => s.User)
             .ToListAsync();
     }
-
-    public async Task<Student?> GetByIdAsync(long id)
+            /// <summary>
+            /// Retrieves by id async and returns it to the caller.
+            /// </summary>
+            public async Task<Student?> GetByIdAsync(long id)
     {
         return await _context.Students
             .Include(s => s.School)
@@ -38,29 +37,37 @@ public class StudentRepository : IStudentRepository
             .Include(s => s.Enrollments)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
-
-    public async Task<IEnumerable<Student>> GetBySchoolIdAsync(long schoolId)
+            /// <summary>
+            /// Retrieves by school id async and returns it to the caller.
+            /// </summary>
+            public async Task<IEnumerable<Student>> GetBySchoolIdAsync(long schoolId)
     {
         return await _context.Students
             .Include(s => s.User)
             .Where(s => s.SchoolId == schoolId)
             .ToListAsync();
     }
-
-    public async Task<Student> AddAsync(Student student)
+            /// <summary>
+            /// Executes the add async operation as part of this component.
+            /// </summary>
+            public async Task<Student> AddAsync(Student student)
     {
         _context.Students.Add(student);
         await _context.SaveChangesAsync();
         return student;
     }
-
-    public async Task UpdateAsync(Student student)
+            /// <summary>
+            /// Updates async with the data received in the request.
+            /// </summary>
+            public async Task UpdateAsync(Student student)
     {
         _context.Students.Update(student);
         await _context.SaveChangesAsync();
     }
-
-    public async Task DeleteAsync(long id)
+            /// <summary>
+            /// Deletes async from the system in a controlled manner.
+            /// </summary>
+            public async Task DeleteAsync(long id)
     {
         var student = await _context.Students.FindAsync(id);
         if (student != null)

@@ -3,54 +3,48 @@ using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
 namespace Web.Controllers;
-
 /// <summary>
-/// Classe base per als controladors, amb gestió d'errors i missatges.
+/// Exposes HTTP endpoints to manage base workflows.
 /// </summary>
 public abstract class BaseController : Controller
 {
     protected readonly ILogger Logger;
     protected readonly IStringLocalizer Localizer;
-
-    /// <summary>
-    /// Constructor de la classe base amb logger.
-    /// </summary>
-    protected BaseController(ILogger logger, IStringLocalizer? localizer = null)
+            /// <summary>
+            /// Initializes a new instance of the BaseController class with its required dependencies.
+            /// </summary>
+            protected BaseController(ILogger logger, IStringLocalizer? localizer = null)
     {
         Logger = logger;
         Localizer = localizer ?? new PassthroughStringLocalizer();
     }
-
-    /// <summary>
-    /// Gestiona errors i redirigeix a la pàgina d'error.
-    /// </summary>
-    protected IActionResult HandleError(Exception ex, string action)
+            /// <summary>
+            /// Handles error and executes the corresponding use case.
+            /// </summary>
+            protected IActionResult HandleError(Exception ex, string action)
     {
         Logger.LogError(ex, "Error al executar {Action}", action);
         TempData["Error"] = Localizer["Hi ha hagut un error. Si us plau, torna-ho a intentar."].Value;
         return RedirectToAction("Error", "Home");
     }
-
-    /// <summary>
-    /// Assigna un missatge d'èxit a TempData.
-    /// </summary>
-    protected void SetSuccessMessage(string message)
+            /// <summary>
+            /// Executes the set success message operation as part of this component.
+            /// </summary>
+            protected void SetSuccessMessage(string message)
     {
         TempData["Success"] = message;
     }
-
-    /// <summary>
-    /// Assigna un missatge d'error a TempData.
-    /// </summary>
-    protected void SetErrorMessage(string message)
+            /// <summary>
+            /// Executes the set error message operation as part of this component.
+            /// </summary>
+            protected void SetErrorMessage(string message)
     {
         TempData["Error"] = message;
     }
-
-    /// <summary>
-    /// Indica si una excepció és per accés no autoritzat.
-    /// </summary>
-    protected static bool IsUnauthorized(Exception ex)
+            /// <summary>
+            /// Executes the is unauthorized operation as part of this component.
+            /// </summary>
+            protected static bool IsUnauthorized(Exception ex)
     {
         if (ex is HttpRequestException httpEx && httpEx.StatusCode.HasValue)
         {
@@ -60,11 +54,10 @@ public abstract class BaseController : Controller
 
         return false;
     }
-
-    /// <summary>
-    /// Detecta si la petició és AJAX (modal/fetch).
-    /// </summary>
-    protected bool IsAjaxRequest()
+            /// <summary>
+            /// Executes the is ajax request operation as part of this component.
+            /// </summary>
+            protected bool IsAjaxRequest()
     {
         if (Request?.Headers == null) return false;
         if (Request.Headers.TryGetValue("X-Requested-With", out var value)
@@ -75,15 +68,19 @@ public abstract class BaseController : Controller
         var accept = Request.Headers["Accept"].ToString();
         return accept.Contains("application/json", StringComparison.OrdinalIgnoreCase);
     }
-
-    private sealed class PassthroughStringLocalizer : IStringLocalizer
+            /// <summary>
+            /// Encapsulates the functional responsibility of passthrough string localizer within the application architecture.
+            /// </summary>
+            private sealed class PassthroughStringLocalizer : IStringLocalizer
     {
         public LocalizedString this[string name] => new(name, name, resourceNotFound: true);
 
         public LocalizedString this[string name, params object[] arguments]
             => new(name, string.Format(CultureInfo.CurrentCulture, name, arguments), resourceNotFound: true);
-
-        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+                        /// <summary>
+                        /// Retrieves all strings and returns it to the caller.
+                        /// </summary>
+                        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
             => Enumerable.Empty<LocalizedString>();
     }
 }

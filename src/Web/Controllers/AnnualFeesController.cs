@@ -8,20 +8,17 @@ using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers
 {
-    /// <summary>
-    /// Controlador per gestionar les quotes anuals dels alumnes.
-    /// </summary>
-    [Authorize]
-    public class AnnualFeesController : BaseController
+        /// <summary>
+        /// Exposes HTTP endpoints to manage annual fees workflows.
+        /// </summary>
+        [Authorize]
+        public class AnnualFeesController : BaseController
     {
         private readonly IAnnualFeesApiClient _annualFeesApi;
         private readonly IEnrollmentsApiClient _enrollmentsApi;
         private readonly IStudentsApiClient _studentsApi;
 
-        /// <summary>
-        /// Constructor del controlador de quotes anuals.
-        /// </summary>
-        public AnnualFeesController(
+                public AnnualFeesController(
             IAnnualFeesApiClient annualFeesApi,
             IEnrollmentsApiClient enrollmentsApi,
             IStudentsApiClient studentsApi,
@@ -32,11 +29,10 @@ namespace Web.Controllers
             _enrollmentsApi = enrollmentsApi;
             _studentsApi = studentsApi;
         }
-
         /// <summary>
-        /// Mostra el formulari per crear una nova quota anual.
+        /// Creates a new resource by applying the required business rules.
         /// </summary>
-        [HttpGet]
+                [HttpGet]
         public async Task<IActionResult> Create()
         {
 
@@ -72,11 +68,7 @@ namespace Web.Controllers
             return View();
         }
 
-        // ...existing code...
-
-        /// <summary>
-        /// Mostra el llistat de totes les quotes anuals.
-        /// </summary>
+        //...existing code...
         public async Task<IActionResult> Index()
         {
             try
@@ -114,11 +106,10 @@ namespace Web.Controllers
                 return View(new List<AnnualFeeViewModel>());
             }
         }
-
-        /// <summary>
-        /// Mostra els detalls d'una quota anual concreta.
-        /// </summary>
-        public async Task<IActionResult> Details(int id)
+                /// <summary>
+                /// Executes the details operation as part of this component.
+                /// </summary>
+                public async Task<IActionResult> Details(int id)
         {
             try
             {
@@ -159,12 +150,12 @@ namespace Web.Controllers
             }
         }
 
+                /// <summary>
+                /// Creates a new resource by applying the required business rules.
+                /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        /// <summary>
-        /// Processa la creació d'una nova quota anual.
-        /// </summary>
-        public async Task<IActionResult> Create(AnnualFeeViewModel model)
+                public async Task<IActionResult> Create(AnnualFeeViewModel model)
         {
             try
             {
@@ -220,11 +211,10 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
-        /// <summary>
-        /// Mostra el formulari per editar una quota anual existent.
-        /// </summary>
-        public async Task<IActionResult> Edit(int id)
+                /// <summary>
+                /// Executes the edit operation as part of this component.
+                /// </summary>
+                public async Task<IActionResult> Edit(int id)
         {
             try
             {
@@ -275,12 +265,12 @@ namespace Web.Controllers
             }
         }
 
+                /// <summary>
+                /// Executes the edit operation as part of this component.
+                /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        /// <summary>
-        /// Processa l'edició d'una quota anual existent.
-        /// </summary>
-        public async Task<IActionResult> Edit(AnnualFeeViewModel model)
+                public async Task<IActionResult> Edit(AnnualFeeViewModel model)
         {
             try
             {
@@ -338,12 +328,12 @@ namespace Web.Controllers
             }
         }
 
+                /// <summary>
+                /// Deletes the target resource from the system in a controlled manner.
+                /// </summary>
         [HttpPost]
         [HttpPost]
-        /// <summary>
-        /// Elimina una quota anual.
-        /// </summary>
-        public async Task<IActionResult> Delete(int id)
+                public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -365,11 +355,10 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
         /// <summary>
-        /// Mètode temporal per corregir imports erronis de quotes anuals.
+        /// Executes the fix amounts operation as part of this component.
         /// </summary>
-        [HttpGet]
+                [HttpGet]
         public async Task<IActionResult> FixAmounts()
         {
             try

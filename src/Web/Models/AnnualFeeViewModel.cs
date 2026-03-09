@@ -1,7 +1,6 @@
 namespace Web.Models;
-
 /// <summary>
-/// Model de vista per gestionar les quotes anuals d'una inscripció.
+/// Encapsulates the functional responsibility of annual fee view model within the application architecture.
 /// </summary>
 public class AnnualFeeViewModel
 {

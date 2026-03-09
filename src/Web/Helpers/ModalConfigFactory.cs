@@ -1,18 +1,15 @@
 using Web.Models;
 
 namespace Web.Helpers;
-
 /// <summary>
-/// Factory class for creating modal configuration objects for different entities in the web application.
+/// Encapsulates the functional responsibility of modal config factory within the application architecture.
 /// </summary>
 public static class ModalConfigFactory
 {
-    /// <summary>
-    /// Creates a modal configuration for the School entity.
-    /// </summary>
-    /// <param name="scopeOptions">List of scope options for the select field.</param>
-    /// <returns>EntityModalConfig for School.</returns>
-    public static EntityModalConfig GetSchoolModalConfig(List<SelectOption> scopeOptions)
+            /// <summary>
+            /// Retrieves school modal config and returns it to the caller.
+            /// </summary>
+            public static EntityModalConfig GetSchoolModalConfig(List<SelectOption> scopeOptions)
     {
         return new EntityModalConfig
         {
@@ -72,13 +69,10 @@ public static class ModalConfigFactory
             }
         };
     }
-
-    /// <summary>
-    /// Creates a modal configuration for the Student entity.
-    /// </summary>
-    /// <param name="schoolOptions">List of school options for the select field.</param>
-    /// <returns>EntityModalConfig for Student.</returns>
-    public static EntityModalConfig GetStudentModalConfig(List<SelectOption> schoolOptions)
+            /// <summary>
+            /// Retrieves student modal config and returns it to the caller.
+            /// </summary>
+            public static EntityModalConfig GetStudentModalConfig(List<SelectOption> schoolOptions)
     {
         return new EntityModalConfig
         {
@@ -138,13 +132,10 @@ public static class ModalConfigFactory
             }
         };
     }
-
-    /// <summary>
-    /// Creates a modal configuration for the Enrollment entity.
-    /// </summary>
-    /// <param name="studentOptions">List of student options for the select field.</param>
-    /// <returns>EntityModalConfig for Enrollment.</returns>
-    public static EntityModalConfig GetEnrollmentModalConfig(List<SelectOption> studentOptions, List<SelectOption> schoolOptions)
+            /// <summary>
+            /// Retrieves enrollment modal config and returns it to the caller.
+            /// </summary>
+            public static EntityModalConfig GetEnrollmentModalConfig(List<SelectOption> studentOptions, List<SelectOption> schoolOptions)
     {
         return new EntityModalConfig
         {
@@ -207,13 +198,10 @@ public static class ModalConfigFactory
             }
         };
     }
-
-    /// <summary>
-    /// Creates a modal configuration for the Annual Fee entity.
-    /// </summary>
-    /// <param name="enrollmentOptions">List of enrollment options for the select field.</param>
-    /// <returns>EntityModalConfig for AnnualFee.</returns>
-    public static EntityModalConfig GetAnnualFeeModalConfig(List<SelectOption> enrollmentOptions)
+            /// <summary>
+            /// Retrieves annual fee modal config and returns it to the caller.
+            /// </summary>
+            public static EntityModalConfig GetAnnualFeeModalConfig(List<SelectOption> enrollmentOptions)
     {
         return new EntityModalConfig
         {

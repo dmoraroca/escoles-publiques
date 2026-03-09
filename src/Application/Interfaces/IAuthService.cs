@@ -1,7 +1,6 @@
 namespace Application.Interfaces;
-
 /// <summary>
-/// Interfície de servei per gestionar autenticació d'usuaris.
+/// Defines authentication operations for credential validation and password hashing.
 /// </summary>
 public interface IAuthService
 {

@@ -3,16 +3,15 @@ using Web.Models;
 
 using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
-
 /// <summary>
-/// Controlador per mostrar les escoles preferides de l'usuari.
+/// Exposes HTTP endpoints to manage favorite schools workflows.
 /// </summary>
 public class FavoriteSchoolsController : Controller
 {
-    /// <summary>
-    /// Mostra la llista d'escoles preferides com a partial view.
-    /// </summary>
-    public IActionResult Index()
+            /// <summary>
+            /// Executes the index operation as part of this component.
+            /// </summary>
+            public IActionResult Index()
     {
         var favoriteSchools = new List<FavoriteSchoolViewModel>
         {

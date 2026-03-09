@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 namespace Infrastructure.Persistence.Scaffold;
-
+/// <summary>
+/// Encapsulates the functional responsibility of enrollment within the application architecture.
+/// </summary>
 public partial class Enrollment
 {
     public long Id { get; set; }

@@ -1,7 +1,6 @@
 namespace Application.Interfaces;
-
 /// <summary>
-/// Interfície de servei per gestionar usuaris a l'aplicació.
+/// Implements application logic for i user operations.
 /// </summary>
 public interface IUserService
 {

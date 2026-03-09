@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
         internalPrivacy.closest('.form-check').style.display = 'none';
     }
 
+    /**
+     * Executes the enable edit mode logic for this JavaScript module.
+     */
     function enableEditMode() {
         // hide header buttons (Tornar / Editar)
         var header = document.getElementById('headerButtons');
