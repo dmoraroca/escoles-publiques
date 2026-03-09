@@ -7,10 +7,10 @@ namespace Api.Validators;
 /// </summary>
 public class StudentDtoInValidator : AbstractValidator<StudentDtoIn>
 {
-            /// <summary>
-            /// Initializes a new instance of the StudentDtoInValidator class with its required dependencies.
-            /// </summary>
-            public StudentDtoInValidator()
+    /// <summary>
+    /// Initializes a new instance of the StudentDtoInValidator class with its required dependencies.
+    /// </summary>
+    public StudentDtoInValidator()
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("El nom és obligatori.")

@@ -14,10 +14,10 @@ public class SearchResultsViewComponent : ViewComponent
     {
         _searchResultsBuilder = searchResultsBuilder;
     }
-            /// <summary>
-            /// Executes middleware logic for the current HTTP request.
-            /// </summary>
-            public async Task<IViewComponentResult> InvokeAsync(string? searchQuery, string? scopeName)
+    /// <summary>
+    /// Executes middleware logic for the current HTTP request.
+    /// </summary>
+    public async Task<IViewComponentResult> InvokeAsync(string? searchQuery, string? scopeName)
     {
         if (string.IsNullOrWhiteSpace(searchQuery) && string.IsNullOrWhiteSpace(scopeName))
         {

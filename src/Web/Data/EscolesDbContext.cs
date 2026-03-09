@@ -25,10 +25,10 @@ public partial class EscolesDbContext : DbContext
     public virtual DbSet<student> students { get; set; }
 
     public virtual DbSet<user> users { get; set; }
-            /// <summary>
-            /// Executes the on model creating operation as part of this component.
-            /// </summary>
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+    /// <summary>
+    /// Executes the on model creating operation as part of this component.
+    /// </summary>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresExtension("pgcrypto");
 

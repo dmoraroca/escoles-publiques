@@ -8,22 +8,22 @@ using Microsoft.Extensions.Localization;
 
 namespace Web.Controllers
 {
-        /// <summary>
-        /// Exposes HTTP endpoints to manage annual fees workflows.
-        /// </summary>
-        [Authorize]
-        public class AnnualFeesController : BaseController
+    /// <summary>
+    /// Exposes HTTP endpoints to manage annual fees workflows.
+    /// </summary>
+    [Authorize]
+    public class AnnualFeesController : BaseController
     {
         private readonly IAnnualFeesApiClient _annualFeesApi;
         private readonly IEnrollmentsApiClient _enrollmentsApi;
         private readonly IStudentsApiClient _studentsApi;
 
-                public AnnualFeesController(
-            IAnnualFeesApiClient annualFeesApi,
-            IEnrollmentsApiClient enrollmentsApi,
-            IStudentsApiClient studentsApi,
-            ILogger<AnnualFeesController> logger,
-            IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
+        public AnnualFeesController(
+    IAnnualFeesApiClient annualFeesApi,
+    IEnrollmentsApiClient enrollmentsApi,
+    IStudentsApiClient studentsApi,
+    ILogger<AnnualFeesController> logger,
+    IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
         {
             _annualFeesApi = annualFeesApi;
             _enrollmentsApi = enrollmentsApi;
@@ -32,7 +32,7 @@ namespace Web.Controllers
         /// <summary>
         /// Creates a new resource by applying the required business rules.
         /// </summary>
-                [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
 
@@ -106,10 +106,10 @@ namespace Web.Controllers
                 return View(new List<AnnualFeeViewModel>());
             }
         }
-                /// <summary>
-                /// Executes the details operation as part of this component.
-                /// </summary>
-                public async Task<IActionResult> Details(int id)
+        /// <summary>
+        /// Executes the details operation as part of this component.
+        /// </summary>
+        public async Task<IActionResult> Details(int id)
         {
             try
             {
@@ -150,12 +150,12 @@ namespace Web.Controllers
             }
         }
 
-                /// <summary>
-                /// Creates a new resource by applying the required business rules.
-                /// </summary>
+        /// <summary>
+        /// Creates a new resource by applying the required business rules.
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Create(AnnualFeeViewModel model)
+        public async Task<IActionResult> Create(AnnualFeeViewModel model)
         {
             try
             {
@@ -211,10 +211,10 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-                /// <summary>
-                /// Executes the edit operation as part of this component.
-                /// </summary>
-                public async Task<IActionResult> Edit(int id)
+        /// <summary>
+        /// Executes the edit operation as part of this component.
+        /// </summary>
+        public async Task<IActionResult> Edit(int id)
         {
             try
             {
@@ -265,12 +265,12 @@ namespace Web.Controllers
             }
         }
 
-                /// <summary>
-                /// Executes the edit operation as part of this component.
-                /// </summary>
+        /// <summary>
+        /// Executes the edit operation as part of this component.
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Edit(AnnualFeeViewModel model)
+        public async Task<IActionResult> Edit(AnnualFeeViewModel model)
         {
             try
             {
@@ -328,12 +328,12 @@ namespace Web.Controllers
             }
         }
 
-                /// <summary>
-                /// Deletes the target resource from the system in a controlled manner.
-                /// </summary>
+        /// <summary>
+        /// Deletes the target resource from the system in a controlled manner.
+        /// </summary>
         [HttpPost]
         [HttpPost]
-                public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -358,7 +358,7 @@ namespace Web.Controllers
         /// <summary>
         /// Executes the fix amounts operation as part of this component.
         /// </summary>
-                [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> FixAmounts()
         {
             try

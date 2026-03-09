@@ -6,10 +6,10 @@ namespace Web.Helpers;
 /// </summary>
 public static class ModalConfigFactory
 {
-            /// <summary>
-            /// Retrieves school modal config and returns it to the caller.
-            /// </summary>
-            public static EntityModalConfig GetSchoolModalConfig(List<SelectOption> scopeOptions)
+    /// <summary>
+    /// Retrieves school modal config and returns it to the caller.
+    /// </summary>
+    public static EntityModalConfig GetSchoolModalConfig(List<SelectOption> scopeOptions)
     {
         return new EntityModalConfig
         {
@@ -69,10 +69,10 @@ public static class ModalConfigFactory
             }
         };
     }
-            /// <summary>
-            /// Retrieves student modal config and returns it to the caller.
-            /// </summary>
-            public static EntityModalConfig GetStudentModalConfig(List<SelectOption> schoolOptions)
+    /// <summary>
+    /// Retrieves student modal config and returns it to the caller.
+    /// </summary>
+    public static EntityModalConfig GetStudentModalConfig(List<SelectOption> schoolOptions)
     {
         return new EntityModalConfig
         {
@@ -132,10 +132,10 @@ public static class ModalConfigFactory
             }
         };
     }
-            /// <summary>
-            /// Retrieves enrollment modal config and returns it to the caller.
-            /// </summary>
-            public static EntityModalConfig GetEnrollmentModalConfig(List<SelectOption> studentOptions, List<SelectOption> schoolOptions)
+    /// <summary>
+    /// Retrieves enrollment modal config and returns it to the caller.
+    /// </summary>
+    public static EntityModalConfig GetEnrollmentModalConfig(List<SelectOption> studentOptions, List<SelectOption> schoolOptions)
     {
         return new EntityModalConfig
         {
@@ -198,10 +198,10 @@ public static class ModalConfigFactory
             }
         };
     }
-            /// <summary>
-            /// Retrieves annual fee modal config and returns it to the caller.
-            /// </summary>
-            public static EntityModalConfig GetAnnualFeeModalConfig(List<SelectOption> enrollmentOptions)
+    /// <summary>
+    /// Retrieves annual fee modal config and returns it to the caller.
+    /// </summary>
+    public static EntityModalConfig GetAnnualFeeModalConfig(List<SelectOption> enrollmentOptions)
     {
         return new EntityModalConfig
         {

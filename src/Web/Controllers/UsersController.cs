@@ -13,19 +13,19 @@ namespace Web.Controllers;
 public class UsersController : BaseController
 {
     private readonly IUserRepository _userRepository;
-            /// <summary>
-            /// Initializes a new instance of the UsersController class with its required dependencies.
-            /// </summary>
-            public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
+    /// <summary>
+    /// Initializes a new instance of the UsersController class with its required dependencies.
+    /// </summary>
+    public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
         _userRepository = userRepository;
     }
 
     // Llista només els usuaris que tenen relació 1:1 amb Student
-            /// <summary>
-            /// Executes the index operation as part of this component.
-            /// </summary>
-            public async Task<IActionResult> Index()
+    /// <summary>
+    /// Executes the index operation as part of this component.
+    /// </summary>
+    public async Task<IActionResult> Index()
     {
         try
         {

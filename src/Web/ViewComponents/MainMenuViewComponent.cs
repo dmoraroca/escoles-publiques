@@ -6,10 +6,10 @@ namespace Web.ViewComponents;
 /// </summary>
 public class MainMenuViewComponent : ViewComponent
 {
-            /// <summary>
-            /// Executes middleware logic for the current HTTP request.
-            /// </summary>
-            public IViewComponentResult Invoke()
+    /// <summary>
+    /// Executes middleware logic for the current HTTP request.
+    /// </summary>
+    public IViewComponentResult Invoke()
     {
         var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
         ViewBag.CurrentController = currentController;

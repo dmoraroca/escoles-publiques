@@ -8,10 +8,10 @@ public class NotFoundException : DomainException
         : base($"{entityName} with key '{key}' was not found")
     {
     }
-            /// <summary>
-            /// Initializes a new instance of the NotFoundException class with its required dependencies.
-            /// </summary>
-            public NotFoundException(string message) : base(message)
+    /// <summary>
+    /// Initializes a new instance of the NotFoundException class with its required dependencies.
+    /// </summary>
+    public NotFoundException(string message) : base(message)
     {
     }
 }

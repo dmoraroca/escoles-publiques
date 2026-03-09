@@ -14,17 +14,17 @@ namespace Api.Controllers;
 public class ScopesController : ControllerBase
 {
     private readonly IScopeRepository _scopeRepository;
-            /// <summary>
-            /// Initializes a new instance of the ScopesController class with its required dependencies.
-            /// </summary>
-            public ScopesController(IScopeRepository scopeRepository)
+    /// <summary>
+    /// Initializes a new instance of the ScopesController class with its required dependencies.
+    /// </summary>
+    public ScopesController(IScopeRepository scopeRepository)
     {
         _scopeRepository = scopeRepository;
     }
     /// <summary>
     /// Retrieves all and returns it to the caller.
     /// </summary>
-            [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var scopes = await _scopeRepository.GetAllActiveScopesAsync();

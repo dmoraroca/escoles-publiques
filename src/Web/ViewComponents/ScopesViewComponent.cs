@@ -9,17 +9,17 @@ namespace Web.ViewComponents;
 public class ScopesViewComponent : ViewComponent
 {
     private readonly IScopesApiClient _scopesApi;
-            /// <summary>
-            /// Initializes a new instance of the ScopesViewComponent class with its required dependencies.
-            /// </summary>
-            public ScopesViewComponent(IScopesApiClient scopesApi)
+    /// <summary>
+    /// Initializes a new instance of the ScopesViewComponent class with its required dependencies.
+    /// </summary>
+    public ScopesViewComponent(IScopesApiClient scopesApi)
     {
         _scopesApi = scopesApi;
     }
-            /// <summary>
-            /// Executes middleware logic for the current HTTP request.
-            /// </summary>
-            public async Task<IViewComponentResult> InvokeAsync()
+    /// <summary>
+    /// Executes middleware logic for the current HTTP request.
+    /// </summary>
+    public async Task<IViewComponentResult> InvokeAsync()
     {
         var scopes = await _scopesApi.GetAllAsync();
         var scopeViewModels = scopes.Select(s => new ScopeViewModel

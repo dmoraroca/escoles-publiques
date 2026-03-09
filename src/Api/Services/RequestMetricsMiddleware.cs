@@ -12,17 +12,17 @@ public sealed class RequestMetricsMiddleware
     private static readonly Histogram<double> RequestDurationMs = Meter.CreateHistogram<double>("api_request_duration_ms");
 
     private readonly RequestDelegate _next;
-            /// <summary>
-            /// Initializes a new instance of the RequestMetricsMiddleware class with its required dependencies.
-            /// </summary>
-            public RequestMetricsMiddleware(RequestDelegate next)
+    /// <summary>
+    /// Initializes a new instance of the RequestMetricsMiddleware class with its required dependencies.
+    /// </summary>
+    public RequestMetricsMiddleware(RequestDelegate next)
     {
         _next = next;
     }
-            /// <summary>
-            /// Executes middleware logic for the current HTTP request.
-            /// </summary>
-            public async Task Invoke(HttpContext context)
+    /// <summary>
+    /// Executes middleware logic for the current HTTP request.
+    /// </summary>
+    public async Task Invoke(HttpContext context)
     {
         var sw = Stopwatch.StartNew();
 

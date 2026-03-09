@@ -8,17 +8,17 @@ namespace Web.Services.Search;
 public class SearchResultsBuilder : ISearchResultsBuilder
 {
     private readonly ISearchResultsQuery _query;
-            /// <summary>
-            /// Initializes a new instance of the SearchResultsBuilder class with its required dependencies.
-            /// </summary>
-            public SearchResultsBuilder(ISearchResultsQuery query)
+    /// <summary>
+    /// Initializes a new instance of the SearchResultsBuilder class with its required dependencies.
+    /// </summary>
+    public SearchResultsBuilder(ISearchResultsQuery query)
     {
         _query = query;
     }
-            /// <summary>
-            /// Executes the build async operation as part of this component.
-            /// </summary>
-            public async Task<SearchResultsViewModel> BuildAsync(string? searchQuery, string? scopeName)
+    /// <summary>
+    /// Executes the build async operation as part of this component.
+    /// </summary>
+    public async Task<SearchResultsViewModel> BuildAsync(string? searchQuery, string? scopeName)
     {
         var dto = await _query.ExecuteAsync(searchQuery, scopeName);
 

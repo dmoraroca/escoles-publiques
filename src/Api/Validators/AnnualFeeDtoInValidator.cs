@@ -7,10 +7,10 @@ namespace Api.Validators;
 /// </summary>
 public class AnnualFeeDtoInValidator : AbstractValidator<AnnualFeeDtoIn>
 {
-            /// <summary>
-            /// Initializes a new instance of the AnnualFeeDtoInValidator class with its required dependencies.
-            /// </summary>
-            public AnnualFeeDtoInValidator()
+    /// <summary>
+    /// Initializes a new instance of the AnnualFeeDtoInValidator class with its required dependencies.
+    /// </summary>
+    public AnnualFeeDtoInValidator()
     {
         RuleFor(x => x.EnrollmentId)
             .GreaterThan(0).WithMessage("EnrollmentId ha de ser major que 0.");

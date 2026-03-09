@@ -15,17 +15,17 @@ namespace Api.Controllers;
 public class AnnualFeesController : ControllerBase
 {
     private readonly IAnnualFeeService _annualFeeService;
-            /// <summary>
-            /// Initializes a new instance of the AnnualFeesController class with its required dependencies.
-            /// </summary>
-            public AnnualFeesController(IAnnualFeeService annualFeeService)
+    /// <summary>
+    /// Initializes a new instance of the AnnualFeesController class with its required dependencies.
+    /// </summary>
+    public AnnualFeesController(IAnnualFeeService annualFeeService)
     {
         _annualFeeService = annualFeeService;
     }
     /// <summary>
     /// Retrieves all and returns it to the caller.
     /// </summary>
-            [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var fees = await _annualFeeService.GetAllAnnualFeesAsync();
@@ -34,7 +34,7 @@ public class AnnualFeesController : ControllerBase
     /// <summary>
     /// Retrieves the requested data and returns it to the caller.
     /// </summary>
-            [HttpGet("{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
         var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
@@ -43,7 +43,7 @@ public class AnnualFeesController : ControllerBase
     /// <summary>
     /// Creates a new resource by applying the required business rules.
     /// </summary>
-            [HttpPost]
+    [HttpPost]
     public async Task<IActionResult> Create([FromBody] AnnualFeeDtoIn dto)
     {
         var fee = new AnnualFee
@@ -61,7 +61,7 @@ public class AnnualFeesController : ControllerBase
     /// <summary>
     /// Updates the target resource with the data received in the request.
     /// </summary>
-            [HttpPut("{id}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] AnnualFeeDtoIn dto)
     {
         var fee = await _annualFeeService.GetAnnualFeeByIdAsync(id);
@@ -80,16 +80,16 @@ public class AnnualFeesController : ControllerBase
     /// <summary>
     /// Deletes the target resource from the system in a controlled manner.
     /// </summary>
-            [HttpDelete("{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         await _annualFeeService.DeleteAnnualFeeAsync(id);
         return NoContent();
     }
-            /// <summary>
-            /// Maps data for to dto between application layers.
-            /// </summary>
-            private static AnnualFeeDtoOut ToDto(AnnualFee fee)
+    /// <summary>
+    /// Maps data for to dto between application layers.
+    /// </summary>
+    private static AnnualFeeDtoOut ToDto(AnnualFee fee)
     {
         var first = fee.Enrollment?.Student?.User?.FirstName ?? string.Empty;
         var last = fee.Enrollment?.Student?.User?.LastName ?? string.Empty;

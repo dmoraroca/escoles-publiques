@@ -8,10 +8,10 @@ namespace Infrastructure.Persistence.Scaffold;
 /// </summary>
 public partial class AppDbContext : DbContext
 {
-            /// <summary>
-            /// Initializes a new instance of the AppDbContext class with its required dependencies.
-            /// </summary>
-            public AppDbContext()
+    /// <summary>
+    /// Initializes a new instance of the AppDbContext class with its required dependencies.
+    /// </summary>
+    public AppDbContext()
     {
     }
 
@@ -35,10 +35,10 @@ public partial class AppDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=escoles;Username=app;Password=app");
-            /// <summary>
-            /// Executes the on model creating operation as part of this component.
-            /// </summary>
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+    /// <summary>
+    /// Executes the on model creating operation as part of this component.
+    /// </summary>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresExtension("pgcrypto");
 

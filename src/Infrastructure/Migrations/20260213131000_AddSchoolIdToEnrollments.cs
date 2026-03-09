@@ -10,10 +10,10 @@ namespace Infrastructure.Migrations;
 [Migration("20260213131000_AddSchoolIdToEnrollments")]
 public partial class AddSchoolIdToEnrollments : Migration
 {
-            /// <summary>
-            /// Executes the up operation as part of this component.
-            /// </summary>
-            protected override void Up(MigrationBuilder migrationBuilder)
+    /// <summary>
+    /// Executes the up operation as part of this component.
+    /// </summary>
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
         // Make the migration resilient (safe to run even if the column/constraint already exists).
         // This also allows an emergency manual SQL fix without breaking future deploys.
@@ -43,10 +43,10 @@ BEGIN
 END $$;
 ");
     }
-            /// <summary>
-            /// Executes the down operation as part of this component.
-            /// </summary>
-            protected override void Down(MigrationBuilder migrationBuilder)
+    /// <summary>
+    /// Executes the down operation as part of this component.
+    /// </summary>
+    protected override void Down(MigrationBuilder migrationBuilder)
     {
         // Best-effort rollback.
         migrationBuilder.Sql(@"

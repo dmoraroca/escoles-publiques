@@ -16,10 +16,10 @@ public class MaintenanceController : ControllerBase
     private readonly SchoolDbContext _db;
     private readonly IConfiguration _config;
     private readonly ILogger<MaintenanceController> _logger;
-            /// <summary>
-            /// Initializes a new instance of the MaintenanceController class with its required dependencies.
-            /// </summary>
-            public MaintenanceController(SchoolDbContext db, IConfiguration config, ILogger<MaintenanceController> logger)
+    /// <summary>
+    /// Initializes a new instance of the MaintenanceController class with its required dependencies.
+    /// </summary>
+    public MaintenanceController(SchoolDbContext db, IConfiguration config, ILogger<MaintenanceController> logger)
     {
         _db = db;
         _config = config;
@@ -31,7 +31,7 @@ public class MaintenanceController : ControllerBase
     /// <summary>
     /// Seeds the minimum data required to bootstrap the application.
     /// </summary>
-            [HttpPost("seed")]
+    [HttpPost("seed")]
     public IActionResult Seed([FromHeader(Name = "X-Seed-Key")] string? seedKey)
     {
         var expectedKey = _config.GetValue<string>("Seed:Key");

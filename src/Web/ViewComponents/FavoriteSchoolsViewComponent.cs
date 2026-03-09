@@ -9,17 +9,17 @@ namespace Web.ViewComponents;
 public class FavoriteSchoolsViewComponent : ViewComponent
 {
     private readonly ISchoolsApiClient _schoolApi;
-            /// <summary>
-            /// Initializes a new instance of the FavoriteSchoolsViewComponent class with its required dependencies.
-            /// </summary>
-            public FavoriteSchoolsViewComponent(ISchoolsApiClient schoolApi)
+    /// <summary>
+    /// Initializes a new instance of the FavoriteSchoolsViewComponent class with its required dependencies.
+    /// </summary>
+    public FavoriteSchoolsViewComponent(ISchoolsApiClient schoolApi)
     {
         _schoolApi = schoolApi;
     }
-            /// <summary>
-            /// Executes middleware logic for the current HTTP request.
-            /// </summary>
-            public async Task<IViewComponentResult> InvokeAsync()
+    /// <summary>
+    /// Executes middleware logic for the current HTTP request.
+    /// </summary>
+    public async Task<IViewComponentResult> InvokeAsync()
     {
         var schools = await _schoolApi.GetAllAsync();
         var favoriteSchools = schools

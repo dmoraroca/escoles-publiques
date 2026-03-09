@@ -9,17 +9,17 @@ namespace Web.Services.Search.Adapters;
 public class StudentSearchSource : IStudentSearchSource
 {
     private readonly IStudentsApiClient _studentsApi;
-            /// <summary>
-            /// Initializes a new instance of the StudentSearchSource class with its required dependencies.
-            /// </summary>
-            public StudentSearchSource(IStudentsApiClient studentsApi)
+    /// <summary>
+    /// Initializes a new instance of the StudentSearchSource class with its required dependencies.
+    /// </summary>
+    public StudentSearchSource(IStudentsApiClient studentsApi)
     {
         _studentsApi = studentsApi;
     }
-            /// <summary>
-            /// Retrieves all async and returns it to the caller.
-            /// </summary>
-            public async Task<IEnumerable<StudentSearchDto>> GetAllAsync()
+    /// <summary>
+    /// Retrieves all async and returns it to the caller.
+    /// </summary>
+    public async Task<IEnumerable<StudentSearchDto>> GetAllAsync()
     {
         var students = await _studentsApi.GetAllAsync();
         return students.Select(s => new StudentSearchDto(

@@ -7,10 +7,10 @@ namespace Api.Validators;
 /// </summary>
 public class LoginDtoValidator : AbstractValidator<LoginDto>
 {
-            /// <summary>
-            /// Initializes a new instance of the LoginDtoValidator class with its required dependencies.
-            /// </summary>
-            public LoginDtoValidator()
+    /// <summary>
+    /// Initializes a new instance of the LoginDtoValidator class with its required dependencies.
+    /// </summary>
+    public LoginDtoValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("L'email és obligatori.")

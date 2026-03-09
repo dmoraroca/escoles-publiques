@@ -27,10 +27,10 @@ public class SearchResultsQuery : ISearchResultsQuery
         _enrollmentSource = enrollmentSource;
         _annualFeeSource = annualFeeSource;
     }
-            /// <summary>
-            /// Executes the execute async operation as part of this component.
-            /// </summary>
-            public async Task<SearchResultsDto> ExecuteAsync(string? searchQuery, string? scopeName)
+    /// <summary>
+    /// Executes the execute async operation as part of this component.
+    /// </summary>
+    public async Task<SearchResultsDto> ExecuteAsync(string? searchQuery, string? scopeName)
     {
         var model = new SearchResultsDto
         {
@@ -145,10 +145,10 @@ public class SearchResultsQuery : ISearchResultsQuery
 
         return model;
     }
-            /// <summary>
-            /// Executes the parse search terms operation as part of this component.
-            /// </summary>
-            private static List<string> ParseSearchTerms(string? searchQuery)
+    /// <summary>
+    /// Executes the parse search terms operation as part of this component.
+    /// </summary>
+    private static List<string> ParseSearchTerms(string? searchQuery)
     {
         return string.IsNullOrWhiteSpace(searchQuery)
             ? new List<string>()
@@ -158,10 +158,10 @@ public class SearchResultsQuery : ISearchResultsQuery
                 .Where(t => !string.IsNullOrWhiteSpace(t))
                 .ToList();
     }
-            /// <summary>
-            /// Executes the normalize key operation as part of this component.
-            /// </summary>
-            private static string NormalizeKey(string? value)
+    /// <summary>
+    /// Executes the normalize key operation as part of this component.
+    /// </summary>
+    private static string NormalizeKey(string? value)
     {
         if (string.IsNullOrWhiteSpace(value)) return string.Empty;
         var sb = new StringBuilder(value.Length);

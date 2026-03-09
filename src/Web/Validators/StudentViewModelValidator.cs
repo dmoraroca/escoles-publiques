@@ -7,10 +7,10 @@ namespace Web.Validators;
 /// </summary>
 public class StudentViewModelValidator : AbstractValidator<StudentViewModel>
 {
-            /// <summary>
-            /// Initializes a new instance of the StudentViewModelValidator class with its required dependencies.
-            /// </summary>
-            public StudentViewModelValidator()
+    /// <summary>
+    /// Initializes a new instance of the StudentViewModelValidator class with its required dependencies.
+    /// </summary>
+    public StudentViewModelValidator()
     {
         RuleFor(x => x.FirstName)
             .NotEmpty()

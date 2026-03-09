@@ -8,10 +8,10 @@ public class DuplicateEntityException : DomainException
         : base($"{entityName} with {propertyName} '{value}' already exists")
     {
     }
-            /// <summary>
-            /// Initializes a new instance of the DuplicateEntityException class with its required dependencies.
-            /// </summary>
-            public DuplicateEntityException(string message) : base(message)
+    /// <summary>
+    /// Initializes a new instance of the DuplicateEntityException class with its required dependencies.
+    /// </summary>
+    public DuplicateEntityException(string message) : base(message)
     {
     }
 }

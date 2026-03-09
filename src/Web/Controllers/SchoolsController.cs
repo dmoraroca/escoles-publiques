@@ -21,21 +21,21 @@ public class SchoolsController : BaseController
     private readonly IHubContext<SchoolHub> _hubContext;
     private readonly IScopesApiClient _scopesApi;
 
-            public SchoolsController(
-        ISchoolsApiClient schoolApi,
-        IHubContext<SchoolHub> hubContext,
-        IScopesApiClient scopesApi,
-        ILogger<SchoolsController> logger,
-        IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
+    public SchoolsController(
+ISchoolsApiClient schoolApi,
+IHubContext<SchoolHub> hubContext,
+IScopesApiClient scopesApi,
+ILogger<SchoolsController> logger,
+IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
         _schoolApi = schoolApi;
         _hubContext = hubContext;
         _scopesApi = scopesApi;
     }
-            /// <summary>
-            /// Executes the index operation as part of this component.
-            /// </summary>
-            public async Task<IActionResult> Index()
+    /// <summary>
+    /// Executes the index operation as part of this component.
+    /// </summary>
+    public async Task<IActionResult> Index()
     {
         try
         {
@@ -74,10 +74,10 @@ public class SchoolsController : BaseController
             return View(new List<SchoolViewModel>());
         }
     }
-            /// <summary>
-            /// Executes the details operation as part of this component.
-            /// </summary>
-            public async Task<IActionResult> Details(int id)
+    /// <summary>
+    /// Executes the details operation as part of this component.
+    /// </summary>
+    public async Task<IActionResult> Details(int id)
     {
         try
         {
@@ -122,22 +122,22 @@ public class SchoolsController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
-            /// <summary>
-            /// Creates a new resource by applying the required business rules.
-            /// </summary>
-            public async Task<IActionResult> Create()
+    /// <summary>
+    /// Creates a new resource by applying the required business rules.
+    /// </summary>
+    public async Task<IActionResult> Create()
     {
         var scopes = await _scopesApi.GetAllAsync();
         ViewBag.Scopes = scopes.Select(s => new SelectOption { Value = s.Id.ToString(), Text = s.Name }).ToList();
         return View(new SchoolViewModel());
     }
 
-            /// <summary>
-            /// Creates a new resource by applying the required business rules.
-            /// </summary>
+    /// <summary>
+    /// Creates a new resource by applying the required business rules.
+    /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Create(SchoolViewModel model)
+    public async Task<IActionResult> Create(SchoolViewModel model)
     {
         try
         {
@@ -253,10 +253,10 @@ public class SchoolsController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
-            /// <summary>
-            /// Executes the edit operation as part of this component.
-            /// </summary>
-            public async Task<IActionResult> Edit(int id)
+    /// <summary>
+    /// Executes the edit operation as part of this component.
+    /// </summary>
+    public async Task<IActionResult> Edit(int id)
     {
         try
         {
@@ -302,12 +302,12 @@ public class SchoolsController : BaseController
         }
     }
 
-            /// <summary>
-            /// Executes the edit operation as part of this component.
-            /// </summary>
+    /// <summary>
+    /// Executes the edit operation as part of this component.
+    /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Edit(SchoolViewModel model)
+    public async Task<IActionResult> Edit(SchoolViewModel model)
     {
         try
         {
@@ -390,11 +390,11 @@ public class SchoolsController : BaseController
         }
     }
 
-            /// <summary>
-            /// Deletes the target resource from the system in a controlled manner.
-            /// </summary>
+    /// <summary>
+    /// Deletes the target resource from the system in a controlled manner.
+    /// </summary>
     [HttpPost]
-            public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         try
         {

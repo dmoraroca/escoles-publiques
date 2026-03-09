@@ -17,7 +17,7 @@ public partial class School
 
     public DateTime CreatedAt { get; set; }
 
-            public bool IsFavorite { get; set; }
+    public bool IsFavorite { get; set; }
 
     public long? ScopeId { get; set; }
 

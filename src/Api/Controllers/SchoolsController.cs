@@ -38,7 +38,7 @@ public class SchoolsController : ControllerBase
     /// <summary>
     /// Retrieves all and returns it to the caller.
     /// </summary>
-            [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var schools = await _getAllSchoolsQuery.HandleAsync(new GetAllSchoolsQuery());
@@ -47,7 +47,7 @@ public class SchoolsController : ControllerBase
     /// <summary>
     /// Retrieves the requested data and returns it to the caller.
     /// </summary>
-            [HttpGet("{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
         var school = await _getSchoolByIdQuery.HandleAsync(new GetSchoolByIdQuery(id));
@@ -57,7 +57,7 @@ public class SchoolsController : ControllerBase
     /// <summary>
     /// Creates a new resource by applying the required business rules.
     /// </summary>
-            [HttpPost]
+    [HttpPost]
     public async Task<IActionResult> Create([FromBody] SchoolDto dto)
     {
         var created = await _createSchoolCommand.HandleAsync(new CreateSchoolCommand(
@@ -71,7 +71,7 @@ public class SchoolsController : ControllerBase
     /// <summary>
     /// Updates the target resource with the data received in the request.
     /// </summary>
-            [HttpPut("{id}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] SchoolDto dto)
     {
         var updated = await _updateSchoolCommand.HandleAsync(new UpdateSchoolCommand(
@@ -87,16 +87,16 @@ public class SchoolsController : ControllerBase
     /// <summary>
     /// Deletes the target resource from the system in a controlled manner.
     /// </summary>
-            [HttpDelete("{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         await _deleteSchoolCommand.HandleAsync(new DeleteSchoolCommand(id));
         return NoContent();
     }
-            /// <summary>
-            /// Maps data for to dto between application layers.
-            /// </summary>
-            private static SchoolDtoOut ToDto(School school)
+    /// <summary>
+    /// Maps data for to dto between application layers.
+    /// </summary>
+    private static SchoolDtoOut ToDto(School school)
     {
         return new SchoolDtoOut(
             school.Id,

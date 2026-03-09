@@ -25,10 +25,10 @@ public class StudentsController : BaseController
         _studentsApi = studentsApi;
         _schoolsApi = schoolsApi;
     }
-            /// <summary>
-            /// Executes the index operation as part of this component.
-            /// </summary>
-            public async Task<IActionResult> Index()
+    /// <summary>
+    /// Executes the index operation as part of this component.
+    /// </summary>
+    public async Task<IActionResult> Index()
     {
         try
         {
@@ -64,7 +64,7 @@ public class StudentsController : BaseController
     /// <summary>
     /// Executes the check email operation as part of this component.
     /// </summary>
-            [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> CheckEmail(string email)
     {
         try
@@ -92,10 +92,10 @@ public class StudentsController : BaseController
             return Ok(new { exists = false });
         }
     }
-            /// <summary>
-            /// Executes the details operation as part of this component.
-            /// </summary>
-            public async Task<IActionResult> Details(int id)
+    /// <summary>
+    /// Executes the details operation as part of this component.
+    /// </summary>
+    public async Task<IActionResult> Details(int id)
     {
         try
         {
@@ -143,7 +143,7 @@ public class StudentsController : BaseController
     /// <summary>
     /// Creates a new resource by applying the required business rules.
     /// </summary>
-            [HttpPost]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(StudentViewModel model)
     {
@@ -201,10 +201,10 @@ public class StudentsController : BaseController
             return BadRequest(new { error = Localizer["Error creant l'alumne. Si us plau, intenta-ho de nou."].Value });
         }
     }
-            /// <summary>
-            /// Executes the edit operation as part of this component.
-            /// </summary>
-            public async Task<IActionResult> Edit(int id)
+    /// <summary>
+    /// Executes the edit operation as part of this component.
+    /// </summary>
+    public async Task<IActionResult> Edit(int id)
     {
         try
         {
@@ -252,7 +252,7 @@ public class StudentsController : BaseController
     /// <summary>
     /// Executes the edit operation as part of this component.
     /// </summary>
-            [HttpPost]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(StudentViewModel model)
     {
@@ -304,7 +304,7 @@ public class StudentsController : BaseController
     /// <summary>
     /// Deletes the target resource from the system in a controlled manner.
     /// </summary>
-            [HttpPost]
+    [HttpPost]
     public async Task<IActionResult> Delete(int id)
     {
         try

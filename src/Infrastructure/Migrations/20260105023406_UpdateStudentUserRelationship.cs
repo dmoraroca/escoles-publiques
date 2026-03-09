@@ -6,15 +6,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-            /// <summary>
-            /// Encapsulates the functional responsibility of update student user relationship within the application architecture.
-            /// </summary>
-            public partial class UpdateStudentUserRelationship : Migration
+    /// <summary>
+    /// Encapsulates the functional responsibility of update student user relationship within the application architecture.
+    /// </summary>
+    public partial class UpdateStudentUserRelationship : Migration
     {
-                        /// <summary>
-                        /// Executes the up operation as part of this component.
-                        /// </summary>
-                        protected override void Up(MigrationBuilder migrationBuilder)
+        /// <summary>
+        /// Executes the up operation as part of this component.
+        /// </summary>
+        protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "schools",
@@ -173,10 +173,10 @@ namespace Infrastructure.Migrations
                 column: "email",
                 unique: true);
         }
-                        /// <summary>
-                        /// Executes the down operation as part of this component.
-                        /// </summary>
-                        protected override void Down(MigrationBuilder migrationBuilder)
+        /// <summary>
+        /// Executes the down operation as part of this component.
+        /// </summary>
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "annual_fees");

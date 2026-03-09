@@ -31,10 +31,10 @@ public class DashboardController : BaseController
         _annualFeesApi = annualFeesApi;
         _schoolsApi = schoolsApi;
     }
-            /// <summary>
-            /// Executes the dashboard operation as part of this component.
-            /// </summary>
-            public async Task<IActionResult> Dashboard()
+    /// <summary>
+    /// Executes the dashboard operation as part of this component.
+    /// </summary>
+    public async Task<IActionResult> Dashboard()
     {
         try
         {

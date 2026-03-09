@@ -8,10 +8,10 @@ namespace Web.Controllers;
 /// </summary>
 public class FavoriteSchoolsController : Controller
 {
-            /// <summary>
-            /// Executes the index operation as part of this component.
-            /// </summary>
-            public IActionResult Index()
+    /// <summary>
+    /// Executes the index operation as part of this component.
+    /// </summary>
+    public IActionResult Index()
     {
         var favoriteSchools = new List<FavoriteSchoolViewModel>
         {

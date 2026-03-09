@@ -7,10 +7,10 @@ namespace Web.ModelBinders;
 /// </summary>
 public sealed class FlexibleDecimalModelBinder : IModelBinder
 {
-            /// <summary>
-            /// Executes the bind model async operation as part of this component.
-            /// </summary>
-            public Task BindModelAsync(ModelBindingContext bindingContext)
+    /// <summary>
+    /// Executes the bind model async operation as part of this component.
+    /// </summary>
+    public Task BindModelAsync(ModelBindingContext bindingContext)
     {
         if (bindingContext == null) throw new ArgumentNullException(nameof(bindingContext));
 
@@ -45,10 +45,10 @@ public sealed class FlexibleDecimalModelBinder : IModelBinder
             $"Valor decimal invalid: '{raw}'.");
         return Task.CompletedTask;
     }
-            /// <summary>
-            /// Executes the normalize operation as part of this component.
-            /// </summary>
-            private static string Normalize(string input)
+    /// <summary>
+    /// Executes the normalize operation as part of this component.
+    /// </summary>
+    private static string Normalize(string input)
     {
         var s = input.Trim();
         s = s.Replace(" ", "").Replace("\u00A0", ""); // spaces + non-breaking spaces
@@ -88,10 +88,10 @@ public sealed class FlexibleDecimalModelBinder : IModelBinder
 /// </summary>
 public sealed class FlexibleDecimalModelBinderProvider : IModelBinderProvider
 {
-            /// <summary>
-            /// Retrieves binder and returns it to the caller.
-            /// </summary>
-            public IModelBinder? GetBinder(ModelBinderProviderContext context)
+    /// <summary>
+    /// Retrieves binder and returns it to the caller.
+    /// </summary>
+    public IModelBinder? GetBinder(ModelBinderProviderContext context)
     {
         if (context == null) throw new ArgumentNullException(nameof(context));
 

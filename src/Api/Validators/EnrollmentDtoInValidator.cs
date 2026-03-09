@@ -7,10 +7,10 @@ namespace Api.Validators;
 /// </summary>
 public class EnrollmentDtoInValidator : AbstractValidator<EnrollmentDtoIn>
 {
-            /// <summary>
-            /// Initializes a new instance of the EnrollmentDtoInValidator class with its required dependencies.
-            /// </summary>
-            public EnrollmentDtoInValidator()
+    /// <summary>
+    /// Initializes a new instance of the EnrollmentDtoInValidator class with its required dependencies.
+    /// </summary>
+    public EnrollmentDtoInValidator()
     {
         RuleFor(x => x.StudentId)
             .GreaterThan(0).WithMessage("StudentId ha de ser major que 0.");

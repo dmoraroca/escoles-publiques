@@ -7,10 +7,10 @@ namespace Api.Validators;
 /// </summary>
 public class SchoolDtoValidator : AbstractValidator<SchoolDto>
 {
-            /// <summary>
-            /// Initializes a new instance of the SchoolDtoValidator class with its required dependencies.
-            /// </summary>
-            public SchoolDtoValidator()
+    /// <summary>
+    /// Initializes a new instance of the SchoolDtoValidator class with its required dependencies.
+    /// </summary>
+    public SchoolDtoValidator()
     {
         RuleFor(x => x.Code)
             .NotEmpty().WithMessage("El codi és obligatori.")

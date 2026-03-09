@@ -9,18 +9,18 @@ public class ApiAuthTokenHandler : DelegatingHandler
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ApiAuthTokenHandler> _logger;
-            /// <summary>
-            /// Initializes a new instance of the ApiAuthTokenHandler class with its required dependencies.
-            /// </summary>
-            public ApiAuthTokenHandler(IHttpContextAccessor httpContextAccessor, ILogger<ApiAuthTokenHandler> logger)
+    /// <summary>
+    /// Initializes a new instance of the ApiAuthTokenHandler class with its required dependencies.
+    /// </summary>
+    public ApiAuthTokenHandler(IHttpContextAccessor httpContextAccessor, ILogger<ApiAuthTokenHandler> logger)
     {
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
     }
-            /// <summary>
-            /// Executes the send async operation as part of this component.
-            /// </summary>
-            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    /// <summary>
+    /// Executes the send async operation as part of this component.
+    /// </summary>
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var token = _httpContextAccessor.HttpContext?.Session.GetString(SessionKeys.ApiToken);
         if (!string.IsNullOrWhiteSpace(token) && request.Headers.Authorization == null)

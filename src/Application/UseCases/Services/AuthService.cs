@@ -10,15 +10,15 @@ namespace Application.UseCases.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
-        /// <summary>
-        /// Initializes a new instance of the AuthService class with its required dependencies.
-        /// </summary>
-        public AuthService(IUserRepository userRepository)
+    /// <summary>
+    /// Initializes a new instance of the AuthService class with its required dependencies.
+    /// </summary>
+    public AuthService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
 
-        public async Task<(bool success, string? token, string? role)> AuthenticateAsync(string email, string password)
+    public async Task<(bool success, string? token, string? role)> AuthenticateAsync(string email, string password)
     {
         var user = await _userRepository.GetByEmailAsync(email);
 
@@ -41,10 +41,10 @@ public class AuthService : IAuthService
         // Retornar èxit amb el rol de l'usuari
         return (true, user.Id.ToString(), user.Role);
     }
-        /// <summary>
-        /// Executes the hash password operation as part of this component.
-        /// </summary>
-        public string HashPassword(string password)
+    /// <summary>
+    /// Executes the hash password operation as part of this component.
+    /// </summary>
+    public string HashPassword(string password)
     {
         using (var sha256 = SHA256.Create())
         {
@@ -53,10 +53,10 @@ public class AuthService : IAuthService
             return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }
     }
-        /// <summary>
-        /// Executes the verify password operation as part of this component.
-        /// </summary>
-        public bool VerifyPassword(string password, string passwordHash)
+    /// <summary>
+    /// Executes the verify password operation as part of this component.
+    /// </summary>
+    public bool VerifyPassword(string password, string passwordHash)
     {
         var hash = HashPassword(password);
         return hash == passwordHash;

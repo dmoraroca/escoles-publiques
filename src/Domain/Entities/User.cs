@@ -19,6 +19,6 @@ public class User
     // Navigation property
     public Student? Student { get; set; }
 
-        public bool IsAdmin() => Role == "ADM";
-        public bool IsUser() => Role == "USER";
+    public bool IsAdmin() => Role == "ADM";
+    public bool IsUser() => Role == "USER";
 }

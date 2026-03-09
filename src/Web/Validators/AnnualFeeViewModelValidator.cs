@@ -7,10 +7,10 @@ namespace Web.Validators;
 /// </summary>
 public class AnnualFeeViewModelValidator : AbstractValidator<AnnualFeeViewModel>
 {
-            /// <summary>
-            /// Initializes a new instance of the AnnualFeeViewModelValidator class with its required dependencies.
-            /// </summary>
-            public AnnualFeeViewModelValidator()
+    /// <summary>
+    /// Initializes a new instance of the AnnualFeeViewModelValidator class with its required dependencies.
+    /// </summary>
+    public AnnualFeeViewModelValidator()
     {
         RuleFor(x => x.EnrollmentId)
             .GreaterThan(0)

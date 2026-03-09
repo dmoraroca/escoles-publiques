@@ -13,16 +13,16 @@ namespace Web.Controllers;
 [Authorize]
 public partial class HomeController : BaseController
 {
-            /// <summary>
-            /// Initializes a new instance of the HomeController class with its required dependencies.
-            /// </summary>
-            public HomeController(ILogger<HomeController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
+    /// <summary>
+    /// Initializes a new instance of the HomeController class with its required dependencies.
+    /// </summary>
+    public HomeController(ILogger<HomeController> logger, IStringLocalizer<BaseController>? localizer = null) : base(logger, localizer)
     {
     }
-            /// <summary>
-            /// Executes the index operation as part of this component.
-            /// </summary>
-            public IActionResult Index(string? searchQuery, string? scopeName)
+    /// <summary>
+    /// Executes the index operation as part of this component.
+    /// </summary>
+    public IActionResult Index(string? searchQuery, string? scopeName)
     {
         ViewBag.SearchQuery = searchQuery?.Trim();
         ViewBag.ScopeName = scopeName?.Trim();
@@ -37,17 +37,17 @@ public partial class HomeController : BaseController
 
         return View();
     }
-            /// <summary>
-            /// Executes the privacy operation as part of this component.
-            /// </summary>
-            public IActionResult Privacy()
+    /// <summary>
+    /// Executes the privacy operation as part of this component.
+    /// </summary>
+    public IActionResult Privacy()
     {
         return View();
     }
     /// <summary>
     /// Executes the error operation as part of this component.
     /// </summary>
-            [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

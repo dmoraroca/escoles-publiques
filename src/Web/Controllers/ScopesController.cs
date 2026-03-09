@@ -8,10 +8,10 @@ namespace Web.Controllers;
 /// </summary>
 public class ScopesController : Controller
 {
-            /// <summary>
-            /// Executes the index operation as part of this component.
-            /// </summary>
-            public IActionResult Index()
+    /// <summary>
+    /// Executes the index operation as part of this component.
+    /// </summary>
+    public IActionResult Index()
     {
         var scopes = new List<ScopeViewModel>
         {

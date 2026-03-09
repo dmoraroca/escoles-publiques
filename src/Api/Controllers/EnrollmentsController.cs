@@ -15,17 +15,17 @@ namespace Api.Controllers;
 public class EnrollmentsController : ControllerBase
 {
     private readonly IEnrollmentService _enrollmentService;
-            /// <summary>
-            /// Initializes a new instance of the EnrollmentsController class with its required dependencies.
-            /// </summary>
-            public EnrollmentsController(IEnrollmentService enrollmentService)
+    /// <summary>
+    /// Initializes a new instance of the EnrollmentsController class with its required dependencies.
+    /// </summary>
+    public EnrollmentsController(IEnrollmentService enrollmentService)
     {
         _enrollmentService = enrollmentService;
     }
     /// <summary>
     /// Retrieves all and returns it to the caller.
     /// </summary>
-            [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var enrollments = await _enrollmentService.GetAllEnrollmentsAsync();
@@ -34,7 +34,7 @@ public class EnrollmentsController : ControllerBase
     /// <summary>
     /// Retrieves the requested data and returns it to the caller.
     /// </summary>
-            [HttpGet("{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
         var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
@@ -43,7 +43,7 @@ public class EnrollmentsController : ControllerBase
     /// <summary>
     /// Creates a new resource by applying the required business rules.
     /// </summary>
-            [HttpPost]
+    [HttpPost]
     public async Task<IActionResult> Create([FromBody] EnrollmentDtoIn dto)
     {
         var enrollment = new Enrollment
@@ -60,7 +60,7 @@ public class EnrollmentsController : ControllerBase
     /// <summary>
     /// Updates the target resource with the data received in the request.
     /// </summary>
-            [HttpPut("{id}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] EnrollmentDtoIn dto)
     {
         var enrollment = await _enrollmentService.GetEnrollmentByIdAsync(id);
@@ -82,16 +82,16 @@ public class EnrollmentsController : ControllerBase
     /// <summary>
     /// Deletes the target resource from the system in a controlled manner.
     /// </summary>
-            [HttpDelete("{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         await _enrollmentService.DeleteEnrollmentAsync(id);
         return NoContent();
     }
-            /// <summary>
-            /// Maps data for to dto between application layers.
-            /// </summary>
-            private static EnrollmentDtoOut ToDto(Enrollment e)
+    /// <summary>
+    /// Maps data for to dto between application layers.
+    /// </summary>
+    private static EnrollmentDtoOut ToDto(Enrollment e)
     {
         var first = e.Student?.User?.FirstName ?? string.Empty;
         var last = e.Student?.User?.LastName ?? string.Empty;

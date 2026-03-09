@@ -17,10 +17,10 @@ public class StudentsController : ControllerBase
 {
     private readonly IStudentService _studentService;
     private readonly IUserService _userService;
-            /// <summary>
-            /// Initializes a new instance of the StudentsController class with its required dependencies.
-            /// </summary>
-            public StudentsController(IStudentService studentService, IUserService userService)
+    /// <summary>
+    /// Initializes a new instance of the StudentsController class with its required dependencies.
+    /// </summary>
+    public StudentsController(IStudentService studentService, IUserService userService)
     {
         _studentService = studentService;
         _userService = userService;
@@ -28,7 +28,7 @@ public class StudentsController : ControllerBase
     /// <summary>
     /// Retrieves all and returns it to the caller.
     /// </summary>
-            [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var students = await _studentService.GetAllStudentsAsync();
@@ -37,7 +37,7 @@ public class StudentsController : ControllerBase
     /// <summary>
     /// Retrieves the requested data and returns it to the caller.
     /// </summary>
-            [HttpGet("{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
         var student = await _studentService.GetStudentByIdAsync(id);
@@ -46,7 +46,7 @@ public class StudentsController : ControllerBase
     /// <summary>
     /// Creates a new resource by applying the required business rules.
     /// </summary>
-            [HttpPost]
+    [HttpPost]
     public async Task<IActionResult> Create([FromBody] StudentDtoIn dto)
     {
         var existingUser = await _userService.GetUserByEmailAsync(dto.Email);
@@ -82,7 +82,7 @@ public class StudentsController : ControllerBase
     /// <summary>
     /// Updates the target resource with the data received in the request.
     /// </summary>
-            [HttpPut("{id}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Update(long id, [FromBody] StudentDtoIn dto)
     {
         var student = await _studentService.GetStudentByIdAsync(id);
@@ -115,16 +115,16 @@ public class StudentsController : ControllerBase
     /// <summary>
     /// Deletes the target resource from the system in a controlled manner.
     /// </summary>
-            [HttpDelete("{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         await _studentService.DeleteStudentAsync(id);
         return NoContent();
     }
-            /// <summary>
-            /// Maps data for to dto between application layers.
-            /// </summary>
-            private static StudentDtoOut ToDto(Student student)
+    /// <summary>
+    /// Maps data for to dto between application layers.
+    /// </summary>
+    private static StudentDtoOut ToDto(Student student)
     {
         return new StudentDtoOut(
             student.Id,

@@ -4,10 +4,10 @@ namespace Domain.DomainExceptions;
 /// </summary>
 public abstract class DomainException : Exception
 {
-            /// <summary>
-            /// Initializes a new instance of the DomainException class with its required dependencies.
-            /// </summary>
-            protected DomainException(string message) : base(message)
+    /// <summary>
+    /// Initializes a new instance of the DomainException class with its required dependencies.
+    /// </summary>
+    protected DomainException(string message) : base(message)
     {
     }
 

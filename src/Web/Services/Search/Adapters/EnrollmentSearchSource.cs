@@ -9,17 +9,17 @@ namespace Web.Services.Search.Adapters;
 public class EnrollmentSearchSource : IEnrollmentSearchSource
 {
     private readonly IEnrollmentsApiClient _enrollmentsApi;
-            /// <summary>
-            /// Initializes a new instance of the EnrollmentSearchSource class with its required dependencies.
-            /// </summary>
-            public EnrollmentSearchSource(IEnrollmentsApiClient enrollmentsApi)
+    /// <summary>
+    /// Initializes a new instance of the EnrollmentSearchSource class with its required dependencies.
+    /// </summary>
+    public EnrollmentSearchSource(IEnrollmentsApiClient enrollmentsApi)
     {
         _enrollmentsApi = enrollmentsApi;
     }
-            /// <summary>
-            /// Retrieves all async and returns it to the caller.
-            /// </summary>
-            public async Task<IEnumerable<EnrollmentSearchDto>> GetAllAsync()
+    /// <summary>
+    /// Retrieves all async and returns it to the caller.
+    /// </summary>
+    public async Task<IEnumerable<EnrollmentSearchDto>> GetAllAsync()
     {
         var enrollments = await _enrollmentsApi.GetAllAsync();
         return enrollments.Select(e => new EnrollmentSearchDto(

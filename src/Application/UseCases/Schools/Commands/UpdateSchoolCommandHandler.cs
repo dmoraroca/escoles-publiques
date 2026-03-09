@@ -8,17 +8,17 @@ namespace Application.UseCases.Schools.Commands;
 public sealed class UpdateSchoolCommandHandler : ICommandHandler<UpdateSchoolCommand, bool>
 {
     private readonly ISchoolService _schoolService;
-            /// <summary>
-            /// Initializes a new instance of the UpdateSchoolCommandHandler class with its required dependencies.
-            /// </summary>
-            public UpdateSchoolCommandHandler(ISchoolService schoolService)
+    /// <summary>
+    /// Initializes a new instance of the UpdateSchoolCommandHandler class with its required dependencies.
+    /// </summary>
+    public UpdateSchoolCommandHandler(ISchoolService schoolService)
     {
         _schoolService = schoolService;
     }
-            /// <summary>
-            /// Handles async and executes the corresponding use case.
-            /// </summary>
-            public async Task<bool> HandleAsync(UpdateSchoolCommand command, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Handles async and executes the corresponding use case.
+    /// </summary>
+    public async Task<bool> HandleAsync(UpdateSchoolCommand command, CancellationToken cancellationToken = default)
     {
         var school = await _schoolService.GetSchoolByIdAsync(command.Id);
         if (school is null)

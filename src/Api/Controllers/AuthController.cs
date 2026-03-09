@@ -17,10 +17,10 @@ public class AuthController : ControllerBase
     private readonly IAuthService _authService;
     private readonly ILogger<AuthController> _logger;
     private readonly IConfiguration _config;
-            /// <summary>
-            /// Initializes a new instance of the AuthController class with its required dependencies.
-            /// </summary>
-            public AuthController(ILogger<AuthController> logger, IAuthService authService, IConfiguration config)
+    /// <summary>
+    /// Initializes a new instance of the AuthController class with its required dependencies.
+    /// </summary>
+    public AuthController(ILogger<AuthController> logger, IAuthService authService, IConfiguration config)
     {
         _authService = authService;
         _config = config;
@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Maps data for token between application layers.
     /// </summary>
-            [HttpPost("token")]
+    [HttpPost("token")]
     public async Task<IActionResult> Token([FromBody] LoginDto dto)
     {
         _logger.LogInformation("Auth token request received. Email={Email}", dto.Email);

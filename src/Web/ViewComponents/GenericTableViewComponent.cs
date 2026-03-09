@@ -7,10 +7,10 @@ namespace Web.ViewComponents;
 /// </summary>
 public class GenericTableViewComponent : ViewComponent
 {
-            /// <summary>
-            /// Executes middleware logic for the current HTTP request.
-            /// </summary>
-            public IViewComponentResult Invoke(object model)
+    /// <summary>
+    /// Executes middleware logic for the current HTTP request.
+    /// </summary>
+    public IViewComponentResult Invoke(object model)
     {
         if (model == null)
         {

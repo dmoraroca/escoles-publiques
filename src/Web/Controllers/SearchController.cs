@@ -7,17 +7,17 @@ namespace Web.Controllers;
 /// </summary>
 public class SearchController : Controller
 {
-            /// <summary>
-            /// Executes the index operation as part of this component.
-            /// </summary>
-            public IActionResult Index()
+    /// <summary>
+    /// Executes the index operation as part of this component.
+    /// </summary>
+    public IActionResult Index()
     {
         return View();
     }
     /// <summary>
     /// Executes the search operation as part of this component.
     /// </summary>
-            [HttpGet]
+    [HttpGet]
     public IActionResult Search(string query)
     {
         return RedirectToAction("Index", "Home");

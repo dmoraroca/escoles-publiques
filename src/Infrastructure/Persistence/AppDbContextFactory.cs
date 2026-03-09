@@ -7,10 +7,10 @@ namespace Infrastructure.Persistence;
 /// </summary>
 public sealed class AppDbContextFactory : IDesignTimeDbContextFactory<SchoolDbContext>
 {
-            /// <summary>
-            /// Creates db context by applying the required business rules.
-            /// </summary>
-            public SchoolDbContext CreateDbContext(string[] args)
+    /// <summary>
+    /// Creates db context by applying the required business rules.
+    /// </summary>
+    public SchoolDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<SchoolDbContext>();
 

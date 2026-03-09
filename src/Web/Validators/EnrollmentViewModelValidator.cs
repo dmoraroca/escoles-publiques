@@ -7,10 +7,10 @@ namespace Web.Validators;
 /// </summary>
 public class EnrollmentViewModelValidator : AbstractValidator<EnrollmentViewModel>
 {
-            /// <summary>
-            /// Initializes a new instance of the EnrollmentViewModelValidator class with its required dependencies.
-            /// </summary>
-            public EnrollmentViewModelValidator()
+    /// <summary>
+    /// Initializes a new instance of the EnrollmentViewModelValidator class with its required dependencies.
+    /// </summary>
+    public EnrollmentViewModelValidator()
     {
         RuleFor(x => x.StudentId)
             .GreaterThan(0)
