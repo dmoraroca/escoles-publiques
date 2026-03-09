@@ -1,15 +1,16 @@
 # Технический документ (RU)
 
 ## 1. Введение
-Этот документ описывает технический дизайн **Escoles Publiques**.
+Документ описывает техническую реализацию **Escoles Publiques**.
 
 Цели:
 - объяснить архитектуру и границы DDD
-- задокументировать настройку Web и API
-- описать модель данных и аутентификацию
-- описать сквозные аспекты (ошибки, наблюдаемость, тесты)
+- задокументировать реализацию Web и API
+- зафиксировать используемые паттерны, библиотеки и решения
+- описать модель данных, связи и аутентификацию
+- описать сквозные утилиты (helpers, JS, CSS)
 
-Демо-учетные данные:
+Демо-доступ:
 - пользователь: `admin@admin.adm`
 - пароль: `admin123`
 
@@ -30,115 +31,209 @@ flowchart LR
   W --> AP
   A --> AP
   AP --> D
-  AP --> I
   I --> D
+  AP --> I
 ```
 
 Основной поток:
-1. Пользователь входит в Web (cookie auth)
-2. Web запрашивает JWT у API (`POST /api/auth/token`)
-3. Токен сохраняется в сессии
-4. Web вызывает API с `Authorization: Bearer <token>`
+1. Вход в Web (`CookieAuth`).
+2. Web запрашивает JWT у API (`POST /api/auth/token`).
+3. JWT сохраняется в серверной сессии.
+4. Web вызывает API с `Authorization: Bearer <token>`.
 
-## 3. Структура DDD-проектов
-- `src/Domain`: сущности, value objects, доменные исключения, контракты репозиториев
-- `src/Application`: use cases, сервисы, CQRS handlers
-- `src/Infrastructure`: EF Core, репозитории, миграции
-- `src/Api`: REST-контроллеры, JWT, CORS, swagger, middleware
-- `src/Web`: MVC UI, локализация, API-клиенты
+## 3. DDD-структура
 
-## 4. Доменная модель
-Основные сущности:
-- `School`
-- `Student`
-- `Enrollment`
-- `AnnualFee`
-- `Scope`
-- `User`
+Проекты и зоны ответственности:
+- `src/Domain`: сущности, правила домена, контракты репозиториев, value objects, доменные исключения.
+- `src/Application`: use cases, оркестрация сервисов, CQRS commands/queries/handlers.
+- `src/Infrastructure`: EF Core persistence, реализации репозиториев, миграции.
+- `src/Api`: REST-вход, JWT, CORS, Swagger, middleware pipeline.
+- `src/Web`: MVC/Razor-вход, локализация, API-клиенты, UI assets.
 
-Ключевые связи:
-- School 1..N Students
-- Student 1..N Enrollments
-- Enrollment 1..N AnnualFees
-- Scope 1..N Schools
-- User 0..1 Student
+### 3.1 Расширенное дерево решения (технический вид)
 
-## 5. Аутентификация и авторизация
-- Web использует cookie-аутентификацию.
-- API использует JWT bearer.
-- Роли: `ADM` и `USER`.
-- При неавторизованном доступе выполняется logout и повторный вход.
+```text
+src/
+├── Api/
+│   ├── Controllers/
+│   ├── Services/
+│   │   ├── CorrelationIdMiddleware.cs
+│   │   ├── RequestMetricsMiddleware.cs
+│   │   ├── ApiExceptionHandlingMiddleware.cs
+│   │   └── DbSeeder.cs
+│   └── Program.cs
+├── Application/
+│   ├── Interfaces/
+│   ├── UseCases/
+│   │   ├── Services/
+│   │   ├── Schools/Commands/
+│   │   └── Schools/Queries/
+│   └── DTOs/
+├── Domain/
+│   ├── Entities/
+│   ├── Interfaces/
+│   ├── ValueObjects/
+│   └── DomainExceptions/
+├── Infrastructure/
+│   ├── SchoolDbContext.cs
+│   ├── Persistence/Repositories/
+│   └── Migrations/
+├── Web/
+│   ├── Controllers/
+│   ├── Services/Api/
+│   ├── Services/Search/
+│   ├── Helpers/ModalConfigFactory.cs
+│   ├── ModelBinders/FlexibleDecimalModelBinder.cs
+│   ├── Hubs/SchoolHub.cs
+│   ├── Views/
+│   ├── Resources/
+│   ├── HelpDocs/
+│   ├── wwwroot/js/
+│   ├── wwwroot/css/
+│   └── Program.cs
+└── UnitTest/
+    ├── Controllers/
+    ├── Services/
+    ├── Infrastructure/
+    ├── Validators/
+    └── Helpers/
+```
 
-## 6. Контракт ошибок
-API возвращает `application/problem+json` с полями:
-- `errorCode`
-- `traceId`
-- `timestamp`
-- `fieldErrors` (для валидации)
+## 4. Web-слой
+- ASP.NET Core MVC + Razor Views.
+- cookie auth + server-side session для API JWT.
+- typed `HttpClient` клиенты к API.
+- локализация через `.resx` и переключатель языка.
+- SignalR для обновлений в реальном времени.
 
-Стандартные коды:
-- validation -> 400
-- duplicate -> 409
-- not found -> 404
-- unauthorized -> 401
-- unhandled -> 500
+## 5. API-слой (включая Swagger)
+- ASP.NET Core Web API.
+- JWT bearer authentication.
+- авторизация по ролям/claims.
+- CORS по окружению.
+- EF Core migrations на старте.
 
-## 7. Value Objects и инварианты
-Инварианты обеспечиваются через:
-- `SchoolCode`
-- `EmailAddress`
-- `MoneyAmount`
+Swagger:
+- пакет: `Swashbuckle.AspNetCore`
+- UI: `/api` при `Swagger__Enabled=true`
+- OpenAPI JSON: `/swagger/v1/swagger.json`
+- security scheme: `Bearer`
 
-Преимущества:
-- централизованная валидация
-- консистентность данных
-- меньше защитной логики в контроллерах
+## 6. Pipeline middleware API (реальный порядок)
+1. `CorrelationIdMiddleware`
+2. `RequestMetricsMiddleware`
+3. `ApiExceptionHandlingMiddleware`
+4. `UseHttpsRedirection`
+5. `UseRouting`
+6. `UseCors("DefaultCors")`
+7. `UseAuthentication`
+8. `UseAuthorization`
+9. `MapControllers`
 
-## 8. CQRS (легковесный)
-Модуль Schools разделяет запись и чтение:
-- Commands: create/update/delete
-- Queries: get by id/list/get by code
+```mermaid
+flowchart LR
+  R[HTTP Request] --> C[CorrelationIdMiddleware]
+  C --> M[RequestMetricsMiddleware]
+  M --> E[ApiExceptionHandlingMiddleware]
+  E --> X[Routing/Auth/Controllers]
+  X --> S[HTTP Response]
+```
 
-Это упрощает тестирование и сопровождение.
+Детали middleware:
+- `CorrelationIdMiddleware`: прокидывает/генерирует `X-Correlation-ID`, задаёт `TraceIdentifier`.
+- `RequestMetricsMiddleware`: пишет счётчик и latency (`api_requests_total`, `api_request_duration_ms`).
+- `ApiExceptionHandlingMiddleware`: маппит исключения в `ProblemDetails` (`400/401/404/409/500`) с `errorCode`, `traceId`, `timestamp`.
 
-## 9. Наблюдаемость
-Сквозной middleware:
-- `CorrelationIdMiddleware` (`X-Correlation-ID`)
-- `RequestMetricsMiddleware` (счетчик + latency)
-- глобальный middleware исключений
+## 7. Используемые паттерны
+- Repository Pattern (`Infrastructure/Persistence/Repositories/*`).
+- Service Layer Pattern (`Application/UseCases/Services/*`).
+- Lightweight CQRS для агрегата `School`.
+- Strategy Pattern в источниках поиска (`ISchoolSearchSource`, `IStudentSearchSource`, и т.д.).
+- Builder Pattern (`SearchResultsBuilder`).
+- Factory Pattern (`ModalConfigFactory`).
+- Fail-Fast в startup (например, CORS для production).
+- Global Exception Mapping через middleware.
 
-Логи структурированы и привязаны к trace.
+## 8. Библиотеки и фреймворки
+API:
+- `Microsoft.AspNetCore.Authentication.JwtBearer`
+- `Npgsql.EntityFrameworkCore.PostgreSQL`
+- `Swashbuckle.AspNetCore`
 
-## 10. Персистентность
-- PostgreSQL + EF Core
-- миграции в `Infrastructure`
-- паттерн repository
-- snake_case для маппинга БД
+Application:
+- `AutoMapper`
+- `AutoMapper.Extensions.Microsoft.DependencyInjection`
 
-## 11. Web-слой
-- Razor views и MVC контроллеры
-- локализация `.resx`
-- SignalR для real-time
-- переиспользуемые JS/CSS компоненты
+Web:
+- `FluentValidation.AspNetCore`
+- `Markdig`
+- `DocumentFormat.OpenXml`
+- `Serilog.AspNetCore`
+- `Serilog.Sinks.File`
 
-## 12. Стратегия тестирования
-- unit-тесты для domain/application/controllers/helpers
-- integration-тесты ключевых потоков
-- risk-based critical suite
-- coverage gates в CI
+## 9. Модель базы данных
+СУБД: PostgreSQL.
 
-## 13. Gates в CI/CD
-Порог покрытия по слоям:
-- Domain
-- Application
-- Infrastructure
-- Web
-- Api
+Ключевые таблицы:
+- `schools`
+- `scope_mnt`
+- `users`
+- `students`
+- `enrollments`
+- `annual_fees`
+- `__EFMigrationsHistory`
 
-Перед merge build и tests должны быть зелеными.
+```mermaid
+erDiagram
+  USERS ||--o| STUDENTS : "user_id"
+  SCHOOLS ||--o{ STUDENTS : "school_id"
+  STUDENTS ||--o{ ENROLLMENTS : "student_id"
+  SCHOOLS ||--o{ ENROLLMENTS : "school_id"
+  ENROLLMENTS ||--o{ ANNUAL_FEES : "enrollment_id"
+```
 
-## 14. Эксплуатационные заметки
-- локальный workflow ориентирован на Docker
-- debug-профили упрощены до Docker attach
-- help center: multilingual markdown + DOCX export
-- рекомендация: обновлять код и документацию в одном PR
+## 10. Жизненный цикл аутентификации
+Web:
+- login через cookie auth.
+- JWT API хранится в session.
+
+API:
+- проверка credentials.
+- выпуск подписанного JWT.
+
+Цикл:
+1. login в Web.
+2. запрос токена API.
+3. сохранение в session.
+4. инъекция токена в каждый запрос.
+5. при 401/403 -> принудительный logout.
+
+## 11. Helpers и утилиты
+- `ModalConfigFactory`: централизованная конфигурация CRUD modal.
+- `ApiAuthTokenHandler` (`DelegatingHandler`): JWT injection + unauthorized handling.
+- `ApiResponseHelper`: централизованная проверка HTTP response.
+- `NormalizePg(...)` в `Program.cs` (Web/API): преобразование `postgres://...` в Npgsql connection string.
+- `ToSnakeCase(...)` в `SchoolDbContext`: глобальная naming-конвенция БД.
+
+Внутренние helper-методы middleware ошибок:
+- `CreateProblem(...)`
+- `EnrichProblem(...)`
+- `WriteProblem(...)`
+
+## 12. Зона JavaScript и CSS
+JavaScript (`src/Web/wwwroot/js`):
+- `entity-modal.js`, `generic-table.js`, `signalr-connection.js`, `save-cancel-buttons.js`, `i18n.js`, модульные скрипты.
+
+CSS (`src/Web/wwwroot/css`):
+- `davidgov-theme.css`, `login.css`, `search-results.css`, `generic-table.css`, `user-dashboard.css`.
+
+## 13. Стратегия тестирования
+- unit tests для domain/application/controllers/helpers.
+- интеграционные проверки критических потоков.
+- архитектурные тесты на DDD dependency boundaries.
+
+## 14. Операционные заметки
+- Docker-first локальный workflow.
+- структурированный logging через Serilog.
+- мультиязычный help center (Markdown -> HTML + DOCX).
+- синхронизировать docs и code в одном PR.

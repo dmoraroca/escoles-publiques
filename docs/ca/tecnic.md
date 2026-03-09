@@ -76,6 +76,9 @@ src/
 │   │   ├── ScopesController.cs
 │   │   └── MaintenanceController.cs
 │   ├── Services/
+│   │   ├── CorrelationIdMiddleware.cs
+│   │   ├── RequestMetricsMiddleware.cs
+│   │   ├── ApiExceptionHandlingMiddleware.cs
 │   │   └── DbSeeder.cs
 │   ├── Program.cs
 │   └── appsettings.json
@@ -394,6 +397,18 @@ Nota:
 - Seed de dades inicials.
 - Crea base minima per entorns demo o bootstrap.
 
+`src/Api/Services/CorrelationIdMiddleware.cs`
+- Assigna o propaga `X-Correlation-ID` per request.
+- Garanteix traçabilitat comuna entre logs i resposta HTTP.
+
+`src/Api/Services/RequestMetricsMiddleware.cs`
+- Captura comptador i latencia de cada request.
+- Publica metriques amb `Meter/Counter/Histogram`.
+
+`src/Api/Services/ApiExceptionHandlingMiddleware.cs`
+- Converteix excepcions funcionals a `ProblemDetails`.
+- Unifica codis HTTP, `errorCode`, `traceId` i format de resposta.
+
 `src/Api/appsettings.json`
 - Configuracio base (JWT, connexio, logging, CORS).
 - Es complementa amb variables d'entorn a deploy.
@@ -614,6 +629,54 @@ Swagger:
 Exemple d'endpoint de login:
 - `POST /api/auth/token` retorna JWT
 
+### 5.1 Pipeline middleware API (ordre real)
+
+Ordre a `src/Api/Program.cs`:
+1. `UseMiddleware<CorrelationIdMiddleware>()`
+2. `UseMiddleware<RequestMetricsMiddleware>()`
+3. `UseMiddleware<ApiExceptionHandlingMiddleware>()`
+4. `UseHttpsRedirection()`
+5. `UseRouting()`
+6. `UseCors("DefaultCors")`
+7. `UseAuthentication()`
+8. `UseAuthorization()`
+9. `MapControllers()`
+
+```mermaid
+flowchart LR
+  R[HTTP Request] --> C[CorrelationIdMiddleware]
+  C --> M[RequestMetricsMiddleware]
+  M --> E[ApiExceptionHandlingMiddleware]
+  E --> Rt[Routing + AuthN/AuthZ + Controllers]
+  Rt --> Resp[HTTP Response]
+```
+
+### 5.2 Middleware documentat classe a classe
+
+`CorrelationIdMiddleware`
+- Header: `X-Correlation-ID`
+- Si el client no l'envia, en genera un (`Guid`).
+- Assigna `context.TraceIdentifier`, header de resposta i `context.Items`.
+
+`RequestMetricsMiddleware`
+- Mesura temps amb `Stopwatch`.
+- Emmagatzema etiquetes: `method`, `path`, `status_code`.
+- Escriu metriques:
+  - `api_requests_total`
+  - `api_request_duration_ms`
+
+`ApiExceptionHandlingMiddleware`
+- Captura:
+  - `ValidationException` -> `400`
+  - `DuplicateEntityException` -> `409`
+  - `NotFoundException` -> `404`
+  - `UnauthorizedAccessException` -> `401`
+  - qualsevol altre `Exception` -> `500`
+- Retorna `application/problem+json` amb extensions:
+  - `errorCode`
+  - `traceId`
+  - `timestamp`
+
 ## 6. Patrons utilitzats (amb exemples i lectura line-by-line)
 
 ### 6.1 Repository + Service
@@ -697,6 +760,52 @@ Lectura:
 
 ### 6.4 Pattern "Fail Fast" en startup
 A API, si no hi ha CORS a produccio -> l'app falla a startup per evitar desplegament insegur.
+
+### 6.5 CQRS lleuger per aggregate de School
+
+Implementacio real:
+- Queries: `GetAllSchoolsQuery`, `GetSchoolByIdQuery`, `GetSchoolByCodeQuery`
+- Commands: `CreateSchoolCommand`, `UpdateSchoolCommand`, `DeleteSchoolCommand`
+- Handlers registrats via DI a `src/Api/Program.cs`
+- Controller consumidor: `src/Api/Controllers/SchoolsController.cs`
+
+Benefici:
+- separa lectura/escriptura
+- simplifica tests de cada operacio
+- evita serveis "monolitics" en un sol controller
+
+### 6.6 Strategy pattern (cerca agregada)
+
+La cerca global usa fonts especialitzades que comparteixen contracte:
+- `ISchoolSearchSource`
+- `IStudentSearchSource`
+- `IEnrollmentSearchSource`
+- `IAnnualFeeSearchSource`
+- `IScopeLookupSource`
+
+`SearchResultsQuery` aplica la mateixa orquestracio sobre estrategies diferents.
+
+### 6.7 Builder pattern (composicio ViewModel de cerca)
+
+`SearchResultsBuilder` transforma DTOs de cerca a `SearchResultsViewModel`.
+Patro utilitzat per:
+- separar composicio de vista de la logica de query
+- mantenir controllers mes prims
+
+### 6.8 Factory pattern (configuracio de modals)
+
+`ModalConfigFactory` genera configuracions de modal per entitat:
+- escola
+- alumne
+- inscripcio
+- quota anual
+
+Evita duplicacio de configuracio UI entre controllers i vistes.
+
+### 6.9 Middleware + Exception Mapping pattern
+
+La capa API no depen de `try/catch` a cada endpoint.
+El mapping d'excepcions es centralitza a `ApiExceptionHandlingMiddleware` i converteix errors de domini/aplicacio en respostes HTTP coherents.
 
 ## 7. Llibreries externes usades
 
@@ -857,6 +966,29 @@ Cicle de vida:
 Helpers transversals no encapsulats en carpeta "Helpers":
 - `NormalizePg(...)` a `Program.cs` (Web i API): adapta URL `postgres://...` a connection string Npgsql valida
 - `ToSnakeCase(...)` a `SchoolDbContext`: convencio global de noms
+- `ApiResponseHelper.EnsureSuccessOrUnauthorized(...)`:
+  - centralitza validacio de resposta HTTP dels clients API
+  - llença `UnauthorizedAccessException` per 401/403
+
+Helpers interns del middleware d'errors API:
+- `CreateProblem(...)`:
+  - construeix objecte base `ProblemDetails`
+- `EnrichProblem(...)`:
+  - afegeix `errorCode`, `traceId`, `timestamp`, `instance`
+- `WriteProblem(...)`:
+  - serialitza resposta `application/problem+json` de forma consistent
+
+Esquema resum helper + middleware:
+
+```mermaid
+flowchart TD
+  EX[Domain/Application Exception]
+  EX --> M[ApiExceptionHandlingMiddleware]
+  M --> CP[CreateProblem]
+  CP --> EP[EnrichProblem]
+  EP --> WP[WriteProblem]
+  WP --> PD[ProblemDetails JSON]
+```
 
 ## 12. JavaScript i CSS (què cobreixen)
 

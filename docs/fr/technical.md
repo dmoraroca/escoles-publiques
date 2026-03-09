@@ -1,15 +1,16 @@
 # Document technique (FR)
 
 ## 1. Introduction
-Ce document décrit le design technique de **Escoles Publiques**.
+Ce document décrit la conception technique de **Escoles Publiques**.
 
 Objectifs :
-- expliquer l'architecture et les limites DDD
-- documenter la configuration Web et API
-- décrire le modèle de données et l'authentification
-- documenter les aspects transverses (erreurs, observabilité, tests)
+- expliquer l'architecture et les frontières DDD
+- documenter l'implémentation Web et API
+- tracer les patterns, bibliothèques et décisions techniques
+- décrire le modèle de données, les relations et l'authentification
+- documenter les utilitaires transverses (helpers, JS, CSS)
 
-Identifiants de démonstration :
+Identifiants de démo :
 - utilisateur : `admin@admin.adm`
 - mot de passe : `admin123`
 
@@ -21,7 +22,7 @@ flowchart LR
   W -->|HTTP + JWT| A[API ASP.NET Core]
   A -->|EF Core| DB[(PostgreSQL)]
 
-  subgraph DDD[Interne DDD]
+  subgraph DDD[DDD interne]
     D[Domain]
     AP[Application]
     I[Infrastructure]
@@ -30,115 +31,209 @@ flowchart LR
   W --> AP
   A --> AP
   AP --> D
-  AP --> I
   I --> D
+  AP --> I
 ```
 
 Flux principal :
-1. L'utilisateur se connecte sur le Web (cookie auth)
-2. Le Web demande un JWT à l'API (`POST /api/auth/token`)
-3. Le token est stocké en session
-4. Le Web appelle l'API avec `Authorization: Bearer <token>`
+1. Login sur le Web (`CookieAuth`).
+2. Le Web demande un JWT à l'API (`POST /api/auth/token`).
+3. Le JWT est stocké en session serveur.
+4. Le Web appelle l'API avec `Authorization: Bearer <token>`.
 
-## 3. Structure DDD des projets
-- `src/Domain` : entités, value objects, exceptions de domaine, contrats de repository
-- `src/Application` : cas d'usage, services, handlers CQRS
-- `src/Infrastructure` : EF Core, repositories, migrations
-- `src/Api` : contrôleurs REST, JWT, CORS, swagger, middleware
-- `src/Web` : UI MVC, localisation, clients API
+## 3. Structure DDD
 
-## 4. Modèle de domaine
-Entités principales :
-- `School`
-- `Student`
-- `Enrollment`
-- `AnnualFee`
-- `Scope`
-- `User`
+Projets et responsabilités :
+- `src/Domain` : entités, règles de domaine, contrats repository, value objects, exceptions domaine.
+- `src/Application` : use cases, orchestration de services, commandes/queries/handlers CQRS.
+- `src/Infrastructure` : persistance EF Core, implémentations repository, migrations.
+- `src/Api` : entrée REST, JWT, CORS, Swagger, pipeline middleware.
+- `src/Web` : entrée MVC/Razor, localisation, clients API, assets UI.
 
-Relations clés :
-- School 1..N Students
-- Student 1..N Enrollments
-- Enrollment 1..N AnnualFees
-- Scope 1..N Schools
-- User 0..1 Student
+### 3.1 Arbre élargi de la solution (vue technique)
 
-## 5. Authentification et autorisation
-- Le Web utilise l'authentification par cookie.
-- L'API utilise JWT bearer.
-- Rôles : `ADM` et `USER`.
-- Les accès non autorisés provoquent logout + re-login.
+```text
+src/
+├── Api/
+│   ├── Controllers/
+│   ├── Services/
+│   │   ├── CorrelationIdMiddleware.cs
+│   │   ├── RequestMetricsMiddleware.cs
+│   │   ├── ApiExceptionHandlingMiddleware.cs
+│   │   └── DbSeeder.cs
+│   └── Program.cs
+├── Application/
+│   ├── Interfaces/
+│   ├── UseCases/
+│   │   ├── Services/
+│   │   ├── Schools/Commands/
+│   │   └── Schools/Queries/
+│   └── DTOs/
+├── Domain/
+│   ├── Entities/
+│   ├── Interfaces/
+│   ├── ValueObjects/
+│   └── DomainExceptions/
+├── Infrastructure/
+│   ├── SchoolDbContext.cs
+│   ├── Persistence/Repositories/
+│   └── Migrations/
+├── Web/
+│   ├── Controllers/
+│   ├── Services/Api/
+│   ├── Services/Search/
+│   ├── Helpers/ModalConfigFactory.cs
+│   ├── ModelBinders/FlexibleDecimalModelBinder.cs
+│   ├── Hubs/SchoolHub.cs
+│   ├── Views/
+│   ├── Resources/
+│   ├── HelpDocs/
+│   ├── wwwroot/js/
+│   ├── wwwroot/css/
+│   └── Program.cs
+└── UnitTest/
+    ├── Controllers/
+    ├── Services/
+    ├── Infrastructure/
+    ├── Validators/
+    └── Helpers/
+```
 
-## 6. Contrat d'erreur
-L'API renvoie `application/problem+json` avec :
-- `errorCode`
-- `traceId`
-- `timestamp`
-- `fieldErrors` (validation)
+## 4. Couche Web
+- ASP.NET Core MVC + Razor Views.
+- Cookie auth + session serveur pour JWT API.
+- Clients typed `HttpClient` vers l'API.
+- Localisation via `.resx` + sélecteur de langue.
+- SignalR pour mises à jour temps réel.
 
-Mappings standards :
-- validation -> 400
-- doublon -> 409
-- introuvable -> 404
-- non autorisé -> 401
-- erreur non gérée -> 500
+## 5. Couche API (avec Swagger)
+- ASP.NET Core Web API.
+- authentification JWT bearer.
+- autorisation par rôles/claims.
+- politique CORS selon environnement.
+- migrations EF Core appliquées au démarrage.
 
-## 7. Value Objects et invariants
-Invariants métiers appliqués via :
-- `SchoolCode`
-- `EmailAddress`
-- `MoneyAmount`
+Swagger :
+- package : `Swashbuckle.AspNetCore`
+- UI : `/api` si `Swagger__Enabled=true`
+- OpenAPI JSON : `/swagger/v1/swagger.json`
+- schéma de sécurité : `Bearer`
 
-Bénéfices :
-- validation centralisée
-- qualité de données cohérente
-- moins de logique défensive dans les contrôleurs
+## 6. Pipeline middleware API (ordre réel)
+1. `CorrelationIdMiddleware`
+2. `RequestMetricsMiddleware`
+3. `ApiExceptionHandlingMiddleware`
+4. `UseHttpsRedirection`
+5. `UseRouting`
+6. `UseCors("DefaultCors")`
+7. `UseAuthentication`
+8. `UseAuthorization`
+9. `MapControllers`
 
-## 8. CQRS (léger)
-Le module Schools sépare lecture et écriture :
-- Commands : create/update/delete
-- Queries : get by id/list/get by code
+```mermaid
+flowchart LR
+  R[HTTP Request] --> C[CorrelationIdMiddleware]
+  C --> M[RequestMetricsMiddleware]
+  M --> E[ApiExceptionHandlingMiddleware]
+  E --> X[Routing/Auth/Controllers]
+  X --> S[HTTP Response]
+```
 
-Les responsabilités restent claires et testables.
+Détail middleware :
+- `CorrelationIdMiddleware` : propage ou génère `X-Correlation-ID`, renseigne `TraceIdentifier`.
+- `RequestMetricsMiddleware` : enregistre compteur + latence (`api_requests_total`, `api_request_duration_ms`).
+- `ApiExceptionHandlingMiddleware` : mappe les exceptions vers `ProblemDetails` (`400/401/404/409/500`) avec `errorCode`, `traceId`, `timestamp`.
 
-## 9. Observabilité
-Middleware transverse :
-- `CorrelationIdMiddleware` (`X-Correlation-ID`)
-- `RequestMetricsMiddleware` (compteur + latence)
-- middleware global d'exceptions
+## 7. Patterns utilisés
+- Repository Pattern (`Infrastructure/Persistence/Repositories/*`).
+- Service Layer Pattern (`Application/UseCases/Services/*`).
+- CQRS léger pour l'agrégat `School`.
+- Strategy Pattern pour les sources de recherche (`ISchoolSearchSource`, `IStudentSearchSource`, etc.).
+- Builder Pattern (`SearchResultsBuilder`).
+- Factory Pattern (`ModalConfigFactory`).
+- Fail-Fast au startup (ex : CORS en production).
+- Global Exception Mapping via middleware.
 
-Logging structuré et traçable.
+## 8. Bibliothèques et frameworks
+API :
+- `Microsoft.AspNetCore.Authentication.JwtBearer`
+- `Npgsql.EntityFrameworkCore.PostgreSQL`
+- `Swashbuckle.AspNetCore`
 
-## 10. Persistance
-- PostgreSQL + EF Core
-- migrations dans `Infrastructure`
-- pattern repository
-- convention snake_case dans les mappings
+Application :
+- `AutoMapper`
+- `AutoMapper.Extensions.Microsoft.DependencyInjection`
 
-## 11. Couche Web
-- vues Razor et contrôleurs MVC
-- localisation `.resx`
-- SignalR temps réel
-- composants JS/CSS réutilisables
+Web :
+- `FluentValidation.AspNetCore`
+- `Markdig`
+- `DocumentFormat.OpenXml`
+- `Serilog.AspNetCore`
+- `Serilog.Sinks.File`
 
-## 12. Stratégie de test
-- tests unitaires domaine, application, contrôleurs, helpers
-- tests d'intégration sur flux critiques
-- suite risk-based
-- coverage gates en CI
+## 9. Modèle de données
+Moteur : PostgreSQL.
 
-## 13. Gates CI/CD
-Seuils de couverture par couche :
-- Domain
-- Application
-- Infrastructure
-- Web
-- Api
+Tables principales :
+- `schools`
+- `scope_mnt`
+- `users`
+- `students`
+- `enrollments`
+- `annual_fees`
+- `__EFMigrationsHistory`
 
-Build et tests doivent être verts avant merge.
+```mermaid
+erDiagram
+  USERS ||--o| STUDENTS : "user_id"
+  SCHOOLS ||--o{ STUDENTS : "school_id"
+  STUDENTS ||--o{ ENROLLMENTS : "student_id"
+  SCHOOLS ||--o{ ENROLLMENTS : "school_id"
+  ENROLLMENTS ||--o{ ANNUAL_FEES : "enrollment_id"
+```
+
+## 10. Cycle d'authentification
+Web :
+- login via cookie auth.
+- JWT API stocké en session.
+
+API :
+- validation des identifiants.
+- émission de JWT signé.
+
+Cycle :
+1. login Web.
+2. demande de token API.
+3. stockage en session.
+4. injection du token par requête.
+5. en cas de 401/403 -> logout forcé.
+
+## 11. Helpers et utilitaires
+- `ModalConfigFactory` : configuration centralisée des modales CRUD.
+- `ApiAuthTokenHandler` (`DelegatingHandler`) : injection JWT + gestion unauthorized.
+- `ApiResponseHelper` : validation centralisée des réponses HTTP.
+- `NormalizePg(...)` dans `Program.cs` (Web/API) : convertit `postgres://...` en connection string Npgsql.
+- `ToSnakeCase(...)` dans `SchoolDbContext` : convention globale de nommage BD.
+
+Helpers internes du middleware d'erreurs :
+- `CreateProblem(...)`
+- `EnrichProblem(...)`
+- `WriteProblem(...)`
+
+## 12. Portée JavaScript et CSS
+JavaScript (`src/Web/wwwroot/js`) :
+- `entity-modal.js`, `generic-table.js`, `signalr-connection.js`, `save-cancel-buttons.js`, `i18n.js`, scripts par module.
+
+CSS (`src/Web/wwwroot/css`) :
+- `davidgov-theme.css`, `login.css`, `search-results.css`, `generic-table.css`, `user-dashboard.css`.
+
+## 13. Stratégie de test
+- tests unitaires domain/application/controllers/helpers.
+- couverture d'intégration sur flux critiques.
+- tests d'architecture sur les dépendances DDD.
 
 ## 14. Notes opérationnelles
-- workflow local orienté Docker
-- debug simplifié avec Docker attach
-- centre d'aide markdown multilingue + export DOCX
-- recommandation : mettre à jour code et docs dans la même PR
+- workflow local Docker-first.
+- logging structuré avec Serilog.
+- centre d'aide multilingue (Markdown -> HTML + DOCX).
+- maintenir docs et code synchronisés dans la même PR.
