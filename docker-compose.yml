@@ -1,13 +1,13 @@
 version: "3.8"
 services:
   api:
-    image: mcr.microsoft.com/dotnet/sdk:8.0
+    image: mcr.microsoft.com/dotnet/sdk:10.0
     container_name: escoles_api
     working_dir: /app
     volumes:
       - ./:/app:cached
     entrypoint: ["/bin/bash","-lc"]
-    command: ["dotnet build src/Api/Api.csproj -c Debug && exec dotnet /app/src/Api/bin/Debug/net8.0/Api.dll --urls http://0.0.0.0:7000"]
+    command: ["dotnet build src/Api/Api.csproj -c Debug && exec dotnet /app/src/Api/bin/Debug/net10.0/Api.dll --urls http://0.0.0.0:7000"]
     ports:
       - "7000:7000"
     environment:
@@ -25,13 +25,13 @@ services:
       - seccomp:unconfined
 
   web:
-    image: mcr.microsoft.com/dotnet/sdk:8.0
+    image: mcr.microsoft.com/dotnet/sdk:10.0
     container_name: escoles_web
     working_dir: /app
     volumes:
       - ./:/app:cached
     entrypoint: ["/bin/bash","-lc"]
-    command: ["dotnet build src/Web/Web.csproj -c Debug && exec dotnet /app/src/Web/bin/Debug/net8.0/Web.dll --urls http://0.0.0.0:5042"]
+    command: ["dotnet build src/Web/Web.csproj -c Debug && exec dotnet /app/src/Web/bin/Debug/net10.0/Web.dll --urls http://0.0.0.0:5042"]
     ports:
       - "5042:5042"
     environment:

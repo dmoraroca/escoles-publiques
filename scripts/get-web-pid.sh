@@ -8,7 +8,7 @@ COMPOSE_FILES="-f docker-compose.yml -f docker-compose.override.yml"
 
 pid="$(
   docker compose $COMPOSE_FILES exec -T web sh -lc "ps -axww -o pid=,comm=,args=" \
-    | awk '$2=="Web"{print $1; exit} $0 ~ /\/app\/src\/Web\/bin\/Debug\/net8\.0\/Web/ {print $1; exit}'
+    | awk '$2=="Web"{print $1; exit} $0 ~ /\/app\/src\/Web\/bin\/Debug\/net10\.0\/Web/ {print $1; exit}'
 )"
 
 if [ -z "$pid" ]; then

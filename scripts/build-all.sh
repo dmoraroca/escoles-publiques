@@ -17,8 +17,8 @@ if docker compose $COMPOSE_FILES ps --status running -q api 2>/dev/null | grep -
   echo "API està en marxa — aturant abans del build..."
   docker compose $COMPOSE_FILES stop api >/dev/null 2>&1 || true
 fi
-docker pull mcr.microsoft.com/dotnet/sdk:8.0 >/dev/null || true
-if ! docker run --rm -v "$ROOT":/src -w /src mcr.microsoft.com/dotnet/sdk:8.0 \
+docker pull mcr.microsoft.com/dotnet/sdk:10.0 >/dev/null || true
+if ! docker run --rm -v "$ROOT":/src -w /src mcr.microsoft.com/dotnet/sdk:10.0 \
   dotnet build src/Api/Api.csproj -c Debug /property:GenerateFullPaths=true; then
   echo "ERROR: build API ha fallat."
   write_status "fail"
@@ -30,7 +30,7 @@ if docker compose $COMPOSE_FILES ps --status running -q web 2>/dev/null | grep -
   echo "Web està en marxa — aturant abans del build..."
   docker compose $COMPOSE_FILES stop web >/dev/null 2>&1 || true
 fi
-if ! docker run --rm -v "$ROOT":/src -w /src mcr.microsoft.com/dotnet/sdk:8.0 \
+if ! docker run --rm -v "$ROOT":/src -w /src mcr.microsoft.com/dotnet/sdk:10.0 \
   dotnet build src/Web/Web.csproj -c Debug /property:GenerateFullPaths=true; then
   echo "ERROR: build Web ha fallat."
   write_status "fail"

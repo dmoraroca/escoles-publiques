@@ -36,7 +36,7 @@ open_url() {
 
 echo "Building solution inside Docker SDK image..."
 # Build using the official .NET SDK container so host dotnet isn't required
-docker run --rm -v "$ROOT":/src -w /src mcr.microsoft.com/dotnet/sdk:8.0 \
+docker run --rm -v "$ROOT":/src -w /src mcr.microsoft.com/dotnet/sdk:10.0 \
   dotnet build EscolesPubliques.sln -c Debug /property:GenerateFullPaths=true
 
 echo "Starting web container (docker compose)..."
